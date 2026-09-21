@@ -1,48 +1,13 @@
-import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { blogPosts, type BlogPost as StaticBlogPost } from "@/data/blogPosts";
-import { useBlogPosts } from "@/community/hooks/queries";
+import { useAllBlogPosts } from "@/community/hooks/blogFeed";
 import blogHeroBeach from "@/assets/blog-hero-beach.jpg.asset.json";
 
-const SK_MONTHS: Record<string, number> = {
-  "január": 0, "februar": 1, "február": 1, "marec": 2, "april": 3, "apríl": 3,
-  "maj": 4, "máj": 4, "jun": 5, "jún": 5, "jul": 6, "júl": 6, "august": 7,
-  "september": 8, "oktober": 9, "október": 9, "november": 10, "december": 11,
-};
-
-function parseSkDate(date: string): number {
-  const m = date.trim().toLowerCase().match(/^(\d{1,2})\.\s*([^\s]+)\s+(\d{4})$/);
-  if (!m) return 0;
-  const day = parseInt(m[1], 10);
-  const month = SK_MONTHS[m[2]] ?? 0;
-  const year = parseInt(m[3], 10);
-  return new Date(year, month, day).getTime();
-}
-
 const Blog = () => {
-  const { data: dbPosts } = useBlogPosts(false);
-
-  const allPosts = useMemo(() => {
-    const fromDb: (StaticBlogPost & { sortTs: number })[] = (dbPosts ?? []).map((post) => {
-      const ts = new Date(post.published_at ?? post.created_at).getTime();
-      return {
-        title: post.title,
-        excerpt: post.excerpt ?? "",
-        date: new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long", year: "numeric" }).format(ts),
-        category: "",
-        image: post.cover_image_url ?? blogHeroBeach.url,
-        imagePosition: "top",
-        href: `/blog/${post.slug}`,
-        sortTs: ts,
-      };
-    });
-    const fromStatic = blogPosts.map((post) => ({ ...post, sortTs: parseSkDate(post.date) }));
-    return [...fromDb, ...fromStatic].sort((a, b) => b.sortTs - a.sortTs);
-  }, [dbPosts]);
+  const allPosts = useAllBlogPosts();
 
   return (
     <div className="min-h-screen bg-background">

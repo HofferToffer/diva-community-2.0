@@ -30,7 +30,7 @@ const SK_MONTHS: Record<string, number> = {
   "september": 8, "oktober": 9, "október": 9, "november": 10, "december": 11,
 };
 
-const parseSkDate = (date: string): number => {
+export const parseSkDate = (date: string): number => {
   const m = date.trim().toLowerCase().match(/^(\d{1,2})\.\s*([^\s]+)\s+(\d{4})$/);
   if (!m) return 0;
   const day = parseInt(m[1], 10);

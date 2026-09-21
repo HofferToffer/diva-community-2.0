@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { blogPosts } from "@/data/blogPosts";
+import { useAllBlogPosts } from "@/community/hooks/blogFeed";
 
 const BlogSection = () => {
-  const previewPosts = blogPosts.slice(0, 2);
+  const allPosts = useAllBlogPosts();
+  const previewPosts = allPosts.slice(0, 2);
 
   return (
     <section id="blog" className="section-padding bg-card">
@@ -24,7 +25,7 @@ const BlogSection = () => {
         <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
           {previewPosts.map((post, index) => (
             <motion.article
-              key={post.title}
+              key={post.href}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
