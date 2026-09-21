@@ -106,14 +106,14 @@ export function ActivityCard({
       >
         <div className={`grid gap-2 px-4 py-4 ${activity.distance_km ? "grid-cols-1" : "grid-cols-2"}`}>
           {activity.distance_km ? (
-            <Metric label="Vzdialenosť" value={formatKm(activity.distance_km)} />
+            <Metric label="Vzdialenosť" value={formatKm(activity.distance_km)} large />
           ) : (
             <>
               <Metric label="Typ" value={activityTypeLabel(activity.kind, activity.activity_type)} />
               {activity.duration_seconds > 0 ? (
-                <Metric label="Čas" value={formatDuration(activity.duration_seconds)} />
+                <Metric label="Čas" value={formatDuration(activity.duration_seconds)} large />
               ) : (
-                <Metric label="Dátum" value={new Date(activity.activity_date).toLocaleDateString("sk-SK")} />
+                <Metric label="Dátum" value={new Date(activity.activity_date).toLocaleDateString("sk-SK")} large />
               )}
             </>
           )}
@@ -208,11 +208,11 @@ export function ActivityCard({
   );
 }
 
-function Metric({ label, value }: { label: string; value: string }) {
+function Metric({ label, value, large }: { label: string; value: string; large?: boolean }) {
   return (
     <div className="text-center">
-      <p className="font-display text-xl leading-none text-foreground">{value}</p>
-      <p className="mt-1 text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+      <p className={`font-display leading-none text-foreground ${large ? "text-3xl" : "text-xl"}`}>{value}</p>
+      <p className="mt-1.5 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
     </div>
   );
 }
