@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Check, History, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
@@ -28,6 +28,15 @@ export default function CommunityDailyFeeling() {
   const [detail, setDetail] = useState<string | null>(null);
   const [specific, setSpecific] = useState<string | null>(null);
   const [note, setNote] = useState("");
+  const detailRef = useRef<HTMLDivElement>(null);
+  const specificRef = useRef<HTMLDivElement>(null);
+  const noteRef = useRef<HTMLDivElement>(null);
+
+  const scrollToNext = (ref: React.RefObject<HTMLDivElement>) => {
+    requestAnimationFrame(() => {
+      ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
 
   useEffect(() => {
     if (!todayFeeling) return;
@@ -87,6 +96,7 @@ export default function CommunityDailyFeeling() {
                       setMood(item.value);
                       setDetail(null);
                       setSpecific(null);
+                      scrollToNext(detailRef);
                     }}
                     className="relative h-auto min-h-24 flex-col gap-2 whitespace-normal px-1 py-3"
                   >
@@ -100,7 +110,7 @@ export default function CommunityDailyFeeling() {
           </div>
 
           {mood && MOODS.some((item) => item.value === mood) && (
-            <div className="space-y-3">
+            <div ref={detailRef} className="space-y-3 scroll-mt-4">
               <h2 className="font-display text-2xl">Ktorý pocit je ti najbližší?</h2>
               <div className="flex flex-wrap gap-2">
                 {(MOODS.find((item) => item.value === mood)?.feelings ?? []).map((feeling) => (
@@ -113,6 +123,7 @@ export default function CommunityDailyFeeling() {
                     onClick={() => {
                       setDetail(feeling.label);
                       setSpecific(null);
+                      scrollToNext(specificRef);
                     }}
                     className="h-auto min-h-10 whitespace-normal"
                   >
@@ -124,7 +135,7 @@ export default function CommunityDailyFeeling() {
           )}
 
           {mood && detail && (
-            <div className="space-y-3">
+            <div ref={specificRef} className="space-y-3 scroll-mt-4">
               <h2 className="font-display text-2xl">Ako presne sa tento pocit prejavuje?</h2>
               <div className="flex flex-wrap gap-2">
                 {(MOODS.find((item) => item.value === mood)?.feelings.find((feeling) => feeling.label === detail)?.specifics ?? []).map((item) => (
@@ -134,7 +145,10 @@ export default function CommunityDailyFeeling() {
                     size="sm"
                     variant={specific === item ? "default" : "outline"}
                     aria-pressed={specific === item}
-                    onClick={() => setSpecific(item)}
+                    onClick={() => {
+                      setSpecific(item);
+                      scrollToNext(noteRef);
+                    }}
                     className="h-auto min-h-10 whitespace-normal"
                   >
                     {item}
@@ -144,7 +158,7 @@ export default function CommunityDailyFeeling() {
             </div>
           )}
 
-          <div className="space-y-2">
+          <div ref={noteRef} className="space-y-2 scroll-mt-4">
             <Label htmlFor="feeling-note">Čo dnes potrebuješ?</Label>
             <Textarea
               id="feeling-note"
