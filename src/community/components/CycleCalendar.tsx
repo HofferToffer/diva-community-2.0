@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarHeart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,8 +33,16 @@ export function CycleCalendar({
 }) {
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const [pendingDate, setPendingDate] = useState<Date | null>(null);
+  const pendingPanelRef = useRef<HTMLDivElement>(null);
   const today = new Date();
   const pendingPhase = pendingDate ? getCyclePhaseForDate(lastPeriodDate, cycleLengthDays, pendingDate) : null;
+
+  useEffect(() => {
+    if (!pendingDate) return;
+    requestAnimationFrame(() => {
+      pendingPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }, [pendingDate]);
 
   const confirmPendingDate = () => {
     if (!pendingDate) return;
@@ -135,6 +143,7 @@ export function CycleCalendar({
       <AnimatePresence>
         {pendingDate && (
           <motion.div
+            ref={pendingPanelRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
