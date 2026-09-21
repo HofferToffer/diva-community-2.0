@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -44,6 +44,7 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
 }
 
 export default function CommunityProfile() {
+  const navigate = useNavigate();
   const { username } = useParams<{ username: string }>();
   const { profile: me, refreshProfile, user } = useCommunityAuth();
   const other = useProfileByUsername(username);
@@ -387,7 +388,7 @@ export default function CommunityProfile() {
               <ProfileSettings
                 onSaved={() => {
                   setEditingProfile(false);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  navigate("/community");
                 }}
               />
             </>
