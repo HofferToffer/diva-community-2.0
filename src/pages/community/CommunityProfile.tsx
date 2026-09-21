@@ -150,7 +150,7 @@ export default function CommunityProfile() {
   });
 
   const cycle =
-    isMe && !profile.is_pregnant && !profile.is_menopause && profile.last_period_date
+    isMe && !profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && profile.last_period_date
       ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
       : null;
 

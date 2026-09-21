@@ -23,6 +23,8 @@ export type Profile = {
   last_period_date: string | null;
   is_pregnant: boolean;
   is_menopause: boolean;
+  is_postpartum: boolean;
+  postpartum_since: string | null;
   created_at: string;
 };
 

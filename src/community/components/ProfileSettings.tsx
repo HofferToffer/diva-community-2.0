@@ -27,6 +27,8 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
   const [lastPeriod, setLastPeriod] = useState(profile?.last_period_date ?? "");
   const [isPregnant, setIsPregnant] = useState(profile?.is_pregnant ?? false);
   const [isMenopause, setIsMenopause] = useState(profile?.is_menopause ?? false);
+  const [isPostpartum, setIsPostpartum] = useState(profile?.is_postpartum ?? false);
+  const [postpartumSince, setPostpartumSince] = useState(profile?.postpartum_since ?? "");
   const [notifyLikes, setNotifyLikes] = useState(profile?.notify_likes ?? true);
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
   const [notifyChallenges, setNotifyChallenges] = useState(profile?.notify_challenges ?? true);
@@ -98,6 +100,8 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           last_period_date: lastPeriod || null,
           is_pregnant: isPregnant,
           is_menopause: isMenopause,
+          is_postpartum: isPostpartum,
+          postpartum_since: isPostpartum ? postpartumSince || null : null,
         } as never)
         .eq("id", profile.id);
       if (error) throw error;
@@ -168,7 +172,24 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
               checked={isPregnant}
               onCheckedChange={(v) => {
                 setIsPregnant(v);
-                if (v) setIsMenopause(false);
+                if (v) {
+                  setIsMenopause(false);
+                  setIsPostpartum(false);
+                }
+              }}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <Label htmlFor="s-is-postpartum" className="text-sm">Som v šestonedelí</Label>
+            <Switch
+              id="s-is-postpartum"
+              checked={isPostpartum}
+              onCheckedChange={(v) => {
+                setIsPostpartum(v);
+                if (v) {
+                  setIsPregnant(false);
+                  setIsMenopause(false);
+                }
               }}
             />
           </div>
@@ -179,12 +200,31 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
               checked={isMenopause}
               onCheckedChange={(v) => {
                 setIsMenopause(v);
-                if (v) setIsPregnant(false);
+                if (v) {
+                  setIsPregnant(false);
+                  setIsPostpartum(false);
+                }
               }}
             />
           </div>
         </div>
-        {!isMenopause && (
+        {isPostpartum && (
+          <div className="space-y-2">
+            <Label htmlFor="s-postpartum-since">Dátum pôrodu</Label>
+            <Input
+              id="s-postpartum-since"
+              type="date"
+              max={new Date().toISOString().slice(0, 10)}
+              value={postpartumSince}
+              onChange={(e) => setPostpartumSince(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Šestonedelie sa síce podľa mena končí po šiestich týždňoch, ale vieme, že to zvyčajne trvá dlhšie —
+              táto sekcia zostáva, kým si ju sama nevypneš.
+            </p>
+          </div>
+        )}
+        {!isMenopause && !isPostpartum && (
           <>
             <div className="space-y-2">
               <Label htmlFor="s-last-period">

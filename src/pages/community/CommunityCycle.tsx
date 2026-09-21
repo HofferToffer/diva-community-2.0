@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips } from "@/community/components/CyclePhaseTips";
 import { ConfettiBurst } from "@/community/components/ConfettiBurst";
@@ -36,19 +37,38 @@ export default function CommunityCycle() {
   }
 
   const cycle =
-    !profile.is_pregnant && !profile.is_menopause && profile.last_period_date
+    !profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && profile.last_period_date
       ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
       : null;
   const pregnancy = profile.is_pregnant && profile.last_period_date ? getPregnancyInfo(profile.last_period_date) : null;
+  const postpartum = profile.is_postpartum && profile.postpartum_since ? getPostpartumInfo(profile.postpartum_since) : null;
 
   const markBirth = async () => {
     if (!window.confirm("Narodilo sa ti bábätko? Toto ukončí sledovanie tehotenstva.")) return;
     try {
-      const { error } = await supabase.from("profiles").update({ is_pregnant: false } as never).eq("id", profile.id);
+      const today = new Date().toISOString().slice(0, 10);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ is_pregnant: false, is_postpartum: true, postpartum_since: today } as never)
+        .eq("id", profile.id);
       if (error) throw error;
       refreshProfile();
       setJustGaveBirth(true);
       setTimeout(() => setJustGaveBirth(false), 4500);
+    } catch {
+      toast.error("Nepodarilo sa uložiť.");
+    }
+  };
+
+  const endPostpartum = async () => {
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ is_postpartum: false, postpartum_since: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Šestonedelie je ukončené.");
     } catch {
       toast.error("Nepodarilo sa uložiť.");
     }
@@ -155,6 +175,28 @@ export default function CommunityCycle() {
         </>
       )}
 
+      {profile.is_postpartum && (
+        <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">Šestonedelie</p>
+          {postpartum ? (
+            <>
+              <p className="font-display text-2xl text-primary">{postpartum.week}. týždeň po pôrode</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{postpartum.message}</p>
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+              Upraviť v profile
+            </Button>
+            <Button variant="outline" size="sm" onClick={endPostpartum}>
+              Ukončiť šestonedelie
+            </Button>
+          </div>
+        </motion.section>
+      )}
+
       {profile.is_menopause && (
         <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Tvoja kapitola</p>
@@ -168,7 +210,7 @@ export default function CommunityCycle() {
         </motion.section>
       )}
 
-      {!profile.is_pregnant && !profile.is_menopause && (cycle ? (
+      {!profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && (cycle ? (
         <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">

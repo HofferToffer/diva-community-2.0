@@ -14,6 +14,7 @@ import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, us
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { quoteForDate } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
@@ -59,15 +60,20 @@ export default function CommunityHome() {
 
   const cycle = useMemo(
     () =>
-      !profile?.is_pregnant && !profile?.is_menopause && profile?.last_period_date
+      !profile?.is_pregnant && !profile?.is_menopause && !profile?.is_postpartum && profile?.last_period_date
         ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
         : null,
-    [profile?.is_pregnant, profile?.is_menopause, profile?.last_period_date, profile?.cycle_length_days],
+    [profile?.is_pregnant, profile?.is_menopause, profile?.is_postpartum, profile?.last_period_date, profile?.cycle_length_days],
   );
 
   const pregnancy = useMemo(
     () => (profile?.is_pregnant && profile?.last_period_date ? getPregnancyInfo(profile.last_period_date) : null),
     [profile?.is_pregnant, profile?.last_period_date],
+  );
+
+  const postpartum = useMemo(
+    () => (profile?.is_postpartum && profile?.postpartum_since ? getPostpartumInfo(profile.postpartum_since) : null),
+    [profile?.is_postpartum, profile?.postpartum_since],
   );
 
   return (
@@ -134,6 +140,25 @@ export default function CommunityHome() {
               <p className="text-sm text-muted-foreground">
                 Zadaj prvý deň poslednej menštruácie v profile, aby sme ti tu vedeli ukázať týždeň tehotenstva.
               </p>
+            )}
+          </Link>
+        </motion.div>
+      )}
+
+      {profile?.is_postpartum && (
+        <motion.div {...fadeUp(4)}>
+          <Link
+            to="/community/cyklus"
+            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+          >
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Šestonedelie</p>
+            {postpartum ? (
+              <>
+                <h2 className="mt-1 font-display text-2xl text-primary">{postpartum.week}. týždeň po pôrode</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{postpartum.message}</p>
+              </>
+            ) : (
+              <p className="mt-1 text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
             )}
           </Link>
         </motion.div>
