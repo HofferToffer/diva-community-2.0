@@ -37,6 +37,7 @@ import divyNosia37 from "@/assets/divy-nosia-divu-37.jpg.asset.json";
 import divyNosia38 from "@/assets/divy-nosia-divu-38.jpg.asset.json";
 import divyNosia39 from "@/assets/divy-nosia-divu-39.jpg.asset.json";
 import divyNosia40 from "@/assets/divy-nosia-divu-40.jpg.asset.json";
+import divyNosia41 from "@/assets/divy-nosia-divu-41.jpg";
 
 
 interface CommunityImage {
@@ -81,6 +82,7 @@ const sourceImages: CommunityImage[] = [
   { src: divyNosia38.url, alt: "Diva v ružovej šiltovke Diva Community v kúpeľni" },
   { src: divyNosia39.url, alt: "Diva v ružovej šiltovke Diva Community" },
   { src: divyNosia40.url, alt: "Diva v čiernom klobúku Diva Community v zrkadle" },
+  { src: divyNosia41, alt: "Diva v klobúku a slnečných okuliaroch na lesnej ceste pri jazere" },
 ];
 
 
