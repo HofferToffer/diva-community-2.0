@@ -42,7 +42,7 @@ const DETAIL_LEVELS: Record<string, number> = {
   hravo: 540,
   spokojne: 600,
   zaujato: 400,
-  hrdo: 175,
+  hrdo: 400,
   prijato: 350,
   energeticky: 310,
   pokojne: 500,
