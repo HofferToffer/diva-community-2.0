@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import { CommunityAuthProvider, useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { CommunityShell } from "@/community/components/CommunityShell";
 import { CommunityGate } from "@/community/components/CommunityGate";
@@ -24,7 +25,14 @@ import CommunityAdminBlog from "./community/CommunityAdminBlog";
 function Loading() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <p className="font-display text-2xl tracking-[0.2em] text-muted-foreground">DIVA</p>
+      <motion.p
+        className="font-display text-2xl tracking-[0.2em] text-muted-foreground"
+        initial={{ opacity: 0.4, scale: 0.97 }}
+        animate={{ opacity: [0.4, 1, 0.4], scale: [0.97, 1.02, 0.97] }}
+        transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+      >
+        DIVA
+      </motion.p>
     </div>
   );
 }
