@@ -109,10 +109,10 @@ export default function CommunityAdminBlog() {
     }
   };
 
-  const pickGallery = async (files: FileList) => {
+  const pickGallery = async (files: File[]) => {
     setUploadingGallery(true);
     try {
-      for (const file of Array.from(files)) {
+      for (const file of files) {
         const problem = validateImage(file);
         if (problem) {
           toast.error(problem);
@@ -250,9 +250,9 @@ export default function CommunityAdminBlog() {
             className="sr-only"
             disabled={uploadingGallery}
             onChange={(e) => {
-              const files = e.target.files;
+              const files = e.target.files ? Array.from(e.target.files) : [];
               e.target.value = "";
-              if (files && files.length) void pickGallery(files);
+              if (files.length) void pickGallery(files);
             }}
           />
           {form.galleryImageUrls.length > 0 && (
