@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CommunityAuthProvider, useCommunityAuth } from "@/community/context/CommunityAuthProvider";
@@ -41,7 +42,14 @@ function CommunityRoutes() {
   const { session, profile, loadingAuth, loadingProfile } = useCommunityAuth();
   const location = useLocation();
 
-  if (loadingAuth || (session && loadingProfile)) return <Loading />;
+  // Keep the DIVA screen up for a moment even if auth resolves instantly, so it's felt, not just flashed.
+  const [minSplashDone, setMinSplashDone] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setMinSplashDone(true), 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loadingAuth || (session && loadingProfile) || !minSplashDone) return <Loading />;
 
   if (!session) {
     if (location.pathname === "/community/vitaj") return <CommunityAuth />;
