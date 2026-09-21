@@ -220,8 +220,8 @@ export default function CommunityHome() {
         </Button>
       </motion.section>
 
-      <motion.section {...fadeUp(3)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
+      <motion.section {...fadeUp(3)}>
+        <p className="text-center text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
         <div className="mt-3">
           <QuoteCard quote={quoteForDate(getLifePhase(profile))} variant="compact" />
         </div>
