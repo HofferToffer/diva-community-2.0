@@ -20,7 +20,7 @@ import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
 
 function HomeStatTile({ icon: Icon, label, value, i }: { icon: LucideIcon; label: string; value: string; i: number }) {
   return (
-    <motion.div {...fadeUp(i)} className="rounded-lg border border-border bg-card px-3 py-4 text-center">
+    <motion.div {...fadeUp(i)} className="rounded-2xl bg-secondary/30 px-3 py-4 text-center">
       <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
         <Icon className="h-4 w-4" aria-hidden="true" />
       </span>
@@ -91,7 +91,7 @@ export default function CommunityHome() {
 
   return (
     <div className="space-y-8">
-      <motion.section {...fadeUp(0)} className="relative rounded-lg border border-border bg-card px-6 py-6">
+      <motion.section {...fadeUp(0)} className="relative px-1 py-2">
         <Link
           to="/community/profil"
           aria-label="Môj profil"
@@ -122,7 +122,7 @@ export default function CommunityHome() {
         </Button>
       </motion.section>
 
-      <motion.section {...fadeUp(3)} className="rounded-lg border border-border bg-card p-5">
+      <motion.section {...fadeUp(3)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
         <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
         <div className="mt-3">
           <QuoteCard quote={quoteForDate()} variant="compact" />
@@ -139,7 +139,7 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(4)}>
           <Link
             to="/community/cyklus"
-            className="block rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
+            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
               {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
@@ -158,7 +158,7 @@ export default function CommunityHome() {
       )}
 
       {challenge && (
-        <motion.section {...fadeUp(5)} className="relative overflow-hidden rounded-lg border border-border bg-card p-5">
+        <motion.section {...fadeUp(5)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Aktuálna výzva</p>
           <h2 className="mt-1 font-display text-2xl">{challenge.title}</h2>
           <Progress value={percent} className="mt-4" aria-label="Progres výzvy" />
