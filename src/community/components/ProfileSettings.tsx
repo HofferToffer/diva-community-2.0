@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Activity, Bell, Footprints, KeyRound, Sparkles, User } from "lucide-react";
 import { toast } from "sonner";
@@ -420,14 +419,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             </Button>
           </SectionCard>
 
-          <div className="space-y-3">
-            <Button variant="outline" className="w-full" onClick={signOut}>
-              Odhlásiť sa
-            </Button>
-            <Button asChild variant="link" className="w-full">
-              <Link to="/">Späť na hlavnú stránku</Link>
-            </Button>
-          </div>
+          <Button variant="outline" className="w-full" onClick={signOut}>
+            Odhlásiť sa
+          </Button>
         </div>
       </div>
     </div>
