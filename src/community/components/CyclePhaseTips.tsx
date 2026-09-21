@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   CYCLE_PHASE_TIPS,
@@ -48,34 +48,29 @@ export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
         ))}
       </div>
 
-      <motion.div layout className="grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4">
-        <AnimatePresence initial={false}>
-          {visible.map((tip, i) => {
-            const Icon = tip.icon;
-            return (
-              <motion.div
-                key={tip.label}
-                layout
-                initial={{ opacity: 0, scale: 0.7, y: 8 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.7 }}
-                transition={{ duration: 0.35, delay: i * 0.03, ease: "easeOut" }}
-                whileTap={{ scale: 0.92 }}
-                className="flex flex-col items-center gap-2 text-center"
+      <div key={filter} className="grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4">
+        {visible.map((tip, i) => {
+          const Icon = tip.icon;
+          return (
+            <motion.div
+              key={tip.label}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: Math.min(i, 8) * 0.02, ease: "easeOut" }}
+              className="flex flex-col items-center gap-2 text-center"
+            >
+              <span
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
+                style={{ background: softFill }}
+                aria-hidden="true"
               >
-                <span
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
-                  style={{ background: softFill }}
-                  aria-hidden="true"
-                >
-                  <Icon className="h-6 w-6" style={{ color: color.dot }} />
-                </span>
-                <p className="text-xs leading-tight text-foreground/85">{tip.label}</p>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
+                <Icon className="h-6 w-6" style={{ color: color.dot }} />
+              </span>
+              <p className="text-xs leading-tight text-foreground/85">{tip.label}</p>
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 }
