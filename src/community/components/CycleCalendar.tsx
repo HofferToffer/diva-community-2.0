@@ -77,7 +77,7 @@ export function CycleCalendar({
   const monthLabel = new Intl.DateTimeFormat("sk-SK", { month: "long", year: "numeric" }).format(monthCursor);
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
+    <div className="rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
       <div className="flex items-center justify-between">
         <Button type="button" variant="ghost" size="icon" aria-label="Predchádzajúci mesiac" onClick={goToPrevMonth}>
           <ChevronLeft className="h-4 w-4" />

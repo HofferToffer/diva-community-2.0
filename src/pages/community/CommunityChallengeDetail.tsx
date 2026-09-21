@@ -71,7 +71,7 @@ export default function CommunityChallengeDetail() {
         )}
       </header>
 
-      <section className="rounded-lg border border-border bg-card p-5">
+      <section className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
         <Progress value={percent} aria-label="Spoločný progres" />
         <p className="mt-3 text-sm text-muted-foreground">
           Spolu {Math.round(progress?.progress ?? 0)} z {challenge.goal} km ·{" "}
@@ -97,7 +97,7 @@ export default function CommunityChallengeDetail() {
 
       <section className="space-y-4">
         <h2 className="font-display text-2xl">Leaderboard</h2>
-        <ol className="divide-y divide-border rounded-lg border border-border bg-card">
+        <ol className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
           {leaderboard?.map((row, index) => (
             <li key={row.profile_id} className="flex items-center gap-3 px-4 py-3">
               <span className="w-6 font-display text-lg text-muted-foreground">{index + 1}</span>

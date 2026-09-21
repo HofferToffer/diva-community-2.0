@@ -276,7 +276,7 @@ export default function CommunityAdminBlog() {
           )}
         </div>
 
-        <div className="flex items-center justify-between rounded-lg border border-border bg-card p-4">
+        <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
           <div>
             <p className="font-medium">Publikovať</p>
             <p className="text-sm text-muted-foreground">
@@ -314,7 +314,7 @@ export default function CommunityAdminBlog() {
 
       {isLoading && <Skeleton className="h-40 w-full" />}
 
-      <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+      <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
         {posts?.map((post) => (
           <li key={post.id} className="flex items-center gap-3 px-4 py-4">
             <div className="min-w-0 flex-1">

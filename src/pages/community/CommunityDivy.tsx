@@ -114,7 +114,7 @@ export default function CommunityDivy() {
           />
         )}
         {list.length > 0 && (
-          <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+          <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
             {list.map((d) => (
               <DivaRow
                 key={d.id}
@@ -131,7 +131,7 @@ export default function CommunityDivy() {
       {myFriends.length > 0 && (
         <motion.section {...fadeUp(3)} className="space-y-3">
           <h2 className="font-display text-2xl">Moje kamošky</h2>
-          <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+          <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
             {myFriends.map((d) => (
               <DivaRow
                 key={d.id}

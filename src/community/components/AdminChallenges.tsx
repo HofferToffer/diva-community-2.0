@@ -117,7 +117,7 @@ export default function AdminChallenges() {
       )}
 
       {form && (
-        <div className="space-y-4 rounded-lg border border-border bg-card p-4">
+        <div className="space-y-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <h3 className="font-display text-xl">{form.id ? "Upraviť výzvu" : "Nová výzva"}</h3>
             <Button variant="ghost" size="icon" onClick={() => setForm(null)} aria-label="Zavrieť">
@@ -197,7 +197,7 @@ export default function AdminChallenges() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
+          <div className="flex items-center justify-between rounded-xl border border-border/50 px-3 py-2">
             <Label htmlFor="ch-active" className="text-sm">
               Výzva je viditeľná pre Divy
             </Label>
@@ -222,7 +222,7 @@ export default function AdminChallenges() {
       {isLoading && <Skeleton className="h-32 w-full" />}
 
       {challenges && challenges.length > 0 && (
-        <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+        <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
           {challenges.map((c) => (
             <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
               <div className="min-w-0 space-y-1">

@@ -13,7 +13,7 @@ export function EmptyState({
   illustration?: string;
 }) {
   return (
-    <div className="rounded-lg border border-dashed border-border bg-card/60 px-6 py-12 text-center">
+    <div className="rounded-2xl border border-dashed border-border/60 bg-card/60 px-6 py-12 text-center">
       <img
         src={illustration ?? illBranch}
         alt=""
@@ -32,7 +32,7 @@ export function EmptyState({
 
 export function StatTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card px-4 py-4 text-center">
+    <div className="rounded-2xl border border-border/50 bg-card px-4 py-4 text-center shadow-sm">
       <p className="font-body text-2xl font-light leading-none text-foreground/90">{value}</p>
       <p className="mt-2 text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
     </div>

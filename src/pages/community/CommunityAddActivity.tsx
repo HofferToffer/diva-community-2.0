@@ -193,7 +193,7 @@ export default function CommunityAddActivity() {
         {photoPath && <StoredImage path={photoPath} alt="Náhľad fotky" className="h-48 w-full rounded-lg object-cover" />}
       </div>
 
-      <div className="flex items-center justify-between rounded-lg border border-border bg-card p-4">
+      <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
         <div>
           <p className="font-medium">Zdieľať s komunitou</p>
           <p className="text-sm text-muted-foreground">Ak vypneš, aktivita zostane len tvoja.</p>

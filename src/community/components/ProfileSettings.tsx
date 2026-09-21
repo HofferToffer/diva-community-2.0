@@ -220,7 +220,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
 
       <section className="space-y-3">
         <h2 className="font-display text-2xl">Strava</h2>
-        <div className="rounded-lg border border-border bg-card px-4 py-4 space-y-3">
+        <div className="rounded-2xl border border-border/50 bg-card px-4 py-4 space-y-3 shadow-sm">
           <div className="flex items-center gap-3">
             <Activity className="h-5 w-5 text-primary" aria-hidden />
             <p className="text-sm">
@@ -291,7 +291,7 @@ function ToggleRow({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card px-4 py-3">
+    <div className="flex items-center justify-between gap-4 rounded-2xl border border-border/50 bg-card px-4 py-3 shadow-sm">
       <span className="text-sm">{label}</span>
       <Switch checked={checked} onCheckedChange={onChange} aria-label={label} />
     </div>

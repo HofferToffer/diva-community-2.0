@@ -253,7 +253,7 @@ export default function CommunityProfile() {
       )}
 
       {cycle && (
-        <section className="space-y-3 rounded-lg border border-border bg-card p-5">
+        <section className="space-y-3 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-baseline justify-between gap-3">
             <h2 className="font-display text-2xl">Môj cyklus</h2>
             {!editingCycle && (
@@ -305,14 +305,14 @@ export default function CommunityProfile() {
               <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-md border border-border p-3">
+                <div className="rounded-xl border border-border/50 p-3">
                   <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
                   <p className="mt-1 font-medium">
                     {formatCycleDate(cycle.nextPeriodDate)}
                     <span className="ml-1 text-xs text-muted-foreground">(o {cycle.daysUntilNextPeriod} dní)</span>
                   </p>
                 </div>
-                <div className="rounded-md border border-border p-3">
+                <div className="rounded-xl border border-border/50 p-3">
                   <p className="text-xs text-muted-foreground">Predpokladaná ovulácia</p>
                   <p className="mt-1 font-medium">{formatCycleDate(cycle.nextOvulationDate)}</p>
                 </div>

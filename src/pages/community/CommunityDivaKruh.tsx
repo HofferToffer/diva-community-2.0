@@ -7,7 +7,7 @@ import { fadeUp } from "@/community/lib/motion";
 export default function CommunityDivaKruh() {
   return (
     <div className="space-y-8">
-      <motion.section {...fadeUp(0)} className="relative overflow-hidden rounded-lg border border-border bg-card px-6 py-10 text-center">
+      <motion.section {...fadeUp(0)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card px-6 py-10 text-center shadow-sm">
         <div className="pointer-events-none absolute -right-10 -top-10 opacity-10">
           <Circle className="h-56 w-56 stroke-1" />
         </div>
@@ -28,7 +28,7 @@ export default function CommunityDivaKruh() {
       </motion.section>
 
       <motion.section {...fadeUp(1)} className="grid gap-4 sm:grid-cols-3">
-        <Card>
+        <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <Users className="h-6 w-6 text-accent" />
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">Pre koho</h2>
@@ -37,7 +37,7 @@ export default function CommunityDivaKruh() {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <MessageCircle className="h-6 w-6 text-accent" />
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">Ako</h2>
@@ -46,7 +46,7 @@ export default function CommunityDivaKruh() {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <Heart className="h-6 w-6 text-accent" />
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">Čo prinesie</h2>
@@ -57,7 +57,7 @@ export default function CommunityDivaKruh() {
         </Card>
       </motion.section>
 
-      <motion.section {...fadeUp(2)} className="rounded-lg border border-border bg-secondary/40 px-6 py-8 text-center">
+      <motion.section {...fadeUp(2)} className="rounded-2xl border border-border/50 bg-secondary/40 px-6 py-8 text-center">
         <h2 className="font-display text-2xl">Chceš sa pripojiť?</h2>
         <p className="mx-auto mt-2 text-sm text-muted-foreground">
           Napíš nám a my ti pošleme termín najbližšieho DIVA KRUHu a odkaz na pripojenie.
@@ -82,7 +82,7 @@ export default function CommunityDivaKruh() {
         </p>
       </motion.section>
 
-      <motion.section {...fadeUp(3)} className="rounded-lg border border-dashed border-border px-6 py-8 text-center">
+      <motion.section {...fadeUp(3)} className="rounded-2xl border border-dashed border-border/60 px-6 py-8 text-center">
         <p className="text-sm italic text-muted-foreground">
           „V kruhu žien sa netreba pretvarovať. Stačí prísť taká, aká si."
         </p>

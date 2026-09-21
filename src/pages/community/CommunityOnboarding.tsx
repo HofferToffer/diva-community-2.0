@@ -269,7 +269,7 @@ export default function CommunityOnboarding() {
       {step === 3 && (
         <section className="mt-4 space-y-6">
           <h1 className="font-display text-3xl">Tvoje súkromie</h1>
-          <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-card p-4">
+          <div className="flex items-start justify-between gap-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
             <div>
               <p className="font-medium">Verejný profil</p>
               <p className="mt-1 text-sm text-muted-foreground">

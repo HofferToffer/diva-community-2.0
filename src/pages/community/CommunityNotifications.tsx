@@ -29,7 +29,7 @@ export default function CommunityNotifications() {
       {data?.length === 0 && (
         <EmptyState title="Nič nové" description="Keď ťa niekto podporí alebo odpovie, nájdeš to tu." />
       )}
-      <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+      <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
         {data?.map((n) => (
           <li key={n.id} className="px-4 py-4">
             {n.link ? (

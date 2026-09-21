@@ -52,7 +52,7 @@ export function ActivityCard({
   };
 
   return (
-    <article className="overflow-hidden rounded-lg border border-border bg-card">
+    <article className="overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
       <header className="flex items-center gap-3 px-4 pt-4">
         <ProfileAvatar path={author?.avatar_url} name={author?.name ?? "Diva"} size={44} />
         <div className="min-w-0 flex-1">

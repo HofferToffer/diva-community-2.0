@@ -88,7 +88,7 @@ export default function CommunityCycle() {
       </motion.header>
 
       {cycle ? (
-        <motion.section {...fadeUp(1)} className="space-y-4 rounded-lg border border-border bg-card p-5">
+        <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">
               <RefreshCcw className="h-5 w-5 text-primary" />
@@ -144,20 +144,20 @@ export default function CommunityCycle() {
               <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
 
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-md border border-border p-3">
+                <div className="rounded-xl border border-border/50 p-3">
                   <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
                   <p className="mt-1 font-medium">
                     {formatCycleDate(cycle.nextPeriodDate)}
                     <span className="ml-1 text-xs text-muted-foreground">(o {cycle.daysUntilNextPeriod} dní)</span>
                   </p>
                 </div>
-                <div className="rounded-md border border-border p-3">
+                <div className="rounded-xl border border-border/50 p-3">
                   <p className="text-xs text-muted-foreground">Predpokladaná ovulácia</p>
                   <p className="mt-1 font-medium">{formatCycleDate(cycle.nextOvulationDate)}</p>
                 </div>
               </div>
 
-              <div className="rounded-md border border-border bg-background/60 p-4">
+              <div className="rounded-xl border border-border/50 bg-background/60 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Tipy pre túto fázu
                 </p>
@@ -175,7 +175,7 @@ export default function CommunityCycle() {
           )}
         </motion.section>
       ) : (
-        <motion.section {...fadeUp(1)} className="rounded-lg border border-border bg-card p-6 text-center">
+        <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
           <h2 className="font-display text-xl">Zatiaľ nemáš nastavený cyklus</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Zadaj dátum poslednej menštruácie a dĺžku cyklu, aby sme ti mohli ukázať fázy a odporúčania.

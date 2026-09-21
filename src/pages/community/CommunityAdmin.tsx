@@ -155,7 +155,7 @@ export default function CommunityAdmin() {
 
           {types.length > 0 && (
             <Section title="Najčastejšie aktivity">
-              <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+              <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
                 {types.map((t) => (
                   <li key={t.activity_type} className="flex items-center justify-between px-4 py-3 text-sm">
                     <span className="capitalize">{t.activity_type.replace(/_/g, " ")}</span>
@@ -170,7 +170,7 @@ export default function CommunityAdmin() {
 
       {series && series.length > 0 && (
         <Section title="Posledných 30 dní">
-          <div className="rounded-lg border border-border bg-card p-4">
+          <div className="rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
             <div className="flex h-32 items-end gap-[3px]">
               {series.map((d) => {
                 const total = (num(d.activities) ?? 0) + (num(d.signups) ?? 0);
@@ -202,7 +202,7 @@ export default function CommunityAdmin() {
         {membersError && <p className="text-sm text-destructive">Zoznam žien sa nepodarilo načítať.</p>}
 
         {members && (
-          <div className="overflow-x-auto rounded-lg border border-border bg-card">
+          <div className="overflow-x-auto rounded-2xl border border-border/50 bg-card shadow-sm">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-border text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">
