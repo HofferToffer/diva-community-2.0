@@ -1,17 +1,37 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Route, Activity, HeartPulse, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { ActivityCard } from "@/community/components/ActivityCard";
-import { EmptyState, StatTile } from "@/community/components/EmptyState";
+import { EmptyState } from "@/community/components/EmptyState";
 import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
+
+const fadeUp = (i: number) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, delay: i * 0.08, ease: "easeOut" as const },
+});
+
+function HomeStatTile({ icon: Icon, label, value, i }: { icon: LucideIcon; label: string; value: string; i: number }) {
+  return (
+    <motion.div {...fadeUp(i)} className="rounded-lg border border-border bg-card px-3 py-4 text-center">
+      <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <Icon className="h-4 w-4" aria-hidden="true" />
+      </span>
+      <p className="mt-2 font-display text-2xl leading-none text-foreground">{value}</p>
+      <p className="mt-1.5 text-[0.6rem] uppercase leading-tight tracking-[0.14em] text-muted-foreground">{label}</p>
+    </motion.div>
+  );
+}
 
 function GreetingAvatar({ name, path }: { name?: string | null; path: string | null | undefined }) {
   const url = useSignedImage(path);
@@ -49,7 +69,7 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
     return y === currentYear && m - 1 === currentMonth;
   }).length;
 
-  return <StatTile label="Zapísané pocity tento mesiac" value={`${monthDays} / ${daysElapsed}`} />;
+  return <HomeStatTile icon={HeartPulse} label="Zapísané pocity tento mesiac" value={`${monthDays} / ${daysElapsed}`} i={2} />;
 }
 
 export default function CommunityHome() {
@@ -74,7 +94,7 @@ export default function CommunityHome() {
 
   return (
     <div className="space-y-8">
-      <section className="relative rounded-lg border border-border bg-card px-6 py-6">
+      <motion.section {...fadeUp(0)} className="relative rounded-lg border border-border bg-card px-6 py-6">
         <Link
           to="/community/profil"
           aria-label="Môj profil"
@@ -86,46 +106,49 @@ export default function CommunityHome() {
           <h1 className="font-display text-3xl leading-tight">{greeting(profile?.name?.split(" ")[0])}</h1>
           <p className="mt-1 text-sm text-muted-foreground">Robíš to hlavne pre seba.</p>
         </div>
-      </section>
+      </motion.section>
 
       <section className="grid grid-cols-3 gap-3">
-        <StatTile label="Tento mesiac" value={formatKm(stats?.month_km ?? 0)} />
-        <StatTile
+        <HomeStatTile icon={Route} label="Tento mesiac" value={formatKm(stats?.month_km ?? 0)} i={1} />
+        <HomeStatTile
+          icon={Activity}
           label={`${pluralActivities((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))} tento mesiac`}
           value={String((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))}
+          i={1}
         />
         <MonthFeelingsTile profileId={profile?.id} />
       </section>
 
-
-      <section>
+      <motion.section {...fadeUp(3)}>
         <Button asChild size="lg" className="w-full">
           <Link to="/community/pridat/run">Pridať aktivitu</Link>
         </Button>
-      </section>
+      </motion.section>
 
       {cycle && (
-        <Link
-          to="/community/cyklus"
-          className="block rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
-        >
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-            {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
-          </p>
-          <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
-          <div className="mt-4">
-            <CyclePhaseWave
-              dayOfCycle={cycle.dayOfCycle}
-              cycleLengthDays={profile?.cycle_length_days ?? 28}
-              phaseKey={cycle.phaseKey}
-            />
-          </div>
-        </Link>
+        <motion.div {...fadeUp(4)}>
+          <Link
+            to="/community/cyklus"
+            className="block rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
+          >
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+              {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
+            </p>
+            <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+            <div className="mt-4">
+              <CyclePhaseWave
+                dayOfCycle={cycle.dayOfCycle}
+                cycleLengthDays={profile?.cycle_length_days ?? 28}
+                phaseKey={cycle.phaseKey}
+              />
+            </div>
+          </Link>
+        </motion.div>
       )}
 
       {challenge && (
-        <section className="relative overflow-hidden rounded-lg border border-border bg-card p-5">
+        <motion.section {...fadeUp(5)} className="relative overflow-hidden rounded-lg border border-border bg-card p-5">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Aktuálna výzva</p>
           <h2 className="mt-1 font-display text-2xl">{challenge.title}</h2>
           <Progress value={percent} className="mt-4" aria-label="Progres výzvy" />
@@ -138,10 +161,10 @@ export default function CommunityHome() {
           <Button asChild variant="link" className="mt-2 px-0">
             <Link to={`/community/challenges/${challenge.id}`}>Zobraziť výzvu</Link>
           </Button>
-        </section>
+        </motion.section>
       )}
 
-      <section className="space-y-4">
+      <motion.section {...fadeUp(6)} className="space-y-4">
         <h2 className="font-display text-2xl">Feed</h2>
         {feed.isLoading && (
           <div className="space-y-4">
@@ -163,7 +186,7 @@ export default function CommunityHome() {
         {feed.data?.map((activity) => (
           <ActivityCard key={activity.id} activity={activity} interactive />
         ))}
-      </section>
+      </motion.section>
     </div>
   );
 }
