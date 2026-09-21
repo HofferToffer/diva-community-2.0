@@ -52,19 +52,19 @@ export const ACTIVITY_TYPES = [
   { value: "other", label: "Iné", distance: false, duration: false },
 ] as const;
 
-/** Jemné farby pre jednotlivé typy aktivít — rovnaký {fill, dot} tvar ako CYCLE_PHASE_COLORS. */
+/** Jemné, tlmené farby pre jednotlivé typy aktivít — rovnaký {fill, dot} tvar ako CYCLE_PHASE_COLORS, ladené do rovnakej prítmenej palety ako --primary (dusty rose), nie sýte "krikľavé" odtiene. */
 export const ACTIVITY_TYPE_COLORS: Record<string, { fill: string; dot: string }> = {
-  run: { fill: "hsl(354, 45%, 55%, 0.12)", dot: "hsl(354, 45%, 50%)" },
-  nordic_walking: { fill: "hsl(20, 45%, 50%, 0.12)", dot: "hsl(20, 45%, 45%)" },
-  walking: { fill: "hsl(38, 50%, 48%, 0.14)", dot: "hsl(38, 50%, 42%)" },
-  cycling: { fill: "hsl(178, 35%, 38%, 0.12)", dot: "hsl(178, 35%, 34%)" },
-  swimming: { fill: "hsl(200, 45%, 50%, 0.12)", dot: "hsl(200, 45%, 45%)" },
-  yoga: { fill: "hsl(265, 25%, 55%, 0.12)", dot: "hsl(265, 25%, 45%)" },
-  pilates: { fill: "hsl(300, 22%, 50%, 0.12)", dot: "hsl(300, 22%, 42%)" },
-  dance: { fill: "hsl(8, 55%, 58%, 0.14)", dot: "hsl(8, 55%, 50%)" },
-  strength: { fill: "hsl(222, 18%, 42%, 0.1)", dot: "hsl(222, 18%, 38%)" },
-  stretching: { fill: "hsl(140, 22%, 38%, 0.12)", dot: "hsl(140, 22%, 32%)" },
-  other: { fill: "hsl(240, 6%, 46%, 0.1)", dot: "hsl(240, 6%, 40%)" },
+  run: { fill: "hsl(344, 30%, 52%, 0.1)", dot: "hsl(344, 30%, 46%)" },
+  nordic_walking: { fill: "hsl(18, 32%, 46%, 0.1)", dot: "hsl(18, 32%, 40%)" },
+  walking: { fill: "hsl(38, 34%, 42%, 0.12)", dot: "hsl(38, 34%, 36%)" },
+  cycling: { fill: "hsl(185, 22%, 36%, 0.1)", dot: "hsl(185, 22%, 32%)" },
+  swimming: { fill: "hsl(205, 22%, 42%, 0.1)", dot: "hsl(205, 22%, 36%)" },
+  yoga: { fill: "hsl(270, 16%, 46%, 0.1)", dot: "hsl(270, 16%, 40%)" },
+  pilates: { fill: "hsl(310, 16%, 44%, 0.1)", dot: "hsl(310, 16%, 38%)" },
+  dance: { fill: "hsl(8, 32%, 50%, 0.12)", dot: "hsl(8, 32%, 44%)" },
+  strength: { fill: "hsl(30, 12%, 32%, 0.08)", dot: "hsl(30, 12%, 28%)" },
+  stretching: { fill: "hsl(140, 16%, 34%, 0.1)", dot: "hsl(140, 16%, 30%)" },
+  other: { fill: "hsl(30, 8%, 42%, 0.08)", dot: "hsl(30, 8%, 38%)" },
 };
 
 export function activityTypeLabel(kind: string, type: string): string {

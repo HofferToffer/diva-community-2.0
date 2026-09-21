@@ -130,9 +130,9 @@ export default function CommunityAddActivity() {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => setActivityType(t.value)}
-                className="rounded-full border px-4 py-2 text-sm transition-colors"
+                className="rounded-full border px-4 py-2 text-sm font-medium shadow-sm transition-all"
                 style={{
-                  borderColor: selected ? color.dot : color.fill.replace(/0\.\d+\)/, "0.5)"),
+                  borderColor: selected ? color.dot : color.fill.replace(/0\.\d+\)/, "0.4)"),
                   background: selected ? color.dot : color.fill,
                   color: selected ? "hsl(var(--primary-foreground))" : color.dot,
                 }}
