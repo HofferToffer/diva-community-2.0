@@ -166,7 +166,7 @@ export default function CommunityDailyQuote() {
 
       <header className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
-        <h1 className="mt-2 font-display text-3xl">Pre teba, diva</h1>
+        <h1 className="mt-2 font-display text-3xl">Pre teba, Diva</h1>
       </header>
 
       <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-border shadow-sm">
