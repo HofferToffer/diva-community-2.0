@@ -603,6 +603,56 @@ export function useConversation(meId: string | undefined, otherId: string | unde
   });
 }
 
+export type ConversationSummary = {
+  otherId: string;
+  otherName: string;
+  otherUsername: string | null;
+  otherAvatar: string | null;
+  lastBody: string;
+  lastCreatedAt: string;
+  unreadCount: number;
+};
+
+export function useConversations(meId: string | undefined) {
+  return useQuery({
+    queryKey: ["community-conversations", meId],
+    enabled: !!meId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("messages")
+        .select(
+          "id, sender_id, recipient_id, body, created_at, read_at, sender:profiles!messages_sender_id_fkey(id,name,username,avatar_url), recipient:profiles!messages_recipient_id_fkey(id,name,username,avatar_url)",
+        )
+        .or(`sender_id.eq.${meId},recipient_id.eq.${meId}`)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+
+      const byOther = new Map<string, ConversationSummary>();
+      for (const row of data ?? []) {
+        const mine = row.sender_id === meId;
+        const other = mine ? row.recipient : row.sender;
+        if (!other) continue;
+        const isUnread = !mine && !row.read_at;
+        const existing = byOther.get(other.id);
+        if (existing) {
+          if (isUnread) existing.unreadCount += 1;
+        } else {
+          byOther.set(other.id, {
+            otherId: other.id,
+            otherName: other.name,
+            otherUsername: other.username,
+            otherAvatar: other.avatar_url,
+            lastBody: row.body,
+            lastCreatedAt: row.created_at,
+            unreadCount: isUnread ? 1 : 0,
+          });
+        }
+      }
+      return Array.from(byOther.values());
+    },
+  });
+}
+
 export function useSendMessage(meId: string | undefined, otherId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -611,7 +661,10 @@ export function useSendMessage(meId: string | undefined, otherId: string | undef
       const { error } = await supabase.from("messages").insert({ sender_id: meId, recipient_id: otherId, body });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["community-conversation", meId, otherId] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["community-conversation", meId, otherId] });
+      queryClient.invalidateQueries({ queryKey: ["community-conversations", meId] });
+    },
   });
 }
 
@@ -630,6 +683,7 @@ export function useMarkMessagesRead(meId: string | undefined, otherId: string | 
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["community-conversation", meId, otherId] });
+      queryClient.invalidateQueries({ queryKey: ["community-conversations", meId] });
       queryClient.invalidateQueries({ queryKey: ["community-notifications"] });
     },
   });

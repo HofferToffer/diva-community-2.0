@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Bell, ChevronDown, Circle, HeartPulse, History, Home, LogOut, Menu, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
+import { Bell, ChevronDown, Circle, HeartPulse, History, Home, LogOut, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useCommunityAuth } from "../context/CommunityAuthProvider";
-import { useIsAdmin, useNotifications } from "../hooks/queries";
+import { useConversations, useIsAdmin, useNotifications } from "../hooks/queries";
 import { ProfileAvatar } from "./StoredImage";
 import { getLifePhase, PHASE_LABEL } from "../lib/quotes";
 
@@ -39,6 +39,7 @@ const NAV = [
 export function CommunityShell({ children }: { children: ReactNode }) {
   const { profile, signOut } = useCommunityAuth();
   const { data: notifications } = useNotifications(profile?.id);
+  const { data: conversations } = useConversations(profile?.id);
   const { data: isAdmin } = useIsAdmin();
   const chapterLabel = PHASE_LABEL[getLifePhase(profile)];
   const baseNav = NAV.map((item) => (item.to === "/community/cyklus" ? { ...item, label: chapterLabel } : item));
@@ -46,6 +47,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     ? [...baseNav, { to: "/community/admin", label: "Admin", icon: ShieldCheck, end: false }]
     : baseNav;
   const unread = notifications?.filter((n) => !n.read_at).length ?? 0;
+  const unreadMessages = conversations?.reduce((sum, c) => sum + c.unreadCount, 0) ?? 0;
   const location = useLocation();
   const navigate = useNavigate();
   const [pocitMenuOpen, setPocitMenuOpen] = useState(false);
@@ -63,6 +65,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
         { event: "INSERT", schema: "public", table: "notifications", filter: `profile_id=eq.${profile.id}` },
         () => {
           queryClient.invalidateQueries({ queryKey: ["community-notifications", profile.id] });
+          queryClient.invalidateQueries({ queryKey: ["community-conversations", profile.id] });
         },
       )
       .subscribe();
@@ -372,6 +375,19 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                 </nav>
               </SheetContent>
             </Sheet>
+            <Link
+              to="/community/spravy"
+              aria-label={unreadMessages > 0 ? `Správy (${unreadMessages} neprečítaných)` : "Správy"}
+              className="relative rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <MessageCircle className="h-5 w-5" />
+              {unreadMessages > 0 && (
+                <span
+                  className="absolute right-1 top-1 h-2 w-2 rounded-full"
+                  style={{ backgroundColor: "hsl(var(--shop))" }}
+                />
+              )}
+            </Link>
             <Link
               to="/community/notifikacie"
               aria-label={unread > 0 ? `Notifikácie (${unread} nových)` : "Notifikácie"}
