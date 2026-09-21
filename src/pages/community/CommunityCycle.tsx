@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ import { ConfettiBurst } from "@/community/components/ConfettiBurst";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { RefreshCcw } from "lucide-react";
+import { ArrowLeft, RefreshCcw } from "lucide-react";
 
 export default function CommunityCycle() {
   const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
@@ -129,6 +129,11 @@ export default function CommunityCycle() {
 
   return (
     <div className="space-y-8">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">Môj cyklus</h1>
         <p className="text-sm text-muted-foreground">
