@@ -6,6 +6,24 @@ import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBlogPost } from "@/community/hooks/queries";
 
+type ContentBlock = { type: "p"; text: string; key: string } | { type: "img"; url: string; key: string };
+
+/** Spreads gallery photos evenly through the paragraphs instead of dumping them all at the end. */
+function interleaveImages(paragraphs: string[], images: string[]): ContentBlock[] {
+  const blocks: ContentBlock[] = paragraphs.map((text, i) => ({ type: "p", text, key: `p-${i}` }));
+  if (images.length === 0) return blocks;
+
+  const slot = paragraphs.length / (images.length + 1);
+  let inserted = 0;
+  images.forEach((url, i) => {
+    const afterParagraph = Math.min(paragraphs.length, Math.round(slot * (i + 1)));
+    const insertAt = afterParagraph + inserted;
+    blocks.splice(insertAt, 0, { type: "img", url, key: `img-${i}` });
+    inserted += 1;
+  });
+  return blocks;
+}
+
 const BlogPostDynamic = () => {
   const { slug } = useParams();
   const { data: post, isLoading } = useBlogPost(slug);
@@ -39,6 +57,7 @@ const BlogPostDynamic = () => {
   }
 
   const paragraphs = post.content.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  const contentBlocks = interleaveImages(paragraphs, post.gallery_image_urls);
 
   return (
     <div className="min-h-screen bg-background">
@@ -86,20 +105,16 @@ const BlogPostDynamic = () => {
 
       <article className="mx-auto max-w-3xl px-6 py-12 md:px-12">
         <div className="space-y-5 font-body text-base leading-loose tracking-wide text-foreground/85 md:text-lg">
-          {paragraphs.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
-
-        {post.gallery_image_urls.length > 0 && (
-          <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3">
-            {post.gallery_image_urls.map((url) => (
-              <div key={url} className="aspect-square overflow-hidden bg-muted">
-                <img src={url} alt={post.title} className="h-full w-full object-cover" loading="lazy" />
+          {contentBlocks.map((block) =>
+            block.type === "p" ? (
+              <p key={block.key}>{block.text}</p>
+            ) : (
+              <div key={block.key} className="!my-8 -mx-6 overflow-hidden md:-mx-12">
+                <img src={block.url} alt={post.title} className="max-h-[32rem] w-full object-cover" loading="lazy" />
               </div>
-            ))}
-          </div>
-        )}
+            ),
+          )}
+        </div>
       </article>
 
       <Footer />
