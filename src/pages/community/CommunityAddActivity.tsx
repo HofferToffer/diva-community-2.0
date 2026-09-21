@@ -11,11 +11,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
-import { ACTIVITY_TYPES } from "@/community/lib/constants";
+import { ACTIVITY_TYPE_COLORS, ACTIVITY_TYPES } from "@/community/lib/constants";
 import { uploadImage, validateImage } from "@/community/lib/storage";
 import { StoredImage } from "@/community/components/StoredImage";
 import { fadeUp } from "@/community/lib/motion";
-import { cn } from "@/lib/utils";
 
 
 export default function CommunityAddActivity() {
@@ -122,81 +121,103 @@ export default function CommunityAddActivity() {
       <div className="space-y-2">
         <Label>Aktivita</Label>
         <div className="flex flex-wrap gap-2">
-          {ACTIVITY_TYPES.map((t) => (
-            <button
-              key={t.value}
-              type="button"
-              aria-pressed={activityType === t.value}
-              onClick={() => setActivityType(t.value)}
-              className={cn(
-                "rounded-full border px-4 py-2 text-sm transition-colors",
-                activityType === t.value
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border hover:border-primary/50",
-              )}
-            >
-              {t.label}
-            </button>
-          ))}
+          {ACTIVITY_TYPES.map((t) => {
+            const color = ACTIVITY_TYPE_COLORS[t.value];
+            const selected = activityType === t.value;
+            return (
+              <button
+                key={t.value}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setActivityType(t.value)}
+                className="rounded-full border px-4 py-2 text-sm transition-colors"
+                style={{
+                  borderColor: selected ? color.dot : color.fill.replace(/0\.\d+\)/, "0.5)"),
+                  background: selected ? color.dot : color.fill,
+                  color: selected ? "hsl(var(--primary-foreground))" : color.dot,
+                }}
+              >
+                {t.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="date">Dátum</Label>
-        <Input id="date" type="date" value={date} max={new Date().toISOString().slice(0, 10)} onChange={(e) => setDate(e.target.value)} />
-      </div>
+      <div className="space-y-5 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+        <div className="space-y-2">
+          <Label htmlFor="date">Dátum</Label>
+          <Input
+            id="date"
+            type="date"
+            value={date}
+            max={new Date().toISOString().slice(0, 10)}
+            onChange={(e) => setDate(e.target.value)}
+            className="rounded-xl border-border/50"
+          />
+        </div>
 
-      {needsDistance && (
-      <div className="space-y-2">
-        <Label htmlFor="distance">Vzdialenosť (km)</Label>
-        <Input
-          id="distance"
-          type="text"
-          inputMode="decimal"
-          value={distance}
-          onChange={(e) => setDistance(e.target.value)}
-          placeholder="napr. 5,2"
-        />
-      </div>
-      )}
+        {needsDistance && (
+        <div className="space-y-2">
+          <Label htmlFor="distance">Vzdialenosť (km)</Label>
+          <Input
+            id="distance"
+            type="text"
+            inputMode="decimal"
+            value={distance}
+            onChange={(e) => setDistance(e.target.value)}
+            placeholder="napr. 5,2"
+            className="rounded-xl border-border/50"
+          />
+        </div>
+        )}
 
-      {needsDuration && (
-      <div className="space-y-2">
-        <Label htmlFor="duration">Čas (minúty)</Label>
-        <Input
-          id="duration"
-          type="number"
-          inputMode="numeric"
-          min={1}
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          placeholder="napr. 45"
-        />
-      </div>
-      )}
+        {needsDuration && (
+        <div className="space-y-2">
+          <Label htmlFor="duration">Čas (minúty)</Label>
+          <Input
+            id="duration"
+            type="number"
+            inputMode="numeric"
+            min={1}
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            placeholder="napr. 45"
+            className="rounded-xl border-border/50"
+          />
+        </div>
+        )}
 
-      <div className="space-y-2">
-        <Label htmlFor="note">Ako si sa cítila?</Label>
-        <Textarea id="note" rows={4} maxLength={800} value={note} onChange={(e) => setNote(e.target.value)} />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="note">Ako si sa cítila?</Label>
+          <Textarea
+            id="note"
+            rows={4}
+            maxLength={800}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="rounded-xl border-border/50"
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="photo" className="cursor-pointer underline">
-          {uploadingPhoto ? "Nahrávam..." : "Pridať fotku"}
-        </Label>
-        <input
-          id="photo"
-          type="file"
-          accept="image/*"
-          className="sr-only"
-          disabled={uploadingPhoto}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            e.target.value = "";
-            if (file) void pickPhoto(file);
-          }}
-        />
-        {photoPath && <StoredImage path={photoPath} alt="Náhľad fotky" className="h-48 w-full rounded-lg object-cover" />}
+        <div className="space-y-2">
+          <Label htmlFor="photo" className="cursor-pointer underline">
+            {uploadingPhoto ? "Nahrávam..." : "Pridať fotku"}
+          </Label>
+          <input
+            id="photo"
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            disabled={uploadingPhoto}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (file) void pickPhoto(file);
+            }}
+          />
+          {photoPath && <StoredImage path={photoPath} alt="Náhľad fotky" className="h-48 w-full rounded-2xl object-cover" />}
+        </div>
       </div>
 
       <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-card p-4 shadow-sm">

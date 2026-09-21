@@ -52,6 +52,21 @@ export const ACTIVITY_TYPES = [
   { value: "other", label: "Iné", distance: false, duration: false },
 ] as const;
 
+/** Jemné farby pre jednotlivé typy aktivít — rovnaký {fill, dot} tvar ako CYCLE_PHASE_COLORS. */
+export const ACTIVITY_TYPE_COLORS: Record<string, { fill: string; dot: string }> = {
+  run: { fill: "hsl(354, 45%, 55%, 0.12)", dot: "hsl(354, 45%, 50%)" },
+  nordic_walking: { fill: "hsl(20, 45%, 50%, 0.12)", dot: "hsl(20, 45%, 45%)" },
+  walking: { fill: "hsl(38, 50%, 48%, 0.14)", dot: "hsl(38, 50%, 42%)" },
+  cycling: { fill: "hsl(178, 35%, 38%, 0.12)", dot: "hsl(178, 35%, 34%)" },
+  swimming: { fill: "hsl(200, 45%, 50%, 0.12)", dot: "hsl(200, 45%, 45%)" },
+  yoga: { fill: "hsl(265, 25%, 55%, 0.12)", dot: "hsl(265, 25%, 45%)" },
+  pilates: { fill: "hsl(300, 22%, 50%, 0.12)", dot: "hsl(300, 22%, 42%)" },
+  dance: { fill: "hsl(8, 55%, 58%, 0.14)", dot: "hsl(8, 55%, 50%)" },
+  strength: { fill: "hsl(222, 18%, 42%, 0.1)", dot: "hsl(222, 18%, 38%)" },
+  stretching: { fill: "hsl(140, 22%, 38%, 0.12)", dot: "hsl(140, 22%, 32%)" },
+  other: { fill: "hsl(240, 6%, 46%, 0.1)", dot: "hsl(240, 6%, 40%)" },
+};
+
 export function activityTypeLabel(kind: string, type: string): string {
   const all = [...ACTIVITY_TYPES, ...RUN_TYPES, ...MOVE_TYPES];
   return all.find((t) => t.value === type)?.label ?? type;
