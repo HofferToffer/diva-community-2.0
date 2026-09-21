@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { QuoteCard } from "@/community/components/QuoteCard";
-import { quoteForDate } from "@/community/lib/quotes";
+import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
+import { getLifePhase, quoteForDate } from "@/community/lib/quotes";
 
 export default function CommunityDailyQuote() {
-  const quote = quoteForDate();
+  const { profile } = useCommunityAuth();
+  const quote = quoteForDate(getLifePhase(profile));
 
   return (
     <div className="space-y-6">
