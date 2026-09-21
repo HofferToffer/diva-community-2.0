@@ -198,6 +198,9 @@ export default function CommunityOnboarding() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="onb-gifts">Moje dary</Label>
+            <p className="text-xs text-muted-foreground">
+              Čo môžeš priniesť do komunity? Napr. kaderníčka, maliarka, strih videí, fotografka, jogínka, koučka, masérka...
+            </p>
             <Textarea
               id="onb-gifts"
               value={gifts}

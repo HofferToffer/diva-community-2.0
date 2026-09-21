@@ -144,6 +144,9 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
         </div>
         <div className="space-y-2">
           <Label htmlFor="s-gifts">Moje dary</Label>
+          <p className="text-xs text-muted-foreground">
+            Čo môžeš priniesť do komunity? Napr. kaderníčka, maliarka, strih videí, fotografka, jogínka, koučka, masérka...
+          </p>
           <Textarea
             id="s-gifts"
             rows={3}
