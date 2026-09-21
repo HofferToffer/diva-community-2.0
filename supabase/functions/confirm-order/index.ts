@@ -119,28 +119,20 @@ Deno.serve(async (req) => {
 
     // Owner notification email (never block the order on email delivery)
     try {
-      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-transactional-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
-          apikey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      await sendTransactionalTemplate(
+        "order-notification",
+        {
+          orderId: data.id,
+          customerName,
+          email: email.toLowerCase(),
+          phone: phone ?? "",
+          items: orderItems,
+          totalCents,
+          paymentMethod: "karta",
+          deliveryMethod: shippingName || deliveryMethod,
         },
-        body: JSON.stringify({
-          templateName: "order-notification",
-          idempotencyKey: `order-${data.id}`,
-          templateData: {
-            orderId: data.id,
-            customerName,
-            email: email.toLowerCase(),
-            phone: phone ?? "",
-            items: orderItems,
-            totalCents,
-            paymentMethod: "karta",
-            deliveryMethod: shippingName || deliveryMethod,
-          },
-        }),
-      });
+        `order-${data.id}`,
+      );
     } catch (emailErr) {
       console.error("order notification email failed:", emailErr);
     }
