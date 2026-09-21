@@ -10,6 +10,7 @@ export type PregnancyInfo = {
   week: number;
   trimester: 1 | 2 | 3;
   daysUntilDue: number;
+  soulNote: string;
 };
 
 /** Computes the current pregnancy week and due date from the first day of the last menstrual period. */
@@ -22,13 +23,19 @@ export function getPregnancyInfo(lastPeriodDate: string, today = new Date()): Pr
   const week = Math.min(Math.max(Math.floor(daysPregnant / 7) + 1, 1), 42);
   const trimester: 1 | 2 | 3 = week <= 13 ? 1 : week <= 27 ? 2 : 3;
   const daysUntilDue = daysBetween(today, dueDate);
-  return { week, trimester, daysUntilDue };
+  return { week, trimester, daysUntilDue, soulNote: TRIMESTER_SOUL_NOTE[trimester] };
 }
 
 export const TRIMESTER_LABEL: Record<1 | 2 | 3, string> = {
   1: "1. trimester",
   2: "2. trimester",
   3: "3. trimester",
+};
+
+const TRIMESTER_SOUL_NOTE: Record<1 | 2 | 3, string> = {
+  1: "Nový život rastie potichu vo vnútri — dôveruj tomu, čo ešte nevidíš.",
+  2: "Cítiš prvé pohyby a spojenie sa prehlbuje — telo aj duša sa spolu učia byť dvoma.",
+  3: "Blížite sa k veľkému stretnutiu. Tvoje telo vie, čo robiť — dôveruj jeho múdrosti.",
 };
 
 /** Playful size comparison per pregnancy week, the way most pregnancy calendar apps show it. */

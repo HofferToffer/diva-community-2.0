@@ -147,6 +147,7 @@ export default function CommunityCycle() {
                   Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
                 </p>
               )}
+              <p className="text-sm italic leading-relaxed text-foreground/85">{pregnancy.soulNote}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {pregnancy.daysUntilDue > 0
                   ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`

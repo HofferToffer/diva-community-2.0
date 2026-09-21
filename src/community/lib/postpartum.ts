@@ -21,10 +21,10 @@ export function getPostpartumInfo(sinceDate: string, today = new Date()): Postpa
 
   const message =
     week <= 6
-      ? "Si v akútnej fáze šestonedelia — telo sa hojí a hormóny sa menia. Daj si na to toľko času, koľko potrebuješ, nie koľko hovorí kalendár."
+      ? "Si v posvätnom období, ktoré niektoré kultúry nazývajú štvrtý trimester. Telo sa hojí, duša sa učí byť matkou — daj si na to toľko času, koľko potrebuješ, nie koľko hovorí kalendár."
       : week <= 12
-        ? "Šestonedelie sa podľa mena končí po šiestich týždňoch, ale zotavovanie väčšinou pokračuje ďalej — najmä ak dojčíš. To, že to trvá dlhšie, je úplne v poriadku."
-        : "Si už niekoľko mesiacov po pôrode. Hojenie, hormóny aj dojčenie si idú vlastným tempom — nie je to preteky a nikam sa neponáhľaš.";
+        ? "Šestonedelie sa podľa mena končí po šiestich týždňoch, ale táto premena pokračuje ďalej — najmä ak dojčíš. Tvoje telo nesie múdrosť, ktorá sa nedá uponáhľať."
+        : "Si už niekoľko mesiacov na tejto novej ceste. Hojenie, hormóny aj puto s dieťaťom si idú vlastným tempom — dôveruj mu, nie je to preteky.";
 
   return { week, message };
 }

@@ -106,6 +106,7 @@ export default function CommunityHome() {
                     Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
                   </p>
                 )}
+                <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">{pregnancy.soulNote}</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {pregnancy.daysUntilDue > 0
                     ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
