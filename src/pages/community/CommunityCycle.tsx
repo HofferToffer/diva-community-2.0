@@ -1,0 +1,194 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
+import { getCycleInfo, formatCycleDate, CYCLE_PHASE_RECOMMENDATIONS } from "@/community/lib/cycle";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { RefreshCcw } from "lucide-react";
+
+export default function CommunityCycle() {
+  const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
+  const navigate = useNavigate();
+
+  const [editingCycle, setEditingCycle] = useState(false);
+  const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
+  const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
+  const [savingCycle, setSavingCycle] = useState(false);
+
+  if (loadingProfile || !profile) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
+
+  const cycle = profile.last_period_date
+    ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
+    : null;
+
+  const startEditingCycle = () => {
+    setCycleLengthEdit(String(profile.cycle_length_days ?? 28));
+    setLastPeriodEdit(profile.last_period_date ?? "");
+    setEditingCycle(true);
+  };
+
+  const saveCycle = async () => {
+    setSavingCycle(true);
+    try {
+      const length = Math.min(Math.max(parseInt(cycleLengthEdit, 10) || 28, 21), 40);
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          cycle_length_days: length,
+          last_period_date: lastPeriodEdit || null,
+        } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Cyklus je upravený.");
+      setEditingCycle(false);
+    } catch {
+      toast.error("Cyklus sa nepodarilo upraviť.");
+    } finally {
+      setSavingCycle(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <header className="space-y-1">
+        <h1 className="font-display text-3xl">Môj cyklus</h1>
+        <p className="text-sm text-muted-foreground">
+          Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie.
+        </p>
+      </header>
+
+      {cycle ? (
+        <section className="space-y-4 rounded-lg border border-border bg-card p-5">
+          <div className="flex items-baseline justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <RefreshCcw className="h-5 w-5 text-primary" />
+              <h2 className="font-display text-2xl">Prehľad cyklu</h2>
+            </div>
+            {!editingCycle && (
+              <div className="flex items-center gap-2">
+                <p className="text-xs text-muted-foreground">{cycle.dayOfCycle}. deň cyklu</p>
+                <Button variant="ghost" size="sm" onClick={startEditingCycle}>
+                  Upraviť
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {editingCycle ? (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="cycle-last-period">Prvý deň poslednej menštruácie</Label>
+                <Input
+                  id="cycle-last-period"
+                  type="date"
+                  max={new Date().toISOString().slice(0, 10)}
+                  value={lastPeriodEdit}
+                  onChange={(e) => setLastPeriodEdit(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="cycle-length">Dĺžka cyklu v dňoch</Label>
+                <Input
+                  id="cycle-length"
+                  type="number"
+                  inputMode="numeric"
+                  min={21}
+                  max={40}
+                  value={cycleLengthEdit}
+                  onChange={(e) => setCycleLengthEdit(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button className="flex-1" onClick={saveCycle} disabled={savingCycle}>
+                  Uložiť
+                </Button>
+                <Button variant="outline" className="flex-1" onClick={() => setEditingCycle(false)} disabled={savingCycle}>
+                  Zrušiť
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <p className="font-medium text-primary">{cycle.phase.name}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{cycle.phase.description}</p>
+
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-md border border-border p-3">
+                  <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
+                  <p className="mt-1 font-medium">
+                    {formatCycleDate(cycle.nextPeriodDate)}
+                    <span className="ml-1 text-xs text-muted-foreground">(o {cycle.daysUntilNextPeriod} dní)</span>
+                  </p>
+                </div>
+                <div className="rounded-md border border-border p-3">
+                  <p className="text-xs text-muted-foreground">Predpokladaná ovulácia</p>
+                  <p className="mt-1 font-medium">{formatCycleDate(cycle.nextOvulationDate)}</p>
+                </div>
+              </div>
+
+              <div className="rounded-md border border-border bg-background/60 p-4">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Odporúčania pre túto fázu
+                </p>
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-foreground/85">
+                  {CYCLE_PHASE_RECOMMENDATIONS[cycle.phaseKey].map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+        </section>
+      ) : (
+        <section className="rounded-lg border border-border bg-card p-6 text-center">
+          <h2 className="font-display text-xl">Zatiaľ nemáš nastavený cyklus</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Zadaj dátum poslednej menštruácie a dĺžku cyklu, aby sme ti mohli ukázať fázy a odporúčania.
+          </p>
+          <div className="mt-5 flex flex-col gap-3">
+            <div className="space-y-2 text-left">
+              <Label htmlFor="cycle-last-period">Prvý deň poslednej menštruácie</Label>
+              <Input
+                id="cycle-last-period"
+                type="date"
+                max={new Date().toISOString().slice(0, 10)}
+                value={lastPeriodEdit}
+                onChange={(e) => setLastPeriodEdit(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2 text-left">
+              <Label htmlFor="cycle-length">Dĺžka cyklu v dňoch</Label>
+              <Input
+                id="cycle-length"
+                type="number"
+                inputMode="numeric"
+                min={21}
+                max={40}
+                value={cycleLengthEdit}
+                onChange={(e) => setCycleLengthEdit(e.target.value)}
+              />
+            </div>
+            <Button className="w-full" onClick={saveCycle} disabled={savingCycle || !lastPeriodEdit}>
+              Uložiť cyklus
+            </Button>
+            <Button variant="ghost" className="w-full" onClick={() => navigate("/community/profil")}>
+              Nastaviť v profile
+            </Button>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}

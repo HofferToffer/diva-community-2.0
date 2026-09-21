@@ -1,0 +1,318 @@
+import { useMemo, useState } from "react";
+import {
+  Area,
+  CartesianGrid,
+  ComposedChart,
+  ReferenceArea,
+  ResponsiveContainer,
+  Scatter,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { Button } from "@/components/ui/button";
+import type { DailyFeeling } from "@/community/hooks/queries";
+import { SCALE_LEVELS, levelForFeeling, scaleLabel } from "@/community/lib/consciousnessScale";
+import { CYCLE_PHASES, getCycleDayForDate, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
+
+const RANGES = [
+  { key: "week", label: "Týždeň", days: 7 },
+  { key: "month", label: "Mesiac", days: 30 },
+  { key: "quarter", label: "3 mesiace", days: 90 },
+  { key: "year", label: "Rok", days: 365 },
+] as const;
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+const PHASE_STYLES: Record<CyclePhaseKey, { fill: string; dot: string }> = {
+  menstruacna: { fill: "hsl(var(--destructive) / 0.10)", dot: "hsl(var(--destructive))" },
+  folikularna: { fill: "hsl(var(--primary) / 0.08)", dot: "hsl(var(--primary))" },
+  ovulacia: { fill: "hsl(var(--accent) / 0.35)", dot: "hsl(var(--accent-foreground))" },
+  lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
+};
+
+export type FeelingChartCycle = {
+  lastPeriodDate: string;
+  cycleLengthDays: number;
+};
+
+export type FeelingChartRun = {
+  activity_date: string;
+  distance_km: number | null;
+};
+
+const RUN_Y = 15;
+const RUN_COLOR = "hsl(var(--accent))";
+
+export default function FeelingScaleChart({
+  feelings,
+  cycle,
+  runs,
+}: {
+  feelings: DailyFeeling[];
+  cycle?: FeelingChartCycle | null;
+  runs?: FeelingChartRun[];
+}) {
+  const [range, setRange] = useState<(typeof RANGES)[number]["key"]>("month");
+  const days = RANGES.find((item) => item.key === range)?.days ?? 30;
+
+  const { data, phaseBands, hasFeelings, hasRuns } = useMemo(() => {
+    const byDate = new Map(feelings.map((item) => [item.feeling_date, item]));
+    const kmByDate = new Map<string, number>();
+    for (const run of runs ?? []) {
+      kmByDate.set(run.activity_date, (kmByDate.get(run.activity_date) ?? 0) + (run.distance_km ?? 0));
+    }
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    const points: Array<{
+      ts: number;
+      date: string;
+      level: number | null;
+      name: string | null;
+      phase: CyclePhaseKey | null;
+      dayOfCycle: number | null;
+      runKm: number | null;
+      runY: number | null;
+    }> = [];
+
+    for (let i = days - 1; i >= 0; i -= 1) {
+      const date = new Date(today.getTime() - i * DAY_MS);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      const feeling = byDate.get(key);
+      const level = feeling ? levelForFeeling(feeling.mood, feeling.feeling_detail) : null;
+      const runKm = kmByDate.has(key) ? Math.round(kmByDate.get(key)! * 100) / 100 : null;
+      points.push({
+        ts: date.getTime(),
+        date: key,
+        level,
+        name: level !== null ? scaleLabel(level) : null,
+        phase: cycle ? getCyclePhaseForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
+        dayOfCycle: cycle ? getCycleDayForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
+        runKm,
+        runY: runKm !== null ? RUN_Y : null,
+      });
+    }
+
+    // Group consecutive days of the same phase into bands.
+    const bands: Array<{ from: number; to: number; phase: CyclePhaseKey }> = [];
+    for (const point of points) {
+      if (!point.phase) continue;
+      const lastBand = bands[bands.length - 1];
+      if (lastBand && lastBand.phase === point.phase) {
+        lastBand.to = point.ts;
+      } else {
+        bands.push({ from: point.ts, to: point.ts, phase: point.phase });
+      }
+    }
+
+    return {
+      data: points,
+      phaseBands: bands,
+      hasFeelings: points.some((point) => point.level !== null),
+      hasRuns: points.some((point) => point.runKm !== null),
+    };
+  }, [feelings, days, cycle, runs]);
+
+  const levels = data.filter((point) => point.level !== null);
+  const average = levels.length
+    ? Math.round(levels.reduce((sum, item) => sum + (item.level ?? 0), 0) / levels.length)
+    : null;
+
+  const formatDay = (ts: number) =>
+    new Intl.DateTimeFormat("sk-SK", {
+      day: "numeric",
+      month: "numeric",
+      ...(days > 90 ? { year: "2-digit" } : {}),
+    }).format(new Date(ts));
+
+  const tickInterval = Math.max(1, Math.floor(days / 8));
+
+  return (
+    <section className="border-t border-border pt-8">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="font-display text-2xl">Moja škála vedomia</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Každý pocit má svoju energetickú hodnotu. Tu vidíš, ako sa menila v čase
+            {cycle ? " — spolu s fázami tvojho cyklu" : ""}.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {RANGES.map((item) => (
+            <Button
+              key={item.key}
+              type="button"
+              size="sm"
+              variant={range === item.key ? "default" : "outline"}
+              aria-pressed={range === item.key}
+              onClick={() => setRange(item.key)}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {hasFeelings || hasRuns ? (
+        <>
+          {average !== null && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              Priemerná úroveň za toto obdobie: <span className="font-medium text-foreground">{average} · {scaleLabel(average)}</span>
+            </p>
+          )}
+          <div className="mt-4 h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -8 }}>
+                <defs>
+                  <linearGradient id="feelingScaleFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis
+                  dataKey="ts"
+                  type="number"
+                  domain={["dataMin", "dataMax"]}
+                  tickFormatter={formatDay}
+                  ticks={data.filter((_, index) => index % tickInterval === 0).map((point) => point.ts)}
+                  tick={{ fontSize: 11 }}
+                  stroke="hsl(var(--muted-foreground))"
+                />
+                <YAxis
+                  domain={[0, 700]}
+                  ticks={SCALE_LEVELS.map((level) => level.value).reverse()}
+                  tick={{ fontSize: 10 }}
+                  width={44}
+                  stroke="hsl(var(--muted-foreground))"
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
+                  labelFormatter={(value) => `Dátum: ${formatDay(Number(value))}`}
+                  formatter={(value: number | null, _name, item) => {
+                    const payload = item?.payload as {
+                      name?: string | null;
+                      phase?: CyclePhaseKey | null;
+                      dayOfCycle?: number | null;
+                      runKm?: number | null;
+                    } | undefined;
+                    if (item?.dataKey === "runY") {
+                      const kmText = payload?.runKm ? ` · ${payload.runKm} km` : "";
+                      return [`Beh${kmText}`, "Beh"];
+                    }
+                    const lines = [
+                      value !== null && value !== undefined ? `${value} · ${payload?.name}` : "Bez záznamu",
+                    ];
+                    if (payload?.runKm != null) {
+                      lines.push(`Beh · ${payload.runKm} km`);
+                    }
+                    if (payload?.phase) {
+                      const cycleLine = payload.dayOfCycle
+                        ? `${CYCLE_PHASES[payload.phase].name} · deň ${payload.dayOfCycle}.`
+                        : CYCLE_PHASES[payload.phase].name;
+                      lines.push(cycleLine);
+                    }
+                    return [lines.filter(Boolean).join(" · "), "Úroveň"];
+                  }}
+                />
+                {phaseBands.map((band) => (
+                  <ReferenceArea
+                    key={`${band.phase}-${band.from}`}
+                    x1={band.from}
+                    x2={band.to === band.from ? band.to + DAY_MS : band.to}
+                    fill={PHASE_STYLES[band.phase].fill}
+                    strokeOpacity={0}
+                  />
+                ))}
+                <Area
+                  type="monotone"
+                  dataKey="level"
+                  connectNulls
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2}
+                  fill="url(#feelingScaleFill)"
+                  dot={(props: {
+                    cx?: number;
+                    cy?: number;
+                    payload?: { level: number | null; phase: CyclePhaseKey | null };
+                  }) => {
+                    const { cx, cy, payload } = props;
+                    if (payload?.level == null || cx == null || cy == null) return <g key={String(cx)} />;
+                    return (
+                      <circle
+                        key={`${cx}-${cy}`}
+                        cx={cx}
+                        cy={cy}
+                        r={4}
+                        fill={payload.phase ? PHASE_STYLES[payload.phase].dot : "hsl(var(--primary))"}
+                        stroke="hsl(var(--card))"
+                        strokeWidth={1.5}
+                      />
+                    );
+                  }}
+                />
+                {hasRuns && (
+                  <Scatter
+                    dataKey="runY"
+                    fill={RUN_COLOR}
+                    shape={(props: { cx?: number; cy?: number; payload?: { runY: number | null } }) => {
+                      const { cx, cy, payload } = props;
+                      if (payload?.runY == null || cx == null || cy == null) return <g key={String(cx)} />;
+                      return (
+                        <circle
+                          key={`run-${cx}-${cy}`}
+                          cx={cx}
+                          cy={cy}
+                          r={5}
+                          fill={RUN_COLOR}
+                          stroke="hsl(var(--card))"
+                          strokeWidth={1.5}
+                        />
+                      );
+                    }}
+                  />
+                )}
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+          {cycle && (
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda fáz cyklu">
+              {(Object.keys(CYCLE_PHASES) as CyclePhaseKey[]).map((phase) => (
+                <li key={phase} className="flex items-center gap-1.5">
+                  <span
+                    aria-hidden="true"
+                    className="inline-block h-3 w-3 rounded-sm border border-border"
+                    style={{ background: PHASE_STYLES[phase].fill.replace(/0\.\d+\)/, "0.5)") }}
+                  />
+                  {CYCLE_PHASES[phase].name}
+                </li>
+              ))}
+            </ul>
+          )}
+          {hasRuns && (
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda behov">
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full" style={{ background: RUN_COLOR }} />
+                Beh (deň s behom, v detaile aj kilometre)
+              </li>
+            </ul>
+          )}
+          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+            {SCALE_LEVELS.filter((level) => level.value >= 20).slice(0, 8).map((level) => (
+              <li key={level.value}>{level.value} {level.label}</li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p className="mt-6 text-sm text-muted-foreground">
+          Za toto obdobie ešte nemáš zaznamenaný žiadny pocit.
+        </p>
+      )}
+    </section>
+  );
+}
