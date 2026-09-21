@@ -76,22 +76,26 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   const [swipeX, setSwipeX] = useState(0);
   const canSwipeBack = location.pathname !== "/community";
 
-  // Tracks in-app navigation depth so a swipe-back always goes somewhere,
-  // even when the woman landed directly on a deep page (deep link, refresh)
-  // with no real browser history to go back to.
-  const navDepth = useRef(0);
-  const lastPathname = useRef(location.pathname);
+  // Own in-app navigation stack, so swipe-back always steps to the actual
+  // previous screen — not the browser's history.back() (unreliable in some
+  // webviews) and not always Domov.
+  const navStack = useRef<string[]>([location.pathname]);
   useEffect(() => {
-    if (location.pathname !== lastPathname.current) {
-      navDepth.current += 1;
-      lastPathname.current = location.pathname;
+    const stack = navStack.current;
+    const top = stack[stack.length - 1];
+    if (top === location.pathname) return;
+    if (stack.length > 1 && stack[stack.length - 2] === location.pathname) {
+      stack.pop(); // we navigated back to the previous entry
+    } else {
+      stack.push(location.pathname);
     }
   }, [location.pathname]);
 
   const goBack = () => {
-    if (navDepth.current > 0) {
-      navDepth.current -= 1;
-      navigate(-1);
+    const stack = navStack.current;
+    if (stack.length > 1) {
+      stack.pop();
+      navigate(stack[stack.length - 1]);
     } else {
       navigate("/community");
     }
