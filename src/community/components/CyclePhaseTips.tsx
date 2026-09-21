@@ -54,9 +54,9 @@ export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
           return (
             <motion.div
               key={tip.label}
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, delay: Math.min(i, 8) * 0.02, ease: "easeOut" }}
+              transition={{ duration: 0.5, delay: Math.min(i, 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center gap-2 text-center"
             >
               <span
