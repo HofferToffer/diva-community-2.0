@@ -187,7 +187,11 @@ export function CycleCalendar({
       </div>
 
       {onToggleIntimacy && (
-        <p className="mt-3 text-xs text-muted-foreground">Ťukni na deň, aby si si ho zapísala alebo odznačila.</p>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Ťukni na deň a označ ho srdiečkom{" "}
+          <Heart className="inline h-3 w-3 align-[-1px]" style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }} aria-hidden="true" />{" "}
+          — deň, kedy ste mali sex. Znova ťukni, ak ho chceš odznačiť.
+        </p>
       )}
 
       {onSelectPeriodStart && !onToggleIntimacy && (
@@ -207,6 +211,16 @@ export function CycleCalendar({
             {CYCLE_PHASES[phase].name}
           </li>
         ))}
+        {onToggleIntimacy && (
+          <li className="flex items-center gap-1.5">
+            <Heart
+              className="h-3 w-3"
+              style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }}
+              aria-hidden="true"
+            />
+            Sex
+          </li>
+        )}
       </ul>
     </div>
   );
