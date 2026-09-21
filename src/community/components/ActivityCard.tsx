@@ -62,6 +62,10 @@ export function ActivityCard({
     try {
       await add.mutateAsync({ profileId: profile.id, body });
       setDraft("");
+      toast.success("Komentár je pridaný.");
+      requestAnimationFrame(() => {
+        commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      });
     } catch {
       toast.error("Komentár sa nepodarilo pridať.");
     }
