@@ -20,7 +20,7 @@ export const DAILY_QUOTES: string[] = [
   "Buď na seba trpezlivá, rovnako ako by si bola na kamošku.",
   "Vďačnosť mení pohľad na deň.",
   "Tvoja hodnota nezávisí od výkonu.",
-  "Ženská sila je aj v jemnosti.",
+  "V jemnosti je naša sila.",
   "Zastav sa, nadýchni sa, pokračuj.",
   "Si presne tam, kde máš byť.",
 ];
