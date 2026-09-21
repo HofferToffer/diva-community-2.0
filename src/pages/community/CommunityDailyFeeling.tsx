@@ -11,6 +11,7 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { type DailyFeeling, useDailyFeelings, useSaveDailyFeeling } from "@/community/hooks/queries";
 import { DETAIL_SEPARATOR, MOODS } from "@/community/lib/feelings";
 import { fadeUp } from "@/community/lib/motion";
+import { cn } from "@/lib/utils";
 
 function localDateKey(date = new Date()) {
   const year = date.getFullYear();
@@ -105,7 +106,10 @@ export default function CommunityDailyFeeling() {
                       setSpecific(null);
                       scrollToNext(detailRef);
                     }}
-                    className="relative h-auto min-h-24 flex-col gap-2 whitespace-normal px-1 py-3"
+                    className={cn(
+                      "relative h-auto min-h-24 flex-col gap-2 whitespace-normal rounded-2xl px-1 py-3 shadow-sm transition-all",
+                      !selected && "border-border/50",
+                    )}
                   >
                     <MoodIcon aria-hidden="true" className="h-6 w-6" />
                     <span className="text-[0.65rem] leading-tight sm:text-xs">{item.label}</span>
@@ -132,7 +136,10 @@ export default function CommunityDailyFeeling() {
                       setSpecific(null);
                       scrollToNext(specificRef);
                     }}
-                    className="h-auto min-h-10 whitespace-normal"
+                    className={cn(
+                      "h-auto min-h-10 whitespace-normal rounded-full",
+                      detail !== feeling.label && "border-border/50",
+                    )}
                   >
                     {feeling.label}
                   </Button>
@@ -156,7 +163,10 @@ export default function CommunityDailyFeeling() {
                       setSpecific(item);
                       scrollToNext(noteRef);
                     }}
-                    className="h-auto min-h-10 whitespace-normal"
+                    className={cn(
+                      "h-auto min-h-10 whitespace-normal rounded-full",
+                      specific !== item && "border-border/50",
+                    )}
                   >
                     {item}
                   </Button>
@@ -174,6 +184,7 @@ export default function CommunityDailyFeeling() {
               value={note}
               onChange={(event) => setNote(event.target.value)}
               placeholder="Môžeš si sem napísať čokoľvek..."
+              className="rounded-2xl border-border/50 shadow-sm"
             />
             <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5" /> Len pre teba</span>
