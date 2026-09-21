@@ -12,8 +12,6 @@ interface ImageCropDialogProps {
   /** Show a circular crop indicator (profile photos). */
   round?: boolean;
   title?: string;
-  /** Lets the user skip cropping and upload the photo as-is. */
-  allowOriginal?: boolean;
   onCancel: () => void;
   onConfirm: (file: File) => Promise<void> | void;
 }
@@ -38,7 +36,7 @@ async function cropToFile(src: string, area: Area): Promise<File> {
 }
 
 /** Modal that lets the user pan & zoom a photo and confirm the cropped area. */
-export function ImageCropDialog({ image, aspect, round, title, allowOriginal, onCancel, onConfirm }: ImageCropDialogProps) {
+export function ImageCropDialog({ image, aspect, round, title, onCancel, onConfirm }: ImageCropDialogProps) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area | null>(null);
@@ -51,17 +49,6 @@ export function ImageCropDialog({ image, aspect, round, title, allowOriginal, on
     setSaving(true);
     try {
       await onConfirm(await cropToFile(image, area));
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const useWholePhoto = async () => {
-    if (!image) return;
-    setSaving(true);
-    try {
-      const blob = await fetch(image).then((r) => r.blob());
-      await onConfirm(new File([blob], "fotka.jpg", { type: blob.type || "image/jpeg" }));
     } finally {
       setSaving(false);
     }
@@ -98,11 +85,6 @@ export function ImageCropDialog({ image, aspect, round, title, allowOriginal, on
           <Button variant="outline" onClick={onCancel} disabled={saving}>
             Zrušiť
           </Button>
-          {allowOriginal && (
-            <Button variant="outline" onClick={useWholePhoto} disabled={saving}>
-              Použiť celú fotku
-            </Button>
-          )}
           <Button onClick={confirm} disabled={saving || !area}>
             {saving ? "Ukladám…" : "Použiť výrez"}
           </Button>

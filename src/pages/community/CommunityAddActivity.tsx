@@ -12,7 +12,6 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { ACTIVITY_TYPES } from "@/community/lib/constants";
 import { uploadImage, validateImage } from "@/community/lib/storage";
 import { StoredImage } from "@/community/components/StoredImage";
-import { ImageCropDialog } from "@/community/components/ImageCropDialog";
 import { cn } from "@/lib/utils";
 
 
@@ -58,26 +57,18 @@ export default function CommunityAddActivity() {
   const distanceKm = distance ? Number(distance.replace(",", ".")) : 0;
   const durationSeconds = needsDuration && duration ? Math.round(Number(duration) * 60) : 0;
 
-  const [cropImage, setCropImage] = useState<string | null>(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  const pickPhoto = (file: File) => {
+  const pickPhoto = async (file: File) => {
     const problem = validateImage(file);
     if (problem) return toast.error(problem);
-    setCropImage(URL.createObjectURL(file));
-  };
-
-  const closeCrop = () => {
-    if (cropImage) URL.revokeObjectURL(cropImage);
-    setCropImage(null);
-  };
-
-  const handlePhoto = async (file: File) => {
+    setUploadingPhoto(true);
     try {
       setPhotoPath(await uploadImage("activity-photos", user!.id, file));
     } catch {
       toast.error("Fotku sa nepodarilo nahrať.");
     } finally {
-      closeCrop();
+      setUploadingPhoto(false);
     }
   };
 
@@ -183,26 +174,19 @@ export default function CommunityAddActivity() {
 
       <div className="space-y-2">
         <Label htmlFor="photo" className="cursor-pointer underline">
-          Pridať fotku
+          {uploadingPhoto ? "Nahrávam..." : "Pridať fotku"}
         </Label>
         <input
           id="photo"
           type="file"
           accept="image/*"
           className="sr-only"
+          disabled={uploadingPhoto}
           onChange={(e) => {
             const file = e.target.files?.[0];
             e.target.value = "";
-            if (file) pickPhoto(file);
+            if (file) void pickPhoto(file);
           }}
-        />
-        <ImageCropDialog
-          image={cropImage}
-          aspect={4 / 3}
-          allowOriginal
-          title="Uprav si fotku aktivity"
-          onCancel={closeCrop}
-          onConfirm={handlePhoto}
         />
         {photoPath && <StoredImage path={photoPath} alt="Náhľad fotky" className="h-48 w-full rounded-lg object-cover" />}
       </div>
