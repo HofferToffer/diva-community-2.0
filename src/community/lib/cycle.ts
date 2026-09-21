@@ -56,35 +56,35 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
     return {
       key: "menstruacna_tazke_dni",
       name: "Menštruácia — ťažké dni",
-      description: "Prvé dni bývajú najnáročnejšie, energia je najnižšia. Telo si žiada teplo, pokoj a nič si nemusíš dokazovať.",
+      description: "Prvé dni bývajú najťažšie. Energia je na dne, tak si dovoľ zastaviť sa — teplo, pokoj a nič si nemusíš dokazovať.",
     };
   }
   if (dayOfCycle <= 5) {
     return {
       key: "menstruacna_doznievanie",
       name: "Menštruácia — doznievanie",
-      description: "Krvácanie slabne a energia sa pomaly vracia. Skús ľahký pohyb, ak naň máš chuť, no netlač na seba.",
+      description: "Krvácanie slabne, sila sa pomaly vracia. Ak máš chuť na pohyb, vyber si krátku prechádzku, no netlač na seba.",
     };
   }
   if (dayOfCycle <= 9) {
     return {
       key: "folikularna_rozbeh",
       name: "Folikulárna — rozbeh",
-      description: "Hormóny stúpajú a hlava sa čistí. Ideálny čas naštartovať nové plány, nápady a projekty.",
+      description: "Hormóny idú hore a hlava sa čistí. Skvelý čas naštartovať nové nápady a plány.",
     };
   }
   if (dayOfCycle <= 12) {
     return {
       key: "folikularna_vrchol",
       name: "Folikulárna — vrchol energie",
-      description: "Energia, sebadôvera aj výkon rastú. Telo teraz zvládne náročnejší tréning aj väčšiu záťaž.",
+      description: "Si vo forme — energia, sebadôvera aj výkon rastú. Telo teraz unesie aj náročnejší tréning.",
     };
   }
   if (dayOfCycle <= 16) {
     return {
       key: "ovulacia",
       name: "Ovulácia",
-      description: "Si na vrchole cyklu — energia, sebavedomie aj chuť na spoločnosť sú najvyššie. Ideálny čas na osobné rekordy.",
+      description: "Si na vrchole cyklu. Energia, sebavedomie aj chuť byť medzi ľuďmi sú najvyššie — čas na osobné rekordy.",
     };
   }
 
@@ -97,20 +97,20 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
     return {
       key: "lutealna_stabilna",
       name: "Luteálna — stabilná",
-      description: "Energia je ešte dobrá, no postupne sa spomaľuje. Skvelý čas dokončiť rozbehnuté veci pred spomalením.",
+      description: "Energia je ešte dobrá, len sa pomaly stišuje. Dobehni rozbehnuté veci, kým na to máš silu.",
     };
   }
   if (dayOfCycle <= lutealStart + 2 * third - 1) {
     return {
       key: "lutealna_premenliva",
       name: "Luteálna — premenlivá",
-      description: "Nálady môžu kolísať a telo je citlivejšie. Buď na seba trpezlivá a nezaraďuj náročné veci na neskôr.",
+      description: "Nálady môžu kolísať a si citlivejšia. Buď k sebe trpezlivá a na tieto dni si neplánuj nič náročné.",
     };
   }
   return {
     key: "lutealna_neskora",
     name: "Luteálna — neskorá (PMS)",
-    description: "Energia je najnižšia a PMS môže byť najsilnejšie cítiť. Zvoľ pokoj, jemnosť a čo najmenej záväzkov.",
+    description: "Energia je najnižšia a PMS sa hlási najviac. Dopraj si pokoj, jemnosť a čo najmenej povinností.",
   };
 }
 
