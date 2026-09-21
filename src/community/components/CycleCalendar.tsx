@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarHeart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
 
@@ -31,7 +32,14 @@ export function CycleCalendar({
   onSelectPeriodStart?: (dateKey: string) => void;
 }) {
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
+  const [pendingDate, setPendingDate] = useState<Date | null>(null);
   const today = new Date();
+
+  const confirmPendingDate = () => {
+    if (!pendingDate) return;
+    onSelectPeriodStart?.(toDateKey(pendingDate));
+    setPendingDate(null);
+  };
 
   const weeks = useMemo(() => {
     const first = startOfMonth(monthCursor);
@@ -97,12 +105,12 @@ export function CycleCalendar({
                   disabled={!canEdit}
                   title={cell.phase ? CYCLE_PHASES[cell.phase].name : undefined}
                   aria-label={`${cell.date.getDate()}. ${monthLabel}${isPeriodStart ? " — začiatok poslednej menštruácie" : ""}`}
-                  onClick={() => onSelectPeriodStart?.(toDateKey(cell.date))}
+                  onClick={() => setPendingDate(cell.date)}
                   className={cn(
-                    "flex aspect-square items-center justify-center rounded-full text-xs text-foreground/85 transition-transform",
+                    "flex aspect-square items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
                     isSameDay(cell.date, today) && "font-semibold ring-2 ring-primary ring-offset-1 ring-offset-card",
                     isPeriodStart && "ring-2 ring-foreground ring-offset-1 ring-offset-card",
-                    canEdit && "cursor-pointer hover:scale-105 active:scale-95",
+                    canEdit && "cursor-pointer hover:scale-110 hover:shadow-sm active:scale-95",
                   )}
                   style={{
                     background: cell.phase ? CYCLE_PHASE_COLORS[cell.phase].fill.replace(/0\.\d+\)/, "0.6)") : undefined,
@@ -134,6 +142,30 @@ export function CycleCalendar({
           </li>
         ))}
       </ul>
+
+      <Dialog open={!!pendingDate} onOpenChange={(open) => !open && setPendingDate(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+              <CalendarHeart className="h-6 w-6" aria-hidden="true" />
+            </div>
+            <DialogTitle className="text-center">
+              {pendingDate && new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(pendingDate)}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" className="flex-1" onClick={() => setPendingDate(null)}>
+              Zrušiť
+            </Button>
+            <Button className="flex-1" onClick={confirmPendingDate}>
+              Nastaviť
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

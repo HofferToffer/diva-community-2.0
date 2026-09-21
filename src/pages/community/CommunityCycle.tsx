@@ -41,7 +41,6 @@ export default function CommunityCycle() {
   };
 
   const setPeriodStart = async (dateKey: string) => {
-    if (!window.confirm(`Nastaviť ${dateKey} ako začiatok poslednej menštruácie?`)) return;
     try {
       const { error } = await supabase
         .from("profiles")
