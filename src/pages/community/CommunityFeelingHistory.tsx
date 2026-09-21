@@ -66,6 +66,31 @@ export default function CommunityFeelingHistory() {
         </section>
       ) : (
         <>
+          {(() => {
+            const todayFeeling = feelings.find((item) => item.feeling_date === today);
+            if (!todayFeeling) return null;
+            const details = moodDetails(todayFeeling.mood);
+            const MoodIcon = details.icon;
+            const level = levelForFeeling(todayFeeling.mood, todayFeeling.feeling_detail);
+            return (
+              <section className="rounded-lg border border-primary/30 bg-card p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tvoj dnešný pocit</p>
+                <div className="mt-2 flex items-center justify-between gap-3">
+                  <p className="font-display text-2xl">
+                    <MoodIcon className="-mt-1 mr-2 inline h-5 w-5 text-primary" aria-hidden="true" />
+                    {todayFeeling.feeling_detail ? `${details.label} · ${todayFeeling.feeling_detail}` : details.label}
+                  </p>
+                  <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs text-secondary-foreground">
+                    {level} · {scaleLabel(level)}
+                  </span>
+                </div>
+                {todayFeeling.note && (
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{todayFeeling.note}</p>
+                )}
+              </section>
+            );
+          })()}
+
           {!cycleData && (
             <p className="text-sm text-muted-foreground">
               Graf zatiaľ nezobrazuje fázy cyklu — doplň si dátum poslednej menštruácie v{" "}
