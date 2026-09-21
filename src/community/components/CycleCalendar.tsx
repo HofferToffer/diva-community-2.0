@@ -34,6 +34,7 @@ export function CycleCalendar({
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const [pendingDate, setPendingDate] = useState<Date | null>(null);
   const today = new Date();
+  const pendingPhase = pendingDate ? getCyclePhaseForDate(lastPeriodDate, cycleLengthDays, pendingDate) : null;
 
   const confirmPendingDate = () => {
     if (!pendingDate) return;
@@ -159,6 +160,11 @@ export function CycleCalendar({
             <DialogTitle className="text-center">
               {pendingDate && new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(pendingDate)}
             </DialogTitle>
+            {pendingPhase && (
+              <p className="text-center text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[pendingPhase].dot }}>
+                {CYCLE_PHASES[pendingPhase].name}
+              </p>
+            )}
             <DialogDescription className="text-center">
               Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
             </DialogDescription>
