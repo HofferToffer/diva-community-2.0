@@ -76,6 +76,27 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   const [swipeX, setSwipeX] = useState(0);
   const canSwipeBack = location.pathname !== "/community";
 
+  // Tracks in-app navigation depth so a swipe-back always goes somewhere,
+  // even when the woman landed directly on a deep page (deep link, refresh)
+  // with no real browser history to go back to.
+  const navDepth = useRef(0);
+  const lastPathname = useRef(location.pathname);
+  useEffect(() => {
+    if (location.pathname !== lastPathname.current) {
+      navDepth.current += 1;
+      lastPathname.current = location.pathname;
+    }
+  }, [location.pathname]);
+
+  const goBack = () => {
+    if (navDepth.current > 0) {
+      navDepth.current -= 1;
+      navigate(-1);
+    } else {
+      navigate("/community");
+    }
+  };
+
   const triggerRefresh = async () => {
     if (refreshing) return;
     setRefreshing(true);
@@ -131,7 +152,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
   // Native touch listeners (pointer events get cancelled by browser overscroll on mobile)
   useEffect(() => {
-    const EDGE_ZONE = 36; // px from the left edge where a back-swipe can start, like iOS/Instagram
+    const EDGE_ZONE = 56; // px from the left edge where a back-swipe can start, like iOS/Instagram
     let startY: number | null = null;
     let startX: number | null = null;
     let fromEdge = false;
@@ -175,7 +196,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     const onTouchEnd = () => {
       if (axis === "x") {
         setSwipeX((current) => {
-          if (current >= 100) navigate(-1);
+          if (current >= 80) goBack();
           return 0;
         });
       } else if (startY !== null) {
@@ -200,7 +221,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [refreshing, canSwipeBack, navigate]);
+  }, [refreshing, canSwipeBack, navigate, goBack]);
 
 
   return (
