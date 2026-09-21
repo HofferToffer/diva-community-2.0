@@ -118,6 +118,19 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     }
   };
 
+  // Background re-renders (query refetches, realtime updates) happen constantly
+  // in this shell. Touch handlers read the latest values through refs instead
+  // of closing over goBack/canSwipeBack/etc directly, so the listener effect
+  // below never has to re-run mid-gesture and silently drop a swipe in progress.
+  const goBackRef = useRef(goBack);
+  goBackRef.current = goBack;
+  const triggerRefreshRef = useRef(triggerRefresh);
+  triggerRefreshRef.current = triggerRefresh;
+  const canSwipeBackRef = useRef(canSwipeBack);
+  canSwipeBackRef.current = canSwipeBack;
+  const refreshingRef = useRef(refreshing);
+  refreshingRef.current = refreshing;
+
   const onPointerDown = (e: PointerEvent) => {
     if (e.pointerType === "touch") return;
     if (window.scrollY <= 0) dragStartY.current = e.clientY;
@@ -173,7 +186,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (refreshing || startX === null) return;
+      if (refreshingRef.current || startX === null) return;
       const touch = e.touches[0];
       const dx = touch.clientX - startX;
       const dy = startY !== null ? touch.clientY - startY : 0;
@@ -185,7 +198,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       }
 
       if (axis === "x") {
-        if (!canSwipeBack || dx <= 0) return;
+        if (!canSwipeBackRef.current || dx <= 0) return;
         if (e.cancelable) e.preventDefault();
         setSwipeX(Math.min(dx, 120));
       } else if (axis === "y") {
@@ -205,12 +218,12 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     const onTouchEnd = () => {
       if (axis === "x") {
         setSwipeX((current) => {
-          if (current >= 80) goBack();
+          if (current >= 80) goBackRef.current();
           return 0;
         });
       } else if (startY !== null) {
         setPull((current) => {
-          if (current >= 70) void triggerRefresh();
+          if (current >= 70) void triggerRefreshRef.current();
           return 0;
         });
       }
@@ -229,7 +242,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [refreshing, canSwipeBack, navigate, goBack]);
+    // Mounted once: handlers read live state via refs above, so this never
+    // needs to re-run (and re-running mid-swipe was exactly the bug).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   return (
