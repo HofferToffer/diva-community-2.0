@@ -175,6 +175,7 @@ export default function CommunityAddActivity() {
         <ImageCropDialog
           image={cropImage}
           aspect={4 / 3}
+          allowOriginal
           title="Uprav si fotku aktivity"
           onCancel={closeCrop}
           onConfirm={handlePhoto}
