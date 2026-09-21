@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { CalendarHeart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -41,6 +41,23 @@ export function CycleCalendar({
     setPendingDate(null);
   };
 
+  const goToPrevMonth = () => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1));
+  const goToNextMonth = () => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1));
+
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart.current) return;
+    const dx = e.changedTouches[0].clientX - touchStart.current.x;
+    const dy = e.changedTouches[0].clientY - touchStart.current.y;
+    touchStart.current = null;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) goToNextMonth();
+    else goToPrevMonth();
+  };
+
   const weeks = useMemo(() => {
     const first = startOfMonth(monthCursor);
     const daysInMonth = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
@@ -63,34 +80,23 @@ export function CycleCalendar({
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="flex items-center justify-between">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Predchádzajúci mesiac"
-          onClick={() => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1))}
-        >
+        <Button type="button" variant="ghost" size="icon" aria-label="Predchádzajúci mesiac" onClick={goToPrevMonth}>
           <ChevronLeft className="h-4 w-4" />
         </Button>
         <p className="font-display text-lg capitalize">{monthLabel}</p>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Nasledujúci mesiac"
-          onClick={() => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1))}
-        >
+        <Button type="button" variant="ghost" size="icon" aria-label="Nasledujúci mesiac" onClick={goToNextMonth}>
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
 
-      <div className="mt-4 grid grid-cols-7 gap-1 text-center text-[0.65rem] uppercase tracking-wide text-muted-foreground">
-        {WEEKDAYS.map((day) => (
-          <span key={day}>{day}</span>
-        ))}
-      </div>
+      <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+        <div className="mt-4 grid grid-cols-7 gap-1 text-center text-[0.65rem] uppercase tracking-wide text-muted-foreground">
+          {WEEKDAYS.map((day) => (
+            <span key={day}>{day}</span>
+          ))}
+        </div>
 
-      <div className="mt-1 space-y-1">
+        <div className="mt-1 space-y-1">
         {weeks.map((week, i) => (
           <div key={i} className="grid grid-cols-7 gap-1">
             {week.map((cell, j) => {
@@ -122,6 +128,7 @@ export function CycleCalendar({
             })}
           </div>
         ))}
+        </div>
       </div>
 
       {onSelectPeriodStart && (
