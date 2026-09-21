@@ -381,7 +381,12 @@ export default function CommunityProfile() {
                   Zrušiť
                 </Button>
               </div>
-              <ProfileSettings onSaved={() => setEditingProfile(false)} />
+              <ProfileSettings
+                onSaved={() => {
+                  setEditingProfile(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              />
             </>
           ) : (
             <Button className="w-full" onClick={() => setEditingProfile(true)}>
