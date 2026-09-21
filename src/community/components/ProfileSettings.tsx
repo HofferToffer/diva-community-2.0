@@ -183,7 +183,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
         </div>
         <div className="space-y-3 rounded-2xl border border-border/50 bg-card px-4 py-4 shadow-sm">
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-trying" className="text-sm">Snažím sa o bábätko</Label>
+            <Label htmlFor="s-is-trying" className="text-sm">Cesta k bábätku</Label>
             <Switch
               id="s-is-trying"
               checked={isTryingToConceive}
@@ -198,7 +198,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-pregnant" className="text-sm">Som tehotná</Label>
+            <Label htmlFor="s-is-pregnant" className="text-sm">Moje tehotenstvo</Label>
             <Switch
               id="s-is-pregnant"
               checked={isPregnant}
@@ -213,7 +213,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-postpartum" className="text-sm">Som v šestonedelí</Label>
+            <Label htmlFor="s-is-postpartum" className="text-sm">Šestonedelie / Obnova</Label>
             <Switch
               id="s-is-postpartum"
               checked={isPostpartum}
@@ -228,7 +228,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-menopause" className="text-sm">Mám menopauzu</Label>
+            <Label htmlFor="s-is-menopause" className="text-sm">Moja menopauza</Label>
             <Switch
               id="s-is-menopause"
               checked={isMenopause}

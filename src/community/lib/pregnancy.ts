@@ -1,3 +1,4 @@
+import type { ComponentType, SVGProps } from "react";
 import {
   Apple,
   Banana,
@@ -8,8 +9,10 @@ import {
   LeafyGreen,
   Sprout,
   Wheat,
-  type LucideIcon,
 } from "lucide-react";
+import { Avocado, Mango, Pineapple, Pumpkin, Strawberry, Tomato, WatermelonSlice } from "@/community/components/FruitIcons";
+
+export type WeekIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
 const GESTATION_DAYS = 280; // 40 weeks, counted from the last menstrual period to the due date
 
@@ -97,19 +100,27 @@ export function pregnancyWeekSize(week: number): string | null {
 }
 
 /** A matching outline icon where one exists, otherwise a generic sprout — always something to show, gently. */
-const WEEK_ICON: Partial<Record<number, LucideIcon>> = {
+const WEEK_ICON: Partial<Record<number, WeekIcon>> = {
   6: Bean,
   9: Cherry,
+  10: Strawberry,
   13: Bean,
   14: Citrus,
   15: Apple,
+  16: Avocado,
+  19: Tomato,
   20: Banana,
   21: Carrot,
+  23: Mango,
   24: Wheat,
+  28: Pineapple,
   30: LeafyGreen,
   36: LeafyGreen,
+  38: WatermelonSlice,
+  39: WatermelonSlice,
+  40: Pumpkin,
 };
 
-export function pregnancyWeekIcon(week: number): LucideIcon {
+export function pregnancyWeekIcon(week: number): WeekIcon {
   return WEEK_ICON[week] ?? Sprout;
 }
