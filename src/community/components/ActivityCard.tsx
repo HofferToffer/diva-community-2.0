@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, MessageCircle, Pencil, Trash2 } from "lucide-react";
@@ -28,6 +28,14 @@ export function ActivityCard({
   const { profile } = useCommunityAuth();
   const [showComments, setShowComments] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
+  const photoRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showPhoto) return;
+    requestAnimationFrame(() => {
+      photoRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }, [showPhoto]);
   const [draft, setDraft] = useState("");
   const toggleLike = useToggleLike();
   const deleteActivity = useDeleteActivity();
@@ -138,6 +146,7 @@ export function ActivityCard({
           <AnimatePresence>
             {showPhoto && (
               <motion.div
+                ref={photoRef}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
