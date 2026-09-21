@@ -27,7 +27,7 @@ const DIVA_LETTERS = ["D", "I", "V", "A"];
 
 function Loading() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="flex font-display text-2xl tracking-[0.2em] text-muted-foreground">
         {DIVA_LETTERS.map((letter, i) => (
           <motion.span
@@ -41,17 +41,6 @@ function Loading() {
           </motion.span>
         ))}
       </div>
-      <svg width="180" height="32" viewBox="0 0 180 32" fill="none" aria-hidden="true">
-        <motion.path
-          d="M4 16 C 34 -4, 64 36, 94 16 S 154 -4, 176 16"
-          stroke="hsl(var(--accent))"
-          strokeWidth="2"
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2.2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-        />
-      </svg>
     </div>
   );
 }
@@ -63,7 +52,7 @@ function CommunityRoutes() {
   // Keep the DIVA screen up for a moment even if auth resolves instantly, so it's felt, not just flashed.
   const [minSplashDone, setMinSplashDone] = useState(false);
   useEffect(() => {
-    const timer = setTimeout(() => setMinSplashDone(true), 3200);
+    const timer = setTimeout(() => setMinSplashDone(true), 3600);
     return () => clearTimeout(timer);
   }, []);
 
