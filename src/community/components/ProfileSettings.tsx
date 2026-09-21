@@ -273,6 +273,22 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             </p>
           </div>
         )}
+        {isMenopause && (
+          <div className="space-y-2 border-t border-border/50 pt-4">
+            <Label htmlFor="s-last-period">Prvý deň poslednej menštruácie (nepovinné)</Label>
+            <Input
+              id="s-last-period"
+              type="date"
+              max={new Date().toISOString().slice(0, 10)}
+              value={lastPeriod}
+              onChange={(e) => setLastPeriod(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Nikde ti to nezobrazujeme ako odpočítavanie — necháme si to len ako tichý údaj, ktorý sa môže zísť
+              napríklad na gynekológii. Vidíš ho len ty.
+            </p>
+          </div>
+        )}
         {!isMenopause && !isPostpartum && (
           <div className="space-y-4 border-t border-border/50 pt-4">
             <div className="space-y-2">
