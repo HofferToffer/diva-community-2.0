@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Check, History, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ function localDateKey(date = new Date()) {
 }
 
 export default function CommunityDailyFeeling() {
+  const navigate = useNavigate();
   const { profile } = useCommunityAuth();
   const { data: feelings, isLoading } = useDailyFeelings(profile?.id);
   const saveFeeling = useSaveDailyFeeling(profile?.id);
@@ -49,6 +50,7 @@ export default function CommunityDailyFeeling() {
     try {
       await saveFeeling.mutateAsync({ mood, detail: `${detail}${DETAIL_SEPARATOR}${specific}`, note, date: today });
       toast.success(todayFeeling ? "Dnešný pocit je upravený." : "Tvoj dnešný pocit je uložený.");
+      navigate("/community/pocit/historia");
     } catch {
       toast.error("Pocit sa nepodarilo uložiť. Skús to ešte raz.");
     }
