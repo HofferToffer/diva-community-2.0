@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, MessageCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ export function ActivityCard({
   activity: FeedActivity;
   interactive?: boolean;
 }) {
+  const navigate = useNavigate();
   const { profile } = useCommunityAuth();
   const [showComments, setShowComments] = useState(false);
   const [draft, setDraft] = useState("");
@@ -89,26 +90,41 @@ export function ActivityCard({
         )}
       </header>
 
-      <div className={`grid gap-2 px-4 py-4 ${activity.distance_km ? "grid-cols-1" : "grid-cols-2"}`}>
-        {activity.distance_km ? (
-          <Metric label="Vzdialenosť" value={formatKm(activity.distance_km)} />
-        ) : (
-          <>
-            <Metric label="Typ" value={activityTypeLabel(activity.kind, activity.activity_type)} />
-            {activity.duration_seconds > 0 ? (
-              <Metric label="Čas" value={formatDuration(activity.duration_seconds)} />
-            ) : (
-              <Metric label="Dátum" value={new Date(activity.activity_date).toLocaleDateString("sk-SK")} />
-            )}
-          </>
+      <div
+        role={isMine ? "button" : undefined}
+        tabIndex={isMine ? 0 : undefined}
+        aria-label={isMine ? "Upraviť aktivitu" : undefined}
+        className={isMine ? "cursor-pointer" : undefined}
+        onClick={isMine ? () => navigate(`/community/aktivita/${activity.id}/upravit`) : undefined}
+        onKeyDown={
+          isMine
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") navigate(`/community/aktivita/${activity.id}/upravit`);
+              }
+            : undefined
+        }
+      >
+        <div className={`grid gap-2 px-4 py-4 ${activity.distance_km ? "grid-cols-1" : "grid-cols-2"}`}>
+          {activity.distance_km ? (
+            <Metric label="Vzdialenosť" value={formatKm(activity.distance_km)} />
+          ) : (
+            <>
+              <Metric label="Typ" value={activityTypeLabel(activity.kind, activity.activity_type)} />
+              {activity.duration_seconds > 0 ? (
+                <Metric label="Čas" value={formatDuration(activity.duration_seconds)} />
+              ) : (
+                <Metric label="Dátum" value={new Date(activity.activity_date).toLocaleDateString("sk-SK")} />
+              )}
+            </>
+          )}
+        </div>
+
+        {activity.note && <p className="px-4 pb-4 text-sm leading-relaxed text-foreground/85">{activity.note}</p>}
+
+        {activity.photo_url && (
+          <StoredImage path={activity.photo_url} alt="Fotka z aktivity" className="aspect-[4/5] w-full object-cover" />
         )}
       </div>
-
-      {activity.note && <p className="px-4 pb-4 text-sm leading-relaxed text-foreground/85">{activity.note}</p>}
-
-      {activity.photo_url && (
-        <StoredImage path={activity.photo_url} alt="Fotka z aktivity" className="aspect-[4/5] w-full object-cover" />
-      )}
 
       {interactive && (
       <footer className="flex items-center gap-1 px-2 py-2">

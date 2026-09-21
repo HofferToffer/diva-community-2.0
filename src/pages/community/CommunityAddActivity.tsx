@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,17 @@ export default function CommunityAddActivity() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { profile, user } = useCommunityAuth();
+  const { id: editId } = useParams();
+
+  const { data: existing } = useQuery({
+    queryKey: ["community-activity-edit", editId],
+    enabled: !!editId,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("activities").select("*").eq("id", editId!).single();
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const [activityType, setActivityType] = useState<string>(ACTIVITY_TYPES[0].value);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -28,12 +39,23 @@ export default function CommunityAddActivity() {
   const [shareToFeed, setShareToFeed] = useState(true);
   const [photoPath, setPhotoPath] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [duration, setDuration] = useState("");
+
+  useEffect(() => {
+    if (!existing) return;
+    setActivityType(existing.activity_type);
+    setDate(existing.activity_date);
+    setDistance(existing.distance_km ? String(existing.distance_km).replace(".", ",") : "");
+    setNote(existing.note ?? "");
+    setShareToFeed(existing.visibility === "public");
+    setPhotoPath(existing.photo_url);
+    if (existing.duration_seconds) setDuration(String(Math.round(existing.duration_seconds / 60)));
+  }, [existing]);
 
   const selected = ACTIVITY_TYPES.find((t) => t.value === activityType) ?? ACTIVITY_TYPES[0];
   const needsDistance = selected.distance;
   const needsDuration = "duration" in selected && selected.duration;
   const distanceKm = distance ? Number(distance.replace(",", ".")) : 0;
-  const [duration, setDuration] = useState("");
   const durationSeconds = needsDuration && duration ? Math.round(Number(duration) * 60) : 0;
 
   const [cropImage, setCropImage] = useState<string | null>(null);
@@ -65,8 +87,7 @@ export default function CommunityAddActivity() {
     if (needsDuration && durationSeconds <= 0) return toast.error("Zadaj prosím čas v minútach.");
     setSaving(true);
     try {
-      const { error } = await supabase.from("activities").insert({
-        profile_id: profile.id,
+      const payload = {
         kind: needsDistance ? "run" : "move",
         activity_type: activityType,
         activity_date: date,
@@ -75,10 +96,13 @@ export default function CommunityAddActivity() {
         note: note || null,
         visibility: shareToFeed ? "public" : "private",
         photo_url: photoPath,
-      });
+      };
+      const { error } = editId
+        ? await supabase.from("activities").update(payload).eq("id", editId)
+        : await supabase.from("activities").insert({ ...payload, profile_id: profile.id });
       if (error) throw error;
       await queryClient.invalidateQueries();
-      toast.success("Aktivita je uložená.");
+      toast.success(editId ? "Aktivita je upravená." : "Aktivita je uložená.");
       navigate("/community");
     } catch {
       toast.error("Aktivitu sa nepodarilo uložiť.");
@@ -90,7 +114,7 @@ export default function CommunityAddActivity() {
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <h1 className="font-display text-3xl">Zapíš svoju aktivitu</h1>
+        <h1 className="font-display text-3xl">{editId ? "Uprav svoju aktivitu" : "Zapíš svoju aktivitu"}</h1>
         <p className="text-sm text-muted-foreground">Dnes stačí urobiť to, čo môžeš.</p>
       </header>
 
@@ -192,7 +216,7 @@ export default function CommunityAddActivity() {
       </div>
 
       <Button className="w-full" size="lg" onClick={save} disabled={saving}>
-        Uložiť aktivitu
+        {editId ? "Uložiť zmeny" : "Uložiť aktivitu"}
       </Button>
     </div>
   );

@@ -48,6 +48,7 @@ function CommunityRoutes() {
         <Route path="vitaj" element={<Navigate to="/community" replace />} />
         <Route path="pridat" element={<Navigate to="/community/pridat/run" replace />} />
         <Route path="pridat/:kind" element={<CommunityAddActivity />} />
+        <Route path="aktivita/:id/upravit" element={<CommunityAddActivity />} />
         <Route path="pocit" element={<CommunityDailyFeeling />} />
         <Route path="pocit/historia" element={<CommunityFeelingHistory />} />
         <Route path="cyklus" element={<CommunityCycle />} />
