@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { Bell, ChevronDown, Circle, HeartPulse, History, Home, LogOut, Menu, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
 import {
   DropdownMenu,
@@ -276,9 +277,15 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                   <SheetTitle className="text-left font-heading">Menu</SheetTitle>
                 </SheetHeader>
                 <nav className="mt-8 flex flex-col gap-2" aria-label="Community menu">
-                  {nav.map((item) =>
-                    item.to === "/community/pocit" ? (
-                      <div key={item.to} className="flex flex-col gap-1">
+                  {nav.map((item, i) => (
+                  <motion.div
+                    key={item.to}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                  {item.to === "/community/pocit" ? (
+                      <div className="flex flex-col gap-1">
                         <span
                           className={cn(
                             "flex items-center gap-3 whitespace-nowrap rounded-md px-3 py-3 text-sm uppercase tracking-[0.12em] transition-colors",
@@ -318,7 +325,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                         </SheetClose>
                       </div>
                     ) : (
-                      <SheetClose key={item.to} asChild>
+                      <SheetClose asChild>
                         <Link
                           to={item.to}
                           onClick={() => setSheetOpen(false)}
@@ -333,8 +340,9 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                           {item.label}
                         </Link>
                       </SheetClose>
-                    ),
-                  )}
+                    )}
+                  </motion.div>
+                  ))}
                 </nav>
               </SheetContent>
             </Sheet>
