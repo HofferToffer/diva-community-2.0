@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { CalendarHeart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
 
@@ -132,7 +132,46 @@ export function CycleCalendar({
         </div>
       </div>
 
-      {onSelectPeriodStart && (
+      <AnimatePresence>
+        {pendingDate && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 rounded-lg bg-secondary/40 p-4">
+              <div className="flex items-center gap-3">
+                <CalendarHeart className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                <div className="min-w-0">
+                  <p className="font-display text-lg leading-tight">
+                    {new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(pendingDate)}
+                  </p>
+                  {pendingPhase && (
+                    <p className="text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[pendingPhase].dot }}>
+                      {CYCLE_PHASES[pendingPhase].name}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDate(null)}>
+                  Zrušiť
+                </Button>
+                <Button size="sm" className="flex-1" onClick={confirmPendingDate}>
+                  Nastaviť
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {onSelectPeriodStart && !pendingDate && (
         <p className="mt-3 text-xs text-muted-foreground">
           Ťukni na deň, kedy ti naozaj začala posledná menštruácia, ak sa líši od odhadu.
         </p>
@@ -150,33 +189,6 @@ export function CycleCalendar({
           </li>
         ))}
       </ul>
-
-      <Dialog open={!!pendingDate} onOpenChange={(open) => !open && setPendingDate(null)}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <CalendarHeart className="mx-auto h-6 w-6 text-primary" aria-hidden="true" />
-            <DialogTitle className="text-center">
-              {pendingDate && new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(pendingDate)}
-            </DialogTitle>
-            {pendingPhase && (
-              <p className="text-center text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[pendingPhase].dot }}>
-                {CYCLE_PHASES[pendingPhase].name}
-              </p>
-            )}
-            <DialogDescription className="text-center">
-              Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="gap-2 sm:gap-2">
-            <Button variant="outline" className="flex-1" onClick={() => setPendingDate(null)}>
-              Zrušiť
-            </Button>
-            <Button className="flex-1" onClick={confirmPendingDate}>
-              Nastaviť
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

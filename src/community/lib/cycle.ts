@@ -180,7 +180,7 @@ export const CYCLE_PHASES: Record<CyclePhaseKey, { name: string }> = {
 
 /** Soft background fill + a stronger dot/marker color per phase, shared by the chart and calendar. */
 export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, { fill: string; dot: string }> = {
-  menstruacna: { fill: "hsl(var(--destructive) / 0.10)", dot: "hsl(var(--destructive))" },
+  menstruacna: { fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" },
   folikularna: { fill: "hsl(var(--primary) / 0.08)", dot: "hsl(var(--primary))" },
   ovulacia: { fill: "hsl(var(--accent) / 0.35)", dot: "hsl(var(--accent-foreground))" },
   lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
