@@ -1,3 +1,35 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  Coffee,
+  Leaf,
+  Candy,
+  Droplets,
+  PersonStanding,
+  Footprints,
+  Feather,
+  Bath,
+  Bed,
+  BookOpen,
+  Apple,
+  Egg,
+  Nut,
+  Citrus,
+  Dumbbell,
+  Zap,
+  Bike,
+  Sparkles,
+  Music,
+  Users,
+  Salad,
+  GlassWater,
+  Fish,
+  HeartHandshake,
+  MessageCircle,
+  Wheat,
+  Moon,
+  Waves,
+} from "lucide-react";
+
 export type CycleInfo = {
   dayOfCycle: number;
   phaseKey: CyclePhaseKey;
@@ -75,30 +107,64 @@ export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, { fill: string; dot: stri
   lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
 };
 
-export const CYCLE_PHASE_RECOMMENDATIONS: Record<CyclePhaseKey, string[]> = {
+export type CycleTipCategory = "do" | "eat" | "move";
+
+export type CycleTip = { label: string; category: CycleTipCategory; icon: LucideIcon };
+
+export const CYCLE_TIP_CATEGORIES: Record<CycleTipCategory, string> = {
+  do: "Rob",
+  eat: "Jedz",
+  move: "Pohyb",
+};
+
+/** Detailed, icon-tagged tips per phase — food, movement and rituals to browse like a tip grid. */
+export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   menstruacna: [
-    "Dopraj si pokoj a teplo — horúci čaj, kúpeľ, pokojný spánok.",
-    "Pohyb zvoľ jemný: prechádzka, joga alebo strečing.",
-    "Jedz výživne — železo (strukoviny, špenát), horčík a zdravé tuky.",
-    "Vypočuj si telo a bez výčitiek spomal.",
+    { label: "Horúci čaj", category: "eat", icon: Coffee },
+    { label: "Špenát a strukoviny", category: "eat", icon: Leaf },
+    { label: "Horká čokoláda", category: "eat", icon: Candy },
+    { label: "Hydratácia", category: "eat", icon: Droplets },
+    { label: "Jemná joga", category: "move", icon: PersonStanding },
+    { label: "Prechádzka", category: "move", icon: Footprints },
+    { label: "Strečing", category: "move", icon: Feather },
+    { label: "Teplý kúpeľ", category: "do", icon: Bath },
+    { label: "Skorší spánok", category: "do", icon: Bed },
+    { label: "Denník vďačnosti", category: "do", icon: BookOpen },
   ],
   folikularna: [
-    "Energia stúpa — ideálny čas začať niečo nové.",
-    "Skús silový tréning alebo rýchlejší beh, telo zvládne viac.",
-    "Stav na ľahké, čerstvé jedlá a dostatok bielkovín.",
-    "Plánuj, tvor a stretávaj sa — kreativita aj sebadôvera rastú.",
+    { label: "Čerstvé ovocie", category: "eat", icon: Apple },
+    { label: "Bielkoviny", category: "eat", icon: Egg },
+    { label: "Orechy", category: "eat", icon: Nut },
+    { label: "Citrusy", category: "eat", icon: Citrus },
+    { label: "Silový tréning", category: "move", icon: Dumbbell },
+    { label: "Rýchlejší beh", category: "move", icon: Zap },
+    { label: "Bicykel", category: "move", icon: Bike },
+    { label: "Plánuj nové", category: "do", icon: Sparkles },
+    { label: "Kreatívny projekt", category: "do", icon: Music },
+    { label: "Stretnutie s divami", category: "do", icon: Users },
   ],
   ovulacia: [
-    "Si na vrchole — skús osobný rekord alebo náročnejší tréning.",
-    "Skvelý čas na spoločenské aktivity a beh s komunitou.",
-    "Nezabudni na hydratáciu a antioxidanty (ovocie, zelenina).",
-    "Využi energiu naplno, ale telo po tréningu aj zregeneruj.",
+    { label: "Farebná zelenina", category: "eat", icon: Salad },
+    { label: "Hydratácia", category: "eat", icon: GlassWater },
+    { label: "Ľahké bielkoviny", category: "eat", icon: Fish },
+    { label: "Osobný rekord", category: "move", icon: Zap },
+    { label: "Skupinový tréning", category: "move", icon: Users },
+    { label: "Tanec", category: "move", icon: Music },
+    { label: "Spoločenské akcie", category: "do", icon: HeartHandshake },
+    { label: "Dôležité rozhovory", category: "do", icon: MessageCircle },
+    { label: "Sebavedomé kroky", category: "do", icon: Sparkles },
   ],
   lutealna: [
-    "Energia postupne klesá — striedaj pohyb s oddychom.",
-    "Zvoľ jemnejšie tempo: joga, plávanie, prechádzky v prírode.",
-    "Pomôže magnézium, komplexné sacharidy a menej kofeínu a soli.",
-    "Dopraj si viac spánku a rituály, ktoré ťa upokojujú.",
+    { label: "Horčík a orechy", category: "eat", icon: Nut },
+    { label: "Komplexné sacharidy", category: "eat", icon: Wheat },
+    { label: "Menej kofeínu", category: "eat", icon: Coffee },
+    { label: "Upokojujúci čaj", category: "eat", icon: Droplets },
+    { label: "Jemná joga", category: "move", icon: PersonStanding },
+    { label: "Plávanie", category: "move", icon: Waves },
+    { label: "Prechádzka v prírode", category: "move", icon: Footprints },
+    { label: "Viac spánku", category: "do", icon: Moon },
+    { label: "Upokojujúce rituály", category: "do", icon: Bath },
+    { label: "Menej záväzkov", category: "do", icon: Feather },
   ],
 };
 

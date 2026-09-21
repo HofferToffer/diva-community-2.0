@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
-import { getCycleInfo, formatCycleDate, CYCLE_PHASE_RECOMMENDATIONS } from "@/community/lib/cycle";
+import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
+import { CyclePhaseTips } from "@/community/components/CyclePhaseTips";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { RefreshCcw } from "lucide-react";
@@ -141,13 +142,11 @@ export default function CommunityCycle() {
 
               <div className="rounded-md border border-border bg-background/60 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Odporúčania pre túto fázu
+                  Tipy pre túto fázu
                 </p>
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-foreground/85">
-                  {CYCLE_PHASE_RECOMMENDATIONS[cycle.phaseKey].map((tip) => (
-                    <li key={tip}>{tip}</li>
-                  ))}
-                </ul>
+                <div className="mt-4">
+                  <CyclePhaseTips phase={cycle.phaseKey} />
+                </div>
               </div>
 
               <CycleCalendar lastPeriodDate={profile.last_period_date!} cycleLengthDays={profile.cycle_length_days ?? 28} />
