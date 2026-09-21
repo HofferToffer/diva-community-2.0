@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useMemo, useRef, useState } from "react";
 import { CalendarHeart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
 
@@ -32,22 +32,12 @@ export function CycleCalendar({
   onSelectPeriodStart?: (dateKey: string) => void;
 }) {
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
-  const [pendingDate, setPendingDate] = useState<Date | null>(null);
-  const pendingPanelRef = useRef<HTMLDivElement>(null);
+  const [pendingDateKey, setPendingDateKey] = useState<string | null>(null);
   const today = new Date();
-  const pendingPhase = pendingDate ? getCyclePhaseForDate(lastPeriodDate, cycleLengthDays, pendingDate) : null;
 
-  useEffect(() => {
-    if (!pendingDate) return;
-    requestAnimationFrame(() => {
-      pendingPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    });
-  }, [pendingDate]);
-
-  const confirmPendingDate = () => {
-    if (!pendingDate) return;
-    onSelectPeriodStart?.(toDateKey(pendingDate));
-    setPendingDate(null);
+  const confirmPendingDate = (date: Date) => {
+    onSelectPeriodStart?.(toDateKey(date));
+    setPendingDateKey(null);
   };
 
   const goToPrevMonth = () => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1));
@@ -110,19 +100,21 @@ export function CycleCalendar({
           <div key={i} className="grid grid-cols-7 gap-1">
             {week.map((cell, j) => {
               if (!cell) return <div key={j} aria-hidden="true" />;
-              const isPeriodStart = toDateKey(cell.date) === lastPeriodDate;
+              const dateKey = toDateKey(cell.date);
+              const isPeriodStart = dateKey === lastPeriodDate;
               const isPast = cell.date <= today;
               const canEdit = !!onSelectPeriodStart && isPast;
-              return (
+              const isPending = pendingDateKey === dateKey;
+
+              const dayButton = (
                 <button
-                  key={j}
                   type="button"
                   disabled={!canEdit}
                   title={cell.phase ? CYCLE_PHASES[cell.phase].name : undefined}
                   aria-label={`${cell.date.getDate()}. ${monthLabel}${isPeriodStart ? " — začiatok poslednej menštruácie" : ""}`}
-                  onClick={() => setPendingDate(cell.date)}
+                  onClick={() => setPendingDateKey(dateKey)}
                   className={cn(
-                    "flex aspect-square items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
+                    "flex aspect-square w-full items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
                     isSameDay(cell.date, today) && "font-semibold ring-2 ring-primary ring-offset-1 ring-offset-card",
                     isPeriodStart && "ring-2 ring-foreground ring-offset-1 ring-offset-card",
                     canEdit && "cursor-pointer hover:scale-110 hover:shadow-sm active:scale-95",
@@ -134,53 +126,47 @@ export function CycleCalendar({
                   {cell.date.getDate()}
                 </button>
               );
+
+              if (!canEdit) return <div key={j}>{dayButton}</div>;
+
+              return (
+                <Popover key={j} open={isPending} onOpenChange={(open) => !open && setPendingDateKey(null)}>
+                  <PopoverTrigger asChild>{dayButton}</PopoverTrigger>
+                  <PopoverContent className="w-64" align="center">
+                    <div className="flex items-center gap-3">
+                      <CalendarHeart className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                      <div className="min-w-0">
+                        <p className="font-display text-lg leading-tight">
+                          {new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(cell.date)}
+                        </p>
+                        {cell.phase && (
+                          <p className="text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[cell.phase].dot }}>
+                            {CYCLE_PHASES[cell.phase].name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
+                    </p>
+                    <div className="mt-3 flex gap-2">
+                      <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDateKey(null)}>
+                        Zrušiť
+                      </Button>
+                      <Button size="sm" className="flex-1" onClick={() => confirmPendingDate(cell.date)}>
+                        Nastaviť
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              );
             })}
           </div>
         ))}
         </div>
       </div>
 
-      <AnimatePresence>
-        {pendingDate && (
-          <motion.div
-            ref={pendingPanelRef}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="mt-4 rounded-lg bg-secondary/40 p-4">
-              <div className="flex items-center gap-3">
-                <CalendarHeart className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                <div className="min-w-0">
-                  <p className="font-display text-lg leading-tight">
-                    {new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(pendingDate)}
-                  </p>
-                  {pendingPhase && (
-                    <p className="text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[pendingPhase].dot }}>
-                      {CYCLE_PHASES[pendingPhase].name}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
-              </p>
-              <div className="mt-3 flex gap-2">
-                <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDate(null)}>
-                  Zrušiť
-                </Button>
-                <Button size="sm" className="flex-1" onClick={confirmPendingDate}>
-                  Nastaviť
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {onSelectPeriodStart && !pendingDate && (
+      {onSelectPeriodStart && (
         <p className="mt-3 text-xs text-muted-foreground">
           Ťukni na deň, kedy ti naozaj začala posledná menštruácia, ak sa líši od odhadu.
         </p>
