@@ -1,12 +1,45 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { blogPosts } from "@/data/blogPosts";
+import { blogPosts, type BlogPost as StaticBlogPost } from "@/data/blogPosts";
+import { useBlogPosts } from "@/community/hooks/queries";
 import blogHeroBeach from "@/assets/blog-hero-beach.jpg.asset.json";
 
+const SK_MONTHS: Record<string, number> = {
+  "január": 0, "februar": 1, "február": 1, "marec": 2, "april": 3, "apríl": 3,
+  "maj": 4, "máj": 4, "jun": 5, "jún": 5, "jul": 6, "júl": 6, "august": 7,
+  "september": 8, "oktober": 9, "október": 9, "november": 10, "december": 11,
+};
+
+function parseSkDate(date: string): number {
+  const m = date.trim().toLowerCase().match(/^(\d{1,2})\.\s*([^\s]+)\s+(\d{4})$/);
+  if (!m) return 0;
+  const day = parseInt(m[1], 10);
+  const month = SK_MONTHS[m[2]] ?? 0;
+  const year = parseInt(m[3], 10);
+  return new Date(year, month, day).getTime();
+}
+
 const Blog = () => {
+  const { data: dbPosts } = useBlogPosts(false);
+
+  const allPosts = useMemo(() => {
+    const fromDb: StaticBlogPost[] = (dbPosts ?? []).map((post) => ({
+      title: post.title,
+      excerpt: post.excerpt ?? "",
+      date: new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long", year: "numeric" }).format(
+        new Date(post.published_at ?? post.created_at),
+      ),
+      category: "",
+      image: post.cover_image_url ?? blogHeroBeach.url,
+      href: `/blog/${post.slug}`,
+    }));
+    return [...fromDb, ...blogPosts].sort((a, b) => parseSkDate(b.date) - parseSkDate(a.date));
+  }, [dbPosts]);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -56,9 +89,9 @@ const Blog = () => {
       {/* Posts */}
       <section className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24 py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {blogPosts.map((post, index) => (
+          {allPosts.map((post, index) => (
             <motion.article
-              key={post.title}
+              key={post.href}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

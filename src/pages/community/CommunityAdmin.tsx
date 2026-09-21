@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatTile } from "@/community/components/EmptyState";
 import AdminChallenges from "@/community/components/AdminChallenges";
@@ -80,6 +81,12 @@ export default function CommunityAdmin() {
           <p className="text-sm text-muted-foreground">Celá komunita na jednom mieste — čísla, členky a aktivita.</p>
         </div>
       </header>
+
+      <Section title="Blog">
+        <Button asChild className="w-full">
+          <Link to="/community/admin/blog">Spravovať blog</Link>
+        </Button>
+      </Section>
 
       <Section title="Výzvy">
         <AdminChallenges />

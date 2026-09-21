@@ -19,6 +19,7 @@ import CommunityCycle from "./community/CommunityCycle";
 import CommunityDivaKruh from "./community/CommunityDivaKruh";
 import CommunityStravaCallback from "./community/CommunityStravaCallback";
 import CommunityAdmin from "./community/CommunityAdmin";
+import CommunityAdminBlog from "./community/CommunityAdminBlog";
 
 function Loading() {
   return (
@@ -61,6 +62,7 @@ function CommunityRoutes() {
         <Route path="nastavenia" element={<CommunitySettings />} />
         <Route path="notifikacie" element={<CommunityNotifications />} />
         <Route path="admin" element={<CommunityAdmin />} />
+        <Route path="admin/blog" element={<CommunityAdminBlog />} />
         <Route path="strava/callback" element={<CommunityStravaCallback />} />
         <Route path="*" element={<Navigate to="/community" replace />} />
       </Routes>

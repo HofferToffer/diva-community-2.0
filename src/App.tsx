@@ -23,6 +23,7 @@ import BlogPost8 from "./pages/BlogPost8";
 import BlogPost9 from "./pages/BlogPost9";
 import BlogPost10 from "./pages/BlogPost10";
 import BlogPost11 from "./pages/BlogPost11";
+import BlogPostDynamic from "./pages/BlogPostDynamic";
 import CommunityApp from "./pages/CommunityApp";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/blog/15-rocny-sen" element={<BlogPost9 />} />
           <Route path="/blog/predstavte-si-zenu" element={<BlogPost10 />} />
           <Route path="/blog/moja-cesta-hlbsie-k-sebe" element={<BlogPost11 />} />
+          <Route path="/blog/:slug" element={<BlogPostDynamic />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/community/*" element={<CommunityApp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

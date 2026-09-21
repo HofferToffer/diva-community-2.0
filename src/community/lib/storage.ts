@@ -25,6 +25,19 @@ export async function uploadImage(bucket: "avatars" | "activity-photos", userId:
   return `${bucket}/${path}`;
 }
 
+/** Uploads to the public "blog-images" bucket and returns a permanent public URL. */
+export async function uploadBlogImage(file: File): Promise<string> {
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+  const path = `${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from("blog-images").upload(path, file, {
+    cacheControl: "31536000",
+    upsert: false,
+    contentType: file.type || "image/jpeg",
+  });
+  if (error) throw error;
+  return supabase.storage.from("blog-images").getPublicUrl(path).data.publicUrl;
+}
+
 /** Stored value is "bucket/path". Returns a temporary readable URL. */
 export async function resolveImageUrl(stored: string | null | undefined): Promise<string | null> {
   if (!stored) return null;

@@ -722,3 +722,89 @@ export function useToggleFriend(profileId: string | undefined) {
     },
   });
 }
+
+export type BlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  cover_image_url: string | null;
+  gallery_image_urls: string[];
+  published: boolean;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function useBlogPosts(includeUnpublished: boolean) {
+  return useQuery({
+    queryKey: ["blog-posts", includeUnpublished],
+    queryFn: async () => {
+      let query = supabase
+        .from("blog_posts")
+        .select("*")
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .order("created_at", { ascending: false });
+      if (!includeUnpublished) query = query.eq("published", true);
+      const { data, error } = await query;
+      if (error) throw error;
+      return (data ?? []) as BlogPost[];
+    },
+  });
+}
+
+export function useBlogPost(slug: string | undefined) {
+  return useQuery({
+    queryKey: ["blog-post", slug],
+    enabled: !!slug,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("blog_posts").select("*").eq("slug", slug!).maybeSingle();
+      if (error) throw error;
+      return data as BlogPost | null;
+    },
+  });
+}
+
+export type BlogPostInput = {
+  id?: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  cover_image_url: string | null;
+  gallery_image_urls: string[];
+  published: boolean;
+  published_at: string | null;
+};
+
+export function useSaveBlogPost() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (post: BlogPostInput) => {
+      const { id, ...rest } = post;
+      if (id) {
+        const { error } = await supabase.from("blog_posts").update(rest).eq("id", id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("blog_posts").insert(rest);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
+      queryClient.invalidateQueries({ queryKey: ["blog-post"] });
+    },
+  });
+}
+
+export function useDeleteBlogPost() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("blog_posts").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["blog-posts"] }),
+  });
+}
