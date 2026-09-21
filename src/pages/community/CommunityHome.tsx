@@ -11,6 +11,7 @@ import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, us
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
+import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
 
 function GreetingAvatar({ name, path }: { name?: string | null; path: string | null | undefined }) {
   const url = useSignedImage(path);
@@ -113,6 +114,13 @@ export default function CommunityHome() {
           </p>
           <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+          <div className="mt-4">
+            <CyclePhaseWave
+              dayOfCycle={cycle.dayOfCycle}
+              cycleLengthDays={profile?.cycle_length_days ?? 28}
+              phaseKey={cycle.phaseKey}
+            />
+          </div>
         </Link>
       )}
 
