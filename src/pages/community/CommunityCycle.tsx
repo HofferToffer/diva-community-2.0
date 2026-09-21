@@ -14,6 +14,7 @@ import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
 import { MENOPAUSE_TIPS } from "@/community/lib/menopause";
 import { ConfettiBurst } from "@/community/components/ConfettiBurst";
+import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -135,7 +136,7 @@ export default function CommunityCycle() {
       </Link>
 
       <motion.header {...fadeUp(0)} className="space-y-1">
-        <h1 className="font-display text-3xl">Môj cyklus</h1>
+        <h1 className="font-display text-3xl">{PHASE_LABEL[getLifePhase(profile)]}</h1>
         <p className="text-sm text-muted-foreground">
           Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie.
         </p>

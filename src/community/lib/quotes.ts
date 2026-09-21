@@ -137,3 +137,12 @@ export function getLifePhase(profile: ProfileLifeFlags | null | undefined): Life
   if (profile.is_trying_to_conceive) return "trying";
   return "cycle";
 }
+
+/** How each life phase's chapter is named across the app (nav, page titles). */
+export const PHASE_LABEL: Record<LifePhase, string> = {
+  cycle: "Môj cyklus",
+  trying: "Cesta k bábätku",
+  pregnant: "Moje tehotenstvo",
+  postpartum: "Šestonedelie / Obnova",
+  menopause: "Moja menopauza",
+};

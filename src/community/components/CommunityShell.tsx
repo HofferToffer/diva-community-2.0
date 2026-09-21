@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCommunityAuth } from "../context/CommunityAuthProvider";
 import { useIsAdmin, useNotifications } from "../hooks/queries";
 import { ProfileAvatar } from "./StoredImage";
+import { getLifePhase, PHASE_LABEL } from "../lib/quotes";
 
 
 const NAV = [
@@ -39,9 +40,11 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   const { profile, signOut } = useCommunityAuth();
   const { data: notifications } = useNotifications(profile?.id);
   const { data: isAdmin } = useIsAdmin();
+  const chapterLabel = PHASE_LABEL[getLifePhase(profile)];
+  const baseNav = NAV.map((item) => (item.to === "/community/cyklus" ? { ...item, label: chapterLabel } : item));
   const nav = isAdmin
-    ? [...NAV, { to: "/community/admin", label: "Admin", icon: ShieldCheck, end: false }]
-    : NAV;
+    ? [...baseNav, { to: "/community/admin", label: "Admin", icon: ShieldCheck, end: false }]
+    : baseNav;
   const unread = notifications?.filter((n) => !n.read_at).length ?? 0;
   const location = useLocation();
   const navigate = useNavigate();
