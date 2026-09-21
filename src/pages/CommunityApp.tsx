@@ -22,6 +22,7 @@ import CommunityDivaKruh from "./community/CommunityDivaKruh";
 import CommunityStravaCallback from "./community/CommunityStravaCallback";
 import CommunityAdmin from "./community/CommunityAdmin";
 import CommunityAdminBlog from "./community/CommunityAdminBlog";
+import CommunityDailyQuote from "./community/CommunityDailyQuote";
 
 const DIVA_LETTERS = ["D", "I", "V", "A"];
 
@@ -76,6 +77,7 @@ function CommunityRoutes() {
         <Route path="pocit" element={<CommunityDailyFeeling />} />
         <Route path="pocit/historia" element={<CommunityFeelingHistory />} />
         <Route path="cyklus" element={<CommunityCycle />} />
+        <Route path="citat" element={<CommunityDailyQuote />} />
         <Route path="challenges" element={<CommunityChallenges />} />
         <Route path="challenges/:id" element={<CommunityChallengeDetail />} />
         <Route path="divy" element={<CommunityDivy />} />

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Route, Activity, HeartPulse, type LucideIcon } from "lucide-react";
+import { Route, Activity, HeartPulse, Quote, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
@@ -124,6 +124,21 @@ export default function CommunityHome() {
           <Link to="/community/pridat/run">Pridať aktivitu</Link>
         </Button>
       </motion.section>
+
+      <motion.div {...fadeUp(3)}>
+        <Link
+          to="/community/citat"
+          className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/40"
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Quote className="h-4 w-4" aria-hidden="true" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
+            <p className="truncate text-sm text-foreground">Pozri a zdieľaj na Instagram</p>
+          </div>
+        </Link>
+      </motion.div>
 
       {cycle && (
         <motion.div {...fadeUp(4)}>
