@@ -21,6 +21,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
   const [bio, setBio] = useState(profile?.bio ?? "");
   const [gifts, setGifts] = useState(profile?.gifts ?? "");
   const [city, setCity] = useState(profile?.city ?? "");
+  const [dateOfBirth, setDateOfBirth] = useState(profile?.date_of_birth ?? "");
   const [interests, setInterests] = useState<string[]>(profile?.interests ?? []);
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
@@ -92,6 +93,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           bio: bio.trim() || null,
           gifts: gifts.trim() || null,
           city: city.trim() || null,
+          date_of_birth: dateOfBirth || null,
           interests,
           is_public: isPublic,
           notify_likes: notifyLikes,
@@ -147,6 +149,19 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
         <div className="space-y-2">
           <Label htmlFor="s-city">Mesto</Label>
           <Input id="s-city" value={city} onChange={(e) => setCity(e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="s-dob">Dátum narodenia (nepovinné)</Label>
+          <Input
+            id="s-dob"
+            type="date"
+            max={new Date().toISOString().slice(0, 10)}
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
+          />
+          <p className="text-xs text-muted-foreground">
+            Podľa toho ti na Domove ukážeme tvoj životný archetyp. Vidíš to len ty.
+          </p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="s-bio">O mne</Label>

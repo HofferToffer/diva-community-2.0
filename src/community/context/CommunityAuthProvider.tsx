@@ -26,6 +26,7 @@ export type Profile = {
   is_postpartum: boolean;
   postpartum_since: string | null;
   is_trying_to_conceive: boolean;
+  date_of_birth: string | null;
   created_at: string;
 };
 

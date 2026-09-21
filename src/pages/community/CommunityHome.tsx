@@ -15,6 +15,7 @@ import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/li
 import { getCycleInfo } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
+import { getArchetype } from "@/community/lib/archetype";
 import { quoteForDate } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
@@ -74,6 +75,11 @@ export default function CommunityHome() {
   const postpartum = useMemo(
     () => (profile?.is_postpartum && profile?.postpartum_since ? getPostpartumInfo(profile.postpartum_since) : null),
     [profile?.is_postpartum, profile?.postpartum_since],
+  );
+
+  const archetype = useMemo(
+    () => (profile?.date_of_birth ? getArchetype(profile.date_of_birth) : null),
+    [profile?.date_of_birth],
   );
 
   return (
@@ -168,6 +174,18 @@ export default function CommunityHome() {
               />
             </div>
           </Link>
+        </motion.div>
+      )}
+
+      {archetype && (
+        <motion.div {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+            Tvoj archetyp · {archetype.season}
+          </p>
+          <h2 className="mt-1 font-display text-2xl text-primary">{archetype.name}</h2>
+          <p className="mt-1 text-xs text-muted-foreground">{archetype.ageRange}</p>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{archetype.description}</p>
+          <p className="mt-2 text-sm leading-relaxed text-foreground/85">{archetype.energyNote}</p>
         </motion.div>
       )}
 

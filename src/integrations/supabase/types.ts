@@ -681,6 +681,7 @@ export type Database = {
           is_postpartum: boolean
           postpartum_since: string | null
           is_trying_to_conceive: boolean
+          date_of_birth: string | null
           last_period_date: string | null
           name: string
           notify_challenges: boolean
@@ -708,6 +709,7 @@ export type Database = {
           is_postpartum?: boolean
           postpartum_since?: string | null
           is_trying_to_conceive?: boolean
+          date_of_birth?: string | null
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
@@ -735,6 +737,7 @@ export type Database = {
           is_postpartum?: boolean
           postpartum_since?: string | null
           is_trying_to_conceive?: boolean
+          date_of_birth?: string | null
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
