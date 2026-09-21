@@ -1,7 +1,7 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Bell, ChevronDown, Circle, HeartPulse, History, Home, Menu, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy } from "lucide-react";
+import { Bell, ChevronDown, Circle, HeartPulse, History, Home, LogOut, Menu, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,7 +35,7 @@ const NAV = [
 
 
 export function CommunityShell({ children }: { children: ReactNode }) {
-  const { profile } = useCommunityAuth();
+  const { profile, signOut } = useCommunityAuth();
   const { data: notifications } = useNotifications(profile?.id);
   const { data: isAdmin } = useIsAdmin();
   const nav = isAdmin
@@ -351,9 +351,23 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                 />
               )}
             </Link>
-            <Link to="/community/profil" aria-label="Môj profil">
-              <ProfileAvatar path={profile?.avatar_url} name={profile?.name ?? "Diva"} size={32} />
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger aria-label="Účet" className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <ProfileAvatar path={profile?.avatar_url} name={profile?.name ?? "Diva"} size={32} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/community/profil" className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" aria-hidden="true" />
+                    Môj profil
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-destructive focus:text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
+                  Odhlásiť sa
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
