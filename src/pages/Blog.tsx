@@ -27,17 +27,20 @@ const Blog = () => {
   const { data: dbPosts } = useBlogPosts(false);
 
   const allPosts = useMemo(() => {
-    const fromDb: StaticBlogPost[] = (dbPosts ?? []).map((post) => ({
-      title: post.title,
-      excerpt: post.excerpt ?? "",
-      date: new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long", year: "numeric" }).format(
-        new Date(post.published_at ?? post.created_at),
-      ),
-      category: "",
-      image: post.cover_image_url ?? blogHeroBeach.url,
-      href: `/blog/${post.slug}`,
-    }));
-    return [...fromDb, ...blogPosts].sort((a, b) => parseSkDate(b.date) - parseSkDate(a.date));
+    const fromDb: (StaticBlogPost & { sortTs: number })[] = (dbPosts ?? []).map((post) => {
+      const ts = new Date(post.published_at ?? post.created_at).getTime();
+      return {
+        title: post.title,
+        excerpt: post.excerpt ?? "",
+        date: new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long", year: "numeric" }).format(ts),
+        category: "",
+        image: post.cover_image_url ?? blogHeroBeach.url,
+        href: `/blog/${post.slug}`,
+        sortTs: ts,
+      };
+    });
+    const fromStatic = blogPosts.map((post) => ({ ...post, sortTs: parseSkDate(post.date) }));
+    return [...fromDb, ...fromStatic].sort((a, b) => b.sortTs - a.sortTs);
   }, [dbPosts]);
 
   return (
