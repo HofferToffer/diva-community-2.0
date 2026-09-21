@@ -1,0 +1,101 @@
+import quoteBg1 from "@/assets/quotes/quote-bg-1.jpg";
+import quoteBg2 from "@/assets/quotes/quote-bg-2.jpg";
+import quoteBg3 from "@/assets/quotes/quote-bg-3.jpg";
+import quoteBg4 from "@/assets/quotes/quote-bg-4.jpg";
+import quoteBg5 from "@/assets/quotes/quote-bg-5.jpg";
+import quoteBg6 from "@/assets/quotes/quote-bg-6.jpg";
+import quoteBg7 from "@/assets/quotes/quote-bg-7.jpg";
+import quoteBg8 from "@/assets/quotes/quote-bg-8.jpg";
+import quoteBg9 from "@/assets/quotes/quote-bg-9.jpg";
+import quoteBg10 from "@/assets/quotes/quote-bg-10.jpg";
+
+export const QUOTE_BACKGROUNDS = [
+  quoteBg1,
+  quoteBg2,
+  quoteBg3,
+  quoteBg4,
+  quoteBg5,
+  quoteBg6,
+  quoteBg7,
+  quoteBg8,
+  quoteBg9,
+  quoteBg10,
+];
+
+export const CARD_W = 1080;
+export const CARD_H = 1920;
+
+export function defaultBgIndex(): number {
+  const start = new Date(new Date().getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((Date.now() - start.getTime()) / 86400000);
+  return dayOfYear % QUOTE_BACKGROUNDS.length;
+}
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+function wrapLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+  const words = text.split(" ");
+  const lines: string[] = [];
+  let current = "";
+  for (const word of words) {
+    const test = current ? `${current} ${word}` : word;
+    if (ctx.measureText(test).width > maxWidth && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = test;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+export async function drawQuoteCard(canvas: HTMLCanvasElement, quote: string, bgSrc: string) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const img = await loadImage(bgSrc);
+  const scale = Math.max(CARD_W / img.width, CARD_H / img.height);
+  const drawW = img.width * scale;
+  const drawH = img.height * scale;
+  ctx.drawImage(img, (CARD_W - drawW) / 2, (CARD_H - drawH) / 2, drawW, drawH);
+
+  const overlay = ctx.createLinearGradient(0, 0, 0, CARD_H);
+  overlay.addColorStop(0, "rgba(30, 20, 20, 0.35)");
+  overlay.addColorStop(0.55, "rgba(20, 12, 12, 0.55)");
+  overlay.addColorStop(1, "rgba(15, 8, 8, 0.75)");
+  ctx.fillStyle = overlay;
+  ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+  ctx.fillStyle = "hsl(40, 30%, 96%)";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = "italic 600 72px 'Cormorant Garamond', serif";
+
+  const maxWidth = CARD_W - 200;
+  const lines = wrapLines(ctx, `"${quote}"`, maxWidth);
+  const lineHeight = 92;
+  const centerY = CARD_H * 0.62;
+  const startY = centerY - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((line, i) => ctx.fillText(line, CARD_W / 2, startY + i * lineHeight));
+
+  const ruleY = startY + lines.length * lineHeight + 8;
+  ctx.strokeStyle = "hsl(344, 55%, 72%)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(CARD_W / 2 - 60, ruleY);
+  ctx.lineTo(CARD_W / 2 + 60, ruleY);
+  ctx.stroke();
+
+  ctx.font = "500 32px 'Josefin Sans', sans-serif";
+  ctx.fillStyle = "hsl(40, 30%, 96%)";
+  ctx.fillText("D I V A   C O M M U N I T Y", CARD_W / 2, CARD_H - 130);
+}

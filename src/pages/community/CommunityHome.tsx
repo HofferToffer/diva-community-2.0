@@ -1,18 +1,20 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Route, Activity, HeartPulse, Quote, type LucideIcon } from "lucide-react";
+import { Route, Activity, HeartPulse, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { ActivityCard } from "@/community/components/ActivityCard";
 import { EmptyState } from "@/community/components/EmptyState";
+import { QuoteCard } from "@/community/components/QuoteCard";
 import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
+import { quoteForDate } from "@/community/lib/quotes";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
 
 const fadeUp = (i: number) => ({
@@ -125,20 +127,18 @@ export default function CommunityHome() {
         </Button>
       </motion.section>
 
-      <motion.div {...fadeUp(3)}>
+      <motion.section {...fadeUp(3)} className="rounded-lg border border-border bg-card p-5">
+        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
+        <div className="mt-3">
+          <QuoteCard quote={quoteForDate()} variant="compact" />
+        </div>
         <Link
           to="/community/citat"
-          className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/40"
+          className="mt-3 block text-center text-xs text-muted-foreground hover:text-foreground"
         >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Quote className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
-            <p className="truncate text-sm text-foreground">Pozri a zdieľaj na Instagram</p>
-          </div>
+          Vlastná fotka a ďalšie možnosti →
         </Link>
-      </motion.div>
+      </motion.section>
 
       {cycle && (
         <motion.div {...fadeUp(4)}>
