@@ -41,6 +41,20 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+/**
+ * Photos from phones carry an EXIF orientation tag; drawing them to canvas
+ * via a plain <img> ignores it on some browsers (notably iOS Safari), which
+ * is why an uploaded portrait photo can come out sideways/"crooked". Decoding
+ * through createImageBitmap with imageOrientation: "from-image" applies the
+ * tag correctly before it ever reaches the canvas.
+ */
+function loadBackgroundImage(bg: string | File): Promise<HTMLImageElement | ImageBitmap> {
+  if (bg instanceof File) {
+    return createImageBitmap(bg, { imageOrientation: "from-image" });
+  }
+  return loadImage(bg);
+}
+
 function wrapLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const words = text.split(" ");
   const lines: string[] = [];
@@ -58,11 +72,11 @@ function wrapLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number
   return lines;
 }
 
-export async function drawQuoteCard(canvas: HTMLCanvasElement, quote: string, bgSrc: string) {
+export async function drawQuoteCard(canvas: HTMLCanvasElement, quote: string, bgSrc: string | File) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const img = await loadImage(bgSrc);
+  const img = await loadBackgroundImage(bgSrc);
   const scale = Math.max(CARD_W / img.width, CARD_H / img.height);
   const drawW = img.width * scale;
   const drawH = img.height * scale;

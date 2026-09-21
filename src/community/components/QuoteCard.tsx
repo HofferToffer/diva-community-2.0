@@ -14,7 +14,7 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [bgIndex, setBgIndex] = useState(defaultBgIndex);
-  const [customBg, setCustomBg] = useState<string | null>(null);
+  const [customBg, setCustomBg] = useState<File | null>(null);
   const [sharing, setSharing] = useState(false);
   const activeBg = customBg ?? QUOTE_BACKGROUNDS[bgIndex];
 
@@ -26,12 +26,6 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
     if (fonts?.ready) fonts.ready.then(draw);
     else draw();
   }, [quote, activeBg]);
-
-  useEffect(() => {
-    return () => {
-      if (customBg) URL.revokeObjectURL(customBg);
-    };
-  }, [customBg]);
 
   const getBlob = () =>
     new Promise<Blob | null>((resolve) => canvasRef.current?.toBlob((blob) => resolve(blob), "image/png"));
@@ -75,10 +69,7 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    setCustomBg((prev) => {
-      if (prev) URL.revokeObjectURL(prev);
-      return URL.createObjectURL(file);
-    });
+    setCustomBg(file);
   };
 
   return (
