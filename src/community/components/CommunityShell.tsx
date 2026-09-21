@@ -362,7 +362,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                     Môj profil
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-destructive focus:text-destructive">
+                <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-primary focus:text-primary">
                   <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
                   Odhlásiť sa
                 </DropdownMenuItem>
