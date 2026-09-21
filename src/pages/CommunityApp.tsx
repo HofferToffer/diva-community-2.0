@@ -23,17 +23,24 @@ import CommunityStravaCallback from "./community/CommunityStravaCallback";
 import CommunityAdmin from "./community/CommunityAdmin";
 import CommunityAdminBlog from "./community/CommunityAdminBlog";
 
+const DIVA_LETTERS = ["D", "I", "V", "A"];
+
 function Loading() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <motion.p
-        className="font-display text-2xl tracking-[0.2em] text-muted-foreground"
-        initial={{ opacity: 0.4, scale: 0.97 }}
-        animate={{ opacity: [0.4, 1, 0.4], scale: [0.97, 1.02, 0.97] }}
-        transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        DIVA
-      </motion.p>
+      <div className="flex font-display text-2xl tracking-[0.2em] text-muted-foreground">
+        {DIVA_LETTERS.map((letter, i) => (
+          <motion.span
+            key={i}
+            className="inline-block"
+            initial={{ y: 0, opacity: 0.4 }}
+            animate={{ y: [0, -10, 0], opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.16 }}
+          >
+            {letter}
+          </motion.span>
+        ))}
+      </div>
     </div>
   );
 }
@@ -45,7 +52,7 @@ function CommunityRoutes() {
   // Keep the DIVA screen up for a moment even if auth resolves instantly, so it's felt, not just flashed.
   const [minSplashDone, setMinSplashDone] = useState(false);
   useEffect(() => {
-    const timer = setTimeout(() => setMinSplashDone(true), 1800);
+    const timer = setTimeout(() => setMinSplashDone(true), 3200);
     return () => clearTimeout(timer);
   }, []);
 
