@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Bell, ChevronDown, Circle, HeartPulse, History, Home, LogOut, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
+import { Bell, ChevronDown, Circle, Globe, HeartPulse, History, Home, LogOut, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -80,6 +80,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   const [refreshing, setRefreshing] = useState(false);
   const wheelAccum = useRef(0);
   const [swipeX, setSwipeX] = useState(0);
+  const [swipeSettling, setSwipeSettling] = useState(false);
   const canSwipeBack = location.pathname !== "/community";
 
   // Own in-app navigation stack, so swipe-back always steps to the actual
@@ -175,14 +176,18 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
   // Native touch listeners (pointer events get cancelled by browser overscroll on mobile)
   useEffect(() => {
+    const SWIPE_COMPLETE_THRESHOLD = 90;
+    const SWIPE_LIVE_CAP = 220; // how far the page visually travels under the finger
     let startY: number | null = null;
     let startX: number | null = null;
     let axis: "x" | "y" | null = null;
+    let lastDx = 0;
 
     const onTouchStart = (e: TouchEvent) => {
       startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
       startX = e.touches[0].clientX;
       axis = null;
+      lastDx = 0;
     };
 
     const onTouchMove = (e: TouchEvent) => {
@@ -195,12 +200,14 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       // not just from a thin edge strip.
       if (axis === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
         axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+        if (axis === "x") setSwipeSettling(false); // live 1:1 tracking, no CSS transition lag
       }
 
       if (axis === "x") {
         if (!canSwipeBackRef.current || dx <= 0) return;
         if (e.cancelable) e.preventDefault();
-        setSwipeX(Math.min(dx, 120));
+        lastDx = Math.min(dx, SWIPE_LIVE_CAP);
+        setSwipeX(lastDx);
       } else if (axis === "y") {
         if (startY === null) return;
         if (window.scrollY > 0) {
@@ -217,10 +224,16 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
     const onTouchEnd = () => {
       if (axis === "x") {
-        setSwipeX((current) => {
-          if (current >= 80) goBackRef.current();
-          return 0;
-        });
+        setSwipeSettling(true); // release: animate the rest of the way, don't jump
+        if (lastDx >= SWIPE_COMPLETE_THRESHOLD) {
+          setSwipeX(window.innerWidth);
+          setTimeout(() => {
+            goBackRef.current();
+            setSwipeX(0);
+          }, 220);
+        } else {
+          setSwipeX(0);
+        }
       } else if (startY !== null) {
         setPull((current) => {
           if (current >= 70) void triggerRefreshRef.current();
@@ -230,6 +243,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       startY = null;
       startX = null;
       axis = null;
+      lastDx = 0;
     };
 
     window.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -260,7 +274,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
         <div className="relative mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
           <div className="flex items-center">
-            <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="DIVA Community web">
+            <Link to="/community" className="flex shrink-0 items-center gap-2" aria-label="Domov appky">
               <Home className="h-5 w-5 text-foreground" aria-hidden="true" />
               <span className="font-heading text-sm uppercase tracking-[0.2em] text-foreground">Diva</span>
             </Link>
@@ -388,6 +402,17 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                     )}
                   </motion.div>
                   ))}
+                  <div className="mt-2 border-t border-border pt-2">
+                    <SheetClose asChild>
+                      <Link
+                        to="/"
+                        className="flex items-center gap-3 whitespace-nowrap rounded-md px-3 py-3 text-sm uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        <Globe className="h-4 w-4 shrink-0" aria-hidden="true" />
+                        Späť na divacommunity.sk
+                      </Link>
+                    </SheetClose>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -428,6 +453,12 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                     Môj profil
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/" className="cursor-pointer">
+                    <Globe className="mr-2 h-4 w-4" aria-hidden="true" />
+                    Späť na divacommunity.sk
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-primary focus:text-primary">
                   <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
                   Odhlásiť sa
@@ -453,8 +484,14 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
       <main
         key={location.pathname}
-        className={cn("mx-auto max-w-2xl px-4 py-6", swipeX === 0 && "transition-transform duration-200")}
-        style={swipeX ? { transform: `translateX(${swipeX}px)` } : undefined}
+        className="mx-auto max-w-2xl px-4 py-6"
+        style={{
+          transform: swipeX ? `translateX(${swipeX}px)` : undefined,
+          opacity: swipeX ? Math.max(0.75, 1 - Math.min(swipeX / 90, 1) * 0.25) : undefined,
+          transition: swipeSettling
+            ? "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms cubic-bezier(0.22, 1, 0.36, 1)"
+            : "none",
+        }}
       >
         <motion.div
           initial={{ opacity: 0, y: 14 }}
