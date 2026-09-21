@@ -48,11 +48,18 @@ export function CycleCalendar({
   const goToPrevMonth = () => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1));
   const goToNextMonth = () => setMonthCursor((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1));
 
+  // Swiping over the calendar changes month, not "go back" — stop the touch
+  // from bubbling up to the app-wide swipe-back listener on window.
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   };
+  const onTouchMove = (e: React.TouchEvent) => {
+    e.stopPropagation();
+  };
   const onTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation();
     if (!touchStart.current) return;
     const dx = e.changedTouches[0].clientX - touchStart.current.x;
     const dy = e.changedTouches[0].clientY - touchStart.current.y;
@@ -93,7 +100,7 @@ export function CycleCalendar({
         </Button>
       </div>
 
-      <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <div onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
         <div className="mt-4 grid grid-cols-7 gap-1 text-center text-[0.65rem] uppercase tracking-wide text-muted-foreground">
           {WEEKDAYS.map((day) => (
             <span key={day}>{day}</span>

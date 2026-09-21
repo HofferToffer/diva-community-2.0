@@ -159,16 +159,13 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
   // Native touch listeners (pointer events get cancelled by browser overscroll on mobile)
   useEffect(() => {
-    const EDGE_ZONE = 56; // px from the left edge where a back-swipe can start, like iOS/Instagram
     let startY: number | null = null;
     let startX: number | null = null;
-    let fromEdge = false;
     let axis: "x" | "y" | null = null;
 
     const onTouchStart = (e: TouchEvent) => {
       startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
       startX = e.touches[0].clientX;
-      fromEdge = startX <= EDGE_ZONE;
       axis = null;
     };
 
@@ -178,8 +175,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       const dx = touch.clientX - startX;
       const dy = startY !== null ? touch.clientY - startY : 0;
 
+      // Swipe right from anywhere on screen goes back, like Instagram —
+      // not just from a thin edge strip.
       if (axis === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-        axis = fromEdge && Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
       }
 
       if (axis === "x") {
@@ -214,7 +213,6 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       }
       startY = null;
       startX = null;
-      fromEdge = false;
       axis = null;
     };
 
