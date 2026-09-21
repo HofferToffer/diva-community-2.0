@@ -1,6 +1,7 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { type StripeEnv, createStripeClient } from "../_shared/stripe.ts";
+import { sendTransactionalTemplate } from "../_shared/transactional-email-templates/send.ts";
 
 // Called from the checkout return page after a successful card payment.
 // Records the paid order and sends the summary email to the shop owner.
