@@ -34,6 +34,7 @@ export type CycleInfo = {
   dayOfCycle: number;
   phaseKey: CyclePhaseKey;
   phase: { name: string; description: string };
+  subPhase: { key: string; name: string; description: string };
   nextPeriodDate: Date;
   nextOvulationDate: Date;
   daysUntilNextPeriod: number;
@@ -43,6 +44,74 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 function toDateOnly(value: Date) {
   return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+}
+
+/**
+ * Finer breakdown within each of the 4 broad phases — e.g. early vs. late luteal feel very
+ * different (PMS is concentrated at the end), so the summary card shouldn't lump them together.
+ * The luteal range is split proportionally to the person's actual cycle length.
+ */
+function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key: string; name: string; description: string } {
+  if (dayOfCycle <= 2) {
+    return {
+      key: "menstruacna_tazke_dni",
+      name: "Menštruácia — ťažké dni",
+      description: "Prvé dni bývajú najnáročnejšie, energia je najnižšia. Telo si žiada teplo, pokoj a nič si nemusíš dokazovať.",
+    };
+  }
+  if (dayOfCycle <= 5) {
+    return {
+      key: "menstruacna_doznievanie",
+      name: "Menštruácia — doznievanie",
+      description: "Krvácanie slabne a energia sa pomaly vracia. Skús ľahký pohyb, ak naň máš chuť, no netlač na seba.",
+    };
+  }
+  if (dayOfCycle <= 9) {
+    return {
+      key: "folikularna_rozbeh",
+      name: "Folikulárna — rozbeh",
+      description: "Hormóny stúpajú a hlava sa čistí. Ideálny čas naštartovať nové plány, nápady a projekty.",
+    };
+  }
+  if (dayOfCycle <= 12) {
+    return {
+      key: "folikularna_vrchol",
+      name: "Folikulárna — vrchol energie",
+      description: "Energia, sebadôvera aj výkon rastú. Telo teraz zvládne náročnejší tréning aj väčšiu záťaž.",
+    };
+  }
+  if (dayOfCycle <= 16) {
+    return {
+      key: "ovulacia",
+      name: "Ovulácia",
+      description: "Si na vrchole cyklu — energia, sebavedomie aj chuť na spoločnosť sú najvyššie. Ideálny čas na osobné rekordy.",
+    };
+  }
+
+  const length = Math.min(Math.max(Math.round(cycleLengthDays), 21), 40);
+  const lutealStart = 17;
+  const lutealLength = Math.max(length - lutealStart + 1, 3);
+  const third = Math.ceil(lutealLength / 3);
+
+  if (dayOfCycle <= lutealStart + third - 1) {
+    return {
+      key: "lutealna_stabilna",
+      name: "Luteálna — stabilná",
+      description: "Energia je ešte dobrá, no postupne sa spomaľuje. Skvelý čas dokončiť rozbehnuté veci pred spomalením.",
+    };
+  }
+  if (dayOfCycle <= lutealStart + 2 * third - 1) {
+    return {
+      key: "lutealna_premenliva",
+      name: "Luteálna — premenlivá",
+      description: "Nálady môžu kolísať a telo je citlivejšie. Buď na seba trpezlivá a nezaraďuj náročné veci na neskôr.",
+    };
+  }
+  return {
+    key: "lutealna_neskora",
+    name: "Luteálna — neskorá (PMS)",
+    description: "Energia je najnižšia a PMS môže byť najsilnejšie cítiť. Zvoľ pokoj, jemnosť a čo najmenej záväzkov.",
+  };
 }
 
 export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number): CycleInfo | null {
@@ -87,7 +156,9 @@ export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number): C
   const phaseKey: CyclePhaseKey =
     dayOfCycle <= 5 ? "menstruacna" : dayOfCycle <= 12 ? "folikularna" : dayOfCycle <= 16 ? "ovulacia" : "lutealna";
 
-  return { dayOfCycle, phaseKey, phase, nextPeriodDate, nextOvulationDate, daysUntilNextPeriod };
+  const subPhase = getDetailedSubPhase(dayOfCycle, length);
+
+  return { dayOfCycle, phaseKey, phase, subPhase, nextPeriodDate, nextOvulationDate, daysUntilNextPeriod };
 }
 
 export type CyclePhaseKey = "menstruacna" | "folikularna" | "ovulacia" | "lutealna";

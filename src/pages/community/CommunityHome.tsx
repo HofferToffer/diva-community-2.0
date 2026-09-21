@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,6 +10,7 @@ import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
+import { getCycleInfo } from "@/community/lib/cycle";
 
 function GreetingAvatar({ name, path }: { name?: string | null; path: string | null | undefined }) {
   const url = useSignedImage(path);
@@ -61,6 +63,14 @@ export default function CommunityHome() {
       ? Math.min(100, Math.round(((challengeProgress?.progress ?? 0) / challenge.goal) * 100))
       : 0;
 
+  const cycle = useMemo(
+    () =>
+      profile?.last_period_date
+        ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
+        : null,
+    [profile?.last_period_date, profile?.cycle_length_days],
+  );
+
   return (
     <div className="space-y-8">
       <section className="relative rounded-lg border border-border bg-card px-6 py-6">
@@ -92,6 +102,19 @@ export default function CommunityHome() {
           <Link to="/community/pridat/run">Pridať aktivitu</Link>
         </Button>
       </section>
+
+      {cycle && (
+        <Link
+          to="/community/cyklus"
+          className="block rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
+        >
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+            {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
+          </p>
+          <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+        </Link>
+      )}
 
       {challenge && (
         <section className="relative overflow-hidden rounded-lg border border-border bg-card p-5">

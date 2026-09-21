@@ -301,8 +301,9 @@ export default function CommunityProfile() {
             </div>
           ) : (
             <>
-              <p className="font-medium text-primary">{cycle.phase.name}</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">{cycle.phase.description}</p>
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">{cycle.phase.name}</p>
+              <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="rounded-md border border-border p-3">
                   <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
