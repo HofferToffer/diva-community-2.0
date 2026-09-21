@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   CYCLE_PHASE_TIPS,
@@ -26,12 +27,15 @@ export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter tipov">
         {FILTERS.map((item) => (
-          <button
+          <motion.button
             key={item.key}
             type="button"
             role="tab"
             aria-selected={filter === item.key}
             onClick={() => setFilter(item.key)}
+            whileTap={{ scale: 0.94 }}
+            animate={{ scale: filter === item.key ? 1.05 : 1 }}
+            transition={{ duration: 0.2 }}
             className={cn(
               "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
               filter === item.key
@@ -40,27 +44,38 @@ export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
             )}
           >
             {item.label}
-          </button>
+          </motion.button>
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4">
-        {visible.map((tip) => {
-          const Icon = tip.icon;
-          return (
-            <div key={tip.label} className="flex flex-col items-center gap-2 text-center">
-              <span
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
-                style={{ background: softFill }}
-                aria-hidden="true"
+      <motion.div layout className="grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4">
+        <AnimatePresence initial={false}>
+          {visible.map((tip, i) => {
+            const Icon = tip.icon;
+            return (
+              <motion.div
+                key={tip.label}
+                layout
+                initial={{ opacity: 0, scale: 0.7, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.7 }}
+                transition={{ duration: 0.35, delay: i * 0.03, ease: "easeOut" }}
+                whileTap={{ scale: 0.92 }}
+                className="flex flex-col items-center gap-2 text-center"
               >
-                <Icon className="h-6 w-6" style={{ color: color.dot }} />
-              </span>
-              <p className="text-xs leading-tight text-foreground/85">{tip.label}</p>
-            </div>
-          );
-        })}
-      </div>
+                <span
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: softFill }}
+                  aria-hidden="true"
+                >
+                  <Icon className="h-6 w-6" style={{ color: color.dot }} />
+                </span>
+                <p className="text-xs leading-tight text-foreground/85">{tip.label}</p>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
