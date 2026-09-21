@@ -274,7 +274,11 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
         <div className="relative mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
           <div className="flex items-center">
-            <Link to="/community" className="flex shrink-0 items-center gap-2" aria-label="Domov appky">
+            <Link to="/community" className="flex shrink-0 items-center gap-2 lg:hidden" aria-label="Domov appky">
+              <Home className="h-5 w-5 text-foreground" aria-hidden="true" />
+              <span className="font-heading text-sm uppercase tracking-[0.2em] text-foreground">Diva</span>
+            </Link>
+            <Link to="/" className="hidden shrink-0 items-center gap-2 lg:flex" aria-label="DIVA Community web">
               <Home className="h-5 w-5 text-foreground" aria-hidden="true" />
               <span className="font-heading text-sm uppercase tracking-[0.2em] text-foreground">Diva</span>
             </Link>
@@ -451,12 +455,6 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                   <Link to="/community/profil" className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" aria-hidden="true" />
                     Môj profil
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/" className="cursor-pointer">
-                    <Globe className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Späť na web
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-primary focus:text-primary">
