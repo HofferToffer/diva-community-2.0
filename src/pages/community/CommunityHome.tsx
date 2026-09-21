@@ -13,6 +13,7 @@ import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
+import { getPregnancyInfo, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { quoteForDate } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
@@ -58,10 +59,15 @@ export default function CommunityHome() {
 
   const cycle = useMemo(
     () =>
-      profile?.last_period_date
+      !profile?.is_pregnant && !profile?.is_menopause && profile?.last_period_date
         ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
         : null,
-    [profile?.last_period_date, profile?.cycle_length_days],
+    [profile?.is_pregnant, profile?.is_menopause, profile?.last_period_date, profile?.cycle_length_days],
+  );
+
+  const pregnancy = useMemo(
+    () => (profile?.is_pregnant && profile?.pregnancy_due_date ? getPregnancyInfo(profile.pregnancy_due_date) : null),
+    [profile?.is_pregnant, profile?.pregnancy_due_date],
   );
 
   return (
@@ -100,6 +106,35 @@ export default function CommunityHome() {
           Vlastná fotka a ďalšie možnosti →
         </Link>
       </motion.section>
+
+      {pregnancy && (
+        <motion.div {...fadeUp(4)}>
+          <Link
+            to="/community/cyklus"
+            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+          >
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+              {TRIMESTER_LABEL[pregnancy.trimester]}
+            </p>
+            <h2 className="mt-1 font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {pregnancy.daysUntilDue > 0
+                ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
+                : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
+            </p>
+          </Link>
+        </motion.div>
+      )}
+
+      {profile?.is_menopause && (
+        <motion.div {...fadeUp(4)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoja kapitola</p>
+          <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Počúvaj, čo potrebuješ dnes.
+          </p>
+        </motion.div>
+      )}
 
       {cycle && (
         <motion.div {...fadeUp(4)}>

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
+import { getPregnancyInfo, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips } from "@/community/components/CyclePhaseTips";
 import { fadeUp } from "@/community/lib/motion";
@@ -32,9 +33,11 @@ export default function CommunityCycle() {
     );
   }
 
-  const cycle = profile.last_period_date
-    ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
-    : null;
+  const cycle =
+    !profile.is_pregnant && !profile.is_menopause && profile.last_period_date
+      ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
+      : null;
+  const pregnancy = profile.is_pregnant && profile.pregnancy_due_date ? getPregnancyInfo(profile.pregnancy_due_date) : null;
 
   const startEditingCycle = () => {
     setCycleLengthEdit(String(profile.cycle_length_days ?? 28));
@@ -87,7 +90,43 @@ export default function CommunityCycle() {
         </p>
       </motion.header>
 
-      {cycle ? (
+      {profile.is_pregnant && (
+        <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          {pregnancy ? (
+            <>
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">{TRIMESTER_LABEL[pregnancy.trimester]}</p>
+              <p className="font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {pregnancy.daysUntilDue > 0
+                  ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
+                  : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              Ešte si nezadala predpokladaný termín pôrodu.
+            </p>
+          )}
+          <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+            Upraviť v profile
+          </Button>
+        </motion.section>
+      )}
+
+      {profile.is_menopause && (
+        <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">Tvoja kapitola</p>
+          <p className="font-display text-2xl text-primary">V menopauze</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Počúvaj, čo potrebuješ dnes.
+          </p>
+          <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+            Upraviť v profile
+          </Button>
+        </motion.section>
+      )}
+
+      {!profile.is_pregnant && !profile.is_menopause && (cycle ? (
         <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -211,7 +250,7 @@ export default function CommunityCycle() {
             </Button>
           </div>
         </motion.section>
-      )}
+      ))}
     </div>
   );
 }

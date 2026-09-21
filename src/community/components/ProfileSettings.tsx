@@ -25,6 +25,9 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
   const [lastPeriod, setLastPeriod] = useState(profile?.last_period_date ?? "");
+  const [isPregnant, setIsPregnant] = useState(profile?.is_pregnant ?? false);
+  const [dueDate, setDueDate] = useState(profile?.pregnancy_due_date ?? "");
+  const [isMenopause, setIsMenopause] = useState(profile?.is_menopause ?? false);
   const [notifyLikes, setNotifyLikes] = useState(profile?.notify_likes ?? true);
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
   const [notifyChallenges, setNotifyChallenges] = useState(profile?.notify_challenges ?? true);
@@ -94,6 +97,9 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           notify_challenges: notifyChallenges,
           cycle_length_days: cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
           last_period_date: lastPeriod || null,
+          is_pregnant: isPregnant,
+          pregnancy_due_date: isPregnant ? dueDate || null : null,
+          is_menopause: isMenopause,
         } as never)
         .eq("id", profile.id);
       if (error) throw error;
@@ -156,32 +162,74 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             onChange={(e) => setGifts(e.target.value)}
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="s-cycle-length">Dĺžka cyklu v dňoch (nepovinné)</Label>
-          <Input
-            id="s-cycle-length"
-            type="number"
-            inputMode="numeric"
-            min={21}
-            max={40}
-            placeholder="napr. 28"
-            value={cycleLength}
-            onChange={(e) => setCycleLength(e.target.value)}
-          />
+        <div className="space-y-3 rounded-2xl border border-border/50 bg-card px-4 py-4 shadow-sm">
+          <div className="flex items-center justify-between gap-4">
+            <Label htmlFor="s-is-pregnant" className="text-sm">Som tehotná</Label>
+            <Switch
+              id="s-is-pregnant"
+              checked={isPregnant}
+              onCheckedChange={(v) => {
+                setIsPregnant(v);
+                if (v) setIsMenopause(false);
+              }}
+            />
+          </div>
+          {isPregnant && (
+            <div className="space-y-2">
+              <Label htmlFor="s-due-date">Predpokladaný termín pôrodu</Label>
+              <Input
+                id="s-due-date"
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Podľa toho ti na Domove ukážeme, koľký týždeň tehotenstva máš.
+              </p>
+            </div>
+          )}
+          <div className="flex items-center justify-between gap-4">
+            <Label htmlFor="s-is-menopause" className="text-sm">Mám menopauzu</Label>
+            <Switch
+              id="s-is-menopause"
+              checked={isMenopause}
+              onCheckedChange={(v) => {
+                setIsMenopause(v);
+                if (v) setIsPregnant(false);
+              }}
+            />
+          </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="s-last-period">Prvý deň poslednej menštruácie (nepovinné)</Label>
-          <Input
-            id="s-last-period"
-            type="date"
-            max={new Date().toISOString().slice(0, 10)}
-            value={lastPeriod}
-            onChange={(e) => setLastPeriod(e.target.value)}
-          />
-          <p className="text-xs text-muted-foreground">
-            Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty.
-          </p>
-        </div>
+        {!isPregnant && !isMenopause && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="s-cycle-length">Dĺžka cyklu v dňoch (nepovinné)</Label>
+              <Input
+                id="s-cycle-length"
+                type="number"
+                inputMode="numeric"
+                min={21}
+                max={40}
+                placeholder="napr. 28"
+                value={cycleLength}
+                onChange={(e) => setCycleLength(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="s-last-period">Prvý deň poslednej menštruácie (nepovinné)</Label>
+              <Input
+                id="s-last-period"
+                type="date"
+                max={new Date().toISOString().slice(0, 10)}
+                value={lastPeriod}
+                onChange={(e) => setLastPeriod(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty.
+              </p>
+            </div>
+          </>
+        )}
         <div className="space-y-2">
           <Label>Ako sa hýbem</Label>
           <div className="flex flex-wrap gap-2">

@@ -149,7 +149,10 @@ export default function CommunityProfile() {
   return Number(value) >= Number(a.threshold);
   });
 
-  const cycle = isMe && profile.last_period_date ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28) : null;
+  const cycle =
+    isMe && !profile.is_pregnant && !profile.is_menopause && profile.last_period_date
+      ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
+      : null;
 
   const isFriend = (friends.data ?? []).some((f) => f.following_id === profile.id);
 

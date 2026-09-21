@@ -21,6 +21,9 @@ export type Profile = {
   notify_challenges: boolean;
   cycle_length_days: number | null;
   last_period_date: string | null;
+  is_pregnant: boolean;
+  pregnancy_due_date: string | null;
+  is_menopause: boolean;
   created_at: string;
 };
 

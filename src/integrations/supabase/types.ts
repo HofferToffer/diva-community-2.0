@@ -647,6 +647,9 @@ export type Database = {
           interests: string[]
           is_demo: boolean
           is_public: boolean
+          is_pregnant: boolean
+          pregnancy_due_date: string | null
+          is_menopause: boolean
           last_period_date: string | null
           name: string
           notify_challenges: boolean
@@ -669,6 +672,9 @@ export type Database = {
           interests?: string[]
           is_demo?: boolean
           is_public?: boolean
+          is_pregnant?: boolean
+          pregnancy_due_date?: string | null
+          is_menopause?: boolean
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
@@ -691,6 +697,9 @@ export type Database = {
           interests?: string[]
           is_demo?: boolean
           is_public?: boolean
+          is_pregnant?: boolean
+          pregnancy_due_date?: string | null
+          is_menopause?: boolean
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
