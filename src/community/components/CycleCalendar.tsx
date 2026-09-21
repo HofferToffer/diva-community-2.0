@@ -132,7 +132,7 @@ export function CycleCalendar({
               return (
                 <Popover key={j} open={isPending} onOpenChange={(open) => !open && setPendingDateKey(null)}>
                   <PopoverTrigger asChild>{dayButton}</PopoverTrigger>
-                  <PopoverContent className="w-64" align="center">
+                  <PopoverContent className="w-64 rounded-2xl border-none shadow-lg" align="center">
                     <div className="flex items-center gap-3">
                       <CalendarHeart className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                       <div className="min-w-0">
