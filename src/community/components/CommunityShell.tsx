@@ -406,10 +406,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                     <SheetClose asChild>
                       <Link
                         to="/"
-                        className="flex items-center gap-3 whitespace-nowrap rounded-md px-3 py-3 text-sm uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
                       >
                         <Globe className="h-4 w-4 shrink-0" aria-hidden="true" />
-                        Späť na divacommunity.sk
+                        Späť na web
                       </Link>
                     </SheetClose>
                   </div>
@@ -456,7 +456,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                 <DropdownMenuItem asChild>
                   <Link to="/" className="cursor-pointer">
                     <Globe className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Späť na divacommunity.sk
+                    Späť na web
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-primary focus:text-primary">
