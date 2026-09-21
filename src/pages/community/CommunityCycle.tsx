@@ -40,6 +40,21 @@ export default function CommunityCycle() {
     setEditingCycle(true);
   };
 
+  const setPeriodStart = async (dateKey: string) => {
+    if (!window.confirm(`Nastaviť ${dateKey} ako začiatok poslednej menštruácie?`)) return;
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ last_period_date: dateKey } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Dátum je upravený.");
+    } catch {
+      toast.error("Dátum sa nepodarilo upraviť.");
+    }
+  };
+
   const saveCycle = async () => {
     setSavingCycle(true);
     try {
@@ -150,7 +165,11 @@ export default function CommunityCycle() {
                 </div>
               </div>
 
-              <CycleCalendar lastPeriodDate={profile.last_period_date!} cycleLengthDays={profile.cycle_length_days ?? 28} />
+              <CycleCalendar
+                lastPeriodDate={profile.last_period_date!}
+                cycleLengthDays={profile.cycle_length_days ?? 28}
+                onSelectPeriodStart={setPeriodStart}
+              />
             </>
           )}
         </section>

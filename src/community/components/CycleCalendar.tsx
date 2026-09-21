@@ -16,12 +16,19 @@ function isSameDay(a: Date, b: Date) {
 
 type Cell = { date: Date; phase: CyclePhaseKey | null };
 
+function toDateKey(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
 export function CycleCalendar({
   lastPeriodDate,
   cycleLengthDays,
+  onSelectPeriodStart,
 }: {
   lastPeriodDate: string;
   cycleLengthDays: number;
+  /** Called when the woman taps a day to correct/log the actual start of her period. */
+  onSelectPeriodStart?: (dateKey: string) => void;
 }) {
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const today = new Date();
@@ -78,28 +85,42 @@ export function CycleCalendar({
       <div className="mt-1 space-y-1">
         {weeks.map((week, i) => (
           <div key={i} className="grid grid-cols-7 gap-1">
-            {week.map((cell, j) =>
-              cell ? (
-                <div
+            {week.map((cell, j) => {
+              if (!cell) return <div key={j} aria-hidden="true" />;
+              const isPeriodStart = toDateKey(cell.date) === lastPeriodDate;
+              const isPast = cell.date <= today;
+              const canEdit = !!onSelectPeriodStart && isPast;
+              return (
+                <button
                   key={j}
+                  type="button"
+                  disabled={!canEdit}
                   title={cell.phase ? CYCLE_PHASES[cell.phase].name : undefined}
+                  aria-label={`${cell.date.getDate()}. ${monthLabel}${isPeriodStart ? " — začiatok poslednej menštruácie" : ""}`}
+                  onClick={() => onSelectPeriodStart?.(toDateKey(cell.date))}
                   className={cn(
-                    "flex aspect-square items-center justify-center rounded-full text-xs text-foreground/85",
+                    "flex aspect-square items-center justify-center rounded-full text-xs text-foreground/85 transition-transform",
                     isSameDay(cell.date, today) && "font-semibold ring-2 ring-primary ring-offset-1 ring-offset-card",
+                    isPeriodStart && "ring-2 ring-foreground ring-offset-1 ring-offset-card",
+                    canEdit && "cursor-pointer hover:scale-105 active:scale-95",
                   )}
                   style={{
                     background: cell.phase ? CYCLE_PHASE_COLORS[cell.phase].fill.replace(/0\.\d+\)/, "0.6)") : undefined,
                   }}
                 >
                   {cell.date.getDate()}
-                </div>
-              ) : (
-                <div key={j} aria-hidden="true" />
-              ),
-            )}
+                </button>
+              );
+            })}
           </div>
         ))}
       </div>
+
+      {onSelectPeriodStart && (
+        <p className="mt-3 text-xs text-muted-foreground">
+          Ťukni na deň, kedy ti naozaj začala posledná menštruácia, ak sa líši od odhadu.
+        </p>
+      )}
 
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda fáz cyklu">
         {(Object.keys(CYCLE_PHASES) as CyclePhaseKey[]).map((phase) => (
