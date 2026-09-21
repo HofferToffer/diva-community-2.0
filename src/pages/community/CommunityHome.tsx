@@ -11,7 +11,6 @@ import { EmptyState } from "@/community/components/EmptyState";
 import { QuoteCard } from "@/community/components/QuoteCard";
 import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
-import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
 import { quoteForDate } from "@/community/lib/quotes";
@@ -27,30 +26,6 @@ function HomeStatTile({ icon: Icon, label, value, i }: { icon: LucideIcon; label
       <p className="mt-2 font-display text-2xl leading-none text-foreground">{value}</p>
       <p className="mt-1.5 text-[0.6rem] uppercase leading-tight tracking-[0.14em] text-muted-foreground">{label}</p>
     </motion.div>
-  );
-}
-
-function GreetingAvatar({ name, path }: { name?: string | null; path: string | null | undefined }) {
-  const url = useSignedImage(path);
-  const initials = (name || "D")
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join("");
-
-  return (
-    <span className="relative block">
-      <span className="absolute -inset-1.5 rounded-full border border-accent/30" />
-      <span className="absolute -inset-3 rounded-full border border-dashed border-accent/20" />
-      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-secondary ring-2 ring-background shadow-sm md:h-28 md:w-28">
-        {url ? (
-          <img src={url} alt={name ?? "Profil"} className="h-full w-full object-cover" />
-        ) : (
-          <span className="font-display text-base text-secondary-foreground md:text-2xl">{initials}</span>
-        )}
-      </span>
-    </span>
   );
 }
 
@@ -92,17 +67,8 @@ export default function CommunityHome() {
   return (
     <div className="space-y-8">
       <motion.section {...fadeUp(0)} className="relative px-1 py-2">
-        <Link
-          to="/community/profil"
-          aria-label="Môj profil"
-          className="group absolute top-1 right-1 md:top-3 md:right-4"
-        >
-          <GreetingAvatar name={profile?.name} path={profile?.avatar_url} />
-        </Link>
-        <div className="relative z-10 pr-20 md:pr-36">
-          <h1 className="font-display text-3xl leading-tight">{greeting(profile?.name?.split(" ")[0])}</h1>
-          <p className="mt-1 font-display text-lg font-light tracking-wide text-muted-foreground">V jemnosti je naša sila.</p>
-        </div>
+        <h1 className="font-display text-3xl leading-tight">{greeting(profile?.name?.split(" ")[0])}</h1>
+        <p className="mt-1 font-display text-lg font-light tracking-wide text-muted-foreground">V jemnosti je naša sila.</p>
       </motion.section>
 
       <section className="grid grid-cols-3 gap-3">
