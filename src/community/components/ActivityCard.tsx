@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart, ImageIcon, MessageCircle, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -74,34 +74,45 @@ export function ActivityCard({
           </p>
         </div>
         {isMine && (
-          <button
-            type="button"
-            aria-label="Zmazať aktivitu"
-            className="p-2 text-muted-foreground transition-colors hover:text-destructive"
-            onClick={() => {
-              if (window.confirm("Naozaj zmazať túto aktivitu?")) {
-                deleteActivity.mutate(activity.id, {
-                  onError: () => toast.error("Aktivitu sa nepodarilo zmazať."),
-                  onSuccess: () => toast.success("Aktivita zmazaná."),
-                });
-              }
-            }}
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+          <div className="flex items-center">
+            <button
+              type="button"
+              aria-label="Upraviť aktivitu"
+              className="p-2 text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => navigate(`/community/aktivita/${activity.id}/upravit`)}
+            >
+              <Pencil className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Zmazať aktivitu"
+              className="p-2 text-muted-foreground transition-colors hover:text-destructive"
+              onClick={() => {
+                if (window.confirm("Naozaj zmazať túto aktivitu?")) {
+                  deleteActivity.mutate(activity.id, {
+                    onError: () => toast.error("Aktivitu sa nepodarilo zmazať."),
+                    onSuccess: () => toast.success("Aktivita zmazaná."),
+                  });
+                }
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
         )}
       </header>
 
       <div
-        role={isMine ? "button" : undefined}
-        tabIndex={isMine ? 0 : undefined}
-        aria-label={isMine ? "Upraviť aktivitu" : undefined}
-        className={isMine ? "cursor-pointer" : undefined}
-        onClick={isMine ? () => navigate(`/community/aktivita/${activity.id}/upravit`) : undefined}
+        role={activity.photo_url ? "button" : undefined}
+        tabIndex={activity.photo_url ? 0 : undefined}
+        aria-label={activity.photo_url ? "Zobraziť fotku aktivity" : undefined}
+        aria-expanded={activity.photo_url ? showPhoto : undefined}
+        className={activity.photo_url ? "cursor-pointer" : undefined}
+        onClick={activity.photo_url ? () => setShowPhoto((v) => !v) : undefined}
         onKeyDown={
-          isMine
+          activity.photo_url
             ? (e) => {
-                if (e.key === "Enter" || e.key === " ") navigate(`/community/aktivita/${activity.id}/upravit`);
+                if (e.key === "Enter" || e.key === " ") setShowPhoto((v) => !v);
               }
             : undefined
         }
@@ -122,19 +133,8 @@ export function ActivityCard({
         </div>
 
         {activity.note && <p className="px-4 pb-4 text-sm leading-relaxed text-foreground/85">{activity.note}</p>}
-      </div>
 
-      {activity.photo_url && (
-        <div className="px-4 pb-4">
-          <button
-            type="button"
-            className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-            aria-expanded={showPhoto}
-            onClick={() => setShowPhoto((v) => !v)}
-          >
-            <ImageIcon className="h-3.5 w-3.5" aria-hidden="true" />
-            {showPhoto ? "Skryť fotku" : "Zobraziť fotku"}
-          </button>
+        {activity.photo_url && (
           <AnimatePresence>
             {showPhoto && (
               <motion.div
@@ -147,13 +147,13 @@ export function ActivityCard({
                 <StoredImage
                   path={activity.photo_url}
                   alt="Fotka z aktivity"
-                  className="mt-2 aspect-[4/5] w-full rounded-2xl object-cover"
+                  className="aspect-[4/5] w-full object-cover"
                 />
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
-      )}
+        )}
+      </div>
 
       {interactive && (
       <footer className="flex items-center gap-1 px-2 py-2">
