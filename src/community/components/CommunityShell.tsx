@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Bell, ChevronDown, Circle, HeartPulse, History, Home, Menu, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy } from "lucide-react";
@@ -43,6 +43,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     : NAV;
   const unread = notifications?.filter((n) => !n.read_at).length ?? 0;
   const location = useLocation();
+  const navigate = useNavigate();
   const [pocitMenuOpen, setPocitMenuOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const isPocitActive = location.pathname.startsWith("/community/pocit");
@@ -71,6 +72,8 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   const [pull, setPull] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const wheelAccum = useRef(0);
+  const [swipeX, setSwipeX] = useState(0);
+  const canSwipeBack = location.pathname !== "/community";
 
   const triggerRefresh = async () => {
     if (refreshing) return;
@@ -128,32 +131,58 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   // Native touch listeners (pointer events get cancelled by browser overscroll on mobile)
   useEffect(() => {
     let startY: number | null = null;
+    let startX: number | null = null;
+    let axis: "x" | "y" | null = null;
 
     const onTouchStart = (e: TouchEvent) => {
       startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
+      startX = e.touches[0].clientX;
+      axis = null;
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (startY === null || refreshing) return;
-      if (window.scrollY > 0) {
-        startY = null;
-        setPull(0);
-        return;
+      if (refreshing || startX === null) return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - startX;
+      const dy = startY !== null ? touch.clientY - startY : 0;
+
+      if (axis === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
       }
-      const delta = e.touches[0].clientY - startY;
-      if (delta > 0) {
+
+      if (axis === "x") {
+        if (!canSwipeBack || dx <= 0) return;
         if (e.cancelable) e.preventDefault();
-        setPull(Math.min(delta / 2, 90));
+        setSwipeX(Math.min(dx, 120));
+      } else if (axis === "y") {
+        if (startY === null) return;
+        if (window.scrollY > 0) {
+          startY = null;
+          setPull(0);
+          return;
+        }
+        if (dy > 0) {
+          if (e.cancelable) e.preventDefault();
+          setPull(Math.min(dy / 2, 90));
+        }
       }
     };
 
     const onTouchEnd = () => {
-      if (startY === null) return;
+      if (axis === "x") {
+        setSwipeX((current) => {
+          if (current >= 70) navigate(-1);
+          return 0;
+        });
+      } else if (startY !== null) {
+        setPull((current) => {
+          if (current >= 70) void triggerRefresh();
+          return 0;
+        });
+      }
       startY = null;
-      setPull((current) => {
-        if (current >= 70) void triggerRefresh();
-        return 0;
-      });
+      startX = null;
+      axis = null;
     };
 
     window.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -166,7 +195,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [refreshing]);
+  }, [refreshing, canSwipeBack, navigate]);
 
 
   return (
@@ -338,7 +367,11 @@ export function CommunityShell({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <main key={location.pathname} className="mx-auto max-w-2xl px-4 py-6">
+      <main
+        key={location.pathname}
+        className={cn("mx-auto max-w-2xl px-4 py-6", swipeX === 0 && "transition-transform duration-200")}
+        style={swipeX ? { transform: `translateX(${swipeX}px)` } : undefined}
+      >
         {children}
       </main>
 
