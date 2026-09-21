@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, MessageCircle, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Heart, ImageIcon, MessageCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,6 +27,7 @@ export function ActivityCard({
   const navigate = useNavigate();
   const { profile } = useCommunityAuth();
   const [showComments, setShowComments] = useState(false);
+  const [showPhoto, setShowPhoto] = useState(false);
   const [draft, setDraft] = useState("");
   const toggleLike = useToggleLike();
   const deleteActivity = useDeleteActivity();
@@ -120,11 +122,38 @@ export function ActivityCard({
         </div>
 
         {activity.note && <p className="px-4 pb-4 text-sm leading-relaxed text-foreground/85">{activity.note}</p>}
-
-        {activity.photo_url && (
-          <StoredImage path={activity.photo_url} alt="Fotka z aktivity" className="aspect-[4/5] w-full object-cover" />
-        )}
       </div>
+
+      {activity.photo_url && (
+        <div className="px-4 pb-4">
+          <button
+            type="button"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            aria-expanded={showPhoto}
+            onClick={() => setShowPhoto((v) => !v)}
+          >
+            <ImageIcon className="h-3.5 w-3.5" aria-hidden="true" />
+            {showPhoto ? "Skryť fotku" : "Zobraziť fotku"}
+          </button>
+          <AnimatePresence>
+            {showPhoto && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <StoredImage
+                  path={activity.photo_url}
+                  alt="Fotka z aktivity"
+                  className="mt-2 aspect-[4/5] w-full rounded-2xl object-cover"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
 
       {interactive && (
       <footer className="flex items-center gap-1 px-2 py-2">
