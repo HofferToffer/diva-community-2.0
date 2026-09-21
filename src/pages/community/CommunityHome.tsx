@@ -101,7 +101,7 @@ export default function CommunityHome() {
         </Link>
         <div className="relative z-10 pr-20 md:pr-36">
           <h1 className="font-display text-3xl leading-tight">{greeting(profile?.name?.split(" ")[0])}</h1>
-          <p className="mt-1 font-display text-lg italic text-muted-foreground">V jemnosti je naša sila.</p>
+          <p className="mt-1 font-display text-lg font-light tracking-wide text-muted-foreground">V jemnosti je naša sila.</p>
         </div>
       </motion.section>
 
