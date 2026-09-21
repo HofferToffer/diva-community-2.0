@@ -210,9 +210,11 @@ export function ActivityCard({
 
 function Metric({ label, value, large }: { label: string; value: string; large?: boolean }) {
   return (
-    <div className="text-center">
-      <p className={`font-display leading-none text-foreground ${large ? "text-3xl" : "text-xl"}`}>{value}</p>
-      <p className="mt-1.5 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+    <div>
+      <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+      <p className={`mt-1 font-display font-semibold leading-none text-foreground ${large ? "text-3xl" : "text-xl"}`}>
+        {value}
+      </p>
     </div>
   );
 }
