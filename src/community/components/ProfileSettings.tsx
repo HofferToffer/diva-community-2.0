@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Activity, Bell, Footprints, KeyRound, Sparkles, User } from "lucide-react";
@@ -14,8 +14,15 @@ import { MOVEMENT_INTERESTS } from "@/community/lib/constants";
 import { normalizeUsername } from "@/community/lib/format";
 import { cn } from "@/lib/utils";
 
-export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
+export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => void; focusChapter?: boolean }) {
   const { profile, refreshProfile, signOut } = useCommunityAuth();
+  const chapterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (focusChapter && chapterRef.current) {
+      chapterRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [focusChapter]);
   const [name, setName] = useState(profile?.name ?? "");
   const [username, setUsername] = useState(profile?.username ?? "");
   const [bio, setBio] = useState(profile?.bio ?? "");
@@ -189,6 +196,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
         </div>
       </SectionCard>
 
+      <div ref={chapterRef}>
       <SectionCard
         icon={Sparkles}
         title="Moja životná kapitola"
@@ -328,6 +336,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           </div>
         )}
       </SectionCard>
+      </div>
 
       <SectionCard icon={Footprints} title="Ako sa hýbem">
         <div className="flex flex-wrap gap-2">

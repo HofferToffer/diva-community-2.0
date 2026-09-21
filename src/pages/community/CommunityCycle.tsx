@@ -175,7 +175,7 @@ export default function CommunityCycle() {
             </p>
           )}
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Upraviť v profile
             </Button>
             <Button size="sm" onClick={markBirth}>
@@ -214,7 +214,7 @@ export default function CommunityCycle() {
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Upraviť v profile
             </Button>
             <Button variant="outline" size="sm" onClick={endPostpartum}>
@@ -233,7 +233,7 @@ export default function CommunityCycle() {
               Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Únava, návaly aj výkyvy energie sú
               normálna súčasť tejto kapitoly, nie zlyhanie. Počúvaj, čo potrebuješ dnes.
             </p>
-            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Upraviť v profile
             </Button>
           </div>
@@ -377,7 +377,7 @@ export default function CommunityCycle() {
             <Button className="w-full" onClick={saveCycle} disabled={savingCycle || !lastPeriodEdit}>
               Uložiť cyklus
             </Button>
-            <Button variant="ghost" className="w-full" onClick={() => navigate("/community/profil")}>
+            <Button variant="ghost" className="w-full" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Nastaviť v profile
             </Button>
           </div>

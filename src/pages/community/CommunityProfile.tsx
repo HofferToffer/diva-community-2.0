@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -45,6 +45,7 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
 
 export default function CommunityProfile() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { username } = useParams<{ username: string }>();
   const { profile: me, refreshProfile, user } = useCommunityAuth();
   const other = useProfileByUsername(username);
@@ -54,6 +55,7 @@ export default function CommunityProfile() {
   const { data: stats } = useProfileStats(profile?.id);
   const [kind, setKind] = useState<"all" | "run" | "move">("all");
   const [editingProfile, setEditingProfile] = useState(false);
+  const [focusChapter, setFocusChapter] = useState(false);
   const editRef = useRef<HTMLDivElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const friends = useFriends(me?.id);
@@ -62,10 +64,18 @@ export default function CommunityProfile() {
   const { data: achievements } = useAchievements();
 
   useEffect(() => {
-    if (editingProfile && editRef.current) {
+    if ((location.state as { openEdit?: boolean } | null)?.openEdit) {
+      setEditingProfile(true);
+      setFocusChapter(true);
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.state, location.pathname, navigate]);
+
+  useEffect(() => {
+    if (editingProfile && editRef.current && !focusChapter) {
       editRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [editingProfile]);
+  }, [editingProfile, focusChapter]);
 
   const [editingCycle, setEditingCycle] = useState(false);
   const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
@@ -386,6 +396,7 @@ export default function CommunityProfile() {
                 </Button>
               </div>
               <ProfileSettings
+                focusChapter={focusChapter}
                 onSaved={() => {
                   setEditingProfile(false);
                   navigate("/community");
@@ -393,7 +404,7 @@ export default function CommunityProfile() {
               />
             </>
           ) : (
-            <Button className="w-full" onClick={() => setEditingProfile(true)}>
+            <Button className="w-full" onClick={() => { setEditingProfile(true); setFocusChapter(false); }}>
               Upraviť profil
             </Button>
           )}
