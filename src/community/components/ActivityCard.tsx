@@ -29,6 +29,7 @@ export function ActivityCard({
   const [showComments, setShowComments] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
   const photoRef = useRef<HTMLDivElement>(null);
+  const commentsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!showPhoto) return;
@@ -36,6 +37,13 @@ export function ActivityCard({
       photoRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }, [showPhoto]);
+
+  useEffect(() => {
+    if (!showComments) return;
+    requestAnimationFrame(() => {
+      commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }, [showComments]);
   const [draft, setDraft] = useState("");
   const toggleLike = useToggleLike();
   const deleteActivity = useDeleteActivity();
@@ -199,7 +207,7 @@ export function ActivityCard({
       )}
 
       {interactive && showComments && (
-        <div className="border-t border-border px-4 py-4">
+        <div ref={commentsRef} className="border-t border-border px-4 py-4">
           <ul className="space-y-4">
             {comments.data?.map((c) => (
               <li key={c.id} className="flex gap-3">
