@@ -398,7 +398,13 @@ export function CommunityShell({ children }: { children: ReactNode }) {
         className={cn("mx-auto max-w-2xl px-4 py-6", swipeX === 0 && "transition-transform duration-200")}
         style={swipeX ? { transform: `translateX(${swipeX}px)` } : undefined}
       >
-        {children}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {children}
+        </motion.div>
       </main>
 
     </div>
