@@ -154,9 +154,7 @@ export function CycleCalendar({
       <Dialog open={!!pendingDate} onOpenChange={(open) => !open && setPendingDate(null)}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-              <CalendarHeart className="h-6 w-6" aria-hidden="true" />
-            </div>
+            <CalendarHeart className="mx-auto h-6 w-6 text-primary" aria-hidden="true" />
             <DialogTitle className="text-center">
               {pendingDate && new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(pendingDate)}
             </DialogTitle>
