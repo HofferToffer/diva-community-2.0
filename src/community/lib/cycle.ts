@@ -67,6 +67,14 @@ export const CYCLE_PHASES: Record<CyclePhaseKey, { name: string }> = {
   lutealna: { name: "Luteálna fáza" },
 };
 
+/** Soft background fill + a stronger dot/marker color per phase, shared by the chart and calendar. */
+export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, { fill: string; dot: string }> = {
+  menstruacna: { fill: "hsl(var(--destructive) / 0.10)", dot: "hsl(var(--destructive))" },
+  folikularna: { fill: "hsl(var(--primary) / 0.08)", dot: "hsl(var(--primary))" },
+  ovulacia: { fill: "hsl(var(--accent) / 0.35)", dot: "hsl(var(--accent-foreground))" },
+  lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
+};
+
 export const CYCLE_PHASE_RECOMMENDATIONS: Record<CyclePhaseKey, string[]> = {
   menstruacna: [
     "Dopraj si pokoj a teplo — horúci čaj, kúpeľ, pokojný spánok.",

@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { DailyFeeling } from "@/community/hooks/queries";
 import { SCALE_LEVELS, levelForFeeling, scaleLabel } from "@/community/lib/consciousnessScale";
-import { CYCLE_PHASES, getCycleDayForDate, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
+import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCycleDayForDate, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
 import { activityTypeLabel } from "@/community/lib/constants";
 
 const RANGES = [
@@ -25,12 +25,7 @@ const RANGES = [
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-const PHASE_STYLES: Record<CyclePhaseKey, { fill: string; dot: string }> = {
-  menstruacna: { fill: "hsl(var(--destructive) / 0.10)", dot: "hsl(var(--destructive))" },
-  folikularna: { fill: "hsl(var(--primary) / 0.08)", dot: "hsl(var(--primary))" },
-  ovulacia: { fill: "hsl(var(--accent) / 0.35)", dot: "hsl(var(--accent-foreground))" },
-  lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
-};
+const PHASE_STYLES = CYCLE_PHASE_COLORS;
 
 export type FeelingChartCycle = {
   lastPeriodDate: string;

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_RECOMMENDATIONS } from "@/community/lib/cycle";
+import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { RefreshCcw } from "lucide-react";
@@ -148,6 +149,8 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
+
+              <CycleCalendar lastPeriodDate={profile.last_period_date!} cycleLengthDays={profile.cycle_length_days ?? 28} />
             </>
           )}
         </section>
