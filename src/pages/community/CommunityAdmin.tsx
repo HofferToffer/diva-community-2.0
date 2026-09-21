@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatTile } from "@/community/components/EmptyState";
@@ -74,6 +74,11 @@ export default function CommunityAdmin() {
 
   return (
     <div className="space-y-10">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <header className="flex items-start gap-3">
         <ShieldCheck className="mt-1 h-6 w-6 shrink-0 text-muted-foreground" aria-hidden="true" />
         <div className="space-y-1">

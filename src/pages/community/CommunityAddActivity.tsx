@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -106,6 +107,11 @@ export default function CommunityAddActivity() {
 
   return (
     <div className="space-y-6">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">{editId ? "Uprav svoju aktivitu" : "Zapíš svoju aktivitu"}</h1>
         <p className="text-sm text-muted-foreground">Dnes stačí urobiť to, čo môžeš.</p>

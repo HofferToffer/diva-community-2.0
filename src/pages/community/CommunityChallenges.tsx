@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import { ChallengeCard } from "@/community/components/ChallengeCard";
 import { EmptyState } from "@/community/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,6 +15,11 @@ export default function CommunityChallenges() {
 
   return (
     <div className="space-y-8">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">Challenges</h1>
         <p className="text-sm text-muted-foreground">Spoločné výzvy, kde sa počíta každý krok každej z nás.</p>

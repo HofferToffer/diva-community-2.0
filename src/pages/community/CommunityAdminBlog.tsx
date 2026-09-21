@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Newspaper, Pencil, Plus, Trash2, X } from "lucide-react";
+import { ArrowLeft, Newspaper, Pencil, Plus, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -299,6 +299,11 @@ export default function CommunityAdminBlog() {
 
   return (
     <div className="space-y-6">
+      <Link to="/community/admin" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Admin
+      </Link>
+
       <header className="flex items-center gap-3">
         <Newspaper className="h-6 w-6 shrink-0 text-muted-foreground" aria-hidden="true" />
         <div className="flex-1">

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/community/components/EmptyState";
@@ -24,6 +25,11 @@ export default function CommunityNotifications() {
 
   return (
     <div className="space-y-6">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <h1 className="font-display text-3xl">Notifikácie</h1>
       {isLoading && <Skeleton className="h-32 w-full" />}
       {data?.length === 0 && (

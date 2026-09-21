@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check, History, LockKeyhole } from "lucide-react";
+import { ArrowLeft, Check, History, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -69,6 +69,11 @@ export default function CommunityDailyFeeling() {
 
   return (
     <div className="space-y-10">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <motion.section {...fadeUp(0)} className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Chvíľka pre seba</p>
         <h1 className="mt-2 font-display text-4xl leading-tight">Ako sa dnes cítiš?</h1>

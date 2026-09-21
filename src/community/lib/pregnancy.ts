@@ -1,3 +1,16 @@
+import {
+  Apple,
+  Banana,
+  Bean,
+  Carrot,
+  Cherry,
+  Citrus,
+  LeafyGreen,
+  Sprout,
+  Wheat,
+  type LucideIcon,
+} from "lucide-react";
+
 const GESTATION_DAYS = 280; // 40 weeks, counted from the last menstrual period to the due date
 
 function daysBetween(a: Date, b: Date): number {
@@ -81,4 +94,22 @@ const WEEK_SIZE: Record<number, string> = {
 
 export function pregnancyWeekSize(week: number): string | null {
   return WEEK_SIZE[week] ?? null;
+}
+
+/** A matching outline icon where one exists, otherwise a generic sprout — always something to show, gently. */
+const WEEK_ICON: Partial<Record<number, LucideIcon>> = {
+  6: Bean,
+  9: Cherry,
+  13: Bean,
+  14: Citrus,
+  15: Apple,
+  20: Banana,
+  21: Carrot,
+  24: Wheat,
+  30: LeafyGreen,
+  36: LeafyGreen,
+};
+
+export function pregnancyWeekIcon(week: number): LucideIcon {
+  return WEEK_ICON[week] ?? Sprout;
 }

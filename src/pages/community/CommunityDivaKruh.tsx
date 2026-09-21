@@ -1,12 +1,18 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Circle, Heart, MessageCircle, Users } from "lucide-react";
+import { ArrowLeft, Circle, Heart, MessageCircle, Users } from "lucide-react";
 import { fadeUp } from "@/community/lib/motion";
 
 export default function CommunityDivaKruh() {
   return (
     <div className="space-y-8">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <motion.section {...fadeUp(0)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card px-6 py-10 text-center shadow-sm">
         <div className="pointer-events-none absolute -right-10 -top-10 opacity-10">
           <Circle className="h-56 w-56 stroke-1" />

@@ -13,12 +13,22 @@ import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
-import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { getArchetype } from "@/community/lib/archetype";
 import { quoteForDate } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
+
+function PregnancyWeekIconBg({ week }: { week: number }) {
+  const Icon = pregnancyWeekIcon(week);
+  return (
+    <Icon
+      className="pointer-events-none absolute -bottom-4 -right-4 h-24 w-24 stroke-1 text-primary/15"
+      aria-hidden="true"
+    />
+  );
+}
 
 function HomeStatTile({ icon: Icon, label, value, i }: { icon: LucideIcon; label: string; value: string; i: number }) {
   return (
@@ -93,8 +103,11 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
+            {pregnancy && (
+              <PregnancyWeekIconBg week={pregnancy.week} />
+            )}
             {pregnancy ? (
               <>
                 <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">

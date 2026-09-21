@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { PenLine } from "lucide-react";
+import { ArrowLeft, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
@@ -42,6 +42,11 @@ export default function CommunityFeelingHistory() {
 
   return (
     <div className="space-y-10">
+      <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Domov
+      </Link>
+
       <section className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Moja cesta</p>
         <h1 className="mt-2 font-display text-4xl leading-tight">História môjho prežívania</h1>
