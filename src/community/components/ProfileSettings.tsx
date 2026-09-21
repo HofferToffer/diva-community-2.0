@@ -173,7 +173,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             onChange={(e) => setDateOfBirth(e.target.value)}
           />
           <p className="text-xs text-muted-foreground">
-            Podľa toho ti na Domove ukážeme tvoj životný archetyp. Vidíš to len ty.
+            Podľa toho ti tu v profile ukážeme tvoj životný archetyp. Vidíš to len ty.
           </p>
         </div>
         <div className="space-y-2">
