@@ -6,6 +6,7 @@ const links: { label: string; to: string }[] = [
   { label: "BLOG", to: "/blog" },
   { label: "SHOP", to: "/shop" },
   { label: "ReCRETE", to: "/recrete" },
+  { label: "APP", to: "/community" },
 ];
 
 const Footer = () => {
