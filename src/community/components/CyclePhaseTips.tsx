@@ -5,6 +5,7 @@ import {
   CYCLE_PHASE_TIPS,
   CYCLE_PHASE_COLORS,
   CYCLE_TIP_CATEGORIES,
+  type CycleTip,
   type CyclePhaseKey,
   type CycleTipCategory,
 } from "@/community/lib/cycle";
@@ -17,10 +18,12 @@ const FILTERS: Array<{ key: CycleTipCategory | "all"; label: string }> = [
 ];
 
 export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
+  return <TipGrid tips={CYCLE_PHASE_TIPS[phase]} color={CYCLE_PHASE_COLORS[phase]} />;
+}
+
+export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: string; dot: string } }) {
   const [filter, setFilter] = useState<CycleTipCategory | "all">("all");
-  const tips = CYCLE_PHASE_TIPS[phase];
   const visible = filter === "all" ? tips : tips.filter((tip) => tip.category === filter);
-  const color = CYCLE_PHASE_COLORS[phase];
   const softFill = color.fill.replace(/0\.\d+\)/, "0.6)");
 
   return (

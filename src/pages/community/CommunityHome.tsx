@@ -135,12 +135,17 @@ export default function CommunityHome() {
       )}
 
       {profile?.is_menopause && (
-        <motion.div {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoja kapitola</p>
-          <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Počúvaj, čo potrebuješ dnes.
-          </p>
+        <motion.div {...fadeUp(1)}>
+          <Link
+            to="/community/cyklus"
+            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+          >
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoja kapitola</p>
+            <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Únava, návaly aj výkyvy energie sú normálna súčasť tejto kapitoly, nie zlyhanie. Tipy pre teba nájdeš tu.
+            </p>
+          </Link>
         </motion.div>
       )}
 

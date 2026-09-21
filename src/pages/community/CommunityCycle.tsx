@@ -11,7 +11,8 @@ import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
-import { CyclePhaseTips } from "@/community/components/CyclePhaseTips";
+import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
+import { MENOPAUSE_TIPS } from "@/community/lib/menopause";
 import { ConfettiBurst } from "@/community/components/ConfettiBurst";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -208,15 +209,25 @@ export default function CommunityCycle() {
       )}
 
       {profile.is_menopause && (
-        <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Tvoja kapitola</p>
-          <p className="font-display text-2xl text-primary">V menopauze</p>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Počúvaj, čo potrebuješ dnes.
-          </p>
-          <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
-            Upraviť v profile
-          </Button>
+        <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Tvoja kapitola</p>
+            <p className="font-display text-2xl text-primary">V menopauze</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Únava, návaly aj výkyvy energie sú
+              normálna súčasť tejto kapitoly, nie zlyhanie. Počúvaj, čo potrebuješ dnes.
+            </p>
+            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+              Upraviť v profile
+            </Button>
+          </div>
+
+          <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tipy pre teba</p>
+            <div className="mt-4">
+              <TipGrid tips={MENOPAUSE_TIPS} color={{ fill: "hsl(265, 25%, 62%, 0.12)", dot: "hsl(265, 25%, 45%)" }} />
+            </div>
+          </div>
         </motion.section>
       )}
 
