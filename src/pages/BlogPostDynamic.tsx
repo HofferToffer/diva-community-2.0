@@ -47,7 +47,7 @@ const BlogPostDynamic = () => {
       <section className="relative h-[70vh] w-full overflow-hidden">
         {post.cover_image_url ? (
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-top bg-no-repeat"
             style={{ backgroundImage: `url(${post.cover_image_url})` }}
           />
         ) : (

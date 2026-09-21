@@ -35,6 +35,7 @@ const Blog = () => {
         date: new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long", year: "numeric" }).format(ts),
         category: "",
         image: post.cover_image_url ?? blogHeroBeach.url,
+        imagePosition: "top",
         href: `/blog/${post.slug}`,
         sortTs: ts,
       };
