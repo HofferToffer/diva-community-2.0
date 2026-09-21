@@ -562,6 +562,79 @@ export function useProfileByUsername(username: string | undefined) {
   });
 }
 
+export function useProfileById(profileId: string | undefined) {
+  return useQuery({
+    queryKey: ["community-profile-by-id", profileId],
+    enabled: !!profileId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, name, username, avatar_url")
+        .eq("id", profileId!)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+export type Message = {
+  id: string;
+  sender_id: string;
+  recipient_id: string;
+  body: string;
+  created_at: string;
+  read_at: string | null;
+};
+
+export function useConversation(meId: string | undefined, otherId: string | undefined) {
+  return useQuery({
+    queryKey: ["community-conversation", meId, otherId],
+    enabled: !!meId && !!otherId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .or(`and(sender_id.eq.${meId},recipient_id.eq.${otherId}),and(sender_id.eq.${otherId},recipient_id.eq.${meId})`)
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as Message[];
+    },
+  });
+}
+
+export function useSendMessage(meId: string | undefined, otherId: string | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: string) => {
+      if (!meId || !otherId) throw new Error("Chýba profil.");
+      const { error } = await supabase.from("messages").insert({ sender_id: meId, recipient_id: otherId, body });
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["community-conversation", meId, otherId] }),
+  });
+}
+
+export function useMarkMessagesRead(meId: string | undefined, otherId: string | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      if (!meId || !otherId) return;
+      const { error } = await supabase
+        .from("messages")
+        .update({ read_at: new Date().toISOString() })
+        .eq("sender_id", otherId)
+        .eq("recipient_id", meId)
+        .is("read_at", null);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["community-conversation", meId, otherId] });
+      queryClient.invalidateQueries({ queryKey: ["community-notifications"] });
+    },
+  });
+}
+
 export function useIsAdmin() {
   return useQuery({
     queryKey: ["community-is-admin"],

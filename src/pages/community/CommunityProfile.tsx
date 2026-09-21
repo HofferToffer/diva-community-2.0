@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MessageCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ProfileAvatar } from "@/community/components/StoredImage";
@@ -231,23 +231,29 @@ export default function CommunityProfile() {
       </header>
 
       {!isMe && me && (
-        <Button
-          className="w-full"
-          variant={isFriend ? "outline" : "default"}
-          disabled={toggleFriend.isPending}
-          onClick={() =>
-            toggleFriend.mutate(
-              { targetId: profile.id, isFriend },
-              {
-                onSuccess: () =>
-                  toast.success(isFriend ? "Odobrala si kamošku." : `${profile.name} je tvoja kamoška.`),
-                onError: () => toast.error("Nepodarilo sa uložiť."),
-              },
-            )
-          }
-        >
-          {isFriend ? "Kamoška – odobrať" : "Pridať kamošku"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            className="flex-1"
+            variant={isFriend ? "outline" : "default"}
+            disabled={toggleFriend.isPending}
+            onClick={() =>
+              toggleFriend.mutate(
+                { targetId: profile.id, isFriend },
+                {
+                  onSuccess: () =>
+                    toast.success(isFriend ? "Odobrala si kamošku." : `${profile.name} je tvoja kamoška.`),
+                  onError: () => toast.error("Nepodarilo sa uložiť."),
+                },
+              )
+            }
+          >
+            {isFriend ? "Kamoška – odobrať" : "Pridať kamošku"}
+          </Button>
+          <Button variant="outline" className="flex-1" onClick={() => navigate(`/community/spravy/${profile.id}`)}>
+            <MessageCircle className="mr-1.5 h-4 w-4" aria-hidden="true" />
+            Napísať správu
+          </Button>
+        </div>
       )}
 
       {profile.bio && <p className="text-sm leading-relaxed text-foreground/85">{profile.bio}</p>}

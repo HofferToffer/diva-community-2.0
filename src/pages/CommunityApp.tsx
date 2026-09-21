@@ -23,6 +23,7 @@ import CommunityStravaCallback from "./community/CommunityStravaCallback";
 import CommunityAdmin from "./community/CommunityAdmin";
 import CommunityAdminBlog from "./community/CommunityAdminBlog";
 import CommunityDailyQuote from "./community/CommunityDailyQuote";
+import CommunityChat from "./community/CommunityChat";
 
 const DIVA_LETTERS = ["D", "I", "V", "A"];
 
@@ -84,6 +85,7 @@ function CommunityRoutes() {
         <Route path="diva-kruh" element={<CommunityDivaKruh />} />
         <Route path="profil" element={<CommunityProfile />} />
         <Route path="divy/:username" element={<CommunityProfile />} />
+        <Route path="spravy/:profileId" element={<CommunityChat />} />
         <Route path="nastavenia" element={<CommunitySettings />} />
         <Route path="notifikacie" element={<CommunityNotifications />} />
         <Route path="admin" element={<CommunityAdmin />} />
