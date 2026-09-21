@@ -191,8 +191,8 @@ export type CycleTipCategory = "do" | "eat" | "move";
 export type CycleTip = { label: string; category: CycleTipCategory; icon: LucideIcon };
 
 export const CYCLE_TIP_CATEGORIES: Record<CycleTipCategory, string> = {
-  do: "Rob",
-  eat: "Jedz",
+  do: "Rituály",
+  eat: "Jedlo",
   move: "Pohyb",
 };
 
