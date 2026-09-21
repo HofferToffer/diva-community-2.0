@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileAvatar } from "@/community/components/StoredImage";
 import { EmptyState } from "@/community/components/EmptyState";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
+import { fadeUp } from "@/community/lib/motion";
 import {
   useFriends,
   useSearchDivas,
@@ -84,14 +86,14 @@ export default function CommunityDivy() {
 
   return (
     <div className="space-y-8">
-      <header className="space-y-1">
+      <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">Divy</h1>
         <p className="text-sm text-muted-foreground">
           Nájdi si Divu, ktorá ťa inšpiruje a podporuje.
         </p>
-      </header>
+      </motion.header>
 
-      <div className="relative">
+      <motion.div {...fadeUp(1)} className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={term}
@@ -100,9 +102,9 @@ export default function CommunityDivy() {
           aria-label="Hľadať divu"
           className="pl-9"
         />
-      </div>
+      </motion.div>
 
-      <section className="space-y-3">
+      <motion.section {...fadeUp(2)} className="space-y-3">
         <h2 className="font-display text-2xl">{searching ? "Výsledky hľadania" : "Divy v komunite"}</h2>
         {isLoading && <Skeleton className="h-32 w-full" />}
         {!isLoading && list.length === 0 && (
@@ -124,10 +126,10 @@ export default function CommunityDivy() {
             ))}
           </ul>
         )}
-      </section>
+      </motion.section>
 
       {myFriends.length > 0 && (
-        <section className="space-y-3">
+        <motion.section {...fadeUp(3)} className="space-y-3">
           <h2 className="font-display text-2xl">Moje kamošky</h2>
           <ul className="divide-y divide-border rounded-lg border border-border bg-card">
             {myFriends.map((d) => (
@@ -140,7 +142,7 @@ export default function CommunityDivy() {
               />
             ))}
           </ul>
-        </section>
+        </motion.section>
       )}
     </div>
   );

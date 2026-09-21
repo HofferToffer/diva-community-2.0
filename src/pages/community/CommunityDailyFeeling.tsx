@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Check, History, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { type DailyFeeling, useDailyFeelings, useSaveDailyFeeling } from "@/community/hooks/queries";
 import { DETAIL_SEPARATOR, MOODS } from "@/community/lib/feelings";
+import { fadeUp } from "@/community/lib/motion";
 
 function localDateKey(date = new Date()) {
   const year = date.getFullYear();
@@ -67,18 +69,18 @@ export default function CommunityDailyFeeling() {
 
   return (
     <div className="space-y-10">
-      <section className="text-center">
+      <motion.section {...fadeUp(0)} className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Chvíľka pre seba</p>
         <h1 className="mt-2 font-display text-4xl leading-tight">Ako sa dnes cítiš?</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           Nemusíš nič vysvetľovať. Len sa na chvíľu zastav a vnímaj seba.
         </p>
-      </section>
+      </motion.section>
 
       {isLoading ? (
         <Skeleton className="h-72 w-full" />
       ) : (
-        <section className="space-y-7" aria-labelledby="feeling-picker-title">
+        <motion.section {...fadeUp(1)} className="space-y-7" aria-labelledby="feeling-picker-title">
           <div>
             <h2 id="feeling-picker-title" className="sr-only">Vyber svoj dnešný pocit</h2>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
@@ -188,7 +190,7 @@ export default function CommunityDailyFeeling() {
               </Button>
             </div>
           )}
-        </section>
+        </motion.section>
       )}
     </div>
   );

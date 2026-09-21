@@ -1,7 +1,9 @@
+import { motion } from "framer-motion";
 import { ChallengeCard } from "@/community/components/ChallengeCard";
 import { EmptyState } from "@/community/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useChallenges } from "@/community/hooks/queries";
+import { fadeUp } from "@/community/lib/motion";
 
 export default function CommunityChallenges() {
   const { data, isLoading } = useChallenges();
@@ -11,10 +13,10 @@ export default function CommunityChallenges() {
 
   return (
     <div className="space-y-8">
-      <header className="space-y-1">
+      <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">Challenges</h1>
         <p className="text-sm text-muted-foreground">Spoločné výzvy, kde sa počíta každý krok každej z nás.</p>
-      </header>
+      </motion.header>
 
       {isLoading && <Skeleton className="h-56 w-full" />}
 
@@ -23,21 +25,21 @@ export default function CommunityChallenges() {
       )}
 
       {active.length > 0 && (
-        <section className="space-y-4">
+        <motion.section {...fadeUp(1)} className="space-y-4">
           <h2 className="font-display text-2xl">Prebiehajúce</h2>
           {active.map((c) => (
             <ChallengeCard key={c.id} challenge={c} />
           ))}
-        </section>
+        </motion.section>
       )}
 
       {past.length > 0 && (
-        <section className="space-y-4">
+        <motion.section {...fadeUp(2)} className="space-y-4">
           <h2 className="font-display text-2xl">Uzavreté</h2>
           {past.map((c) => (
             <ChallengeCard key={c.id} challenge={c} />
           ))}
-        </section>
+        </motion.section>
       )}
     </div>
   );

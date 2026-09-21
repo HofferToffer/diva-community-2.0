@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { ACTIVITY_TYPES } from "@/community/lib/constants";
 import { uploadImage, validateImage } from "@/community/lib/storage";
 import { StoredImage } from "@/community/components/StoredImage";
+import { fadeUp } from "@/community/lib/motion";
 import { cn } from "@/lib/utils";
 
 
@@ -104,12 +106,12 @@ export default function CommunityAddActivity() {
 
   return (
     <div className="space-y-6">
-      <header className="space-y-1">
+      <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">{editId ? "Uprav svoju aktivitu" : "Zapíš svoju aktivitu"}</h1>
         <p className="text-sm text-muted-foreground">Dnes stačí urobiť to, čo môžeš.</p>
-      </header>
+      </motion.header>
 
-
+      <motion.div {...fadeUp(1)} className="space-y-6">
 
       <div className="space-y-2">
         <Label>Aktivita</Label>
@@ -202,6 +204,7 @@ export default function CommunityAddActivity() {
       <Button className="w-full" size="lg" onClick={save} disabled={saving}>
         {editId ? "Uložiť zmeny" : "Uložiť aktivitu"}
       </Button>
+      </motion.div>
     </div>
   );
 }

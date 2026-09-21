@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +9,7 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips } from "@/community/components/CyclePhaseTips";
+import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { RefreshCcw } from "lucide-react";
@@ -78,15 +80,15 @@ export default function CommunityCycle() {
 
   return (
     <div className="space-y-8">
-      <header className="space-y-1">
+      <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">Môj cyklus</h1>
         <p className="text-sm text-muted-foreground">
           Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie.
         </p>
-      </header>
+      </motion.header>
 
       {cycle ? (
-        <section className="space-y-4 rounded-lg border border-border bg-card p-5">
+        <motion.section {...fadeUp(1)} className="space-y-4 rounded-lg border border-border bg-card p-5">
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">
               <RefreshCcw className="h-5 w-5 text-primary" />
@@ -171,9 +173,9 @@ export default function CommunityCycle() {
               />
             </>
           )}
-        </section>
+        </motion.section>
       ) : (
-        <section className="rounded-lg border border-border bg-card p-6 text-center">
+        <motion.section {...fadeUp(1)} className="rounded-lg border border-border bg-card p-6 text-center">
           <h2 className="font-display text-xl">Zatiaľ nemáš nastavený cyklus</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Zadaj dátum poslednej menštruácie a dĺžku cyklu, aby sme ti mohli ukázať fázy a odporúčania.
@@ -208,7 +210,7 @@ export default function CommunityCycle() {
               Nastaviť v profile
             </Button>
           </div>
-        </section>
+        </motion.section>
       )}
     </div>
   );

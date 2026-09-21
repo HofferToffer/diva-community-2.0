@@ -15,13 +15,8 @@ import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
 import { quoteForDate } from "@/community/lib/quotes";
+import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
-
-const fadeUp = (i: number) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.4, delay: i * 0.08, ease: "easeOut" as const },
-});
 
 function HomeStatTile({ icon: Icon, label, value, i }: { icon: LucideIcon; label: string; value: string; i: number }) {
   return (

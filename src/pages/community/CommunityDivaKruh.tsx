@@ -1,11 +1,13 @@
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Circle, Heart, MessageCircle, Users } from "lucide-react";
+import { fadeUp } from "@/community/lib/motion";
 
 export default function CommunityDivaKruh() {
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-lg border border-border bg-card px-6 py-10 text-center">
+      <motion.section {...fadeUp(0)} className="relative overflow-hidden rounded-lg border border-border bg-card px-6 py-10 text-center">
         <div className="pointer-events-none absolute -right-10 -top-10 opacity-10">
           <Circle className="h-56 w-56 stroke-1" />
         </div>
@@ -23,9 +25,9 @@ export default function CommunityDivaKruh() {
             Bez hodnotenia, v úplnej úprimnosti, v kruhu, ktorý drží.
           </p>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="grid gap-4 sm:grid-cols-3">
+      <motion.section {...fadeUp(1)} className="grid gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <Users className="h-6 w-6 text-accent" />
@@ -53,9 +55,9 @@ export default function CommunityDivaKruh() {
             </p>
           </CardContent>
         </Card>
-      </section>
+      </motion.section>
 
-      <section className="rounded-lg border border-border bg-secondary/40 px-6 py-8 text-center">
+      <motion.section {...fadeUp(2)} className="rounded-lg border border-border bg-secondary/40 px-6 py-8 text-center">
         <h2 className="font-display text-2xl">Chceš sa pripojiť?</h2>
         <p className="mx-auto mt-2 text-sm text-muted-foreground">
           Napíš nám a my ti pošleme termín najbližšieho DIVA KRUHu a odkaz na pripojenie.
@@ -78,13 +80,13 @@ export default function CommunityDivaKruh() {
             didka0105@gmail.com
           </a>
         </p>
-      </section>
+      </motion.section>
 
-      <section className="rounded-lg border border-dashed border-border px-6 py-8 text-center">
+      <motion.section {...fadeUp(3)} className="rounded-lg border border-dashed border-border px-6 py-8 text-center">
         <p className="text-sm italic text-muted-foreground">
           „V kruhu žien sa netreba pretvarovať. Stačí prísť taká, aká si."
         </p>
-      </section>
+      </motion.section>
     </div>
   );
 }
