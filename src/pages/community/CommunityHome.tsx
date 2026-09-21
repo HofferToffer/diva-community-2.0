@@ -83,38 +83,8 @@ export default function CommunityHome() {
         <p className="mt-1 font-display text-lg font-light tracking-wide text-muted-foreground">V jemnosti je naša sila.</p>
       </motion.section>
 
-      <section className="grid grid-cols-3 gap-3">
-        <HomeStatTile icon={Route} label="Tento mesiac" value={formatKm(stats?.month_km ?? 0)} i={1} />
-        <HomeStatTile
-          icon={Activity}
-          label={`${pluralActivities((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))} tento mesiac`}
-          value={String((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))}
-          i={1}
-        />
-        <MonthFeelingsTile profileId={profile?.id} />
-      </section>
-
-      <motion.section {...fadeUp(3)}>
-        <Button asChild size="lg" className="w-full">
-          <Link to="/community/pridat/run">Pridať aktivitu</Link>
-        </Button>
-      </motion.section>
-
-      <motion.section {...fadeUp(3)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
-        <div className="mt-3">
-          <QuoteCard quote={quoteForDate()} variant="compact" />
-        </div>
-        <Link
-          to="/community/citat"
-          className="mt-3 block text-center text-xs text-muted-foreground hover:text-foreground"
-        >
-          Vlastná fotka a ďalšie možnosti →
-        </Link>
-      </motion.section>
-
       {profile?.is_pregnant && (
-        <motion.div {...fadeUp(4)}>
+        <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
@@ -146,7 +116,7 @@ export default function CommunityHome() {
       )}
 
       {profile?.is_postpartum && (
-        <motion.div {...fadeUp(4)}>
+        <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
@@ -165,7 +135,7 @@ export default function CommunityHome() {
       )}
 
       {profile?.is_menopause && (
-        <motion.div {...fadeUp(4)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.div {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoja kapitola</p>
           <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -175,7 +145,7 @@ export default function CommunityHome() {
       )}
 
       {cycle && (
-        <motion.div {...fadeUp(4)}>
+        <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
@@ -195,6 +165,36 @@ export default function CommunityHome() {
           </Link>
         </motion.div>
       )}
+
+      <section className="grid grid-cols-3 gap-3">
+        <HomeStatTile icon={Route} label="Tento mesiac" value={formatKm(stats?.month_km ?? 0)} i={2} />
+        <HomeStatTile
+          icon={Activity}
+          label={`${pluralActivities((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))} tento mesiac`}
+          value={String((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))}
+          i={2}
+        />
+        <MonthFeelingsTile profileId={profile?.id} />
+      </section>
+
+      <motion.section {...fadeUp(3)}>
+        <Button asChild size="lg" className="w-full">
+          <Link to="/community/pridat/run">Pridať aktivitu</Link>
+        </Button>
+      </motion.section>
+
+      <motion.section {...fadeUp(3)} className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Citát dňa</p>
+        <div className="mt-3">
+          <QuoteCard quote={quoteForDate()} variant="compact" />
+        </div>
+        <Link
+          to="/community/citat"
+          className="mt-3 block text-center text-xs text-muted-foreground hover:text-foreground"
+        >
+          Vlastná fotka a ďalšie možnosti →
+        </Link>
+      </motion.section>
 
       {challenge && (
         <motion.section {...fadeUp(5)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
