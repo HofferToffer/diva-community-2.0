@@ -549,9 +549,11 @@ export function useProfileByUsername(username: string | undefined) {
     queryKey: ["community-profile-by-username", username],
     enabled: !!username,
     queryFn: async () => {
+      // Only the public-facing fields — never cycle/pregnancy/menopause or other
+      // personal health data, which stays visible to the owner only.
       const { data, error } = await supabase
         .from("profiles")
-        .select("*")
+        .select("id, name, username, avatar_url, bio, gifts, city, country, interests, is_public")
         .eq("username", username!)
         .maybeSingle();
       if (error) throw error;
