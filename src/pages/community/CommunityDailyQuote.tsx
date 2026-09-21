@@ -9,8 +9,24 @@ import quoteBg2 from "@/assets/quotes/quote-bg-2.jpg";
 import quoteBg3 from "@/assets/quotes/quote-bg-3.jpg";
 import quoteBg4 from "@/assets/quotes/quote-bg-4.jpg";
 import quoteBg5 from "@/assets/quotes/quote-bg-5.jpg";
+import quoteBg6 from "@/assets/quotes/quote-bg-6.jpg";
+import quoteBg7 from "@/assets/quotes/quote-bg-7.jpg";
+import quoteBg8 from "@/assets/quotes/quote-bg-8.jpg";
+import quoteBg9 from "@/assets/quotes/quote-bg-9.jpg";
+import quoteBg10 from "@/assets/quotes/quote-bg-10.jpg";
 
-const BACKGROUNDS = [quoteBg1, quoteBg2, quoteBg3, quoteBg4, quoteBg5];
+const BACKGROUNDS = [
+  quoteBg1,
+  quoteBg2,
+  quoteBg3,
+  quoteBg4,
+  quoteBg5,
+  quoteBg6,
+  quoteBg7,
+  quoteBg8,
+  quoteBg9,
+  quoteBg10,
+];
 
 const CARD_W = 1080;
 const CARD_H = 1920;

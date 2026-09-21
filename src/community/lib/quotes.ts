@@ -23,14 +23,16 @@ export const DAILY_QUOTES: string[] = [
   "V jemnosti je naša sila.",
   "Zastav sa, nadýchni sa, pokračuj.",
   "Si presne tam, kde máš byť.",
+  "Nie každý deň musí byť produktívny, aby mal zmysel.",
+  "Tvoje srdce vie, aj keď hlava pochybuje.",
+  "Aj pomalý krok je krok vpred.",
+  "Dovoľ si byť hrdá na to, čo si dnes zvládla.",
+  "Ticho vie liečiť rovnako ako pohyb.",
+  "Si viac, než si myslíš v ťažký deň.",
+  "Každý nový mesiac je čistý list.",
 ];
 
-function dayOfYear(date: Date): number {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff = date.getTime() - start.getTime();
-  return Math.floor(diff / (1000 * 60 * 60 * 24));
-}
-
 export function quoteForDate(date = new Date()): string {
-  return DAILY_QUOTES[dayOfYear(date) % DAILY_QUOTES.length];
+  const dayOfMonth = date.getDate();
+  return DAILY_QUOTES[(dayOfMonth - 1) % DAILY_QUOTES.length];
 }
