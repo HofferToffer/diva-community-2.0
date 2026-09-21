@@ -131,7 +131,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
   // Native touch listeners (pointer events get cancelled by browser overscroll on mobile)
   useEffect(() => {
-    const EDGE_ZONE = 24; // px from the left edge where a back-swipe can start, like iOS/Instagram
+    const EDGE_ZONE = 36; // px from the left edge where a back-swipe can start, like iOS/Instagram
     let startY: number | null = null;
     let startX: number | null = null;
     let fromEdge = false;

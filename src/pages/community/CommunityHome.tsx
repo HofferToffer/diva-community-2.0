@@ -13,7 +13,7 @@ import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo } from "@/community/lib/cycle";
-import { getPregnancyInfo, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { quoteForDate } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
@@ -66,8 +66,8 @@ export default function CommunityHome() {
   );
 
   const pregnancy = useMemo(
-    () => (profile?.is_pregnant && profile?.pregnancy_due_date ? getPregnancyInfo(profile.pregnancy_due_date) : null),
-    [profile?.is_pregnant, profile?.pregnancy_due_date],
+    () => (profile?.is_pregnant && profile?.last_period_date ? getPregnancyInfo(profile.last_period_date) : null),
+    [profile?.is_pregnant, profile?.last_period_date],
   );
 
   return (
@@ -107,21 +107,34 @@ export default function CommunityHome() {
         </Link>
       </motion.section>
 
-      {pregnancy && (
+      {profile?.is_pregnant && (
         <motion.div {...fadeUp(4)}>
           <Link
             to="/community/cyklus"
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-              {TRIMESTER_LABEL[pregnancy.trimester]}
-            </p>
-            <h2 className="mt-1 font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {pregnancy.daysUntilDue > 0
-                ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
-                : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
-            </p>
+            {pregnancy ? (
+              <>
+                <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+                  {TRIMESTER_LABEL[pregnancy.trimester]}
+                </p>
+                <h2 className="mt-1 font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</h2>
+                {pregnancyWeekSize(pregnancy.week) && (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
+                  </p>
+                )}
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {pregnancy.daysUntilDue > 0
+                    ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
+                    : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
+                </p>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Zadaj prvý deň poslednej menštruácie v profile, aby sme ti tu vedeli ukázať týždeň tehotenstva.
+              </p>
+            )}
           </Link>
         </motion.div>
       )}

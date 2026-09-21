@@ -26,7 +26,6 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
   const [lastPeriod, setLastPeriod] = useState(profile?.last_period_date ?? "");
   const [isPregnant, setIsPregnant] = useState(profile?.is_pregnant ?? false);
-  const [dueDate, setDueDate] = useState(profile?.pregnancy_due_date ?? "");
   const [isMenopause, setIsMenopause] = useState(profile?.is_menopause ?? false);
   const [notifyLikes, setNotifyLikes] = useState(profile?.notify_likes ?? true);
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
@@ -98,7 +97,6 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           cycle_length_days: cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
           last_period_date: lastPeriod || null,
           is_pregnant: isPregnant,
-          pregnancy_due_date: isPregnant ? dueDate || null : null,
           is_menopause: isMenopause,
         } as never)
         .eq("id", profile.id);
@@ -174,20 +172,6 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
               }}
             />
           </div>
-          {isPregnant && (
-            <div className="space-y-2">
-              <Label htmlFor="s-due-date">Predpokladaný termín pôrodu</Label>
-              <Input
-                id="s-due-date"
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">
-                Podľa toho ti na Domove ukážeme, koľký týždeň tehotenstva máš.
-              </p>
-            </div>
-          )}
           <div className="flex items-center justify-between gap-4">
             <Label htmlFor="s-is-menopause" className="text-sm">Mám menopauzu</Label>
             <Switch
@@ -200,23 +184,12 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             />
           </div>
         </div>
-        {!isPregnant && !isMenopause && (
+        {!isMenopause && (
           <>
             <div className="space-y-2">
-              <Label htmlFor="s-cycle-length">Dĺžka cyklu v dňoch (nepovinné)</Label>
-              <Input
-                id="s-cycle-length"
-                type="number"
-                inputMode="numeric"
-                min={21}
-                max={40}
-                placeholder="napr. 28"
-                value={cycleLength}
-                onChange={(e) => setCycleLength(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="s-last-period">Prvý deň poslednej menštruácie (nepovinné)</Label>
+              <Label htmlFor="s-last-period">
+                {isPregnant ? "Prvý deň poslednej menštruácie" : "Prvý deň poslednej menštruácie (nepovinné)"}
+              </Label>
               <Input
                 id="s-last-period"
                 type="date"
@@ -225,9 +198,26 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
                 onChange={(e) => setLastPeriod(e.target.value)}
               />
               <p className="text-xs text-muted-foreground">
-                Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty.
+                {isPregnant
+                  ? "Podľa toho ti na Domove ukážeme, koľký týždeň tehotenstva máš a predpokladaný termín pôrodu."
+                  : "Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty."}
               </p>
             </div>
+            {!isPregnant && (
+              <div className="space-y-2">
+                <Label htmlFor="s-cycle-length">Dĺžka cyklu v dňoch (nepovinné)</Label>
+                <Input
+                  id="s-cycle-length"
+                  type="number"
+                  inputMode="numeric"
+                  min={21}
+                  max={40}
+                  placeholder="napr. 28"
+                  value={cycleLength}
+                  onChange={(e) => setCycleLength(e.target.value)}
+                />
+              </div>
+            )}
           </>
         )}
         <div className="space-y-2">

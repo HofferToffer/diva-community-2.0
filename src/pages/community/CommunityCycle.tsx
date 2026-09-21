@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
-import { getPregnancyInfo, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips } from "@/community/components/CyclePhaseTips";
+import { ConfettiBurst } from "@/community/components/ConfettiBurst";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -23,6 +24,7 @@ export default function CommunityCycle() {
   const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
+  const [justGaveBirth, setJustGaveBirth] = useState(false);
 
   if (loadingProfile || !profile) {
     return (
@@ -37,7 +39,20 @@ export default function CommunityCycle() {
     !profile.is_pregnant && !profile.is_menopause && profile.last_period_date
       ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
       : null;
-  const pregnancy = profile.is_pregnant && profile.pregnancy_due_date ? getPregnancyInfo(profile.pregnancy_due_date) : null;
+  const pregnancy = profile.is_pregnant && profile.last_period_date ? getPregnancyInfo(profile.last_period_date) : null;
+
+  const markBirth = async () => {
+    if (!window.confirm("Narodilo sa ti bábätko? Toto ukončí sledovanie tehotenstva.")) return;
+    try {
+      const { error } = await supabase.from("profiles").update({ is_pregnant: false } as never).eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      setJustGaveBirth(true);
+      setTimeout(() => setJustGaveBirth(false), 4500);
+    } catch {
+      toast.error("Nepodarilo sa uložiť.");
+    }
+  };
 
   const startEditingCycle = () => {
     setCycleLengthEdit(String(profile.cycle_length_days ?? 28));
@@ -96,6 +111,11 @@ export default function CommunityCycle() {
             <>
               <p className="text-xs uppercase tracking-wider text-muted-foreground">{TRIMESTER_LABEL[pregnancy.trimester]}</p>
               <p className="font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</p>
+              {pregnancyWeekSize(pregnancy.week) && (
+                <p className="text-sm text-muted-foreground">
+                  Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
+                </p>
+              )}
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {pregnancy.daysUntilDue > 0
                   ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
@@ -104,13 +124,35 @@ export default function CommunityCycle() {
             </>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Ešte si nezadala predpokladaný termín pôrodu.
+              Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva.
             </p>
           )}
-          <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
-            Upraviť v profile
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil")}>
+              Upraviť v profile
+            </Button>
+            <Button size="sm" onClick={markBirth}>
+              Narodilo sa bábätko 🎉
+            </Button>
+          </div>
         </motion.section>
+      )}
+
+      {justGaveBirth && (
+        <>
+          <ConfettiBurst />
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 px-6 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-xs rounded-2xl border border-border/50 bg-card p-8 text-center shadow-lg"
+            >
+              <p className="font-display text-3xl text-primary">Gratulujeme, Diva! 🎉</p>
+              <p className="mt-2 text-sm text-muted-foreground">Vitaj v novej kapitole.</p>
+            </motion.div>
+          </div>
+        </>
       )}
 
       {profile.is_menopause && (

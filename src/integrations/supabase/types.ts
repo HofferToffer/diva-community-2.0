@@ -648,7 +648,6 @@ export type Database = {
           is_demo: boolean
           is_public: boolean
           is_pregnant: boolean
-          pregnancy_due_date: string | null
           is_menopause: boolean
           last_period_date: string | null
           name: string
@@ -673,7 +672,6 @@ export type Database = {
           is_demo?: boolean
           is_public?: boolean
           is_pregnant?: boolean
-          pregnancy_due_date?: string | null
           is_menopause?: boolean
           last_period_date?: string | null
           name?: string
@@ -698,7 +696,6 @@ export type Database = {
           is_demo?: boolean
           is_public?: boolean
           is_pregnant?: boolean
-          pregnancy_due_date?: string | null
           is_menopause?: boolean
           last_period_date?: string | null
           name?: string

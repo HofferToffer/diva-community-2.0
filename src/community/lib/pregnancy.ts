@@ -12,13 +12,16 @@ export type PregnancyInfo = {
   daysUntilDue: number;
 };
 
-/** Computes the current pregnancy week from the expected due date. */
-export function getPregnancyInfo(dueDate: string, today = new Date()): PregnancyInfo {
-  const due = new Date(dueDate);
-  const daysUntilDue = daysBetween(today, due);
-  const daysPregnant = Math.min(Math.max(GESTATION_DAYS - daysUntilDue, 0), GESTATION_DAYS + 14);
+/** Computes the current pregnancy week and due date from the first day of the last menstrual period. */
+export function getPregnancyInfo(lastPeriodDate: string, today = new Date()): PregnancyInfo {
+  const lmp = new Date(lastPeriodDate);
+  const dueDate = new Date(lmp);
+  dueDate.setDate(dueDate.getDate() + GESTATION_DAYS);
+
+  const daysPregnant = Math.min(Math.max(daysBetween(lmp, today), 0), GESTATION_DAYS + 14);
   const week = Math.min(Math.max(Math.floor(daysPregnant / 7) + 1, 1), 42);
   const trimester: 1 | 2 | 3 = week <= 13 ? 1 : week <= 27 ? 2 : 3;
+  const daysUntilDue = daysBetween(today, dueDate);
   return { week, trimester, daysUntilDue };
 }
 
@@ -27,3 +30,48 @@ export const TRIMESTER_LABEL: Record<1 | 2 | 3, string> = {
   2: "2. trimester",
   3: "3. trimester",
 };
+
+/** Playful size comparison per pregnancy week, the way most pregnancy calendar apps show it. */
+const WEEK_SIZE: Record<number, string> = {
+  4: "zrnko maku",
+  5: "sezamové semienko",
+  6: "šošovica",
+  7: "čučoriedka",
+  8: "malina",
+  9: "čerešňa",
+  10: "jahoda",
+  11: "fík",
+  12: "slivka",
+  13: "struk hrášku",
+  14: "citrón",
+  15: "jablko",
+  16: "avokádo",
+  17: "cibuľa",
+  18: "paprika",
+  19: "paradajka",
+  20: "banán",
+  21: "mrkva",
+  22: "malý kokos",
+  23: "veľké mango",
+  24: "klas kukurice",
+  25: "cuketa",
+  26: "baklažán",
+  27: "karfiol",
+  28: "malý ananás",
+  29: "tekvica špagetová",
+  30: "hlávka kapusty",
+  31: "veľký kokos",
+  32: "tekvica maslová",
+  33: "melón cantaloupe",
+  34: "melón medovka",
+  35: "malá tekvica",
+  36: "hlávka rímskeho šalátu",
+  37: "pór",
+  38: "malý vodný melón",
+  39: "veľký vodný melón",
+  40: "malá tekvica na jeseň",
+};
+
+export function pregnancyWeekSize(week: number): string | null {
+  return WEEK_SIZE[week] ?? null;
+}
