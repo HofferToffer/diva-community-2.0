@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { CalendarHeart, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarHeart, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -25,11 +25,16 @@ export function CycleCalendar({
   lastPeriodDate,
   cycleLengthDays,
   onSelectPeriodStart,
+  intimacyDates,
+  onToggleIntimacy,
 }: {
   lastPeriodDate: string;
   cycleLengthDays: number;
   /** Called when the woman taps a day to correct/log the actual start of her period. */
   onSelectPeriodStart?: (dateKey: string) => void;
+  /** Dates (YYYY-MM-DD) she's logged, for women trying to conceive. */
+  intimacyDates?: Set<string>;
+  onToggleIntimacy?: (dateKey: string) => void;
 }) {
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const [pendingDateKey, setPendingDateKey] = useState<string | null>(null);
@@ -104,30 +109,40 @@ export function CycleCalendar({
               const isPeriodStart = dateKey === lastPeriodDate;
               const isPast = cell.date <= today;
               const canEdit = !!onSelectPeriodStart && isPast;
+              const canLogIntimacy = !!onToggleIntimacy && isPast;
+              const canOpen = canEdit || canLogIntimacy;
               const isPending = pendingDateKey === dateKey;
+              const isLogged = intimacyDates?.has(dateKey) ?? false;
 
               const dayButton = (
                 <button
                   type="button"
-                  disabled={!canEdit}
+                  disabled={!canOpen}
                   title={cell.phase ? CYCLE_PHASES[cell.phase].name : undefined}
                   aria-label={`${cell.date.getDate()}. ${monthLabel}${isPeriodStart ? " — začiatok poslednej menštruácie" : ""}`}
                   onClick={() => setPendingDateKey(dateKey)}
                   className={cn(
-                    "flex aspect-square w-full items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
+                    "relative flex aspect-square w-full items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
                     isSameDay(cell.date, today) && "font-semibold ring-2 ring-primary ring-offset-1 ring-offset-card",
                     isPeriodStart && "ring-2 ring-foreground ring-offset-1 ring-offset-card",
-                    canEdit && "cursor-pointer hover:scale-110 hover:shadow-sm active:scale-95",
+                    canOpen && "cursor-pointer hover:scale-110 hover:shadow-sm active:scale-95",
                   )}
                   style={{
                     background: cell.phase ? CYCLE_PHASE_COLORS[cell.phase].fill.replace(/0\.\d+\)/, "0.6)") : undefined,
                   }}
                 >
                   {cell.date.getDate()}
+                  {isLogged && (
+                    <Heart
+                      className="absolute -bottom-0.5 -right-0.5 h-3 w-3"
+                      style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }}
+                      aria-hidden="true"
+                    />
+                  )}
                 </button>
               );
 
-              if (!canEdit) return <div key={j}>{dayButton}</div>;
+              if (!canOpen) return <div key={j}>{dayButton}</div>;
 
               return (
                 <Popover key={j} open={isPending} onOpenChange={(open) => !open && setPendingDateKey(null)}>
@@ -146,17 +161,39 @@ export function CycleCalendar({
                         )}
                       </div>
                     </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
-                    </p>
-                    <div className="mt-3 flex gap-2">
-                      <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDateKey(null)}>
-                        Zrušiť
-                      </Button>
-                      <Button size="sm" className="flex-1" onClick={() => confirmPendingDate(cell.date)}>
-                        Nastaviť
-                      </Button>
-                    </div>
+
+                    {canLogIntimacy && (
+                      <div className={cn(canEdit && "mt-3 border-t border-border pt-3")}>
+                        <Button
+                          variant={isLogged ? "outline" : "default"}
+                          size="sm"
+                          className="w-full"
+                          onClick={() => {
+                            onToggleIntimacy(dateKey);
+                            setPendingDateKey(null);
+                          }}
+                        >
+                          <Heart className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
+                          {isLogged ? "Odznačiť" : "Zapísať"}
+                        </Button>
+                      </div>
+                    )}
+
+                    {canEdit && (
+                      <div className={cn(canLogIntimacy && "mt-3 border-t border-border pt-3")}>
+                        <p className="text-sm text-muted-foreground">
+                          Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
+                        </p>
+                        <div className="mt-3 flex gap-2">
+                          <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDateKey(null)}>
+                            Zrušiť
+                          </Button>
+                          <Button size="sm" className="flex-1" onClick={() => confirmPendingDate(cell.date)}>
+                            Nastaviť
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </PopoverContent>
                 </Popover>
               );

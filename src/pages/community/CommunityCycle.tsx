@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
+import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
 import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
@@ -26,6 +27,8 @@ export default function CommunityCycle() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
+  const { data: intimacyDates } = useIntimacyLogs(profile?.id);
+  const toggleIntimacy = useToggleIntimacyLog(profile?.id);
 
   if (loadingProfile || !profile) {
     return (
@@ -78,6 +81,13 @@ export default function CommunityCycle() {
     setCycleLengthEdit(String(profile.cycle_length_days ?? 28));
     setLastPeriodEdit(profile.last_period_date ?? "");
     setEditingCycle(true);
+  };
+
+  const handleToggleIntimacy = (dateKey: string) => {
+    toggleIntimacy.mutate(
+      { date: dateKey, logged: intimacyDates?.has(dateKey) ?? false },
+      { onError: () => toast.error("Nepodarilo sa uložiť.") },
+    );
   };
 
   const setPeriodStart = async (dateKey: string) => {
@@ -280,6 +290,15 @@ export default function CommunityCycle() {
                 </div>
               </div>
 
+              {profile.is_trying_to_conceive && (
+                <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+                  <p className="text-sm text-foreground/85">
+                    Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na
+                    deň si vieš súkromne zapísať, kedy ste boli spolu.
+                  </p>
+                </div>
+              )}
+
               <div className="rounded-xl border border-border/50 bg-background/60 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Tipy pre túto fázu
@@ -293,6 +312,8 @@ export default function CommunityCycle() {
                 lastPeriodDate={profile.last_period_date!}
                 cycleLengthDays={profile.cycle_length_days ?? 28}
                 onSelectPeriodStart={setPeriodStart}
+                intimacyDates={profile.is_trying_to_conceive ? intimacyDates : undefined}
+                onToggleIntimacy={profile.is_trying_to_conceive ? handleToggleIntimacy : undefined}
               />
             </>
           )}

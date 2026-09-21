@@ -492,6 +492,38 @@ export function useSaveDailyFeeling(profileId: string | undefined) {
   });
 }
 
+export function useIntimacyLogs(profileId: string | undefined) {
+  return useQuery({
+    queryKey: ["community-intimacy-logs", profileId],
+    enabled: !!profileId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("intimacy_logs")
+        .select("log_date")
+        .eq("profile_id", profileId ?? "");
+      if (error) throw error;
+      return new Set((data ?? []).map((row) => row.log_date));
+    },
+  });
+}
+
+export function useToggleIntimacyLog(profileId: string | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ date, logged }: { date: string; logged: boolean }) => {
+      if (!profileId) throw new Error("Chýba profil členky.");
+      if (logged) {
+        const { error } = await supabase.from("intimacy_logs").delete().eq("profile_id", profileId).eq("log_date", date);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("intimacy_logs").insert({ profile_id: profileId, log_date: date });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["community-intimacy-logs", profileId] }),
+  });
+}
+
 export type Achievement = {
   id: string;
   code: string;

@@ -29,6 +29,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
   const [isMenopause, setIsMenopause] = useState(profile?.is_menopause ?? false);
   const [isPostpartum, setIsPostpartum] = useState(profile?.is_postpartum ?? false);
   const [postpartumSince, setPostpartumSince] = useState(profile?.postpartum_since ?? "");
+  const [isTryingToConceive, setIsTryingToConceive] = useState(profile?.is_trying_to_conceive ?? false);
   const [notifyLikes, setNotifyLikes] = useState(profile?.notify_likes ?? true);
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
   const [notifyChallenges, setNotifyChallenges] = useState(profile?.notify_challenges ?? true);
@@ -102,6 +103,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           is_menopause: isMenopause,
           is_postpartum: isPostpartum,
           postpartum_since: isPostpartum ? postpartumSince || null : null,
+          is_trying_to_conceive: isTryingToConceive,
         } as never)
         .eq("id", profile.id);
       if (error) throw error;
@@ -166,6 +168,21 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
         </div>
         <div className="space-y-3 rounded-2xl border border-border/50 bg-card px-4 py-4 shadow-sm">
           <div className="flex items-center justify-between gap-4">
+            <Label htmlFor="s-is-trying" className="text-sm">Snažím sa o bábätko</Label>
+            <Switch
+              id="s-is-trying"
+              checked={isTryingToConceive}
+              onCheckedChange={(v) => {
+                setIsTryingToConceive(v);
+                if (v) {
+                  setIsPregnant(false);
+                  setIsMenopause(false);
+                  setIsPostpartum(false);
+                }
+              }}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-4">
             <Label htmlFor="s-is-pregnant" className="text-sm">Som tehotná</Label>
             <Switch
               id="s-is-pregnant"
@@ -175,6 +192,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
                 if (v) {
                   setIsMenopause(false);
                   setIsPostpartum(false);
+                  setIsTryingToConceive(false);
                 }
               }}
             />
@@ -189,6 +207,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
                 if (v) {
                   setIsPregnant(false);
                   setIsMenopause(false);
+                  setIsTryingToConceive(false);
                 }
               }}
             />
@@ -203,6 +222,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
                 if (v) {
                   setIsPregnant(false);
                   setIsPostpartum(false);
+                  setIsTryingToConceive(false);
                 }
               }}
             />
@@ -240,7 +260,9 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
               <p className="text-xs text-muted-foreground">
                 {isPregnant
                   ? "Podľa toho ti na Domove ukážeme, koľký týždeň tehotenstva máš a predpokladaný termín pôrodu."
-                  : "Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty."}
+                  : isTryingToConceive
+                    ? "Podľa toho ti v kalendári zvýrazníme plodné dni. Tieto údaje vidíš len ty."
+                    : "Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty."}
               </p>
             </div>
             {!isPregnant && (

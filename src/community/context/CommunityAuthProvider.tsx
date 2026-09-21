@@ -25,6 +25,7 @@ export type Profile = {
   is_menopause: boolean;
   is_postpartum: boolean;
   postpartum_since: string | null;
+  is_trying_to_conceive: boolean;
   created_at: string;
 };
 

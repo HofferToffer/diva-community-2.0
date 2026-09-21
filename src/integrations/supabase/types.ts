@@ -431,6 +431,35 @@ export type Database = {
           },
         ]
       }
+      intimacy_logs: {
+        Row: {
+          created_at: string
+          id: string
+          log_date: string
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          log_date: string
+          profile_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          log_date?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intimacy_logs_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_participants: {
         Row: {
           event_id: string
@@ -651,6 +680,7 @@ export type Database = {
           is_menopause: boolean
           is_postpartum: boolean
           postpartum_since: string | null
+          is_trying_to_conceive: boolean
           last_period_date: string | null
           name: string
           notify_challenges: boolean
@@ -677,6 +707,7 @@ export type Database = {
           is_menopause?: boolean
           is_postpartum?: boolean
           postpartum_since?: string | null
+          is_trying_to_conceive?: boolean
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
@@ -703,6 +734,7 @@ export type Database = {
           is_menopause?: boolean
           is_postpartum?: boolean
           postpartum_since?: string | null
+          is_trying_to_conceive?: boolean
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
