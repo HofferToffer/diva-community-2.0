@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import type { DailyFeeling } from "@/community/hooks/queries";
 import { SCALE_LEVELS, levelForFeeling, scaleLabel } from "@/community/lib/consciousnessScale";
 import { CYCLE_PHASES, getCycleDayForDate, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
+import { activityTypeLabel } from "@/community/lib/constants";
 
 const RANGES = [
   { key: "week", label: "Týždeň", days: 7 },
@@ -36,31 +37,36 @@ export type FeelingChartCycle = {
   cycleLengthDays: number;
 };
 
-export type FeelingChartRun = {
+export type FeelingChartActivity = {
   activity_date: string;
+  kind: "run" | "move";
+  activity_type: string;
   distance_km: number | null;
 };
 
-const RUN_Y = 15;
-const RUN_COLOR = "hsl(var(--accent))";
+const ACTIVITY_Y = 15;
+const ACTIVITY_COLOR = "hsl(var(--accent))";
 
 export default function FeelingScaleChart({
   feelings,
   cycle,
-  runs,
+  activities,
 }: {
   feelings: DailyFeeling[];
   cycle?: FeelingChartCycle | null;
-  runs?: FeelingChartRun[];
+  activities?: FeelingChartActivity[];
 }) {
   const [range, setRange] = useState<(typeof RANGES)[number]["key"]>("month");
   const days = RANGES.find((item) => item.key === range)?.days ?? 30;
 
-  const { data, phaseBands, hasFeelings, hasRuns } = useMemo(() => {
+  const { data, phaseBands, hasFeelings, hasActivities } = useMemo(() => {
     const byDate = new Map(feelings.map((item) => [item.feeling_date, item]));
-    const kmByDate = new Map<string, number>();
-    for (const run of runs ?? []) {
-      kmByDate.set(run.activity_date, (kmByDate.get(run.activity_date) ?? 0) + (run.distance_km ?? 0));
+    const activitiesByDate = new Map<string, { labels: Set<string>; km: number }>();
+    for (const activity of activities ?? []) {
+      const entry = activitiesByDate.get(activity.activity_date) ?? { labels: new Set<string>(), km: 0 };
+      entry.labels.add(activityTypeLabel(activity.kind, activity.activity_type));
+      if (activity.distance_km) entry.km += activity.distance_km;
+      activitiesByDate.set(activity.activity_date, entry);
     }
     const today = new Date();
     today.setHours(12, 0, 0, 0);
@@ -71,8 +77,9 @@ export default function FeelingScaleChart({
       name: string | null;
       phase: CyclePhaseKey | null;
       dayOfCycle: number | null;
-      runKm: number | null;
-      runY: number | null;
+      activityLabel: string | null;
+      activityKm: number | null;
+      activityY: number | null;
     }> = [];
 
     for (let i = days - 1; i >= 0; i -= 1) {
@@ -80,7 +87,7 @@ export default function FeelingScaleChart({
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
       const feeling = byDate.get(key);
       const level = feeling ? levelForFeeling(feeling.mood, feeling.feeling_detail) : null;
-      const runKm = kmByDate.has(key) ? Math.round(kmByDate.get(key)! * 100) / 100 : null;
+      const dayActivities = activitiesByDate.get(key);
       points.push({
         ts: date.getTime(),
         date: key,
@@ -88,8 +95,9 @@ export default function FeelingScaleChart({
         name: level !== null ? scaleLabel(level) : null,
         phase: cycle ? getCyclePhaseForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
         dayOfCycle: cycle ? getCycleDayForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
-        runKm,
-        runY: runKm !== null ? RUN_Y : null,
+        activityLabel: dayActivities ? Array.from(dayActivities.labels).join(", ") : null,
+        activityKm: dayActivities?.km ? Math.round(dayActivities.km * 100) / 100 : null,
+        activityY: dayActivities ? ACTIVITY_Y : null,
       });
     }
 
@@ -109,9 +117,9 @@ export default function FeelingScaleChart({
       data: points,
       phaseBands: bands,
       hasFeelings: points.some((point) => point.level !== null),
-      hasRuns: points.some((point) => point.runKm !== null),
+      hasActivities: points.some((point) => point.activityLabel !== null),
     };
-  }, [feelings, days, cycle, runs]);
+  }, [feelings, days, cycle, activities]);
 
   const levels = data.filter((point) => point.level !== null);
   const average = levels.length
@@ -153,7 +161,7 @@ export default function FeelingScaleChart({
         </div>
       </div>
 
-      {hasFeelings || hasRuns ? (
+      {hasFeelings || hasActivities ? (
         <>
           {average !== null && (
             <p className="mt-4 text-sm text-muted-foreground">
@@ -199,17 +207,19 @@ export default function FeelingScaleChart({
                       name?: string | null;
                       phase?: CyclePhaseKey | null;
                       dayOfCycle?: number | null;
-                      runKm?: number | null;
+                      activityLabel?: string | null;
+                      activityKm?: number | null;
                     } | undefined;
-                    if (item?.dataKey === "runY") {
-                      const kmText = payload?.runKm ? ` · ${payload.runKm} km` : "";
-                      return [`Beh${kmText}`, "Beh"];
+                    if (item?.dataKey === "activityY") {
+                      const kmText = payload?.activityKm ? ` · ${payload.activityKm} km` : "";
+                      return [`${payload?.activityLabel}${kmText}`, "Aktivita"];
                     }
                     const lines = [
                       value !== null && value !== undefined ? `${value} · ${payload?.name}` : "Bez záznamu",
                     ];
-                    if (payload?.runKm != null) {
-                      lines.push(`Beh · ${payload.runKm} km`);
+                    if (payload?.activityLabel) {
+                      const kmText = payload.activityKm ? ` · ${payload.activityKm} km` : "";
+                      lines.push(`${payload.activityLabel}${kmText}`);
                     }
                     if (payload?.phase) {
                       const cycleLine = payload.dayOfCycle
@@ -256,20 +266,20 @@ export default function FeelingScaleChart({
                     );
                   }}
                 />
-                {hasRuns && (
+                {hasActivities && (
                   <Scatter
-                    dataKey="runY"
-                    fill={RUN_COLOR}
-                    shape={(props: { cx?: number; cy?: number; payload?: { runY: number | null } }) => {
+                    dataKey="activityY"
+                    fill={ACTIVITY_COLOR}
+                    shape={(props: { cx?: number; cy?: number; payload?: { activityY: number | null } }) => {
                       const { cx, cy, payload } = props;
-                      if (payload?.runY == null || cx == null || cy == null) return <g key={String(cx)} />;
+                      if (payload?.activityY == null || cx == null || cy == null) return <g key={String(cx)} />;
                       return (
                         <circle
-                          key={`run-${cx}-${cy}`}
+                          key={`activity-${cx}-${cy}`}
                           cx={cx}
                           cy={cy}
                           r={5}
-                          fill={RUN_COLOR}
+                          fill={ACTIVITY_COLOR}
                           stroke="hsl(var(--card))"
                           strokeWidth={1.5}
                         />
@@ -294,11 +304,11 @@ export default function FeelingScaleChart({
               ))}
             </ul>
           )}
-          {hasRuns && (
-            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda behov">
+          {hasActivities && (
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda aktivít">
               <li className="flex items-center gap-1.5">
-                <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full" style={{ background: RUN_COLOR }} />
-                Beh (deň s behom, v detaile aj kilometre)
+                <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full" style={{ background: ACTIVITY_COLOR }} />
+                Aktivita (deň, kedy si niečo urobila — v detaile aj typ a kilometre)
               </li>
             </ul>
           )}

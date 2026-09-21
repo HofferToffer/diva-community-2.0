@@ -20,10 +20,16 @@ function localDateKey(date = new Date()) {
 export default function CommunityFeelingHistory() {
   const { profile } = useCommunityAuth();
   const { data: feelings, isLoading } = useDailyFeelings(profile?.id);
-  const { data: runActivities } = useProfileActivities(profile?.id, "run");
-  const chartRuns = useMemo(
-    () => (runActivities ?? []).map((a) => ({ activity_date: a.activity_date, distance_km: a.distance_km ?? null })),
-    [runActivities],
+  const { data: allActivities } = useProfileActivities(profile?.id);
+  const chartActivities = useMemo(
+    () =>
+      (allActivities ?? []).map((a) => ({
+        activity_date: a.activity_date,
+        kind: a.kind,
+        activity_type: a.activity_type,
+        distance_km: a.distance_km ?? null,
+      })),
+    [allActivities],
   );
   const today = useMemo(() => localDateKey(), []);
   const cycleData = useMemo(
@@ -60,7 +66,16 @@ export default function CommunityFeelingHistory() {
         </section>
       ) : (
         <>
-          <FeelingScaleChart feelings={feelings} cycle={cycleData} runs={chartRuns} />
+          {!cycleData && (
+            <p className="text-sm text-muted-foreground">
+              Graf zatiaľ nezobrazuje fázy cyklu — doplň si dátum poslednej menštruácie v{" "}
+              <Link to="/community/cyklus" className="underline hover:text-foreground">
+                Môj cyklus
+              </Link>
+              .
+            </p>
+          )}
+          <FeelingScaleChart feelings={feelings} cycle={cycleData} activities={chartActivities} />
 
           <div className="border-t border-border pt-8">
             <h2 className="font-display text-2xl">Moja história pocitov</h2>
