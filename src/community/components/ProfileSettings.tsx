@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Activity } from "lucide-react";
+import { Activity, Bell, Footprints, KeyRound, Sparkles, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -135,9 +135,15 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="space-y-4">
+    <div className="space-y-6">
+      <div>
         <h2 className="font-display text-2xl">Upraviť profil</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Tieto zmeny uložíš jedným tlačidlom nižšie. Strava, heslo a odhlásenie sa riešia samostatne.
+        </p>
+      </div>
+
+      <SectionCard icon={User} title="Základné údaje">
         <div className="space-y-2">
           <Label htmlFor="s-name">Meno</Label>
           <Input id="s-name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -181,7 +187,14 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             onChange={(e) => setGifts(e.target.value)}
           />
         </div>
-        <div className="space-y-3 rounded-2xl border border-border/50 bg-card px-4 py-4 shadow-sm">
+      </SectionCard>
+
+      <SectionCard
+        icon={Sparkles}
+        title="Moja životná kapitola"
+        description="Vyber si, kde práve si — podľa toho ti prispôsobíme citáty, kalendár aj tipy na Domove. Vidíš to len ty."
+      >
+        <div className="space-y-3">
           <div className="flex items-center justify-between gap-4">
             <Label htmlFor="s-is-trying" className="text-sm">Cesta k bábätku</Label>
             <Switch
@@ -243,8 +256,9 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
             />
           </div>
         </div>
+
         {isPostpartum && (
-          <div className="space-y-2">
+          <div className="space-y-2 border-t border-border/50 pt-4">
             <Label htmlFor="s-postpartum-since">Dátum pôrodu</Label>
             <Input
               id="s-postpartum-since"
@@ -260,7 +274,7 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
           </div>
         )}
         {!isMenopause && !isPostpartum && (
-          <>
+          <div className="space-y-4 border-t border-border/50 pt-4">
             <div className="space-y-2">
               <Label htmlFor="s-last-period">
                 {isPregnant ? "Prvý deň poslednej menštruácie" : "Prvý deň poslednej menštruácie (nepovinné)"}
@@ -295,104 +309,128 @@ export function ProfileSettings({ onSaved }: { onSaved?: () => void }) {
                 />
               </div>
             )}
-          </>
-        )}
-        <div className="space-y-2">
-          <Label>Ako sa hýbem</Label>
-          <div className="flex flex-wrap gap-2">
-            {MOVEMENT_INTERESTS.map((item) => {
-              const selected = interests.includes(item);
-              return (
-                <button
-                  key={item}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setInterests((p) => (selected ? p.filter((i) => i !== item) : [...p, item]))}
-                  className={cn(
-                    "rounded-full border px-4 py-2 text-sm transition-colors",
-                    selected ? "border-primary bg-primary text-primary-foreground" : "border-border",
-                  )}
-                >
-                  {item}
-                </button>
-              );
-            })}
           </div>
+        )}
+      </SectionCard>
+
+      <SectionCard icon={Footprints} title="Ako sa hýbem">
+        <div className="flex flex-wrap gap-2">
+          {MOVEMENT_INTERESTS.map((item) => {
+            const selected = interests.includes(item);
+            return (
+              <button
+                key={item}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setInterests((p) => (selected ? p.filter((i) => i !== item) : [...p, item]))}
+                className={cn(
+                  "rounded-full border px-4 py-2 text-sm transition-colors",
+                  selected ? "border-primary bg-primary text-primary-foreground" : "border-border",
+                )}
+              >
+                {item}
+              </button>
+            );
+          })}
         </div>
-      </section>
+      </SectionCard>
 
-      <section className="space-y-3">
-        <h2 className="font-display text-2xl">Súkromie a notifikácie</h2>
-        <ToggleRow label="Verejný profil" checked={isPublic} onChange={setIsPublic} />
-        <ToggleRow label="Upozornenia na podporu (srdiečka)" checked={notifyLikes} onChange={setNotifyLikes} />
-        <ToggleRow label="Upozornenia na komentáre" checked={notifyComments} onChange={setNotifyComments} />
-        <ToggleRow label="Upozornenia na výzvy" checked={notifyChallenges} onChange={setNotifyChallenges} />
-      </section>
+      <SectionCard icon={Bell} title="Súkromie a notifikácie">
+        <div className="space-y-2">
+          <ToggleRow label="Verejný profil" checked={isPublic} onChange={setIsPublic} />
+          <ToggleRow label="Upozornenia na podporu (srdiečka)" checked={notifyLikes} onChange={setNotifyLikes} />
+          <ToggleRow label="Upozornenia na komentáre" checked={notifyComments} onChange={setNotifyComments} />
+          <ToggleRow label="Upozornenia na výzvy" checked={notifyChallenges} onChange={setNotifyChallenges} />
+        </div>
+      </SectionCard>
 
-      <Button className="w-full" onClick={save} disabled={saving}>
+      <Button className="w-full" size="lg" onClick={save} disabled={saving}>
         Uložiť zmeny
       </Button>
 
-      <section className="space-y-3">
-        <h2 className="font-display text-2xl">Strava</h2>
-        <div className="rounded-2xl border border-border/50 bg-card px-4 py-4 space-y-3 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Activity className="h-5 w-5 text-primary" aria-hidden />
+      <div className="border-t border-border/60 pt-8">
+        <p className="mb-4 text-xs uppercase tracking-[0.15em] text-muted-foreground">Účet</p>
+        <div className="space-y-6">
+          <SectionCard icon={Activity} title="Strava">
             <p className="text-sm">
               {stravaConnection
                 ? "Strava je prepojená. Nové aktivity sa importujú automaticky."
                 : "Prepoj si Strava účet a tvoje aktivity sa budú importovať automaticky."}
             </p>
+            {stravaConnection ? (
+              <Button variant="outline" className="w-full" onClick={disconnectStrava}>
+                Odpojiť Stravu
+              </Button>
+            ) : (
+              <Button className="w-full" onClick={connectStrava}>
+                Pripojiť Stravu
+              </Button>
+            )}
+          </SectionCard>
+
+          <SectionCard icon={KeyRound} title="Zmena hesla">
+            <div className="space-y-2">
+              <Label htmlFor="cur-pass">Súčasné heslo</Label>
+              <Input
+                id="cur-pass"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="new-pass">Nové heslo</Label>
+              <Input
+                id="new-pass"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </div>
+            <ToggleRow label="Zobraziť heslo" checked={showPassword} onChange={setShowPassword} />
+            <Button variant="outline" className="w-full" onClick={changePassword}>
+              Zmeniť heslo
+            </Button>
+          </SectionCard>
+
+          <div className="space-y-3">
+            <Button variant="outline" className="w-full" onClick={signOut}>
+              Odhlásiť sa
+            </Button>
+            <Button asChild variant="link" className="w-full">
+              <Link to="/">Späť na hlavnú stránku</Link>
+            </Button>
           </div>
-          {stravaConnection ? (
-            <Button variant="outline" className="w-full" onClick={disconnectStrava}>
-              Odpojiť Stravu
-            </Button>
-          ) : (
-            <Button className="w-full" onClick={connectStrava}>
-              Pripojiť Stravu
-            </Button>
-          )}
         </div>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="font-display text-2xl">Zmena hesla</h2>
-        <div className="space-y-2">
-          <Label htmlFor="cur-pass">Súčasné heslo</Label>
-          <Input
-            id="cur-pass"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="new-pass">Nové heslo</Label>
-          <Input
-            id="new-pass"
-            type={showPassword ? "text" : "password"}
-            autoComplete="new-password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </div>
-        <ToggleRow label="Zobraziť heslo" checked={showPassword} onChange={setShowPassword} />
-        <Button variant="outline" className="w-full" onClick={changePassword}>
-          Zmeniť heslo
-        </Button>
-      </section>
-
-      <section className="space-y-3 border-t border-border pt-6">
-        <Button variant="outline" className="w-full" onClick={signOut}>
-          Odhlásiť sa
-        </Button>
-        <Button asChild variant="link" className="w-full">
-          <Link to="/">Späť na hlavnú stránku</Link>
-        </Button>
-      </section>
+      </div>
     </div>
+  );
+}
+
+function SectionCard({
+  icon: Icon,
+  title,
+  description,
+  children,
+}: {
+  icon: typeof User;
+  title: string;
+  description?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+      <div className="flex items-start gap-2">
+        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+        <div>
+          <h3 className="font-display text-lg leading-tight">{title}</h3>
+          {description && <p className="mt-1 text-xs text-muted-foreground">{description}</p>}
+        </div>
+      </div>
+      {children}
+    </section>
   );
 }
 
@@ -406,7 +444,7 @@ function ToggleRow({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl border border-border/50 bg-card px-4 py-3 shadow-sm">
+    <div className="flex items-center justify-between gap-4 py-1">
       <span className="text-sm">{label}</span>
       <Switch checked={checked} onCheckedChange={onChange} aria-label={label} />
     </div>
