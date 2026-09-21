@@ -187,59 +187,6 @@ export type Database = {
           },
         ]
       }
-      blog_posts: {
-        Row: {
-          author_profile_id: string | null
-          content: string
-          cover_image_url: string | null
-          created_at: string
-          excerpt: string | null
-          gallery_image_urls: string[]
-          id: string
-          published: boolean
-          published_at: string | null
-          slug: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          author_profile_id?: string | null
-          content: string
-          cover_image_url?: string | null
-          created_at?: string
-          excerpt?: string | null
-          gallery_image_urls?: string[]
-          id?: string
-          published?: boolean
-          published_at?: string | null
-          slug: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          author_profile_id?: string | null
-          content?: string
-          cover_image_url?: string | null
-          created_at?: string
-          excerpt?: string | null
-          gallery_image_urls?: string[]
-          id?: string
-          published?: boolean
-          published_at?: string | null
-          slug?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_posts_author_profile_id_fkey"
-            columns: ["author_profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       challenge_participants: {
         Row: {
           challenge_id: string
