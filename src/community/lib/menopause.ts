@@ -86,10 +86,6 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
   },
 ];
 
-/** A gentle, non-alarmist reminder of when to actually call a doctor. */
-export const MENOPAUSE_SAFETY_NOTE =
-  "Akékoľvek krvácanie po tom, čo si mala 12 mesiacov bez menštruácie, over u lekára — zvyčajne to nie je nič vážne, ale vždy sa to oplatí skontrolovať.";
-
 export const MENOPAUSE_TIPS: CycleTip[] = [
   { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg },
   { label: "Vápnik a vitamín D", category: "eat", icon: Milk },

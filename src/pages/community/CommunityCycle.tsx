@@ -8,11 +8,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
-import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL, PREGNANCY_SAFETY_NOTE } from "@/community/lib/pregnancy";
-import { getPostpartumInfo, POSTPARTUM_SAFETY_NOTE } from "@/community/lib/postpartum";
+import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
-import { MENOPAUSE_TIPS, MENOPAUSE_STAGES, MENOPAUSE_SAFETY_NOTE } from "@/community/lib/menopause";
+import { MENOPAUSE_TIPS, MENOPAUSE_STAGES } from "@/community/lib/menopause";
 import {
   TTC_TIMELINE_NOTE,
   TTC_DOCTOR_GUIDANCE,
@@ -190,7 +190,6 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <p className="text-xs italic text-muted-foreground">{PREGNANCY_SAFETY_NOTE}</p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">
@@ -245,7 +244,6 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <p className="text-xs italic text-muted-foreground">{POSTPARTUM_SAFETY_NOTE}</p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
@@ -301,7 +299,6 @@ export default function CommunityCycle() {
                 </ul>
               </div>
             ))}
-            <p className="text-xs italic text-muted-foreground">{MENOPAUSE_SAFETY_NOTE}</p>
           </div>
         </motion.section>
       )}

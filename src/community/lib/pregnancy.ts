@@ -120,10 +120,6 @@ const PREGNANCY_FALLBACK: WeekBand = {
   symptoms: ["silné Braxtonove kontrakcie", "tlak v panve", "možná strata hlienovej zátky", "vlny energie striedané únavou"],
 };
 
-/** A gentle, non-alarmist reminder of when to actually call a doctor during pregnancy. */
-export const PREGNANCY_SAFETY_NOTE =
-  "Ak zaznamenáš silné krvácanie, silnú bolesť brucha, horúčku, náhly opuch spolu s bolesťou hlavy a poruchami videnia, únik plodovej vody, alebo si všimneš, že sa bábätko hýbe výrazne menej než zvyčajne, ozvi sa lekárovi hneď — nečakaj na plánovanú kontrolu.";
-
 /** Computes the current pregnancy week and due date from the first day of the last menstrual period. */
 export function getPregnancyInfo(lastPeriodDate: string, today = new Date()): PregnancyInfo {
   const lmp = new Date(lastPeriodDate);
