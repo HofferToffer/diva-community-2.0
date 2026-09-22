@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatTile } from "@/community/components/EmptyState";
 import AdminChallenges from "@/community/components/AdminChallenges";
+import AdminStravaWebhook from "@/community/components/AdminStravaWebhook";
 import { useAdminMembers, useAdminSeries, useAdminStats, useIsAdmin } from "@/community/hooks/queries";
 import { pluralDivy } from "@/community/lib/format";
 
