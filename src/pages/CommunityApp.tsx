@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CommunityAuthProvider, useCommunityAuth } from "@/community/context/CommunityAuthProvider";
@@ -26,6 +26,9 @@ import CommunityDailyQuote from "./community/CommunityDailyQuote";
 import CommunityChat from "./community/CommunityChat";
 import CommunityMessages from "./community/CommunityMessages";
 import CommunityActivityDetail from "./community/CommunityActivityDetail";
+
+// Lazy — Leaflet is a sizeable chunk that most sessions never need.
+const CommunityMap = lazy(() => import("./community/CommunityMap"));
 
 const DIVA_LETTERS = ["D", "I", "V", "A"];
 
@@ -85,6 +88,14 @@ function CommunityRoutes() {
         <Route path="challenges" element={<CommunityChallenges />} />
         <Route path="challenges/:id" element={<CommunityChallengeDetail />} />
         <Route path="divy" element={<CommunityDivy />} />
+        <Route
+          path="mapa"
+          element={
+            <Suspense fallback={<Loading />}>
+              <CommunityMap />
+            </Suspense>
+          }
+        />
         <Route path="diva-kruh" element={<CommunityDivaKruh />} />
         <Route path="profil" element={<CommunityProfile />} />
         <Route path="divy/:username" element={<CommunityProfile />} />

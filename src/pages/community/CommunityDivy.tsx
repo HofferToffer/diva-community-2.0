@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Map, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -112,11 +112,20 @@ export default function CommunityDivy() {
         Domov
       </Link>
 
-      <motion.header {...fadeUp(0)} className="space-y-1">
-        <h1 className="font-display text-3xl">Divy</h1>
-        <p className="text-sm text-muted-foreground">
-          Nájdi si Divu, ktorá ťa inšpiruje a podporuje — podľa mena, mesta, obľúbeného pohybu alebo životnej kapitoly.
-        </p>
+      <motion.header {...fadeUp(0)} className="flex items-start justify-between gap-3">
+        <div className="space-y-1">
+          <h1 className="font-display text-3xl">Divy</h1>
+          <p className="text-sm text-muted-foreground">
+            Nájdi si Divu, ktorá ťa inšpiruje a podporuje — podľa mena, mesta, obľúbeného pohybu alebo životnej kapitoly.
+          </p>
+        </div>
+        <Link
+          to="/community/mapa"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/50 bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-sm hover:text-foreground"
+        >
+          <Map className="h-3.5 w-3.5" aria-hidden="true" />
+          Mapa
+        </Link>
       </motion.header>
 
       <motion.div {...fadeUp(1)} className="space-y-3">

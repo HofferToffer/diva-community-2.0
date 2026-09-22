@@ -871,6 +871,35 @@ export function useSuggestedDivas(filters: DivaFilters = {}) {
   });
 }
 
+export type MapDiva = {
+  id: string;
+  name: string;
+  username: string | null;
+  avatar_url: string | null;
+  city: string;
+  city_lat: number;
+  city_lng: number;
+  chapter: string | null;
+};
+
+/** Every diva with a geocoded city, for the world map — never anything more precise than a city centroid. */
+export function useMapDivas() {
+  return useQuery({
+    queryKey: ["community-map-divas"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles_directory")
+        .select("id, name, username, avatar_url, city, city_lat, city_lng, chapter")
+        .not("user_id", "is", null)
+        .not("city_lat", "is", null)
+        .not("city_lng", "is", null)
+        .eq("is_demo", false);
+      if (error) throw error;
+      return (data ?? []) as unknown as MapDiva[];
+    },
+  });
+}
+
 export function useFriends(profileId: string | undefined) {
   return useQuery({
     queryKey: ["community-friends", profileId],

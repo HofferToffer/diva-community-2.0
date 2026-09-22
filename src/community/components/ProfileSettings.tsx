@@ -93,6 +93,21 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           return toast.error("Táto prezývka je už obsadená.");
         }
       }
+
+      const trimmedCity = city.trim();
+      let cityLat = profile.city_lat;
+      let cityLng = profile.city_lng;
+      if (trimmedCity !== (profile.city ?? "")) {
+        if (!trimmedCity) {
+          cityLat = null;
+          cityLng = null;
+        } else {
+          const { data: geo } = await supabase.functions.invoke("geocode-city", { body: { city: trimmedCity } });
+          cityLat = geo?.lat ?? null;
+          cityLng = geo?.lng ?? null;
+        }
+      }
+
       const { error } = await supabase
         .from("profiles")
         .update({
@@ -100,7 +115,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           username: cleanUsername,
           bio: bio.trim() || null,
           gifts: gifts.trim() || null,
-          city: city.trim() || null,
+          city: trimmedCity || null,
+          city_lat: cityLat,
+          city_lng: cityLng,
           date_of_birth: dateOfBirth || null,
           interests,
           is_public: isPublic,

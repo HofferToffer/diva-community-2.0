@@ -11,6 +11,8 @@ export type Profile = {
   bio: string | null;
   gifts: string | null;
   city: string | null;
+  city_lat: number | null;
+  city_lng: number | null;
   country: string | null;
   avatar_url: string | null;
   interests: string[];

@@ -186,3 +186,33 @@
     scrollbar-width: none;
   }
 }
+
+/* Mapa Divy — vlastné markery a klastre v brand farbe, mimo React stromu (Leaflet ich vykresľuje priamo do DOM). */
+.diva-map-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  border: 2px solid hsl(var(--background));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.diva-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: hsl(var(--primary) / 0.85);
+  color: hsl(var(--primary-foreground));
+  border: 2px solid hsl(var(--background));
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem;
+}

@@ -710,6 +710,8 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           city: string | null
+          city_lat: number | null
+          city_lng: number | null
           country: string | null
           created_at: string
           cycle_length_days: number | null
@@ -741,6 +743,8 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           city?: string | null
+          city_lat?: number | null
+          city_lng?: number | null
           country?: string | null
           created_at?: string
           cycle_length_days?: number | null
@@ -772,6 +776,8 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           city?: string | null
+          city_lat?: number | null
+          city_lng?: number | null
           country?: string | null
           created_at?: string
           cycle_length_days?: number | null
@@ -907,6 +913,8 @@ export type Database = {
           bio: string | null
           chapter: string | null
           city: string | null
+          city_lat: number | null
+          city_lng: number | null
           created_at: string | null
           id: string | null
           interests: string[] | null

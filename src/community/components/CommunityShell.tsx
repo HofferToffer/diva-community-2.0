@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Bell, ChevronDown, Circle, Globe, HeartPulse, History, Home, LogOut, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
+import { Bell, ChevronDown, Circle, Globe, HeartPulse, History, Home, LogOut, Map, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +33,7 @@ const NAV = [
   { to: "/community/challenges", label: "Výzvy", icon: Trophy, end: false },
   { to: "/community/pridat", label: "Pridať aktivitu", icon: Plus, end: false },
   { to: "/community/divy", label: "Divy", icon: Search, end: false },
+  { to: "/community/mapa", label: "Mapa Divy", icon: Map, end: false },
   { to: "/community/diva-kruh", label: "DIVA KRUH", icon: Circle, end: false },
 ];
 
