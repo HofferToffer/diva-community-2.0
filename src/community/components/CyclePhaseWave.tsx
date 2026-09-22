@@ -7,9 +7,14 @@ const MID = 20;
 const AMP = 11;
 const CYCLES = 1.4;
 const STEPS = 60;
+const PAD = 9; // keeps the dot's r=7 marker (+ stroke) from clipping at day 1 or the last day of the cycle
 
 function waveY(t: number) {
   return MID + AMP * Math.sin(2 * Math.PI * CYCLES * t);
+}
+
+function waveX(t: number) {
+  return PAD + t * (W - 2 * PAD);
 }
 
 /** A gentle wavy line with a dot marking today's position in the cycle — inspired by classic period-app "where am I" indicators. */
@@ -28,7 +33,7 @@ export function CyclePhaseWave({
   const points = useMemo(
     () => Array.from({ length: STEPS + 1 }, (_, i) => {
       const t = i / STEPS;
-      return { t, x: t * W, y: waveY(t) };
+      return { t, x: waveX(t), y: waveY(t) };
     }),
     [],
   );
@@ -36,7 +41,7 @@ export function CyclePhaseWave({
   const fullPath = points.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ");
   const travelled = points.filter((p) => p.t <= progress);
   const travelledPath = travelled.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ");
-  const dotX = progress * W;
+  const dotX = waveX(progress);
   const dotY = waveY(progress);
 
   return (
