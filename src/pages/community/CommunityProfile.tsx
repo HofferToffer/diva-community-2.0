@@ -154,10 +154,10 @@ export default function CommunityProfile() {
     }
   };
 
-  const addGalleryPhotos = async (files: FileList) => {
+  const addGalleryPhotos = async (files: File[]) => {
     if (!profile || !user) return;
     const remaining = Math.max(12 - galleryPhotos.length, 0);
-    const toUpload = Array.from(files).slice(0, remaining);
+    const toUpload = files.slice(0, remaining);
     if (toUpload.length === 0) return;
     setGalleryUploading(true);
     setGalleryError(null);
