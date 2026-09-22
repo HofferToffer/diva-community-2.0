@@ -272,6 +272,7 @@ export default function CommunityProfile() {
         <div className="relative h-44 w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/30 to-accent/25 sm:h-56">
           {coverUrl && <img src={coverUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />}
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/15 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
           {isMe && (
             <>
               <button
@@ -301,7 +302,7 @@ export default function CommunityProfile() {
               />
             </>
           )}
-          <div className="absolute inset-x-4 bottom-3">
+          <div className="absolute inset-x-4 bottom-16">
             <h1 className="font-display text-2xl leading-tight text-white drop-shadow-sm sm:text-3xl">
               {profile.name || "Diva"}
             </h1>
@@ -310,7 +311,7 @@ export default function CommunityProfile() {
         </div>
 
         <div className="flex items-end justify-between gap-3 bg-card px-4 pb-4">
-          <div className="-mt-9 flex flex-col items-start gap-2">
+          <div className="relative -mt-9 flex flex-col items-start gap-2">
             <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
             {isMe && (
               <>
