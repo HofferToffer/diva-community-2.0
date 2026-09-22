@@ -9,11 +9,26 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
+type PhotonFeature = {
+  geometry: { coordinates: [number, number] };
+  properties: {
+    name?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    osm_key?: string;
+    osm_value?: string;
+  };
+};
+
 /**
- * Live place autocomplete for the city field, via OpenStreetMap's
- * Nominatim — returns a few candidate places with a readable label
- * (e.g. "Zvolen, Banskobystrický kraj, Slovensko") plus their coordinates,
- * so picking a suggestion needs no separate geocoding call later.
+ * Live place autocomplete for the city field, via Photon (Komoot's
+ * OSM-based geocoder) — returns a few candidate places with a readable
+ * label (e.g. "Zvolen, Banskobystrický kraj, Slovensko") plus their
+ * coordinates, so picking a suggestion needs no separate geocoding call
+ * later. Uses Photon rather than Nominatim directly because Nominatim's
+ * usage policy throttles/blocks shared cloud IPs (like Supabase Edge
+ * Functions run on), which silently starved this of results.
  */
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -28,30 +43,35 @@ Deno.serve(async (req) => {
   }
   if (!q || q.length < 2) return json({ results: [] });
 
-  const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&accept-language=sk&q=${encodeURIComponent(q)}`;
+  const url = `https://photon.komoot.io/api/?limit=8&lang=sk&q=${encodeURIComponent(q)}`;
   try {
-    const res = await fetch(url, {
-      headers: { "User-Agent": "DivaCommunity/1.0 (https://divacommunity.sk)" },
-    });
-    if (!res.ok) return json({ results: [] });
-    const raw = (await res.json()) as {
-      display_name: string;
-      lat: string;
-      lon: string;
-      address?: Record<string, string>;
-    }[];
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error("search-cities: photon responded", res.status, await res.text());
+      return json({ results: [] });
+    }
+    const data = (await res.json()) as { features?: PhotonFeature[] };
+    const features = data.features ?? [];
+    const places = features.filter((f) => f.properties.osm_key === "place");
+    const pool = places.length > 0 ? places : features;
 
-    const results = raw.map((r) => {
-      const a = r.address ?? {};
-      const place = a.city || a.town || a.village || a.municipality || a.county || r.display_name.split(",")[0];
-      const region = a.state || a.county;
-      const country = a.country;
-      const label = [place, region, country].filter(Boolean).join(", ");
-      return { label, lat: parseFloat(r.lat), lng: parseFloat(r.lon) };
-    });
+    const seen = new Set<string>();
+    const results = [];
+    for (const f of pool) {
+      const p = f.properties;
+      const place = p.name || p.city;
+      if (!place) continue;
+      const label = [place, p.state, p.country].filter(Boolean).join(", ");
+      if (seen.has(label)) continue;
+      seen.add(label);
+      const [lng, lat] = f.geometry.coordinates;
+      results.push({ label, lat, lng });
+      if (results.length >= 5) break;
+    }
 
     return json({ results });
-  } catch {
+  } catch (err) {
+    console.error("search-cities failed", err);
     return json({ results: [] });
   }
 });

@@ -11,14 +11,20 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
+type PhotonFeature = { geometry: { coordinates: [number, number] } };
+
 async function geocode(city: string): Promise<{ lat: number; lng: number } | null> {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&featuretype=city&q=${encodeURIComponent(city)}`;
-  const res = await fetch(url, { headers: { "User-Agent": "DivaCommunity/1.0 (https://divacommunity.sk)" } });
-  if (!res.ok) return null;
-  const results = (await res.json()) as { lat: string; lon: string }[];
-  const first = results[0];
+  const url = `https://photon.komoot.io/api/?limit=1&lang=sk&q=${encodeURIComponent(city)}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    console.error("backfill-city-coords: photon responded", res.status, await res.text());
+    return null;
+  }
+  const data = (await res.json()) as { features?: PhotonFeature[] };
+  const first = data.features?.[0];
   if (!first) return null;
-  return { lat: parseFloat(first.lat), lng: parseFloat(first.lon) };
+  const [lng, lat] = first.geometry.coordinates;
+  return { lat, lng };
 }
 
 /**
@@ -76,8 +82,8 @@ Deno.serve(async (req) => {
       .update({ city_lat: coords.lat, city_lng: coords.lng })
       .in("id", ids);
     if (!updateError) profilesUpdated += ids.length;
-    // Nominatim fair use policy: max ~1 request/sec.
-    await new Promise((r) => setTimeout(r, 1100));
+    // Keep a light, polite pace on Photon's shared public instance.
+    await new Promise((r) => setTimeout(r, 300));
   }
 
   return json({

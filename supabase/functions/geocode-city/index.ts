@@ -9,11 +9,14 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
+type PhotonFeature = { geometry: { coordinates: [number, number] } };
+
 /**
  * Turns a free-text city name into approximate city-level coordinates, using
- * OpenStreetMap's Nominatim (no API key, but requires a real User-Agent and
- * fair use — one lookup per profile save, never a bulk job). Only ever
- * resolves to a city centroid, never a precise address.
+ * Photon (Komoot's OSM-based geocoder) rather than Nominatim directly —
+ * Nominatim's usage policy throttles/blocks requests from shared cloud IPs
+ * (like Supabase Edge Functions run on), which silently returned nothing.
+ * Only ever resolves to a city centroid, never a precise address.
  */
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -28,17 +31,20 @@ Deno.serve(async (req) => {
   }
   if (!city) return json({ lat: null, lng: null });
 
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&featuretype=city&q=${encodeURIComponent(city)}`;
+  const url = `https://photon.komoot.io/api/?limit=1&lang=sk&q=${encodeURIComponent(city)}`;
   try {
-    const res = await fetch(url, {
-      headers: { "User-Agent": "DivaCommunity/1.0 (https://divacommunity.sk)" },
-    });
-    if (!res.ok) return json({ lat: null, lng: null });
-    const results = (await res.json()) as { lat: string; lon: string }[];
-    const first = results[0];
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error("geocode-city: photon responded", res.status, await res.text());
+      return json({ lat: null, lng: null });
+    }
+    const data = (await res.json()) as { features?: PhotonFeature[] };
+    const first = data.features?.[0];
     if (!first) return json({ lat: null, lng: null });
-    return json({ lat: parseFloat(first.lat), lng: parseFloat(first.lon) });
-  } catch {
+    const [lng, lat] = first.geometry.coordinates;
+    return json({ lat, lng });
+  } catch (err) {
+    console.error("geocode-city failed", err);
     return json({ lat: null, lng: null });
   }
 });
