@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { ACTIVITY_TYPE_COLORS, ACTIVITY_TYPES } from "@/community/lib/constants";
-import { uploadImage, validateImage } from "@/community/lib/storage";
+import { uploadImage, validateImage, normalizeImage } from "@/community/lib/storage";
 import { StoredImage } from "@/community/components/StoredImage";
 import { fadeUp } from "@/community/lib/motion";
 
@@ -61,13 +61,15 @@ export default function CommunityAddActivity() {
 
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  const pickPhoto = async (file: File) => {
-    const problem = validateImage(file);
-    if (problem) return toast.error(problem);
+  const pickPhoto = async (rawFile: File) => {
     setUploadingPhoto(true);
     try {
+      const file = await normalizeImage(rawFile);
+      const problem = validateImage(file);
+      if (problem) return toast.error(problem);
       setPhotoPath(await uploadImage("activity-photos", user!.id, file));
-    } catch {
+    } catch (err) {
+      console.error("Nepodarilo sa nahrať fotku aktivity:", err);
       toast.error("Fotku sa nepodarilo nahrať.");
     } finally {
       setUploadingPhoto(false);

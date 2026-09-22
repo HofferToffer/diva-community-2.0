@@ -13,6 +13,38 @@ export function validateImage(file: File): string | null {
   return null;
 }
 
+/**
+ * Re-encodes any image (including iPhone HEIC photos, which upload fine as
+ * raw bytes but are unreliable to display cross-browser) into a size-capped
+ * JPEG. Falls back to the original file if decoding fails for any reason.
+ */
+export async function normalizeImage(file: File, maxSide = 1600): Promise<File> {
+  if (file.type === "image/jpeg" && file.size <= MAX_IMAGE_BYTES) return file;
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const el = new Image();
+      el.onload = () => resolve(el);
+      el.onerror = () => reject(new Error("Obrázok sa nepodarilo dekódovať."));
+      el.src = url;
+    });
+    const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+    canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.88));
+    if (!blob) return file;
+    return new File([blob], "fotka.jpg", { type: "image/jpeg" });
+  } catch {
+    return file;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 export async function uploadImage(
   bucket: "avatars" | "activity-photos" | "profile-gallery" | "profile-cover",
   userId: string,

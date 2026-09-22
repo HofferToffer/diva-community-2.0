@@ -28,7 +28,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ImageCropDialog } from "@/community/components/ImageCropDialog";
 import { ProfileGallery } from "@/community/components/ProfileGallery";
-import { validateImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
+import { validateImage, uploadImage, deleteStoredImage, normalizeImage } from "@/community/lib/storage";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 
 function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
@@ -161,22 +161,31 @@ export default function CommunityProfile() {
     setGalleryUploading(true);
     try {
       const newPaths: string[] = [];
-      for (const file of toUpload) {
+      for (const rawFile of toUpload) {
+        const file = await normalizeImage(rawFile);
         const problem = validateImage(file);
         if (problem) {
           toast.error(problem);
           continue;
         }
-        newPaths.push(await uploadImage("profile-gallery", user.id, file));
+        try {
+          newPaths.push(await uploadImage("profile-gallery", user.id, file));
+        } catch (err) {
+          console.error("Nepodarilo sa nahrať fotku do albumu:", err);
+        }
       }
-      if (newPaths.length === 0) return;
+      if (newPaths.length === 0) {
+        if (toUpload.length > 0) toast.error("Fotky sa nepodarilo nahrať.");
+        return;
+      }
       const updated = [...galleryPhotos, ...newPaths];
       const { error } = await supabase.from("profiles").update({ gallery_photos: updated } as never).eq("id", profile.id);
       if (error) throw error;
       setGalleryPhotos(updated);
       refreshProfile();
       toast.success("Fotky sú pridané.");
-    } catch {
+    } catch (err) {
+      console.error("Nepodarilo sa uložiť album:", err);
       toast.error("Fotky sa nepodarilo nahrať.");
     } finally {
       setGalleryUploading(false);
