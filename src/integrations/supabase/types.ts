@@ -1121,6 +1121,7 @@ export type Database = {
         }[]
       }
       current_profile_id: { Args: never; Returns: string }
+      delete_my_account_data: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
