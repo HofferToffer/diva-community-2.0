@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -41,9 +42,19 @@ export function CityAutocomplete({
       return;
     }
     const timer = setTimeout(async () => {
-      const { data } = await supabase.functions.invoke("search-cities", { body: { q: trimmed } });
-      setSuggestions(data?.results ?? []);
-      setOpen(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("search-cities", { body: { q: trimmed } });
+        if (error) {
+          toast.error(`Vyhľadávanie miest zlyhalo: ${error.message}`);
+          setSuggestions([]);
+          return;
+        }
+        setSuggestions(data?.results ?? []);
+        setOpen(true);
+      } catch (err) {
+        toast.error(`Vyhľadávanie miest zlyhalo: ${err instanceof Error ? err.message : String(err)}`);
+        setSuggestions([]);
+      }
     }, 400);
     return () => clearTimeout(timer);
   }, [query]);
