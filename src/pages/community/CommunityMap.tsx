@@ -24,6 +24,13 @@ const divaIcon = L.divIcon({
   iconSize: L.point(16, 16),
 });
 
+// A distinct gold pin just for "me", so she can spot herself among the crowd at a glance.
+const myDivaIcon = L.divIcon({
+  html: `<div class="diva-map-pin diva-map-pin--me"></div>`,
+  className: "",
+  iconSize: L.point(18, 18),
+});
+
 // Bundled at build time (no tile server, no API key) — a flat, engraved-map look:
 // warm parchment countries on a deep ground, borders only, no roads or labels.
 const COUNTRIES_GEOJSON = fixAntimeridian(
@@ -136,7 +143,7 @@ export default function CommunityMap() {
 
 function DivaMarker({ diva, coords, isMe }: { diva: MapDiva; coords: [number, number]; isMe: boolean }) {
   return (
-    <Marker position={coords} icon={divaIcon}>
+    <Marker position={coords} icon={isMe ? myDivaIcon : divaIcon}>
       <Popup>
         <div className="flex min-w-40 items-center gap-2">
           <ProfileAvatar path={diva.avatar_url} name={diva.name} size={36} />
