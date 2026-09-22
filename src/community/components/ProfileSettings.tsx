@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
+import { CityAutocomplete } from "@/community/components/CityAutocomplete";
 import { MOVEMENT_INTERESTS } from "@/community/lib/constants";
 import { normalizeUsername } from "@/community/lib/format";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,8 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [bio, setBio] = useState(profile?.bio ?? "");
   const [gifts, setGifts] = useState(profile?.gifts ?? "");
   const [city, setCity] = useState(profile?.city ?? "");
+  const [cityLat, setCityLat] = useState<number | null>(profile?.city_lat ?? null);
+  const [cityLng, setCityLng] = useState<number | null>(profile?.city_lng ?? null);
   const [dateOfBirth, setDateOfBirth] = useState(profile?.date_of_birth ?? "");
   const [interests, setInterests] = useState<string[]>(profile?.interests ?? []);
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
@@ -95,17 +98,13 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
       }
 
       const trimmedCity = city.trim();
-      let cityLat = profile.city_lat;
-      let cityLng = profile.city_lng;
-      if (trimmedCity !== (profile.city ?? "")) {
-        if (!trimmedCity) {
-          cityLat = null;
-          cityLng = null;
-        } else {
-          const { data: geo } = await supabase.functions.invoke("geocode-city", { body: { city: trimmedCity } });
-          cityLat = geo?.lat ?? null;
-          cityLng = geo?.lng ?? null;
-        }
+      let finalCityLat = trimmedCity ? cityLat : null;
+      let finalCityLng = trimmedCity ? cityLng : null;
+      if (trimmedCity && (finalCityLat == null || finalCityLng == null)) {
+        // Typed by hand without picking a suggestion — geocode the plain text as a fallback.
+        const { data: geo } = await supabase.functions.invoke("geocode-city", { body: { city: trimmedCity } });
+        finalCityLat = geo?.lat ?? null;
+        finalCityLng = geo?.lng ?? null;
       }
 
       const { error } = await supabase
@@ -116,8 +115,8 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           bio: bio.trim() || null,
           gifts: gifts.trim() || null,
           city: trimmedCity || null,
-          city_lat: cityLat,
-          city_lng: cityLng,
+          city_lat: finalCityLat,
+          city_lng: finalCityLng,
           date_of_birth: dateOfBirth || null,
           interests,
           is_public: isPublic,
@@ -181,7 +180,15 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
         </div>
         <div className="space-y-2">
           <Label htmlFor="s-city">Mesto</Label>
-          <Input id="s-city" value={city} onChange={(e) => setCity(e.target.value)} />
+          <CityAutocomplete
+            id="s-city"
+            value={city}
+            onChange={(value, lat, lng) => {
+              setCity(value);
+              setCityLat(lat);
+              setCityLng(lng);
+            }}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="s-dob">Dátum narodenia (nepovinné)</Label>
