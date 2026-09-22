@@ -15,7 +15,7 @@ export function ProfileGallery({
   photos: string[];
   isMe: boolean;
   uploading?: boolean;
-  onAdd?: (files: FileList) => void;
+  onAdd?: (files: File[]) => void;
   onRemove?: (index: number) => void;
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
