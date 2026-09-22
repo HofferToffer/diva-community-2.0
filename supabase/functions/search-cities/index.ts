@@ -73,17 +73,13 @@ Deno.serve(async (req) => {
     const data = (await res.json()) as { features?: PhotonFeature[] };
     const features = data.features ?? [];
     const places = features.filter(
-      (f) => f.properties.osm_key === "place" && RANK[f.properties.osm_value ?? ""] !== undefined,
+      (f) => f.properties.osm_key === "place" && SETTLEMENTS.has(f.properties.osm_value ?? ""),
     );
     const pool = places.length > 0 ? places : features;
-    const ranked = pool
-      .map((f, i) => ({ f, i, r: RANK[f.properties.osm_value ?? ""] ?? 99 }))
-      .sort((a, b) => a.r - b.r || a.i - b.i)
-      .map((x) => x.f);
 
     const seen = new Set<string>();
     const results = [];
-    for (const f of ranked) {
+    for (const f of pool) {
       const p = f.properties;
       const place = p.name || p.city;
       if (!place) continue;
