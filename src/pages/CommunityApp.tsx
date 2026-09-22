@@ -25,6 +25,7 @@ import CommunityAdminBlog from "./community/CommunityAdminBlog";
 import CommunityDailyQuote from "./community/CommunityDailyQuote";
 import CommunityChat from "./community/CommunityChat";
 import CommunityMessages from "./community/CommunityMessages";
+import CommunityActivityDetail from "./community/CommunityActivityDetail";
 
 const DIVA_LETTERS = ["D", "I", "V", "A"];
 
@@ -76,6 +77,7 @@ function CommunityRoutes() {
         <Route path="pridat" element={<Navigate to="/community/pridat/run" replace />} />
         <Route path="pridat/:kind" element={<CommunityAddActivity />} />
         <Route path="aktivita/:id/upravit" element={<CommunityAddActivity />} />
+        <Route path="aktivita/:id" element={<CommunityActivityDetail />} />
         <Route path="pocit" element={<CommunityDailyFeeling />} />
         <Route path="pocit/historia" element={<CommunityFeelingHistory />} />
         <Route path="cyklus" element={<CommunityCycle />} />

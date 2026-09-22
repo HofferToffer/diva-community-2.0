@@ -66,6 +66,18 @@ export function useProfileActivities(profileId: string | undefined, kind?: "run"
   });
 }
 
+export function useActivityById(activityId: string | undefined) {
+  return useQuery({
+    queryKey: ["community-activity", activityId],
+    enabled: !!activityId,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("activities").select(FEED_SELECT).eq("id", activityId!).maybeSingle();
+      if (error) throw error;
+      return data as unknown as FeedActivity | null;
+    },
+  });
+}
+
 export type ProfileStats = {
   total_km: number;
   total_runs: number;
