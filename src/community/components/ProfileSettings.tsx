@@ -41,6 +41,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
   const [notifyChallenges, setNotifyChallenges] = useState(profile?.notify_challenges ?? true);
   const [dynamicTheme, setDynamicTheme] = useState(profile?.dynamic_theme ?? true);
+  const [shareChapter, setShareChapter] = useState(profile?.share_chapter ?? false);
   const [saving, setSaving] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -107,6 +108,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           notify_comments: notifyComments,
           notify_challenges: notifyChallenges,
           dynamic_theme: dynamicTheme,
+          share_chapter: shareChapter,
           cycle_length_days: cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
           last_period_date: lastPeriod || null,
           is_pregnant: isPregnant,
@@ -336,6 +338,19 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             )}
           </div>
         )}
+
+        <div className="space-y-2 border-t border-border/50 pt-4">
+          <ToggleRow
+            label="Zobrazovať moju kapitolu ostatným Divám"
+            checked={shareChapter}
+            onChange={setShareChapter}
+          />
+          <p className="text-xs text-muted-foreground">
+            Keď to zdieľaš, ostatné Divy v Divách uvidia, v akej si životnej kapitole — vďaka tomu môžeš nájsť aj
+            byť nájdená Divami v tej istej kapitole a navzájom sa podporiť. Predvolene je to vypnuté a nikdy
+            neukazujeme konkrétne dátumy ani iné údaje — len názov kapitoly.
+          </p>
+        </div>
       </SectionCard>
       </div>
 

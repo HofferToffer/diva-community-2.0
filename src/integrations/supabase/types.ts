@@ -732,6 +732,7 @@ export type Database = {
           onboarding_completed: boolean
           postpartum_since: string | null
           pregnancy_due_date: string | null
+          share_chapter: boolean
           updated_at: string
           user_id: string | null
           username: string | null
@@ -762,6 +763,7 @@ export type Database = {
           onboarding_completed?: boolean
           postpartum_since?: string | null
           pregnancy_due_date?: string | null
+          share_chapter?: boolean
           updated_at?: string
           user_id?: string | null
           username?: string | null
@@ -792,6 +794,7 @@ export type Database = {
           onboarding_completed?: boolean
           postpartum_since?: string | null
           pregnancy_due_date?: string | null
+          share_chapter?: boolean
           updated_at?: string
           user_id?: string | null
           username?: string | null
@@ -898,7 +901,22 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      profiles_directory: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          chapter: string | null
+          city: string | null
+          created_at: string | null
+          id: string | null
+          interests: string[] | null
+          is_demo: boolean | null
+          name: string | null
+          user_id: string | null
+          username: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_daily_series: {

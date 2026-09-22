@@ -815,41 +815,56 @@ export type DivaProfile = {
   avatar_url: string | null;
   city: string | null;
   bio: string | null;
+  interests: string[] | null;
+  /** Life chapter — null unless the diva has opted in to sharing it. */
+  chapter: string | null;
 };
 
-const DIVA_SELECT = "id, name, username, avatar_url, city, bio";
+/** Selected from the `profiles_directory` view, which only computes `chapter` when the diva opted in — the raw is_pregnant/is_menopause/etc. flags never leave the database for anyone but the owner. */
+const DIVA_SELECT = "id, name, username, avatar_url, city, bio, interests, chapter";
 
-export function useSearchDivas(term: string) {
+export type DivaFilters = { city?: string; interest?: string; chapter?: string };
+
+export function useSearchDivas(term: string, filters: DivaFilters = {}) {
   const query = term.trim();
+  const { city, interest, chapter } = filters;
   return useQuery({
-    queryKey: ["community-search-divas", query],
+    queryKey: ["community-search-divas", query, city, interest, chapter],
     enabled: query.length >= 2,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profiles")
+      let q = supabase
+        .from("profiles_directory")
         .select(DIVA_SELECT)
         .not("user_id", "is", null)
         .eq("is_demo", false)
-        .or(`name.ilike.%${query}%,username.ilike.%${query}%`)
-        .order("name")
-        .limit(30);
+        .or(`name.ilike.%${query}%,username.ilike.%${query}%`);
+      if (city) q = q.ilike("city", `%${city}%`);
+      if (interest) q = q.contains("interests", [interest]);
+      if (chapter) q = q.eq("chapter", chapter);
+      const { data, error } = await q.order("name").limit(30);
       if (error) throw error;
       return (data ?? []) as unknown as DivaProfile[];
     },
   });
 }
 
-export function useSuggestedDivas() {
+export function useSuggestedDivas(filters: DivaFilters = {}) {
+  const { city, interest, chapter } = filters;
   return useQuery({
-    queryKey: ["community-suggested-divas"],
+    queryKey: ["community-suggested-divas", city, interest, chapter],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profiles")
+      let q = supabase
+        .from("profiles_directory")
         .select(DIVA_SELECT)
         .not("user_id", "is", null)
-        .eq("is_demo", false)
-        .order("created_at", { ascending: false })
-        .limit(20);
+        .eq("is_demo", false);
+      if (city) q = q.ilike("city", `%${city}%`);
+      if (interest) q = q.contains("interests", [interest]);
+      if (chapter) q = q.eq("chapter", chapter);
+      const hasFilters = !!(city || interest || chapter);
+      const { data, error } = hasFilters
+        ? await q.order("name").limit(30)
+        : await q.order("created_at", { ascending: false }).limit(20);
       if (error) throw error;
       return (data ?? []) as unknown as DivaProfile[];
     },

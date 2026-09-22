@@ -6,10 +6,13 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ProfileAvatar } from "@/community/components/StoredImage";
 import { EmptyState } from "@/community/components/EmptyState";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { fadeUp } from "@/community/lib/motion";
+import { MOVEMENT_INTERESTS } from "@/community/lib/constants";
+import { PHASE_LABEL, type LifePhase } from "@/community/lib/quotes";
 import {
   useFriends,
   useSearchDivas,
@@ -17,6 +20,8 @@ import {
   useToggleFriend,
   type DivaProfile,
 } from "@/community/hooks/queries";
+
+const CHAPTER_OPTIONS: LifePhase[] = ["cycle", "trying", "pregnant", "postpartum", "menopause"];
 
 function DivaRow({
   diva,
@@ -37,6 +42,11 @@ function DivaRow({
         <p className="truncate text-xs text-muted-foreground">
           {diva.username ? `@${diva.username}` : diva.city || "Diva"}
         </p>
+        {diva.chapter && (
+          <p className="truncate text-xs text-primary">
+            {PHASE_LABEL[diva.chapter as LifePhase] ?? diva.chapter}
+          </p>
+        )}
       </div>
     </>
   );
@@ -60,8 +70,19 @@ function DivaRow({
 export default function CommunityDivy() {
   const { profile } = useCommunityAuth();
   const [term, setTerm] = useState("");
-  const search = useSearchDivas(term);
-  const suggested = useSuggestedDivas();
+  const [city, setCity] = useState("");
+  const [interest, setInterest] = useState<string>("");
+  const [chapter, setChapter] = useState<string>("");
+
+  const filters = {
+    city: city.trim() || undefined,
+    interest: interest || undefined,
+    chapter: chapter || undefined,
+  };
+  const hasFilters = !!(filters.city || filters.interest || filters.chapter);
+
+  const search = useSearchDivas(term, filters);
+  const suggested = useSuggestedDivas(filters);
   const friends = useFriends(profile?.id);
   const toggle = useToggleFriend(profile?.id);
 
@@ -94,28 +115,69 @@ export default function CommunityDivy() {
       <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">Divy</h1>
         <p className="text-sm text-muted-foreground">
-          Nájdi si Divu, ktorá ťa inšpiruje a podporuje.
+          Nájdi si Divu, ktorá ťa inšpiruje a podporuje — podľa mena, mesta, obľúbeného pohybu alebo životnej kapitoly.
         </p>
       </motion.header>
 
-      <motion.div {...fadeUp(1)} className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
-          placeholder="Hľadaj podľa mena alebo prezývky"
-          aria-label="Hľadať divu"
-          className="pl-9"
-        />
+      <motion.div {...fadeUp(1)} className="space-y-3">
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+            placeholder="Hľadaj podľa mena alebo prezývky"
+            aria-label="Hľadať divu"
+            className="pl-9"
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <Input
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Mesto"
+            aria-label="Filtrovať podľa mesta"
+          />
+          <Select value={interest || "all"} onValueChange={(v) => setInterest(v === "all" ? "" : v)}>
+            <SelectTrigger aria-label="Filtrovať podľa pohybu">
+              <SelectValue placeholder="Pohyb" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Všetky druhy pohybu</SelectItem>
+              {MOVEMENT_INTERESTS.map((item) => (
+                <SelectItem key={item} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={chapter || "all"} onValueChange={(v) => setChapter(v === "all" ? "" : v)}>
+            <SelectTrigger aria-label="Filtrovať podľa životnej kapitoly">
+              <SelectValue placeholder="Životná kapitola" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Všetky kapitoly</SelectItem>
+              {CHAPTER_OPTIONS.map((key) => (
+                <SelectItem key={key} value={key}>
+                  {PHASE_LABEL[key]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {filters.chapter && (
+          <p className="text-xs text-muted-foreground">
+            Zobrazujeme len Divy, ktoré sa rozhodli svoju životnú kapitolu zdieľať s komunitou.
+          </p>
+        )}
       </motion.div>
 
       <motion.section {...fadeUp(2)} className="space-y-3">
-        <h2 className="font-display text-2xl">{searching ? "Výsledky hľadania" : "Divy v komunite"}</h2>
+        <h2 className="font-display text-2xl">{searching || hasFilters ? "Výsledky hľadania" : "Divy v komunite"}</h2>
         {isLoading && <Skeleton className="h-32 w-full" />}
         {!isLoading && list.length === 0 && (
           <EmptyState
             title="Nikoho sme nenašli"
-            description="Skús iné meno alebo prezývku."
+            description="Skús iné meno, mesto alebo filter."
           />
         )}
         {list.length > 0 && (
