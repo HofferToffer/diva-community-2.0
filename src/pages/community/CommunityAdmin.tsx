@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatTile } from "@/community/components/EmptyState";
@@ -43,6 +45,23 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function CommunityAdmin() {
+  const [backfilling, setBackfilling] = useState(false);
+  const runBackfill = async () => {
+    setBackfilling(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("backfill-city-coords", { body: {} });
+      if (error) throw error;
+      toast.success(
+        `Hotovo: ${data.cities_geocoded}/${data.cities_total} miest nájdených, ${data.profiles_updated} profilov aktualizovaných.` +
+          (data.not_found?.length ? ` Nenašlo sa: ${data.not_found.join(", ")}.` : ""),
+      );
+    } catch {
+      toast.error("Dogeokódovanie sa nepodarilo.");
+    } finally {
+      setBackfilling(false);
+    }
+  };
+
   const { data: isAdmin, isLoading: loadingRole } = useIsAdmin();
   const enabled = isAdmin === true;
   const { data: stats, isLoading: loadingStats, isError: statsError } = useAdminStats(enabled);
@@ -96,6 +115,16 @@ export default function CommunityAdmin() {
 
       <Section title="Výzvy">
         <AdminChallenges />
+      </Section>
+
+      <Section title="Mapa Divy">
+        <p className="text-sm text-muted-foreground">
+          Ženy, ktoré si mesto zapísali predtým, než pribudla mapa, nemajú ešte dopočítanú polohu mesta — na mape sa
+          im nič nezobrazí. Toto to jednorazovo dobehne pre všetky mestá, ktoré ešte súradnice nemajú.
+        </p>
+        <Button variant="outline" className="w-full" onClick={runBackfill} disabled={backfilling}>
+          {backfilling ? "Dogeokódovávam…" : "Dogeokódovať existujúce mestá"}
+        </Button>
       </Section>
 
 
