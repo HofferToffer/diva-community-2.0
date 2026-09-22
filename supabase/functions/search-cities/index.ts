@@ -43,7 +43,8 @@ Deno.serve(async (req) => {
   }
   if (!q || q.length < 2) return json({ results: [] });
 
-  const url = `https://photon.komoot.io/api/?limit=8&lang=sk&q=${encodeURIComponent(q)}`;
+  // No `lang` param: Photon rejects `lang=sk`, which silently returned no results.
+  const url = `https://photon.komoot.io/api/?limit=8&q=${encodeURIComponent(q)}`;
   try {
     const res = await fetch(url);
     if (!res.ok) {
