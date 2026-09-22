@@ -18,7 +18,7 @@ import {
 } from "@/community/hooks/queries";
 import { formatKm, pluralActivities } from "@/community/lib/format";
 import { ProfileSettings } from "@/community/components/ProfileSettings";
-import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
+import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE } from "@/community/lib/cycle";
 import { getArchetype } from "@/community/lib/archetype";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -267,11 +267,25 @@ export default function CommunityProfile() {
 
       {archetype && (
         <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoj archetyp</p>
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoj životný archetyp</p>
           <h2 className="mt-1 font-display text-2xl text-primary">{archetype.name}</h2>
           <p className="mt-1 text-xs text-muted-foreground">{archetype.keywords}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{archetype.description}</p>
           <p className="mt-2 text-sm leading-relaxed text-foreground/85">{archetype.energyNote}</p>
+
+          {cycle && (
+            <div className="mt-4 border-t border-border/50 pt-4">
+              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+                A dnes v cykle
+              </p>
+              <p className="mt-1 font-display text-lg text-primary">
+                {CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
+              </p>
+              <p className="mt-1 text-sm italic text-foreground/85">
+                „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
+              </p>
+            </div>
+          )}
         </div>
       )}
 
