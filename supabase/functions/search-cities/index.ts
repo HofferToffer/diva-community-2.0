@@ -48,21 +48,22 @@ Deno.serve(async (req) => {
   // rather than "東京都". A wider limit leaves room to drop non-settlement hits
   // (rivers, peaks, stations) and still return five real towns.
   const url = `https://photon.komoot.io/api/?limit=20&lang=en&q=${encodeURIComponent(q)}`;
-  // Settlements first, bigger ones before smaller ones; anything else is a fallback.
-  const RANK: Record<string, number> = {
-    city: 0,
-    town: 1,
-    municipality: 2,
-    village: 3,
-    suburb: 4,
-    hamlet: 5,
-    borough: 6,
-    province: 7,
-    state: 8,
-    county: 9,
-    island: 10,
-    region: 11,
-  };
+  // Inhabited places only — Photon's own relevance order is kept, since it
+  // already puts the well-known city first (Tokyo before a hamlet named Tokio).
+  const SETTLEMENTS = new Set([
+    "city",
+    "town",
+    "municipality",
+    "village",
+    "suburb",
+    "hamlet",
+    "borough",
+    "province",
+    "state",
+    "county",
+    "island",
+    "region",
+  ]);
   try {
     const res = await fetch(url);
     if (!res.ok) {
