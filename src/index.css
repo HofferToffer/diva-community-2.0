@@ -87,6 +87,69 @@
     --sidebar-border: 30 10% 22%;
     --sidebar-ring: 344 37% 60%;
   }
+
+  /*
+   * Optional per-cycle-phase theming (community app only): when a woman has
+   * "Automaticky podľa fázy" on, CommunityShell sets data-phase on <html> to
+   * one of the four cycle archetypes below, retinting primary/accent/ring
+   * across the whole app. background/card/border/muted stay untouched so the
+   * base layout never changes, only the "brand" color does.
+   */
+  :root[data-phase="menstruacna"] {
+    /* Starena — tmavá vínová / slivková */
+    --primary: 335 35% 40%;
+    --primary-foreground: 40 33% 96%;
+    --accent: 335 30% 55%;
+    --accent-foreground: 40 33% 96%;
+    --ring: 335 35% 40%;
+    --sidebar-primary: 335 35% 40%;
+    --sidebar-primary-foreground: 40 33% 96%;
+    --sidebar-accent: 335 20% 90%;
+    --sidebar-accent-foreground: 30 15% 20%;
+    --sidebar-ring: 335 35% 40%;
+  }
+
+  :root[data-phase="folikularna"] {
+    /* Dievča — svetlá zelená / šalviová */
+    --primary: 140 18% 42%;
+    --primary-foreground: 40 33% 96%;
+    --accent: 140 22% 60%;
+    --accent-foreground: 30 15% 20%;
+    --ring: 140 18% 42%;
+    --sidebar-primary: 140 18% 42%;
+    --sidebar-primary-foreground: 40 33% 96%;
+    --sidebar-accent: 140 20% 90%;
+    --sidebar-accent-foreground: 30 15% 20%;
+    --sidebar-ring: 140 18% 42%;
+  }
+
+  :root[data-phase="ovulacia"] {
+    /* Milenka — teplá zlatá / broskyňová */
+    --primary: 32 45% 46%;
+    --primary-foreground: 40 33% 96%;
+    --accent: 32 50% 68%;
+    --accent-foreground: 30 15% 20%;
+    --ring: 32 45% 46%;
+    --sidebar-primary: 32 45% 46%;
+    --sidebar-primary-foreground: 40 33% 96%;
+    --sidebar-accent: 32 30% 90%;
+    --sidebar-accent-foreground: 30 15% 20%;
+    --sidebar-ring: 32 45% 46%;
+  }
+
+  :root[data-phase="lutealna"] {
+    /* Kráľovná — hlboká hnedá (nie čisto čierna, aby to na svetlej karte nepôsobilo ako škvrna) */
+    --primary: 20 25% 30%;
+    --primary-foreground: 40 33% 96%;
+    --accent: 20 22% 45%;
+    --accent-foreground: 40 33% 96%;
+    --ring: 20 25% 30%;
+    --sidebar-primary: 20 25% 30%;
+    --sidebar-primary-foreground: 40 33% 96%;
+    --sidebar-accent: 20 18% 88%;
+    --sidebar-accent-foreground: 30 15% 20%;
+    --sidebar-ring: 20 25% 30%;
+  }
 }
 
 @layer base {

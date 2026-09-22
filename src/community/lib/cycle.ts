@@ -178,31 +178,32 @@ export const CYCLE_PHASES: Record<CyclePhaseKey, { name: string }> = {
   lutealna: { name: "Luteálna fáza" },
 };
 
-/** Soft background fill + a stronger dot/marker color per phase, shared by the chart and calendar. */
+/** Soft background fill + a stronger dot/marker color per phase, shared by the chart and calendar — same hues as the app-wide phase theme in index.css. */
 export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, { fill: string; dot: string }> = {
-  menstruacna: { fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" },
-  folikularna: { fill: "hsl(var(--primary) / 0.08)", dot: "hsl(var(--primary))" },
-  ovulacia: { fill: "hsl(var(--accent) / 0.35)", dot: "hsl(var(--accent-foreground))" },
-  lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
+  menstruacna: { fill: "hsl(335, 35%, 40%, 0.14)", dot: "hsl(335, 35%, 40%)" },
+  folikularna: { fill: "hsl(140, 18%, 42%, 0.12)", dot: "hsl(140, 18%, 42%)" },
+  ovulacia: { fill: "hsl(32, 45%, 46%, 0.18)", dot: "hsl(32, 45%, 46%)" },
+  lutealna: { fill: "hsl(20, 25%, 30%, 0.12)", dot: "hsl(20, 25%, 30%)" },
 };
 
 /** A near-invisible wash over the whole "Prehľad cyklu" card — the card itself stays the same, this just very gently hints which phase you're in. */
 export const CYCLE_PHASE_CARD_TINT: Record<CyclePhaseKey, string> = {
-  menstruacna: "hsl(354, 45%, 58%, 0.06)",
-  folikularna: "hsl(var(--primary) / 0.06)",
-  ovulacia: "hsl(var(--accent) / 0.06)",
-  lutealna: "hsl(var(--secondary) / 0.06)",
+  menstruacna: "hsl(335, 35%, 40%, 0.06)",
+  folikularna: "hsl(140, 18%, 42%, 0.06)",
+  ovulacia: "hsl(32, 45%, 46%, 0.07)",
+  lutealna: "hsl(20, 25%, 30%, 0.05)",
 };
 
 /**
- * Each phase mirrors one of the four life archetypes (Dievča/Žena/Matka/Múdra žena) —
- * the same four personas recur across the month as they do across a life.
+ * The four archetypal energies of the cycle (Panna/Milenka/Kráľovná/Starena
+ * framework) — a distinct set from the life-stage archetypes (Dievča/Žena/
+ * Matka/Múdra žena) so the two never get confused with each other.
  */
 export const CYCLE_PHASE_ARCHETYPE: Record<CyclePhaseKey, { archetype: string; keywords: string; mantra: string }> = {
-  menstruacna: { archetype: "Múdra žena", keywords: "vnútro • odpočinok • intuícia • pustenie", mantra: "Som vo vnútri." },
+  menstruacna: { archetype: "Starena", keywords: "vnútro • odpočinok • intuícia • pustenie", mantra: "Som vo vnútri." },
   folikularna: { archetype: "Dievča", keywords: "novosť • zvedavosť • tvorivosť • hravosť", mantra: "Som na začiatku." },
-  ovulacia: { archetype: "Matka", keywords: "žiarenie • spojenie • príťažlivosť • energia", mantra: "Som vonku." },
-  lutealna: { archetype: "Žena", keywords: "hranice • sila • pravda • dokončenie", mantra: "Vraciam sa k sebe." },
+  ovulacia: { archetype: "Milenka", keywords: "žiarenie • spojenie • príťažlivosť • energia", mantra: "Som vonku." },
+  lutealna: { archetype: "Kráľovná", keywords: "hranice • sila • pravda • dokončenie", mantra: "Vraciam sa k sebe." },
 };
 
 export type CycleTipCategory = "do" | "eat" | "move";

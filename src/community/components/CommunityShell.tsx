@@ -23,6 +23,7 @@ import { useCommunityAuth } from "../context/CommunityAuthProvider";
 import { useConversations, useIsAdmin, useNotifications } from "../hooks/queries";
 import { ProfileAvatar } from "./StoredImage";
 import { getLifePhase, PHASE_LABEL } from "../lib/quotes";
+import { getCycleInfo } from "../lib/cycle";
 
 
 const NAV = [
@@ -73,6 +74,30 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       supabase.removeChannel(channel);
     };
   }, [profile?.id, queryClient]);
+
+  // Whole-app phase theming: retints primary/accent (see index.css) to match
+  // the current cycle-phase archetype, unless the woman turned it off in
+  // profile settings. Only cleared on unmount so the public marketing site
+  // (which never renders this shell) is never affected.
+  useEffect(() => {
+    const root = document.documentElement;
+    const eligible =
+      profile &&
+      profile.dynamic_theme !== false &&
+      !profile.is_pregnant &&
+      !profile.is_menopause &&
+      !profile.is_postpartum &&
+      profile.last_period_date;
+    const info = eligible ? getCycleInfo(profile.last_period_date!, profile.cycle_length_days ?? 28) : null;
+    if (info) {
+      root.dataset.phase = info.phaseKey;
+    } else {
+      delete root.dataset.phase;
+    }
+    return () => {
+      delete root.dataset.phase;
+    };
+  }, [profile]);
 
 
   const dragStartY = useRef<number | null>(null);

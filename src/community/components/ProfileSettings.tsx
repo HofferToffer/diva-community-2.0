@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Activity, Bell, Footprints, KeyRound, Sparkles, User } from "lucide-react";
+import { Activity, Bell, Footprints, KeyRound, Palette, Sparkles, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [notifyLikes, setNotifyLikes] = useState(profile?.notify_likes ?? true);
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
   const [notifyChallenges, setNotifyChallenges] = useState(profile?.notify_challenges ?? true);
+  const [dynamicTheme, setDynamicTheme] = useState(profile?.dynamic_theme ?? true);
   const [saving, setSaving] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -105,6 +106,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           notify_likes: notifyLikes,
           notify_comments: notifyComments,
           notify_challenges: notifyChallenges,
+          dynamic_theme: dynamicTheme,
           cycle_length_days: cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
           last_period_date: lastPeriod || null,
           is_pregnant: isPregnant,
@@ -357,6 +359,14 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             );
           })}
         </div>
+      </SectionCard>
+
+      <SectionCard
+        icon={Palette}
+        title="Vzhľad appky"
+        description="Keď je zapnuté, farby appky sa jemne menia podľa toho, v akej fáze cyklu práve si."
+      >
+        <ToggleRow label="Automaticky podľa fázy cyklu" checked={dynamicTheme} onChange={setDynamicTheme} />
       </SectionCard>
 
       <SectionCard icon={Bell} title="Súkromie a notifikácie">
