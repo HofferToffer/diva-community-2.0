@@ -166,7 +166,7 @@ export default function CommunityProfile() {
       ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
       : null;
 
-  const archetype = isMe && profile.date_of_birth ? getArchetype(profile.date_of_birth) : null;
+  const archetype = isMe ? getArchetype(profile) : null;
 
   const isFriend = (friends.data ?? []).some((f) => f.following_id === profile.id);
 
@@ -267,11 +267,9 @@ export default function CommunityProfile() {
 
       {archetype && (
         <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-            Tvoj archetyp · {archetype.season}
-          </p>
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoj archetyp</p>
           <h2 className="mt-1 font-display text-2xl text-primary">{archetype.name}</h2>
-          <p className="mt-1 text-xs text-muted-foreground">{archetype.ageRange}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{archetype.keywords}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{archetype.description}</p>
           <p className="mt-2 text-sm leading-relaxed text-foreground/85">{archetype.energyNote}</p>
         </div>

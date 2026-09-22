@@ -12,7 +12,7 @@ import { QuoteCard } from "@/community/components/QuoteCard";
 import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
-import { getCycleInfo } from "@/community/lib/cycle";
+import { getCycleInfo, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { getLifePhase, quoteForDate } from "@/community/lib/quotes";
@@ -167,19 +167,29 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-              {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
-            </p>
-            <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
-            <div className="mt-4">
-              <CyclePhaseWave
-                dayOfCycle={cycle.dayOfCycle}
-                cycleLengthDays={profile?.cycle_length_days ?? 28}
-                phaseKey={cycle.phaseKey}
-              />
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
+              aria-hidden="true"
+            />
+            <div className="relative">
+              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+                {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
+              </p>
+              <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+              <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
+                „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
+              </p>
+              <div className="mt-4">
+                <CyclePhaseWave
+                  dayOfCycle={cycle.dayOfCycle}
+                  cycleLengthDays={profile?.cycle_length_days ?? 28}
+                  phaseKey={cycle.phaseKey}
+                />
+              </div>
             </div>
           </Link>
         </motion.div>

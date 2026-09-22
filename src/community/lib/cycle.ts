@@ -186,6 +186,25 @@ export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, { fill: string; dot: stri
   lutealna: { fill: "hsl(var(--secondary) / 0.55)", dot: "hsl(var(--muted-foreground))" },
 };
 
+/** A near-invisible wash over the whole "Prehľad cyklu" card — the card itself stays the same, this just very gently hints which phase you're in. */
+export const CYCLE_PHASE_CARD_TINT: Record<CyclePhaseKey, string> = {
+  menstruacna: "hsl(354, 45%, 58%, 0.06)",
+  folikularna: "hsl(var(--primary) / 0.06)",
+  ovulacia: "hsl(var(--accent) / 0.06)",
+  lutealna: "hsl(var(--secondary) / 0.06)",
+};
+
+/**
+ * Each phase mirrors one of the four life archetypes (Dievča/Žena/Matka/Múdra žena) —
+ * the same four personas recur across the month as they do across a life.
+ */
+export const CYCLE_PHASE_ARCHETYPE: Record<CyclePhaseKey, { archetype: string; keywords: string; mantra: string }> = {
+  menstruacna: { archetype: "Múdra žena", keywords: "vnútro • odpočinok • intuícia • pustenie", mantra: "Som vo vnútri." },
+  folikularna: { archetype: "Dievča", keywords: "novosť • zvedavosť • tvorivosť • hravosť", mantra: "Som na začiatku." },
+  ovulacia: { archetype: "Matka", keywords: "žiarenie • spojenie • príťažlivosť • energia", mantra: "Som vonku." },
+  lutealna: { archetype: "Žena", keywords: "hranice • sila • pravda • dokončenie", mantra: "Vraciam sa k sebe." },
+};
+
 export type CycleTipCategory = "do" | "eat" | "move";
 
 export type CycleTip = { label: string; category: CycleTipCategory; icon: LucideIcon };

@@ -1,51 +1,59 @@
 export type Archetype = {
   name: string;
-  season: string;
-  ageRange: string;
+  keywords: string;
   description: string;
   energyNote: string;
 };
 
-const ARCHETYPES: Archetype[] = [
-  {
-    name: "Panna",
-    season: "Jar",
-    ageRange: "do 20 rokov",
-    description: "Obdobie objavovania a budovania seba — telo aj identita sa ešte len formujú.",
-    energyNote: "Tvoja energia je objavujúca a hravá. Telo sa ešte len učí svoj rytmus — skús počúvať, čo ti robí radosť, bez tlaku na výkon.",
-  },
-  {
-    name: "Matka",
-    season: "Leto",
-    ageRange: "20 – 44 rokov",
-    description: "Plodné roky — dávanie, budovanie, starostlivosť o seba aj o iných.",
-    energyNote: "Energia často smeruje von — k práci, vzťahom, starostlivosti o iných. Nezabúdaj dopĺňať aj to, čo dávaš von.",
-  },
-  {
-    name: "Čarodejnica",
-    season: "Jeseň",
-    ageRange: "45 – 54 rokov",
-    description: "Perimenopauza — sila, premena, návrat k sebe.",
-    energyNote: "Energia sa mení a presúva viac dovnútra — čo si predtým tolerovala, teraz už nie. Toto obdobie je o návrate k sebe, nie o úbytku sily.",
-  },
-  {
-    name: "Múdra žena",
-    season: "Zima",
-    ageRange: "55+ rokov",
-    description: "Po menopauze — múdrosť, sloboda, vlastné tempo.",
-    energyNote: "Energia je pokojnejšia, ale hlbšia — menej rozptýlená, viac sústredená na to, na čom naozaj záleží. Sloboda robiť veci vo svojom tempe.",
-  },
-];
+export const DIEVCA: Archetype = {
+  name: "Dievča",
+  keywords: "hravosť • sloboda • objavovanie",
+  description: "Objavuješ svet a tvoríš si vzťah k sebe.",
+  energyNote: "Tvoja energia je zvedavá a hravá. Dovoľ si objavovať, kto si, bez tlaku mať už všetko vyriešené.",
+};
 
-export function getArchetype(dateOfBirth: string, today = new Date()): Archetype {
-  const dob = new Date(dateOfBirth);
+export const ZENA: Archetype = {
+  name: "Žena",
+  keywords: "telo • sila • sexualita • tvorivosť",
+  description: "Poznávaš svoje telo a učíš sa byť sama sebou.",
+  energyNote: "Toto obdobie patrí spoznávaniu seba — svojho tela, túžob aj hraníc. Dovoľ si skúšať, mýliť sa a nachádzať, čo je naozaj tvoje.",
+};
+
+export const MATKA: Archetype = {
+  name: "Matka",
+  keywords: "tvorím • rodím • vyživujem",
+  description: "Nemusí ísť len o biologické materstvo — patrí sem aj tehotenstvo.",
+  energyNote: "Tvoja energia teraz dáva život niečomu — dieťaťu, vzťahu, projektu. Nezabúdaj dopĺňať aj to, čo z teba odchádza von.",
+};
+
+export const MUDRA_ZENA: Archetype = {
+  name: "Múdra žena",
+  keywords: "odovzdávam • viem • cítim",
+  description: "Menej dokazovania, viac pravdy a vnútorného vedenia — patrí sem aj menopauza.",
+  energyNote: "Vieš viac, než si niekedy tušila, a už to nemusíš nikomu dokazovať. Toto obdobie je o dôvere vlastnému vnútornému hlasu.",
+};
+
+type ArchetypeProfile = {
+  date_of_birth?: string | null;
+  is_pregnant?: boolean;
+  is_postpartum?: boolean;
+  is_menopause?: boolean;
+};
+
+export function getArchetype(profile: ArchetypeProfile | null | undefined, today = new Date()): Archetype | null {
+  if (!profile) return null;
+  if (profile.is_pregnant || profile.is_postpartum) return MATKA;
+  if (profile.is_menopause) return MUDRA_ZENA;
+  if (!profile.date_of_birth) return null;
+
+  const dob = new Date(profile.date_of_birth);
   let age = today.getFullYear() - dob.getFullYear();
   const hadBirthdayThisYear =
     today.getMonth() > dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
   if (!hadBirthdayThisYear) age -= 1;
 
-  if (age < 20) return ARCHETYPES[0];
-  if (age < 45) return ARCHETYPES[1];
-  if (age < 55) return ARCHETYPES[2];
-  return ARCHETYPES[3];
+  if (age < 20) return DIEVCA;
+  if (age < 35) return ZENA;
+  if (age < 55) return MATKA;
+  return MUDRA_ZENA;
 }

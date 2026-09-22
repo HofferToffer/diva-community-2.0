@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
-import { getCycleInfo, formatCycleDate } from "@/community/lib/cycle";
+import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
@@ -248,7 +248,13 @@ export default function CommunityCycle() {
       )}
 
       {!profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && (cycle ? (
-        <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.section {...fadeUp(1)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
+            aria-hidden="true"
+          />
+          <div className="relative space-y-4">
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">
               <RefreshCcw className="h-5 w-5 text-primary" />
@@ -303,6 +309,13 @@ export default function CommunityCycle() {
               <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
 
+              <div>
+                <p className="text-sm italic leading-relaxed text-foreground/85">
+                  „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}" — {CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].keywords}</p>
+              </div>
+
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="rounded-xl border border-border/50 p-3">
                   <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
@@ -344,6 +357,7 @@ export default function CommunityCycle() {
               />
             </>
           )}
+          </div>
         </motion.section>
       ) : (
         <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
