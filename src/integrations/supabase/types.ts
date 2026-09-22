@@ -431,35 +431,6 @@ export type Database = {
           },
         ]
       }
-      intimacy_logs: {
-        Row: {
-          created_at: string
-          id: string
-          log_date: string
-          profile_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          log_date: string
-          profile_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          log_date?: string
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "intimacy_logs_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       event_participants: {
         Row: {
           event_id: string
@@ -571,6 +542,35 @@ export type Database = {
           },
         ]
       }
+      intimacy_logs: {
+        Row: {
+          created_at: string
+          id: string
+          log_date: string
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          log_date: string
+          profile_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          log_date?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intimacy_logs_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           body: string
@@ -598,15 +598,15 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "messages_sender_id_fkey"
-            columns: ["sender_id"]
+            foreignKeyName: "messages_recipient_id_fkey"
+            columns: ["recipient_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -713,24 +713,25 @@ export type Database = {
           country: string | null
           created_at: string
           cycle_length_days: number | null
+          date_of_birth: string | null
+          dynamic_theme: boolean
           gifts: string | null
           id: string
           interests: string[]
           is_demo: boolean
-          is_public: boolean
-          is_pregnant: boolean
           is_menopause: boolean
           is_postpartum: boolean
-          postpartum_since: string | null
+          is_pregnant: boolean
+          is_public: boolean
           is_trying_to_conceive: boolean
-          date_of_birth: string | null
-          dynamic_theme: boolean
           last_period_date: string | null
           name: string
           notify_challenges: boolean
           notify_comments: boolean
           notify_likes: boolean
           onboarding_completed: boolean
+          postpartum_since: string | null
+          pregnancy_due_date: string | null
           updated_at: string
           user_id: string | null
           username: string | null
@@ -742,24 +743,25 @@ export type Database = {
           country?: string | null
           created_at?: string
           cycle_length_days?: number | null
+          date_of_birth?: string | null
+          dynamic_theme?: boolean
           gifts?: string | null
           id?: string
           interests?: string[]
           is_demo?: boolean
-          is_public?: boolean
-          is_pregnant?: boolean
           is_menopause?: boolean
           is_postpartum?: boolean
-          postpartum_since?: string | null
+          is_pregnant?: boolean
+          is_public?: boolean
           is_trying_to_conceive?: boolean
-          date_of_birth?: string | null
-          dynamic_theme?: boolean
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
           notify_comments?: boolean
           notify_likes?: boolean
           onboarding_completed?: boolean
+          postpartum_since?: string | null
+          pregnancy_due_date?: string | null
           updated_at?: string
           user_id?: string | null
           username?: string | null
@@ -771,24 +773,25 @@ export type Database = {
           country?: string | null
           created_at?: string
           cycle_length_days?: number | null
+          date_of_birth?: string | null
+          dynamic_theme?: boolean
           gifts?: string | null
           id?: string
           interests?: string[]
           is_demo?: boolean
-          is_public?: boolean
-          is_pregnant?: boolean
           is_menopause?: boolean
           is_postpartum?: boolean
-          postpartum_since?: string | null
+          is_pregnant?: boolean
+          is_public?: boolean
           is_trying_to_conceive?: boolean
-          date_of_birth?: string | null
-          dynamic_theme?: boolean
           last_period_date?: string | null
           name?: string
           notify_challenges?: boolean
           notify_comments?: boolean
           notify_likes?: boolean
           onboarding_completed?: boolean
+          postpartum_since?: string | null
+          pregnancy_due_date?: string | null
           updated_at?: string
           user_id?: string | null
           username?: string | null
