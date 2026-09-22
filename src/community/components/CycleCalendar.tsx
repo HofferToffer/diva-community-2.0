@@ -121,7 +121,7 @@ export function CycleCalendar({
               const canOpen = canEdit || canLogIntimacy || canPreview;
               const isPending = pendingDateKey === dateKey;
               const isLogged = intimacyDates?.has(dateKey) ?? false;
-              const isPeakFertility = !!onToggleIntimacy && cell.phase === "ovulacia";
+              const isPeakFertility = cell.phase === "ovulacia";
 
               const dayButton = (
                 <button
@@ -248,12 +248,10 @@ export function CycleCalendar({
             Sex
           </li>
         )}
-        {onToggleIntimacy && (
-          <li className="flex items-center gap-1.5">
-            <Egg className="h-3 w-3" style={{ color: "hsl(32, 45%, 46%)" }} aria-hidden="true" />
-            Najvyššia šanca na otehotnenie
-          </li>
-        )}
+        <li className="flex items-center gap-1.5">
+          <Egg className="h-3 w-3" style={{ color: "hsl(32, 45%, 46%)" }} aria-hidden="true" />
+          Najvyššia šanca na otehotnenie
+        </li>
       </ul>
     </div>
   );
