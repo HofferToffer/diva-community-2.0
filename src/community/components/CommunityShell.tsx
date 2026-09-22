@@ -210,6 +210,18 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     let lastDx = 0;
 
     const onTouchStart = (e: TouchEvent) => {
+      // Let Leaflet (or anything similar) own its own pan/pinch entirely — starting
+      // to track this gesture here at all, even just to preventDefault() later on
+      // the y-axis pull-to-refresh branch, was enough to fight with the map's own
+      // touch handling on real devices.
+      const target = e.target as Element | null;
+      if (target?.closest(".leaflet-container")) {
+        startY = null;
+        startX = null;
+        axis = null;
+        lastDx = 0;
+        return;
+      }
       startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
       startX = e.touches[0].clientX;
       axis = null;

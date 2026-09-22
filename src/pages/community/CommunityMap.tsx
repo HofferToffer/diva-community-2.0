@@ -98,12 +98,7 @@ export default function CommunityMap() {
         // A plain div, not motion.div — Leaflet measures its container on mount, and
         // sitting inside a transform-animated element (fadeUp's translateY) made it
         // read the wrong size/position, rendering the tiles skewed.
-        <div
-          className="diva-map-frame relative overflow-hidden rounded-2xl border border-border/50 shadow-sm"
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchMove={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
-        >
+        <div className="diva-map-frame relative overflow-hidden rounded-2xl border border-border/50 shadow-sm">
           <MapContainer
             center={[48.7, 19.5]}
             zoom={5}
