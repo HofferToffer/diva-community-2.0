@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { ImageCropDialog } from "@/community/components/ImageCropDialog";
 import { ProfileGallery } from "@/community/components/ProfileGallery";
 import { validateImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
+import { useSignedImage } from "@/community/hooks/useSignedImage";
 
 function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
   const { data: feelings } = useDailyFeelings(profileId);
@@ -60,6 +61,7 @@ export default function CommunityProfile() {
   const [focusChapter, setFocusChapter] = useState(false);
   const editRef = useRef<HTMLDivElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
   const friends = useFriends(me?.id);
   const toggleFriend = useToggleFriend(me?.id);
   const activities = useProfileActivities(profile?.id, kind === "all" ? undefined : kind);
@@ -86,8 +88,11 @@ export default function CommunityProfile() {
 
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<string | null>(profile?.avatar_url ?? null);
+  const [coverCropImage, setCoverCropImage] = useState<string | null>(null);
+  const [coverPath, setCoverPath] = useState<string | null>(profile?.cover_photo_url ?? null);
   const [galleryPhotos, setGalleryPhotos] = useState<string[]>(profile?.gallery_photos ?? []);
   const [galleryUploading, setGalleryUploading] = useState(false);
+  const coverUrl = useSignedImage(coverPath ?? profile?.cover_photo_url);
 
   const pickAvatar = (file: File) => {
     const problem = validateImage(file);
@@ -114,6 +119,37 @@ export default function CommunityProfile() {
       toast.error("Fotku sa nepodarilo nahrať.");
     } finally {
       closeCrop();
+    }
+  };
+
+  const pickCover = (file: File) => {
+    const problem = validateImage(file);
+    if (problem) return toast.error(problem);
+    setCoverCropImage(URL.createObjectURL(file));
+  };
+
+  const closeCoverCrop = () => {
+    if (coverCropImage) URL.revokeObjectURL(coverCropImage);
+    setCoverCropImage(null);
+  };
+
+  const handleCover = async (file: File) => {
+    try {
+      const newPath = await uploadImage("profile-cover", user!.id, file);
+      setCoverPath(newPath);
+      if (profile) {
+        const { error } = await supabase
+          .from("profiles")
+          .update({ cover_photo_url: newPath } as never)
+          .eq("id", profile.id);
+        if (error) throw error;
+        refreshProfile();
+        toast.success("Titulná fotka je uložená.");
+      }
+    } catch {
+      toast.error("Fotku sa nepodarilo nahrať.");
+    } finally {
+      closeCoverCrop();
     }
   };
 
@@ -232,47 +268,84 @@ export default function CommunityProfile() {
           Späť k Divám
         </Link>
       )}
-      <header className="flex items-start gap-4">
-        <div className="flex flex-col items-center gap-2">
-          <ProfileAvatar path={displayAvatar} name={profile.name} size={80} />
+      <header className="overflow-hidden rounded-2xl border border-border/50 shadow-sm">
+        <div className="relative h-44 w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/30 to-accent/25 sm:h-56">
+          {coverUrl && <img src={coverUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />}
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/15 to-transparent" />
           {isMe && (
             <>
               <button
                 type="button"
-                className="cursor-pointer text-xs underline text-muted-foreground"
-                onClick={() => avatarInputRef.current?.click()}
+                onClick={() => coverInputRef.current?.click()}
+                className="absolute right-3 top-3 rounded-full bg-foreground/45 px-3 py-1.5 text-xs text-background backdrop-blur-sm transition-colors hover:bg-foreground/60"
               >
-                Zmeniť fotku
+                Zmeniť titulnú fotku
               </button>
               <input
-                ref={avatarInputRef}
-                id="avatar"
+                ref={coverInputRef}
                 type="file"
                 accept="image/*"
                 className="sr-only"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   e.target.value = "";
-                  if (file) pickAvatar(file);
+                  if (file) pickCover(file);
                 }}
               />
-
               <ImageCropDialog
-                image={cropImage}
-                aspect={1}
-                round
-                title="Uprav si profilovú fotku"
-                onCancel={closeCrop}
-                onConfirm={handleAvatar}
+                image={coverCropImage}
+                aspect={2.5}
+                title="Uprav si titulnú fotku"
+                onCancel={closeCoverCrop}
+                onConfirm={handleCover}
               />
             </>
           )}
+          <div className="absolute inset-x-4 bottom-3">
+            <h1 className="font-display text-2xl leading-tight text-white drop-shadow-sm sm:text-3xl">
+              {profile.name || "Diva"}
+            </h1>
+            {profile.username && <p className="text-sm text-white/85">@{profile.username}</p>}
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-display text-3xl leading-tight">{profile.name || "Diva"}</h1>
-          {profile.username && <p className="text-sm text-muted-foreground">@{profile.username}</p>}
+
+        <div className="flex items-end justify-between gap-3 bg-card px-4 pb-4">
+          <div className="-mt-9 flex flex-col items-start gap-2">
+            <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
+            {isMe && (
+              <>
+                <button
+                  type="button"
+                  className="cursor-pointer text-xs underline text-muted-foreground"
+                  onClick={() => avatarInputRef.current?.click()}
+                >
+                  Zmeniť fotku
+                </button>
+                <input
+                  ref={avatarInputRef}
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    e.target.value = "";
+                    if (file) pickAvatar(file);
+                  }}
+                />
+                <ImageCropDialog
+                  image={cropImage}
+                  aspect={1}
+                  round
+                  title="Uprav si profilovú fotku"
+                  onCancel={closeCrop}
+                  onConfirm={handleAvatar}
+                />
+              </>
+            )}
+          </div>
           {(profile.city || profile.country) && (
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="pb-1 text-sm text-muted-foreground">
               {[profile.city, profile.country].filter(Boolean).join(", ")}
             </p>
           )}

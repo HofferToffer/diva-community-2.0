@@ -13,7 +13,11 @@ export function validateImage(file: File): string | null {
   return null;
 }
 
-export async function uploadImage(bucket: "avatars" | "activity-photos" | "profile-gallery", userId: string, file: File) {
+export async function uploadImage(
+  bucket: "avatars" | "activity-photos" | "profile-gallery" | "profile-cover",
+  userId: string,
+  file: File,
+) {
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
   const path = `${userId}/${crypto.randomUUID()}.${ext}`;
   const { error } = await supabase.storage.from(bucket).upload(path, file, {

@@ -24,12 +24,15 @@ async function cropToFile(src: string, area: Area): Promise<File> {
     el.src = src;
   });
   const canvas = document.createElement("canvas");
-  const size = Math.min(Math.max(Math.round(Math.min(area.width, area.height)), 128), 1600);
-  canvas.width = size;
-  canvas.height = size;
+  const longSide = Math.min(Math.max(Math.round(Math.max(area.width, area.height)), 128), 1600);
+  const scale = longSide / Math.max(area.width, area.height);
+  const width = Math.round(area.width * scale);
+  const height = Math.round(area.height * scale);
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas nie je dostupný.");
-  ctx.drawImage(img, area.x, area.y, area.width, area.height, 0, 0, size, size);
+  ctx.drawImage(img, area.x, area.y, area.width, area.height, 0, 0, width, height);
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
   if (!blob) throw new Error("Fotku sa nepodarilo orezať.");
   return new File([blob], "fotka.jpg", { type: "image/jpeg" });
@@ -60,8 +63,10 @@ export function ImageCropDialog({ image, aspect, round, title, onCancel, onConfi
         <DialogHeader>
           <DialogTitle className="font-display">{title ?? "Uprav si fotku"}</DialogTitle>
         </DialogHeader>
-        <div className="relative aspect-square w-full touch-none overflow-hidden rounded-xl bg-foreground/5">
-
+        <div
+          className="relative w-full touch-none overflow-hidden rounded-xl bg-foreground/5"
+          style={{ aspectRatio: aspect }}
+        >
           {image && (
             <Cropper
               image={image}

@@ -811,6 +811,7 @@ export type Database = {
           city_lat: number | null
           city_lng: number | null
           country: string | null
+          cover_photo_url: string | null
           created_at: string
           cycle_length_days: number | null
           date_of_birth: string | null
@@ -845,6 +846,7 @@ export type Database = {
           city_lat?: number | null
           city_lng?: number | null
           country?: string | null
+          cover_photo_url?: string | null
           created_at?: string
           cycle_length_days?: number | null
           date_of_birth?: string | null
@@ -879,6 +881,7 @@ export type Database = {
           city_lat?: number | null
           city_lng?: number | null
           country?: string | null
+          cover_photo_url?: string | null
           created_at?: string
           cycle_length_days?: number | null
           date_of_birth?: string | null
