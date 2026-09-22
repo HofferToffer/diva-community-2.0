@@ -31,7 +31,8 @@ Deno.serve(async (req) => {
   }
   if (!city) return json({ lat: null, lng: null });
 
-  const url = `https://photon.komoot.io/api/?limit=1&lang=sk&q=${encodeURIComponent(city)}`;
+  // No `lang` param: Photon rejects `lang=sk`, which silently returned nothing.
+  const url = `https://photon.komoot.io/api/?limit=1&q=${encodeURIComponent(city)}`;
   try {
     const res = await fetch(url);
     if (!res.ok) {
