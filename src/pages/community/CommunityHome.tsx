@@ -172,11 +172,13 @@ export default function CommunityHome() {
             to="/community/cyklus"
             className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
-              aria-hidden="true"
-            />
+            {profile?.dynamic_theme !== false && (
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
+                aria-hidden="true"
+              />
+            )}
             <div className="relative">
               <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
                 {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}

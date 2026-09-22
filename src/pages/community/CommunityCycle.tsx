@@ -263,11 +263,13 @@ export default function CommunityCycle() {
 
       {!profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && (cycle ? (
         <motion.section {...fadeUp(1)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
-            aria-hidden="true"
-          />
+          {profile.dynamic_theme !== false && (
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
+              aria-hidden="true"
+            />
+          )}
           <div className="relative space-y-4">
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">
