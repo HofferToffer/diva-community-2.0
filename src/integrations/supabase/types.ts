@@ -815,6 +815,7 @@ export type Database = {
           cycle_length_days: number | null
           date_of_birth: string | null
           dynamic_theme: boolean
+          gallery_photos: string[]
           gifts: string | null
           id: string
           interests: string[]
@@ -848,6 +849,7 @@ export type Database = {
           cycle_length_days?: number | null
           date_of_birth?: string | null
           dynamic_theme?: boolean
+          gallery_photos?: string[]
           gifts?: string | null
           id?: string
           interests?: string[]
@@ -881,6 +883,7 @@ export type Database = {
           cycle_length_days?: number | null
           date_of_birth?: string | null
           dynamic_theme?: boolean
+          gallery_photos?: string[]
           gifts?: string | null
           id?: string
           interests?: string[]

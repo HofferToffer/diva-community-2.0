@@ -565,7 +565,7 @@ export function useProfileByUsername(username: string | undefined) {
       // personal health data, which stays visible to the owner only.
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, name, username, avatar_url, bio, gifts, city, country, interests, is_public")
+        .select("id, name, username, avatar_url, gallery_photos, bio, gifts, city, country, interests, is_public")
         .eq("username", username!)
         .maybeSingle();
       if (error) throw error;

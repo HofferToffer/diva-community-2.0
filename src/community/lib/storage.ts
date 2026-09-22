@@ -13,7 +13,7 @@ export function validateImage(file: File): string | null {
   return null;
 }
 
-export async function uploadImage(bucket: "avatars" | "activity-photos", userId: string, file: File) {
+export async function uploadImage(bucket: "avatars" | "activity-photos" | "profile-gallery", userId: string, file: File) {
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
   const path = `${userId}/${crypto.randomUUID()}.${ext}`;
   const { error } = await supabase.storage.from(bucket).upload(path, file, {
@@ -36,6 +36,14 @@ export async function uploadBlogImage(file: File): Promise<string> {
   });
   if (error) throw error;
   return supabase.storage.from("blog-images").getPublicUrl(path).data.publicUrl;
+}
+
+/** Stored value is "bucket/path" — removes the underlying file. */
+export async function deleteStoredImage(stored: string): Promise<void> {
+  const [bucket, ...rest] = stored.split("/");
+  const path = rest.join("/");
+  if (!bucket || !path) return;
+  await supabase.storage.from(bucket).remove([path]);
 }
 
 /** Stored value is "bucket/path". Returns a temporary readable URL. */

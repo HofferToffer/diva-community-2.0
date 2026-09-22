@@ -15,6 +15,7 @@ export type Profile = {
   city_lng: number | null;
   country: string | null;
   avatar_url: string | null;
+  gallery_photos: string[];
   interests: string[];
   is_public: boolean;
   onboarding_completed: boolean;

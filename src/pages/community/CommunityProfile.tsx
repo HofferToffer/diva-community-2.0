@@ -27,7 +27,8 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ImageCropDialog } from "@/community/components/ImageCropDialog";
-import { validateImage, uploadImage } from "@/community/lib/storage";
+import { ProfileGallery } from "@/community/components/ProfileGallery";
+import { validateImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 
 function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
   const { data: feelings } = useDailyFeelings(profileId);
@@ -85,6 +86,8 @@ export default function CommunityProfile() {
 
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<string | null>(profile?.avatar_url ?? null);
+  const [galleryPhotos, setGalleryPhotos] = useState<string[]>(profile?.gallery_photos ?? []);
+  const [galleryUploading, setGalleryUploading] = useState(false);
 
   const pickAvatar = (file: File) => {
     const problem = validateImage(file);
@@ -111,6 +114,52 @@ export default function CommunityProfile() {
       toast.error("Fotku sa nepodarilo nahrať.");
     } finally {
       closeCrop();
+    }
+  };
+
+  const addGalleryPhotos = async (files: FileList) => {
+    if (!profile || !user) return;
+    const remaining = Math.max(12 - galleryPhotos.length, 0);
+    const toUpload = Array.from(files).slice(0, remaining);
+    if (toUpload.length === 0) return;
+    setGalleryUploading(true);
+    try {
+      const newPaths: string[] = [];
+      for (const file of toUpload) {
+        const problem = validateImage(file);
+        if (problem) {
+          toast.error(problem);
+          continue;
+        }
+        newPaths.push(await uploadImage("profile-gallery", user.id, file));
+      }
+      if (newPaths.length === 0) return;
+      const updated = [...galleryPhotos, ...newPaths];
+      const { error } = await supabase.from("profiles").update({ gallery_photos: updated } as never).eq("id", profile.id);
+      if (error) throw error;
+      setGalleryPhotos(updated);
+      refreshProfile();
+      toast.success("Fotky sú pridané.");
+    } catch {
+      toast.error("Fotky sa nepodarilo nahrať.");
+    } finally {
+      setGalleryUploading(false);
+    }
+  };
+
+  const removeGalleryPhoto = async (index: number) => {
+    if (!profile) return;
+    const removed = galleryPhotos[index];
+    const updated = galleryPhotos.filter((_, i) => i !== index);
+    setGalleryPhotos(updated);
+    try {
+      const { error } = await supabase.from("profiles").update({ gallery_photos: updated } as never).eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      void deleteStoredImage(removed);
+    } catch {
+      setGalleryPhotos(galleryPhotos);
+      toast.error("Fotku sa nepodarilo odstrániť.");
     }
   };
 
@@ -298,6 +347,14 @@ export default function CommunityProfile() {
           ))}
         </div>
       )}
+
+      <ProfileGallery
+        photos={isMe ? galleryPhotos : (profile.gallery_photos ?? [])}
+        isMe={isMe}
+        uploading={galleryUploading}
+        onAdd={isMe ? addGalleryPhotos : undefined}
+        onRemove={isMe ? removeGalleryPhoto : undefined}
+      />
 
       {cycle && (
         <section className="space-y-3 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
