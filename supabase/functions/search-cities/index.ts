@@ -43,8 +43,26 @@ Deno.serve(async (req) => {
   }
   if (!q || q.length < 2) return json({ results: [] });
 
-  // No `lang` param: Photon rejects `lang=sk`, which silently returned no results.
-  const url = `https://photon.komoot.io/api/?limit=8&q=${encodeURIComponent(q)}`;
+  // `lang=en` (Photon rejects `lang=sk`, which silently returned no results at
+  // all) keeps worldwide places readable in Latin script — "Tokyo, Japan"
+  // rather than "東京都". A wider limit leaves room to drop non-settlement hits
+  // (rivers, peaks, stations) and still return five real towns.
+  const url = `https://photon.komoot.io/api/?limit=20&lang=en&q=${encodeURIComponent(q)}`;
+  // Settlements first, bigger ones before smaller ones; anything else is a fallback.
+  const RANK: Record<string, number> = {
+    city: 0,
+    town: 1,
+    municipality: 2,
+    village: 3,
+    suburb: 4,
+    hamlet: 5,
+    borough: 6,
+    province: 7,
+    state: 8,
+    county: 9,
+    island: 10,
+    region: 11,
+  };
   try {
     const res = await fetch(url);
     if (!res.ok) {
@@ -53,12 +71,18 @@ Deno.serve(async (req) => {
     }
     const data = (await res.json()) as { features?: PhotonFeature[] };
     const features = data.features ?? [];
-    const places = features.filter((f) => f.properties.osm_key === "place");
+    const places = features.filter(
+      (f) => f.properties.osm_key === "place" && RANK[f.properties.osm_value ?? ""] !== undefined,
+    );
     const pool = places.length > 0 ? places : features;
+    const ranked = pool
+      .map((f, i) => ({ f, i, r: RANK[f.properties.osm_value ?? ""] ?? 99 }))
+      .sort((a, b) => a.r - b.r || a.i - b.i)
+      .map((x) => x.f);
 
     const seen = new Set<string>();
     const results = [];
-    for (const f of pool) {
+    for (const f of ranked) {
       const p = f.properties;
       const place = p.name || p.city;
       if (!place) continue;
@@ -67,7 +91,7 @@ Deno.serve(async (req) => {
       seen.add(label);
       const [lng, lat] = f.geometry.coordinates;
       results.push({ label, lat, lng });
-      if (results.length >= 5) break;
+      if (results.length >= 6) break;
     }
 
     return json({ results });
