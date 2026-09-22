@@ -107,7 +107,10 @@ export default function CommunityMap() {
             zoomSnap={0.25}
             zoomDelta={0.75}
             wheelPxPerZoomLevel={90}
-            maxBounds={[[-85, -200], [85, 200]]}
+            // South cut at -60° on purpose — Antarctica has no Divy and, at this
+            // Mercator-style projection, renders wildly oversized near the pole,
+            // which reads as a confusing blob rather than a continent.
+            maxBounds={[[-60, -200], [85, 200]]}
             maxBoundsViscosity={1.0}
             scrollWheelZoom
             style={{ height: "65vh", width: "100%", background: "#221C18" }}
