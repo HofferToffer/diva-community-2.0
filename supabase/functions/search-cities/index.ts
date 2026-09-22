@@ -43,8 +43,27 @@ Deno.serve(async (req) => {
   }
   if (!q || q.length < 2) return json({ results: [] });
 
-  // No `lang` param: Photon rejects `lang=sk`, which silently returned no results.
-  const url = `https://photon.komoot.io/api/?limit=8&q=${encodeURIComponent(q)}`;
+  // `lang=en` (Photon rejects `lang=sk`, which silently returned no results at
+  // all) keeps worldwide places readable in Latin script — "Tokyo, Japan"
+  // rather than "東京都". A wider limit leaves room to drop non-settlement hits
+  // (rivers, peaks, stations) and still return five real towns.
+  const url = `https://photon.komoot.io/api/?limit=20&lang=en&q=${encodeURIComponent(q)}`;
+  // Inhabited places only — Photon's own relevance order is kept, since it
+  // already puts the well-known city first (Tokyo before a hamlet named Tokio).
+  const SETTLEMENTS = new Set([
+    "city",
+    "town",
+    "municipality",
+    "village",
+    "suburb",
+    "hamlet",
+    "borough",
+    "province",
+    "state",
+    "county",
+    "island",
+    "region",
+  ]);
   try {
     const res = await fetch(url);
     if (!res.ok) {
@@ -53,7 +72,9 @@ Deno.serve(async (req) => {
     }
     const data = (await res.json()) as { features?: PhotonFeature[] };
     const features = data.features ?? [];
-    const places = features.filter((f) => f.properties.osm_key === "place");
+    const places = features.filter(
+      (f) => f.properties.osm_key === "place" && SETTLEMENTS.has(f.properties.osm_value ?? ""),
+    );
     const pool = places.length > 0 ? places : features;
 
     const seen = new Set<string>();
@@ -67,7 +88,7 @@ Deno.serve(async (req) => {
       seen.add(label);
       const [lng, lat] = f.geometry.coordinates;
       results.push({ label, lat, lng });
-      if (results.length >= 5) break;
+      if (results.length >= 6) break;
     }
 
     return json({ results });
