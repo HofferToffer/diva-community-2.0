@@ -34,10 +34,10 @@ const COUNTRIES_GEOJSON = fixAntimeridian(
 );
 
 const COUNTRY_STYLE = {
-  fillColor: "#E4D6B8",
+  fillColor: "#E9D8AE",
   fillOpacity: 1,
-  color: "#8C7A57",
-  weight: 0.6,
+  color: "#6B5738",
+  weight: 0.7,
 };
 
 function FitToDivas({ points }: { points: [number, number][] }) {
@@ -99,7 +99,7 @@ export default function CommunityMap() {
         // sitting inside a transform-animated element (fadeUp's translateY) made it
         // read the wrong size/position, rendering the tiles skewed.
         <div
-          className="overflow-hidden rounded-2xl border border-border/50 shadow-sm"
+          className="diva-map-frame relative overflow-hidden rounded-2xl border border-border/50 shadow-sm"
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
           onTouchEnd={(e) => e.stopPropagation()}
@@ -109,6 +109,9 @@ export default function CommunityMap() {
             zoom={5}
             minZoom={2}
             maxZoom={12}
+            zoomSnap={0.25}
+            zoomDelta={0.75}
+            wheelPxPerZoomLevel={90}
             maxBounds={[[-58, -200], [78, 200]]}
             maxBoundsViscosity={1.0}
             scrollWheelZoom
@@ -125,6 +128,8 @@ export default function CommunityMap() {
               ))}
             </MarkerClusterGroup>
           </MapContainer>
+          {/* Vignette — a soft engraved-map frame, purely decorative (no pointer capture). */}
+          <div className="diva-map-vignette pointer-events-none absolute inset-0" />
         </div>
       )}
     </div>
