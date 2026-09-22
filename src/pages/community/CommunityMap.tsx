@@ -114,7 +114,10 @@ export default function CommunityMap() {
             scrollWheelZoom
             style={{ height: "65vh", width: "100%", background: "#221C18" }}
           >
-            <GeoJSON data={COUNTRIES_GEOJSON} style={() => COUNTRY_STYLE} />
+            {/* interactive=false — otherwise every filled country becomes a touch
+                target, which fights with pinch-zoom/pan on mobile since almost
+                the whole map is "country". */}
+            <GeoJSON data={COUNTRIES_GEOJSON} style={() => COUNTRY_STYLE} interactive={false} />
             <FitToDivas points={bounds} />
             <MarkerClusterGroup>
               {points.map(({ diva, coords }) => (
