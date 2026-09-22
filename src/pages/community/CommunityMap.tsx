@@ -24,6 +24,13 @@ const divaIcon = L.divIcon({
 
 function FitToDivas({ points }: { points: [number, number][] }) {
   const map = useMap();
+
+  // Belt-and-suspenders against Leaflet measuring its container mid-layout-shift.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => map.invalidateSize());
+    return () => cancelAnimationFrame(id);
+  }, [map]);
+
   useEffect(() => {
     if (points.length === 0) return;
     if (points.length === 1) {
@@ -70,8 +77,10 @@ export default function CommunityMap() {
       )}
 
       {!isLoading && points.length > 0 && (
-        <motion.div
-          {...fadeUp(1)}
+        // A plain div, not motion.div — Leaflet measures its container on mount, and
+        // sitting inside a transform-animated element (fadeUp's translateY) made it
+        // read the wrong size/position, rendering the tiles skewed.
+        <div
           className="overflow-hidden rounded-2xl border border-border/50 shadow-sm"
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
@@ -95,7 +104,7 @@ export default function CommunityMap() {
               ))}
             </MarkerClusterGroup>
           </MapContainer>
-        </motion.div>
+        </div>
       )}
     </div>
   );
