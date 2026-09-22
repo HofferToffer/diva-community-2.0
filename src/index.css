@@ -30,9 +30,9 @@
     --shop: 350 55% 70%;
     --shop-foreground: 30 15% 20%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 8 45% 42%;
 
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 40 33% 96%;
 
     --border: 35 20% 85%;
     --input: 35 20% 85%;
@@ -72,9 +72,9 @@
     --shop: 350 60% 75%;
     --shop-foreground: 30 15% 10%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 8 40% 38%;
 
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 40 30% 90%;
     --border: 30 10% 22%;
     --input: 30 10% 22%;
     --ring: 344 37% 60%;
@@ -163,6 +163,15 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+
+  /* iOS Safari can render the native date picker wider than the element's own
+     CSS width, so it spills past a narrow card's edge. Removing the default
+     appearance makes it respect the width we actually give it. */
+  input[type="date"] {
+    min-width: 0;
+    -webkit-appearance: none;
+    appearance: none;
   }
 }
 

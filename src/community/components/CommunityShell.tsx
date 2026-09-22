@@ -204,10 +204,12 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     const SWIPE_COMPLETE_THRESHOLD = 90;
     const SWIPE_LIVE_CAP = 220; // how far the page visually travels under the finger
+    const EDGE_ZONE = 32; // px from the left edge a back-swipe must start in
     let startY: number | null = null;
     let startX: number | null = null;
-    let axis: "x" | "y" | null = null;
+    let axis: "x" | "y" | "ignore" | null = null;
     let lastDx = 0;
+    let startedNearEdge = false;
 
     const onTouchStart = (e: TouchEvent) => {
       // Let Leaflet (or anything similar) own its own pan/pinch entirely — starting
@@ -227,6 +229,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       }
       startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
       startX = e.touches[0].clientX;
+      startedNearEdge = e.touches[0].clientX <= EDGE_ZONE;
       axis = null;
       lastDx = 0;
     };
@@ -248,11 +251,17 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       const dx = touch.clientX - startX;
       const dy = startY !== null ? touch.clientY - startY : 0;
 
-      // Swipe right from anywhere on screen goes back, like Instagram —
-      // not just from a thin edge strip.
+      // A back-swipe must start from the left edge, like iOS/Android's own
+      // back gesture — not "from anywhere", which made ordinary taps and
+      // drags elsewhere on the page (e.g. opening a photo) misfire as "back"
+      // whenever a tap had a little incidental sideways drift.
       if (axis === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-        if (axis === "x") setSwipeSettling(false); // live 1:1 tracking, no CSS transition lag
+        if (Math.abs(dx) > Math.abs(dy)) {
+          axis = startedNearEdge ? "x" : "ignore";
+          if (axis === "x") setSwipeSettling(false); // live 1:1 tracking, no CSS transition lag
+        } else {
+          axis = "y";
+        }
       }
 
       if (axis === "x") {
