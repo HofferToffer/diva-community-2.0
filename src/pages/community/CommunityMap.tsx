@@ -70,7 +70,13 @@ export default function CommunityMap() {
       )}
 
       {!isLoading && points.length > 0 && (
-        <motion.div {...fadeUp(1)} className="overflow-hidden rounded-2xl border border-border/50 shadow-sm">
+        <motion.div
+          {...fadeUp(1)}
+          className="overflow-hidden rounded-2xl border border-border/50 shadow-sm"
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
+        >
           <MapContainer
             center={[48.7, 19.5]}
             zoom={5}
