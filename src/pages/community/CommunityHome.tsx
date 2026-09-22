@@ -119,6 +119,9 @@ export default function CommunityHome() {
                     ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
                     : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
                 </p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Typické tento týždeň: {pregnancy.symptoms.join(" · ")}
+                </p>
               </>
             ) : (
               <p className="text-sm text-muted-foreground">

@@ -8,11 +8,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
-import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL, PREGNANCY_SAFETY_NOTE } from "@/community/lib/pregnancy";
 import { getPostpartumInfo, POSTPARTUM_SAFETY_NOTE } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
-import { MENOPAUSE_TIPS } from "@/community/lib/menopause";
+import { MENOPAUSE_TIPS, MENOPAUSE_STAGES, MENOPAUSE_SAFETY_NOTE } from "@/community/lib/menopause";
+import {
+  TTC_TIMELINE_NOTE,
+  TTC_DOCTOR_GUIDANCE,
+  TTC_TIPS,
+  TTC_STRESS_NOTE,
+  TTC_EMOTIONAL_NOTE,
+  TTC_MYTHS,
+} from "@/community/lib/tryingToConceive";
 import { ConfettiBurst } from "@/community/components/ConfettiBurst";
 import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
@@ -168,6 +176,21 @@ export default function CommunityCycle() {
                   ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
                   : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
               </p>
+              <p className="text-sm leading-relaxed text-foreground/85">{pregnancy.message}</p>
+              <div className="rounded-xl border border-border/50 bg-background/60 p-3">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Typické tento týždeň
+                </p>
+                <ul className="mt-2 space-y-1 text-sm text-foreground/85">
+                  {pregnancy.symptoms.map((symptom) => (
+                    <li key={symptom} className="flex items-start gap-2">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      {symptom}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="text-xs italic text-muted-foreground">{PREGNANCY_SAFETY_NOTE}</p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">
@@ -258,6 +281,28 @@ export default function CommunityCycle() {
               <TipGrid tips={MENOPAUSE_TIPS} color={{ fill: "hsl(265, 25%, 62%, 0.12)", dot: "hsl(265, 25%, 45%)" }} />
             </div>
           </div>
+
+          <div className="space-y-3">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Fázy menopauzy — kde sa možno spoznáš
+            </p>
+            {MENOPAUSE_STAGES.map((stage) => (
+              <div key={stage.key} className="rounded-xl border border-border/50 bg-background/60 p-4">
+                <p className="font-display text-lg text-primary">{stage.name}</p>
+                <p className="text-xs text-muted-foreground">{stage.ageRange}</p>
+                <p className="mt-2 text-sm leading-relaxed text-foreground/85">{stage.message}</p>
+                <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                  {stage.symptoms.map((symptom) => (
+                    <li key={symptom} className="flex items-start gap-2">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      {symptom}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <p className="text-xs italic text-muted-foreground">{MENOPAUSE_SAFETY_NOTE}</p>
+          </div>
         </motion.section>
       )}
 
@@ -347,11 +392,54 @@ export default function CommunityCycle() {
               </div>
 
               {profile.is_trying_to_conceive && (
-                <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+                <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
                   <p className="text-sm text-foreground/85">
                     Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na
                     deň si vieš súkromne zapísať, kedy ste boli spolu.
                   </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">{TTC_TIMELINE_NOTE}</p>
+
+                  <div className="rounded-xl border border-border/50 bg-card p-3">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Kedy sa oplatí ísť na vyšetrenie
+                    </p>
+                    <p className="mt-2 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.ageUnder35}</p>
+                    <p className="mt-1 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.age35Plus}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">Skôr, ak máš:</p>
+                    <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
+                      {TTC_DOCTOR_GUIDANCE.soonerIf.map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Čo naozaj pomáha
+                    </p>
+                    <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
+                  </div>
+
+                  <p className="text-xs italic text-muted-foreground">{TTC_STRESS_NOTE}</p>
+                  <p className="text-sm leading-relaxed text-foreground/85">{TTC_EMOTIONAL_NOTE}</p>
+
+                  <div className="rounded-xl border border-border/50 bg-card p-3">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Mýty, ktoré môžeš pustiť z hlavy
+                    </p>
+                    <ul className="mt-2 space-y-2 text-sm">
+                      {TTC_MYTHS.map((item) => (
+                        <li key={item.myth}>
+                          <span className="text-muted-foreground line-through">{item.myth}</span>
+                          <br />
+                          <span className="text-foreground/85">{item.fact}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               )}
 

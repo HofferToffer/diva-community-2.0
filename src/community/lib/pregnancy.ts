@@ -27,7 +27,102 @@ export type PregnancyInfo = {
   trimester: 1 | 2 | 3;
   daysUntilDue: number;
   soulNote: string;
+  message: string;
+  symptoms: string[];
 };
+
+type WeekBand = { maxWeek: number; message: string; symptoms: string[] };
+
+/**
+ * Week-by-week pregnancy content (LMP-based dating), grounded in Mayo
+ * Clinic / Cleveland Clinic / ACOG guidance on fetal development and typical
+ * maternal symptoms per window — written warm, not clinical.
+ */
+const PREGNANCY_WEEK_BANDS: WeekBand[] = [
+  {
+    maxWeek: 5,
+    message:
+      "Bunky sa práve udomácnili v maternici a delia sa na vrstvy, z ktorých vzniknú všetky orgány. Nervová trubica — základ mozgu a miechy — sa začína uzatvárať a srdiečko, zatiaľ len ako drobná trubička, do konca tohto obdobia prvýkrát udrie.",
+    symptoms: ["citlivé, napäté prsia", "únava", "mierne kŕče alebo špinenie (uhniezdenie)", "zvýšený čuch", "výkyvy nálady"],
+  },
+  {
+    maxWeek: 7,
+    message:
+      "Srdiečko teraz bije pravidelne. Formujú sa základy končatín aj tváre. Toto obdobie často prináša prvú návštevu u gynekológa.",
+    symptoms: ["ranné nevoľnosti (kedykoľvek počas dňa)", "silnejšia únava", "časté močenie", "averzie k jedlu"],
+  },
+  {
+    maxWeek: 9,
+    message:
+      "Embryo sa okolo tohto obdobia oficiálne stáva plodom. Všetky hlavné orgány — srdce, mozog, obličky, pečeň — sa už začali formovať, rastú ruky aj nohy.",
+    symptoms: ["nevoľnosť a únava zvyčajne vrcholia", "nadúvanie", "mierne kŕče, ako sa maternica zväčšuje"],
+  },
+  {
+    maxWeek: 11,
+    message:
+      "Prstíky na rukách aj nohách sa oddeľujú a začínajú rásť nechtíky. Kosti sa začínajú tvrdnúť, bábätko už dokáže zovrieť pinku, hoci to ešte necítiš.",
+    symptoms: ["nevoľnosť sa u mnohých začína zmierňovať", "mierne bolesti hlavy", "zvýšený výtok", "možno už badateľné bruško"],
+  },
+  {
+    maxWeek: 13,
+    message:
+      "Bábätko sa učí prehĺtať a cmúľať, tvoria sa hlasivky, obličky produkujú moč. Riziko potratu po tomto období výrazne klesá, čo mnohým ženám prináša úľavu — a zvyčajne sa robí aj skríning prvého trimestra.",
+    symptoms: ["nevoľnosť ustupuje u väčšiny žien", "energia sa postupne vracia"],
+  },
+  {
+    maxWeek: 16,
+    message:
+      "Bábätko dokáže robiť grimasy, rastú mu vlásky a obočie, viac sa hýbe (ešte to necítiš). Mnohým ženám sa teraz vracia energia — hovorí sa tomu druhý trimester nabudenia.",
+    symptoms: ["bolesti v slabinách pri prudších pohyboch", "menej nevoľnosti, viac energie", "upchatý nos, citlivé ďasná"],
+  },
+  {
+    maxWeek: 20,
+    message:
+      "Okolo tohto obdobia (pri prvom bábätku často až ku koncu) prvýkrát pocítiš pohyby. Bábätko sa pokrýva ochrannou vrstvou a do 20. týždňa váži približne pol kila. Robí sa aj veľký anatomický ultrazvuk.",
+    symptoms: ["prvé pohyby bábätka", "bolesti v slabinách pokračujú", "tmavšia linea nigra na brušku", "prvé Braxtonove kontrakcie (nebolestivé sťahovanie)"],
+  },
+  {
+    maxWeek: 24,
+    message:
+      "Mozog rýchlo rastie, pľúca začínajú tvoriť látku potrebnú na dýchanie, hoci ešte nezrelú. Okolo tohto obdobia sa dosahuje teoretická hranica životaschopnosti mimo tela — vzdialená, ale odteraz sleduj aj pravidelnosť pohybov bábätka.",
+    symptoms: ["výraznejšie Braxtonove kontrakcie", "bolesti chrbta", "nočné kŕče v lýtkach", "mierne opuchy nôh"],
+  },
+  {
+    maxWeek: 27,
+    message:
+      "Očká sa po mesiacoch zatvorenia znova otvárajú a bábätko reaguje na svetlo aj zvuk. Rýchlo pribúda na váhe. Zvyčajne teraz príde na rad test na tehotenskú cukrovku.",
+    symptoms: ["pálenie záhy", "bolesti chrbta", "možné hemoroidy", "únava sa môže vrátiť"],
+  },
+  {
+    maxWeek: 31,
+    message:
+      "Vstupuješ do tretieho trimestra. Bábätko má teraz pravidelné cykly spánku a bdenia, mozog vytvára viditeľné záhyby, nacvičuje dýchanie. Prehliadky teraz bývajú každé dva týždne.",
+    symptoms: ["dýchavičnosť (maternica tlačí na pľúca)", "opuchy členkov a nôh", "možné mravčenie v rukách", "problémy so spánkom"],
+  },
+  {
+    maxWeek: 35,
+    message:
+      "Bábätko priberá tuk, kosti sú sformované, ale stále mäkké — lebka zostáva mäkká kvôli pôrodu. Väčšina bábätiek sa teraz otočí hlavičkou dole. Blíži sa test na streptokok skupiny B.",
+    symptoms: ["výraznejšia bolesť chrbta a panvy (uvoľnené väzy)", "pálenie záhy môže vrcholiť", "sťažené spanie", "silnejšie Braxtonove kontrakcie"],
+  },
+  {
+    maxWeek: 38,
+    message:
+      "Bábätko sa blíži k termínu, stráca ochlpenie a pripravuje si reflexy na pôrod. Hlavička sa často zasadí hlbšie do panvy, čo môže uľaviť dýchaniu, ale pridá tlak dole.",
+    symptoms: ["ľahšie dýchanie, ale viac tlaku v panve", "kačacia chôdza", "zvýšený výtok", "silnejšie, častejšie Braxtonove kontrakcie", "možný pud hniezdenia"],
+  },
+];
+
+const PREGNANCY_FALLBACK: WeekBand = {
+  maxWeek: Infinity,
+  message:
+    "Bábätko je už donosené — orgány sú zrelé, telo pokračuje v drobnom priberaní a nacvičuje dýchanie aj prehĺtanie. Teraz je čas sledovať vlastné telo a signály blížiaceho sa pôrodu.",
+  symptoms: ["silné Braxtonove kontrakcie", "tlak v panve", "možná strata hlienovej zátky", "vlny energie striedané únavou"],
+};
+
+/** A gentle, non-alarmist reminder of when to actually call a doctor during pregnancy. */
+export const PREGNANCY_SAFETY_NOTE =
+  "Ak zaznamenáš silné krvácanie, silnú bolesť brucha, horúčku, náhly opuch spolu s bolesťou hlavy a poruchami videnia, únik plodovej vody, alebo si všimneš, že sa bábätko hýbe výrazne menej než zvyčajne, ozvi sa lekárovi hneď — nečakaj na plánovanú kontrolu.";
 
 /** Computes the current pregnancy week and due date from the first day of the last menstrual period. */
 export function getPregnancyInfo(lastPeriodDate: string, today = new Date()): PregnancyInfo {
@@ -39,7 +134,15 @@ export function getPregnancyInfo(lastPeriodDate: string, today = new Date()): Pr
   const week = Math.min(Math.max(Math.floor(daysPregnant / 7) + 1, 1), 42);
   const trimester: 1 | 2 | 3 = week <= 13 ? 1 : week <= 27 ? 2 : 3;
   const daysUntilDue = daysBetween(today, dueDate);
-  return { week, trimester, daysUntilDue, soulNote: TRIMESTER_SOUL_NOTE[trimester] };
+  const band = PREGNANCY_WEEK_BANDS.find((b) => week <= b.maxWeek) ?? PREGNANCY_FALLBACK;
+  return {
+    week,
+    trimester,
+    daysUntilDue,
+    soulNote: TRIMESTER_SOUL_NOTE[trimester],
+    message: band.message,
+    symptoms: band.symptoms,
+  };
 }
 
 export const TRIMESTER_LABEL: Record<1 | 2 | 3, string> = {
