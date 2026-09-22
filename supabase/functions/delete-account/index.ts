@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
 
   // Uploaded photos live under a per-user folder ({userId}/...) in each bucket,
   // independent of the profile row, so clear those folders too.
-  for (const bucket of ["avatars", "activity-photos"]) {
+  for (const bucket of ["avatars", "activity-photos", "profile-gallery", "profile-cover"]) {
     const { data: files } = await admin.storage.from(bucket).list(userId);
     if (files && files.length > 0) {
       await admin.storage.from(bucket).remove(files.map((f) => `${userId}/${f.name}`));
