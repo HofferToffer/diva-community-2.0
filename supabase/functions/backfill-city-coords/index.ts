@@ -14,7 +14,9 @@ const json = (body: unknown, status = 200) =>
 type PhotonFeature = { geometry: { coordinates: [number, number] } };
 
 async function geocode(city: string): Promise<{ lat: number; lng: number } | null> {
-  const url = `https://photon.komoot.io/api/?limit=1&lang=sk&q=${encodeURIComponent(city)}`;
+  // No `lang` param: Photon only supports a few languages (de/en/fr/it…) and
+  // returns an error for `lang=sk`, which silently starved this of results.
+  const url = `https://photon.komoot.io/api/?limit=1&q=${encodeURIComponent(city)}`;
   const res = await fetch(url);
   if (!res.ok) {
     console.error("backfill-city-coords: photon responded", res.status, await res.text());
