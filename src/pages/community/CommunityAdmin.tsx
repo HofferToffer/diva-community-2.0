@@ -252,6 +252,8 @@ export default function CommunityAdmin() {
           </div>
         )}
       </Section>
+
+      <AdminStravaWebhook />
     </div>
   );
 }
