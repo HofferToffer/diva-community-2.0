@@ -418,7 +418,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                           to={item.to}
                           onClick={() => setSheetOpen(false)}
                           className={cn(
-                            "flex items-center gap-3 whitespace-nowrap rounded-md px-3 py-3 text-sm uppercase tracking-[0.12em] transition-colors",
+                            "flex items-center gap-3 rounded-md px-3 py-3 text-sm uppercase tracking-[0.12em] transition-colors",
                             (item.end ? location.pathname === item.to : location.pathname.startsWith(item.to))
                               ? "bg-secondary text-secondary-foreground"
                               : "text-muted-foreground hover:text-foreground",

@@ -9,7 +9,7 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
-import { getPostpartumInfo } from "@/community/lib/postpartum";
+import { getPostpartumInfo, POSTPARTUM_SAFETY_NOTE } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
 import { MENOPAUSE_TIPS } from "@/community/lib/menopause";
@@ -209,6 +209,20 @@ export default function CommunityCycle() {
             <>
               <p className="font-display text-2xl text-primary">{postpartum.week}. týždeň po pôrode</p>
               <p className="text-sm leading-relaxed text-muted-foreground">{postpartum.message}</p>
+              <div className="rounded-xl border border-border/50 bg-background/60 p-3">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Typické príznaky tento týždeň
+                </p>
+                <ul className="mt-2 space-y-1 text-sm text-foreground/85">
+                  {postpartum.symptoms.map((symptom) => (
+                    <li key={symptom} className="flex items-start gap-2">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      {symptom}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="text-xs italic text-muted-foreground">{POSTPARTUM_SAFETY_NOTE}</p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
