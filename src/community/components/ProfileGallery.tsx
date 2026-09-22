@@ -67,9 +67,11 @@ export function ProfileGallery({
             multiple
             className="sr-only"
             onChange={(e) => {
-              const files = e.target.files;
+              // Copy the chosen files out before clearing the input — resetting
+              // `value` empties the live FileList in Chromium.
+              const files = Array.from(e.target.files ?? []);
               e.target.value = "";
-              if (files && files.length > 0 && onAdd) onAdd(files);
+              if (files.length > 0 && onAdd) onAdd(files);
             }}
           />
         </>
