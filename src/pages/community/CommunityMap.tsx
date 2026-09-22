@@ -2,8 +2,10 @@ import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, GeoJSON, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
+import { feature } from "topojson-client";
+import countriesTopology from "world-atlas/countries-110m.json";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import { MarkerClusterGroup } from "@/community/components/MarkerClusterGroup";
@@ -12,7 +14,7 @@ import { EmptyState } from "@/community/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { fadeUp } from "@/community/lib/motion";
-import { jitterCoords } from "@/community/lib/geo";
+import { jitterCoords, fixAntimeridian } from "@/community/lib/geo";
 import { PHASE_LABEL, type LifePhase } from "@/community/lib/quotes";
 import { useMapDivas, type MapDiva } from "@/community/hooks/queries";
 
@@ -21,6 +23,22 @@ const divaIcon = L.divIcon({
   className: "",
   iconSize: L.point(16, 16),
 });
+
+// Bundled at build time (no tile server, no API key) — a flat, engraved-map look:
+// warm parchment countries on a deep ground, borders only, no roads or labels.
+const COUNTRIES_GEOJSON = fixAntimeridian(
+  feature(
+    countriesTopology as never,
+    (countriesTopology as unknown as { objects: { countries: never } }).objects.countries,
+  ) as unknown as GeoJSON.FeatureCollection,
+);
+
+const COUNTRY_STYLE = {
+  fillColor: "#E4D6B8",
+  fillOpacity: 1,
+  color: "#8C7A57",
+  weight: 0.6,
+};
 
 function FitToDivas({ points }: { points: [number, number][] }) {
   const map = useMap();
@@ -89,14 +107,14 @@ export default function CommunityMap() {
           <MapContainer
             center={[48.7, 19.5]}
             zoom={5}
+            minZoom={2}
+            maxZoom={12}
+            maxBounds={[[-58, -200], [78, 200]]}
+            maxBoundsViscosity={1.0}
             scrollWheelZoom
-            style={{ height: "65vh", width: "100%" }}
+            style={{ height: "65vh", width: "100%", background: "#221C18" }}
           >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-              detectRetina
-            />
+            <GeoJSON data={COUNTRIES_GEOJSON} style={() => COUNTRY_STYLE} />
             <FitToDivas points={bounds} />
             <MarkerClusterGroup>
               {points.map(({ diva, coords }) => (

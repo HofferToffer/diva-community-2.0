@@ -21,3 +21,46 @@ export function jitterCoords(id: string, lat: number, lng: number): [number, num
   const lngOffset = (distanceKm / (111 * Math.cos((lat * Math.PI) / 180))) * Math.sin(angle);
   return [lat + latOffset, lng + lngOffset];
 }
+
+type Ring = [number, number][];
+
+function splitRingAtAntimeridian(ring: Ring): Ring[] {
+  const segments: Ring[] = [];
+  let current: Ring = [ring[0]];
+  for (let i = 1; i < ring.length; i++) {
+    const [prevLng] = ring[i - 1];
+    const [lng] = ring[i];
+    if (Math.abs(lng - prevLng) > 180) {
+      segments.push(current);
+      current = [];
+    }
+    current.push(ring[i]);
+  }
+  segments.push(current);
+  return segments.filter((s) => s.length > 1);
+}
+
+/**
+ * A few countries (Russia, Fiji, Antarctica) cross the antimeridian; left as-is,
+ * their rings draw one long edge straight across the whole map. Splits each ring
+ * into segments wherever it jumps more than 180° of longitude.
+ */
+export function fixAntimeridian(geojson: GeoJSON.FeatureCollection): GeoJSON.FeatureCollection {
+  return {
+    ...geojson,
+    features: geojson.features.map((f) => {
+      const geom = f.geometry;
+      if (geom.type === "Polygon") {
+        const rings = (geom.coordinates as unknown as Ring[]).flatMap(splitRingAtAntimeridian);
+        return { ...f, geometry: { type: "MultiPolygon", coordinates: rings.map((r) => [r]) } };
+      }
+      if (geom.type === "MultiPolygon") {
+        const polys = (geom.coordinates as unknown as Ring[][]).flatMap((poly) =>
+          poly.flatMap(splitRingAtAntimeridian).map((r) => [r]),
+        );
+        return { ...f, geometry: { type: "MultiPolygon", coordinates: polys } };
+      }
+      return f;
+    }),
+  } as GeoJSON.FeatureCollection;
+}
