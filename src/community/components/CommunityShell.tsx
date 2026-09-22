@@ -215,7 +215,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       // the y-axis pull-to-refresh branch, was enough to fight with the map's own
       // touch handling on real devices.
       const target = e.target as Element | null;
-      if (target?.closest(".leaflet-container")) {
+      // Also bail on any multi-touch gesture (pinch-zoom, anywhere in the app) —
+      // with two fingers down, touches[0] alone can still drift sideways past the
+      // swipe threshold, wrongly firing "back" mid-pinch.
+      if (target?.closest(".leaflet-container") || e.touches.length > 1) {
         startY = null;
         startX = null;
         axis = null;
@@ -230,6 +233,17 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
     const onTouchMove = (e: TouchEvent) => {
       if (refreshingRef.current || startX === null) return;
+      // A second finger joined mid-gesture — stop tracking immediately rather
+      // than let a pinch masquerade as a swipe.
+      if (e.touches.length > 1) {
+        startY = null;
+        startX = null;
+        axis = null;
+        lastDx = 0;
+        setSwipeX(0);
+        setPull(0);
+        return;
+      }
       const touch = e.touches[0];
       const dx = touch.clientX - startX;
       const dy = startY !== null ? touch.clientY - startY : 0;
