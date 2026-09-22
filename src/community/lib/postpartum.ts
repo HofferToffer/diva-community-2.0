@@ -80,7 +80,7 @@ const FALLBACK: WeekBand = {
 
 /** A gentle, non-alarmist reminder of when to actually call a doctor — shown alongside the weekly message for roughly the first 12 weeks, when it's most relevant. */
 export const POSTPARTUM_SAFETY_NOTE =
-  "Ak premočíš viac ako jednu vložku za hodinu, dostaneš horúčku nad 38 °C, alebo krvácanie nepríjemne zapácha, ozvi sa lekárovi — nečakaj na plánovanú prehliadku.";
+  "Hneď po pôrode je silnejšie krvácanie bežné. Ozvi sa ale lekárovi hneď, ak premáčaš vložku do hodiny niekoľko hodín po sebe, idú väčšie zrazeniny (väčšie ako vajce), krvácanie sa znova zosilní po tom, čo už slablo, dostaneš horúčku nad 38 °C, alebo krvácanie nepríjemne zapácha — nečakaj na plánovanú prehliadku.";
 
 export function getPostpartumInfo(sinceDate: string, today = new Date()): PostpartumInfo {
   const since = new Date(sinceDate);
