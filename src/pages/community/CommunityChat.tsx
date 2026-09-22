@@ -124,7 +124,7 @@ export default function CommunityChat() {
           placeholder="Napíš správu..."
           rows={1}
           maxLength={1000}
-          className="min-h-11 flex-1 resize-none rounded-2xl border-border/50 shadow-sm"
+          className="min-h-11 flex-1 resize-none rounded-2xl border-border/50 text-base shadow-sm lg:text-sm"
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
