@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { MOVEMENT_INTERESTS } from "@/community/lib/constants";
 import { normalizeUsername } from "@/community/lib/format";
@@ -27,6 +29,11 @@ export default function CommunityOnboarding() {
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
   const [lastPeriod, setLastPeriod] = useState(profile?.last_period_date ?? "");
+  // Health data (cycle info) needs its own explicit GDPR Art. 9 consent — pre-checked
+  // only if she already had this filled in before (i.e. she's consented already).
+  const [healthConsent, setHealthConsent] = useState(
+    Boolean(profile?.cycle_length_days || profile?.last_period_date),
+  );
   const [avatarPath, setAvatarPath] = useState<string | null>(profile?.avatar_url ?? null);
   const [saving, setSaving] = useState(false);
   const [cropImage, setCropImage] = useState<string | null>(null);
@@ -84,8 +91,8 @@ export default function CommunityOnboarding() {
           interests,
           is_public: isPublic,
           avatar_url: avatarPath,
-          cycle_length_days: cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
-          last_period_date: lastPeriod || null,
+          cycle_length_days: healthConsent && cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
+          last_period_date: healthConsent ? lastPeriod || null : null,
           onboarding_completed: true,
         } as never)
         .eq("id", profile.id);
@@ -255,11 +262,32 @@ export default function CommunityOnboarding() {
           <p className="text-xs text-muted-foreground">
             Tieto údaje vidíš len ty. Vyplniť ich môžeš aj neskôr v Nastaveniach.
           </p>
+          {(cycleLength.trim() || lastPeriod) && (
+            <div className="flex items-start gap-3 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+              <Checkbox
+                id="onb-health-consent"
+                checked={healthConsent}
+                onCheckedChange={(v) => setHealthConsent(v === true)}
+                className="mt-0.5"
+              />
+              <Label htmlFor="onb-health-consent" className="text-xs font-normal leading-relaxed text-muted-foreground">
+                Súhlasím so spracovaním týchto údajov o mojom cykle na účely appky. Viac v{" "}
+                <Link to="/zasady-ochrany-udajov" target="_blank" className="underline hover:text-foreground">
+                  Zásadách ochrany osobných údajov
+                </Link>
+                .
+              </Label>
+            </div>
+          )}
           <div className="flex gap-3">
             <Button variant="outline" className="flex-1" onClick={() => setStep(1)}>
               Späť
             </Button>
-            <Button className="flex-1" onClick={() => setStep(3)}>
+            <Button
+              className="flex-1"
+              onClick={() => setStep(3)}
+              disabled={Boolean(cycleLength.trim() || lastPeriod) && !healthConsent}
+            >
               Pokračovať
             </Button>
           </div>

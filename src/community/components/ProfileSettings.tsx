@@ -1,17 +1,31 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Activity, Bell, Footprints, KeyRound, Palette, Sparkles, User } from "lucide-react";
+import { Activity, Bell, Download, Footprints, KeyRound, Palette, ShieldAlert, Sparkles, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Link } from "react-router-dom";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { CityAutocomplete } from "@/community/components/CityAutocomplete";
 import { MOVEMENT_INTERESTS } from "@/community/lib/constants";
 import { normalizeUsername } from "@/community/lib/format";
+import { downloadJson, exportMyData } from "@/community/lib/exportData";
 import { cn } from "@/lib/utils";
 
 export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => void; focusChapter?: boolean }) {
@@ -40,6 +54,19 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [isPostpartum, setIsPostpartum] = useState(profile?.is_postpartum ?? false);
   const [postpartumSince, setPostpartumSince] = useState(profile?.postpartum_since ?? "");
   const [isTryingToConceive, setIsTryingToConceive] = useState(profile?.is_trying_to_conceive ?? false);
+  // Health data (cycle/pregnancy/menopause) needs its own explicit GDPR Art. 9
+  // consent — pre-checked only if she already had some of this filled in
+  // (i.e. she's consented already), unchecked the first time she fills it in.
+  const [healthConsent, setHealthConsent] = useState(
+    Boolean(
+      profile?.is_pregnant ||
+        profile?.is_menopause ||
+        profile?.is_postpartum ||
+        profile?.is_trying_to_conceive ||
+        profile?.cycle_length_days ||
+        profile?.last_period_date,
+    ),
+  );
   const [notifyLikes, setNotifyLikes] = useState(profile?.notify_likes ?? true);
   const [notifyComments, setNotifyComments] = useState(profile?.notify_comments ?? true);
   const [notifyChallenges, setNotifyChallenges] = useState(profile?.notify_challenges ?? true);
@@ -49,6 +76,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
 
   const queryClient = useQueryClient();
   const { data: stravaConnection } = useQuery({
@@ -83,10 +113,17 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
     toast.success("Strava je odpojená.");
   };
 
+  const hasHealthData = Boolean(
+    isPregnant || isMenopause || isPostpartum || isTryingToConceive || cycleLength.trim() || lastPeriod,
+  );
+
   const save = async () => {
     if (!profile) return;
     const cleanUsername = normalizeUsername(username);
     if (cleanUsername.length < 3) return toast.error("Prezývka musí mať aspoň 3 znaky.");
+    if (hasHealthData && !healthConsent) {
+      return toast.error("Na uloženie údajov o cykle/tehotenstve/menopauze potrebujeme tvoj súhlas nižšie.");
+    }
     setSaving(true);
     try {
       if (cleanUsername !== profile.username) {
@@ -158,6 +195,34 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
     setCurrentPassword("");
     setNewPassword("");
     toast.success("Heslo je zmenené.");
+  };
+
+  const handleExportData = async () => {
+    if (!profile) return;
+    setExporting(true);
+    try {
+      const data = await exportMyData(profile.id);
+      downloadJson(data, `diva-community-moje-udaje-${new Date().toISOString().slice(0, 10)}.json`);
+      toast.success("Tvoje údaje sú stiahnuté.");
+    } catch {
+      toast.error("Stiahnutie údajov sa nepodarilo.");
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    try {
+      const { error } = await supabase.functions.invoke("delete-account", { body: {} });
+      if (error) throw error;
+      toast.success("Tvoj účet je vymazaný. Zbohom, Diva — dvere sú vždy otvorené.");
+      await signOut();
+    } catch {
+      toast.error("Vymazanie účtu sa nepodarilo. Napíš nám prosím na didka0105@gmail.com.");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -363,6 +428,24 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           </div>
         )}
 
+        {hasHealthData && (
+          <div className="flex items-start gap-3 border-t border-border/50 pt-4">
+            <Checkbox
+              id="s-health-consent"
+              checked={healthConsent}
+              onCheckedChange={(v) => setHealthConsent(v === true)}
+              className="mt-0.5"
+            />
+            <Label htmlFor="s-health-consent" className="text-xs font-normal leading-relaxed text-muted-foreground">
+              Súhlasím so spracovaním týchto údajov o mojom cykle/tehotenstve/menopauze na účely appky. Viac v{" "}
+              <Link to="/zasady-ochrany-udajov" target="_blank" className="underline hover:text-foreground">
+                Zásadách ochrany osobných údajov
+              </Link>
+              .
+            </Label>
+          </div>
+        )}
+
         <div className="space-y-2 border-t border-border/50 pt-4">
           <ToggleRow
             label="Zobrazovať moju kapitolu ostatným Divám"
@@ -466,6 +549,50 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             <Button variant="outline" className="w-full" onClick={changePassword}>
               Zmeniť heslo
             </Button>
+          </SectionCard>
+
+          <SectionCard
+            icon={ShieldAlert}
+            title="Moje údaje"
+            description="Podľa GDPR máš právo kedykoľvek vidieť, stiahnuť alebo vymazať všetky svoje údaje."
+          >
+            <Button variant="outline" className="w-full gap-2" onClick={handleExportData} disabled={exporting}>
+              <Download className="h-4 w-4" aria-hidden="true" />
+              {exporting ? "Sťahujem…" : "Stiahnuť moje dáta"}
+            </Button>
+
+            <AlertDialog onOpenChange={(open) => !open && setDeleteConfirmText("")}>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="w-full">
+                  Vymazať účet
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Naozaj chceš vymazať svoj účet?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Toto natrvalo vymaže tvoj profil, aktivity, pocity, správy aj fotky. Táto akcia sa nedá vrátiť
+                    späť. Pre potvrdenie napíš nižšie slovo <strong className="text-foreground">VYMAZAŤ</strong>.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <Input
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="VYMAZAŤ"
+                  aria-label="Napíš VYMAZAŤ pre potvrdenie"
+                />
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Zrušiť</AlertDialogCancel>
+                  <AlertDialogAction
+                    className={cn(buttonVariants({ variant: "destructive" }))}
+                    disabled={deleteConfirmText !== "VYMAZAŤ" || deleting}
+                    onClick={handleDeleteAccount}
+                  >
+                    {deleting ? "Mažem…" : "Natrvalo vymazať"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </SectionCard>
 
           <Button variant="outline" className="w-full" onClick={signOut}>

@@ -26,7 +26,11 @@ import BlogPost11 from "./pages/BlogPost11";
 import BlogPostDynamic from "./pages/BlogPostDynamic";
 import CommunityApp from "./pages/CommunityApp";
 import ResetPassword from "./pages/ResetPassword";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiePolicy from "./pages/CookiePolicy";
 import NotFound from "./pages/NotFound";
+import CookieConsent from "./components/CookieConsent";
 
 const queryClient = new QueryClient();
 
@@ -59,10 +63,14 @@ const App = () => (
           <Route path="/blog/moja-cesta-hlbsie-k-sebe" element={<BlogPost11 />} />
           <Route path="/blog/:slug" element={<BlogPostDynamic />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/zasady-ochrany-udajov" element={<PrivacyPolicy />} />
+          <Route path="/podmienky-pouzivania" element={<TermsOfService />} />
+          <Route path="/cookies" element={<CookiePolicy />} />
           <Route path="/community/*" element={<CommunityApp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <CookieConsent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

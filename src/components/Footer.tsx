@@ -32,6 +32,17 @@ const Footer = () => {
               </Link>
             ))}
           </div>
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link to="/zasady-ochrany-udajov" className="font-body text-[10px] tracking-[0.15em] text-background/40 hover:text-background/70 transition-colors uppercase">
+              Ochrana osobných údajov
+            </Link>
+            <Link to="/podmienky-pouzivania" className="font-body text-[10px] tracking-[0.15em] text-background/40 hover:text-background/70 transition-colors uppercase">
+              Podmienky používania
+            </Link>
+            <Link to="/cookies" className="font-body text-[10px] tracking-[0.15em] text-background/40 hover:text-background/70 transition-colors uppercase">
+              Cookies
+            </Link>
+          </div>
           <div className="h-[1px] w-full max-w-xs bg-background/20" />
           <p className="font-body text-xs text-background/40 tracking-wide text-center">
             © 2026 DIVA Community. Všetky práva vyhradené.
