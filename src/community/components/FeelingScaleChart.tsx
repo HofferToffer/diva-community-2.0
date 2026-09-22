@@ -40,7 +40,7 @@ export type FeelingChartActivity = {
 };
 
 const ACTIVITY_Y = 15;
-const ACTIVITY_COLOR = "hsl(var(--accent))";
+const ACTIVITY_COLOR = "hsl(344, 37%, 65%)"; // fixed, not hsl(var(--accent)) — see note on feelingScaleFill above
 
 export default function FeelingScaleChart({
   feelings,
@@ -167,9 +167,12 @@ export default function FeelingScaleChart({
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -8 }}>
                 <defs>
+                  {/* Fixed color, not hsl(var(--primary)) — that shifts with today's cycle-phase
+                      theme, which would recolor this whole multi-month trend line to whatever
+                      phase you're in today, clashing with the per-day phase bands/dots below. */}
                   <linearGradient id="feelingScaleFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.02} />
+                    <stop offset="0%" stopColor="hsl(344, 28%, 62%)" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="hsl(344, 28%, 62%)" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -238,7 +241,7 @@ export default function FeelingScaleChart({
                   type="monotone"
                   dataKey="level"
                   connectNulls
-                  stroke="hsl(var(--primary))"
+                  stroke="hsl(344, 28%, 62%)"
                   strokeWidth={2}
                   fill="url(#feelingScaleFill)"
                   dot={(props: {
@@ -254,7 +257,7 @@ export default function FeelingScaleChart({
                         cx={cx}
                         cy={cy}
                         r={4}
-                        fill={payload.phase ? PHASE_STYLES[payload.phase].dot : "hsl(var(--primary))"}
+                        fill={payload.phase ? PHASE_STYLES[payload.phase].dot : "hsl(344, 28%, 62%)"}
                         stroke="hsl(var(--card))"
                         strokeWidth={1.5}
                       />
