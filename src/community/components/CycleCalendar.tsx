@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { CalendarHeart, ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { CalendarHeart, ChevronLeft, ChevronRight, Egg, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -117,9 +117,11 @@ export function CycleCalendar({
               const isPast = cell.date <= today;
               const canLogIntimacy = !!onToggleIntimacy && isPast;
               const canEdit = !!onSelectPeriodStart && isPast && !canLogIntimacy;
-              const canOpen = canEdit || canLogIntimacy;
+              const canPreview = !isPast; // future days: tap to see which phase it'll be
+              const canOpen = canEdit || canLogIntimacy || canPreview;
               const isPending = pendingDateKey === dateKey;
               const isLogged = intimacyDates?.has(dateKey) ?? false;
+              const isPeakFertility = !!onToggleIntimacy && cell.phase === "ovulacia";
 
               const dayButton = (
                 <button
@@ -150,10 +152,17 @@ export function CycleCalendar({
                       aria-hidden="true"
                     />
                   )}
+                  {isPeakFertility && !isLogged && (
+                    <Egg
+                      className="absolute -bottom-0.5 -right-0.5 h-3 w-3"
+                      style={{ color: "hsl(32, 45%, 46%)" }}
+                      aria-hidden="true"
+                    />
+                  )}
                 </button>
               );
 
-              if (!canEdit) return <div key={j}>{dayButton}</div>;
+              if (!canEdit && !canPreview) return <div key={j}>{dayButton}</div>;
 
               return (
                 <Popover key={j} open={isPending} onOpenChange={(open) => !open && setPendingDateKey(null)}>
@@ -168,22 +177,29 @@ export function CycleCalendar({
                         {cell.phase && (
                           <p className="text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[cell.phase].dot }}>
                             {CYCLE_PHASES[cell.phase].name}
+                            {isPeakFertility && " · najvyššia šanca na otehotnenie"}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <p className="mt-3 text-sm text-muted-foreground">
-                      Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
-                    </p>
-                    <div className="mt-3 flex gap-2">
-                      <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDateKey(null)}>
-                        Zrušiť
-                      </Button>
-                      <Button size="sm" className="flex-1" onClick={() => confirmPendingDate(cell.date)}>
-                        Nastaviť
-                      </Button>
-                    </div>
+                    {canEdit ? (
+                      <>
+                        <p className="mt-3 text-sm text-muted-foreground">
+                          Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
+                        </p>
+                        <div className="mt-3 flex gap-2">
+                          <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDateKey(null)}>
+                            Zrušiť
+                          </Button>
+                          <Button size="sm" className="flex-1" onClick={() => confirmPendingDate(cell.date)}>
+                            Nastaviť
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="mt-3 text-sm text-muted-foreground">Odhad podľa tvojho cyklu.</p>
+                    )}
                   </PopoverContent>
                 </Popover>
               );
@@ -207,6 +223,10 @@ export function CycleCalendar({
         </p>
       )}
 
+      <p className="mt-3 text-xs text-muted-foreground">
+        Ťukni aj na budúci deň — ukážeme ti, akú fázu vtedy podľa odhadu budeš mať.
+      </p>
+
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda fáz cyklu">
         {(Object.keys(CYCLE_PHASES) as CyclePhaseKey[]).map((phase) => (
           <li key={phase} className="flex items-center gap-1.5">
@@ -226,6 +246,12 @@ export function CycleCalendar({
               aria-hidden="true"
             />
             Sex
+          </li>
+        )}
+        {onToggleIntimacy && (
+          <li className="flex items-center gap-1.5">
+            <Egg className="h-3 w-3" style={{ color: "hsl(32, 45%, 46%)" }} aria-hidden="true" />
+            Najvyššia šanca na otehotnenie
           </li>
         )}
       </ul>
