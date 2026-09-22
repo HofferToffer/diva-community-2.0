@@ -92,6 +92,7 @@ export default function CommunityProfile() {
   const [coverPath, setCoverPath] = useState<string | null>(profile?.cover_photo_url ?? null);
   const [galleryPhotos, setGalleryPhotos] = useState<string[]>(profile?.gallery_photos ?? []);
   const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryError, setGalleryError] = useState<string | null>(null);
   const coverUrl = useSignedImage(coverPath ?? profile?.cover_photo_url);
 
   const pickAvatar = (file: File) => {
@@ -159,23 +160,30 @@ export default function CommunityProfile() {
     const toUpload = Array.from(files).slice(0, remaining);
     if (toUpload.length === 0) return;
     setGalleryUploading(true);
+    setGalleryError(null);
     try {
       const newPaths: string[] = [];
+      const failures: string[] = [];
       for (const rawFile of toUpload) {
         const file = await normalizeImage(rawFile);
         const problem = validateImage(file);
         if (problem) {
           toast.error(problem);
+          failures.push(problem);
           continue;
         }
         try {
           newPaths.push(await uploadImage("profile-gallery", user.id, file));
         } catch (err) {
           console.error("Nepodarilo sa nahrať fotku do albumu:", err);
+          failures.push(err instanceof Error ? err.message : String(err));
         }
       }
       if (newPaths.length === 0) {
-        if (toUpload.length > 0) toast.error("Fotky sa nepodarilo nahrať.");
+        if (failures.length > 0) {
+          toast.error("Fotky sa nepodarilo nahrať.");
+          setGalleryError(`Nahrávanie zlyhalo: ${failures.join(" / ")}`);
+        }
         return;
       }
       const updated = [...galleryPhotos, ...newPaths];
@@ -186,7 +194,9 @@ export default function CommunityProfile() {
       toast.success("Fotky sú pridané.");
     } catch (err) {
       console.error("Nepodarilo sa uložiť album:", err);
+      const message = err instanceof Error ? err.message : String(err);
       toast.error("Fotky sa nepodarilo nahrať.");
+      setGalleryError(`Uloženie zlyhalo: ${message}`);
     } finally {
       setGalleryUploading(false);
     }
@@ -438,6 +448,11 @@ export default function CommunityProfile() {
         onAdd={isMe ? addGalleryPhotos : undefined}
         onRemove={isMe ? removeGalleryPhoto : undefined}
       />
+      {isMe && galleryError && (
+        <p className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive">
+          {galleryError}
+        </p>
+      )}
 
       {cycle && (
         <section className="space-y-3 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
