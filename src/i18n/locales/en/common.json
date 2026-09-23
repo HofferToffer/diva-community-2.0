@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "home": "Home",
+    "feeling": "How do you feel today?",
+    "cycle": "My cycle",
+    "challenges": "Challenges",
+    "addActivity": "Add activity",
+    "divy": "Divas",
+    "map": "Diva map",
+    "divaKruh": "DIVA CIRCLE",
+    "admin": "Admin",
+    "backToWebsite": "Back to website"
+  },
+  "language": {
+    "switchToEnglish": "English",
+    "switchToSlovak": "Slovenčina"
+  }
+}

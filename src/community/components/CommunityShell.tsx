@@ -2,7 +2,8 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent, type WheelEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Bell, ChevronDown, Circle, Globe, HeartPulse, History, Home, LogOut, Map, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
+import { Bell, ChevronDown, Circle, Globe, HeartPulse, History, Home, Languages, LogOut, Map, Menu, MessageCircle, PenLine, Plus, RefreshCcw, Search, ShieldCheck, Trophy, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,27 +28,34 @@ import { getCycleInfo } from "../lib/cycle";
 
 
 const NAV = [
-  { to: "/community", label: "Domov", icon: Home, end: true },
-  { to: "/community/pocit", label: "Ako sa dnes cítim?", icon: HeartPulse, end: false },
-  { to: "/community/cyklus", label: "Môj cyklus", icon: RefreshCcw, end: false },
-  { to: "/community/challenges", label: "Výzvy", icon: Trophy, end: false },
-  { to: "/community/pridat", label: "Pridať aktivitu", icon: Plus, end: false },
-  { to: "/community/divy", label: "Divy", icon: Search, end: false },
-  { to: "/community/mapa", label: "Mapa Divy", icon: Map, end: false },
-  { to: "/community/diva-kruh", label: "DIVA KRUH", icon: Circle, end: false },
+  { to: "/community", labelKey: "nav.home", icon: Home, end: true },
+  { to: "/community/pocit", labelKey: "nav.feeling", icon: HeartPulse, end: false },
+  { to: "/community/cyklus", labelKey: "nav.cycle", icon: RefreshCcw, end: false },
+  { to: "/community/challenges", labelKey: "nav.challenges", icon: Trophy, end: false },
+  { to: "/community/pridat", labelKey: "nav.addActivity", icon: Plus, end: false },
+  { to: "/community/divy", labelKey: "nav.divy", icon: Search, end: false },
+  { to: "/community/mapa", labelKey: "nav.map", icon: Map, end: false },
+  { to: "/community/diva-kruh", labelKey: "nav.divaKruh", icon: Circle, end: false },
 ];
 
 
 export function CommunityShell({ children }: { children: ReactNode }) {
+  const { t, i18n } = useTranslation();
   const { profile, signOut } = useCommunityAuth();
   const { data: notifications } = useNotifications(profile?.id);
   const { data: conversations } = useConversations(profile?.id);
   const { data: isAdmin } = useIsAdmin();
+  // The cycle nav item's label is still Slovak-only (PHASE_LABEL isn't translated
+  // yet) — it overrides the translated default until that content is migrated too.
   const chapterLabel = PHASE_LABEL[getLifePhase(profile)];
-  const baseNav = NAV.map((item) => (item.to === "/community/cyklus" ? { ...item, label: chapterLabel } : item));
+  const baseNav = NAV.map((item) => ({
+    ...item,
+    label: item.to === "/community/cyklus" ? chapterLabel : t(item.labelKey),
+  }));
   const nav = isAdmin
-    ? [...baseNav, { to: "/community/admin", label: "Admin", icon: ShieldCheck, end: false }]
+    ? [...baseNav, { to: "/community/admin", label: t("nav.admin"), icon: ShieldCheck, end: false }]
     : baseNav;
+  const toggleLanguage = () => void i18n.changeLanguage(i18n.language === "en" ? "sk" : "en");
   const unread = notifications?.filter((n) => !n.read_at).length ?? 0;
   const unreadMessages = conversations?.reduce((sum, c) => sum + c.unreadCount, 0) ?? 0;
   const location = useLocation();
@@ -492,7 +500,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
                       >
                         <Globe className="h-4 w-4 shrink-0" aria-hidden="true" />
-                        Späť na web
+                        {t("nav.backToWebsite")}
                       </Link>
                     </SheetClose>
                   </div>
@@ -535,6 +543,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                     <User className="mr-2 h-4 w-4" aria-hidden="true" />
                     Môj profil
                   </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={toggleLanguage} className="cursor-pointer">
+                  <Languages className="mr-2 h-4 w-4" aria-hidden="true" />
+                  {i18n.language === "en" ? t("language.switchToSlovak") : t("language.switchToEnglish")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-primary focus:text-primary">
                   <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />

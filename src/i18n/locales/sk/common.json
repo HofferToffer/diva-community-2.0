@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "home": "Domov",
+    "feeling": "Ako sa dnes cítim?",
+    "cycle": "Môj cyklus",
+    "challenges": "Výzvy",
+    "addActivity": "Pridať aktivitu",
+    "divy": "Divy",
+    "map": "Mapa Divy",
+    "divaKruh": "DIVA KRUH",
+    "admin": "Admin",
+    "backToWebsite": "Späť na web"
+  },
+  "language": {
+    "switchToEnglish": "English",
+    "switchToSlovak": "Slovenčina"
+  }
+}
