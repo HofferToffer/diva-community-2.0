@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function NotAloneNote() {
@@ -62,6 +62,7 @@ export default function CommunityCycle() {
   const [birthStory, setBirthStory] = useState(profile?.birth_story ?? "");
   const [editingBirthStory, setEditingBirthStory] = useState(false);
   const [savingBirthStory, setSavingBirthStory] = useState(false);
+  const birthStoryRef = useRef<HTMLDivElement>(null);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -130,6 +131,8 @@ export default function CommunityCycle() {
       refreshProfile();
       setJustGaveBirth(true);
       setTimeout(() => setJustGaveBirth(false), 4500);
+      // Po osláve jemne posuň pohľad na pôrodný príbeh.
+      setTimeout(() => birthStoryRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 4600);
     } catch {
       toast.error("Nepodarilo sa uložiť.");
     }
@@ -402,8 +405,27 @@ export default function CommunityCycle() {
             </ul>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-border/50 bg-background/60 p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tvoj pôrodný príbeh</p>
+          <motion.div
+            ref={birthStoryRef}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="relative space-y-2 overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-sm"
+          >
+            {!profile.birth_story && !editingBirthStory && (
+              <motion.span
+                aria-hidden="true"
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute right-4 top-3.5 text-primary/70"
+              >
+                <ArrowDown className="h-5 w-5" />
+              </motion.span>
+            )}
+            <p className="flex items-center gap-2 font-display text-xl text-primary">
+              <Feather className="h-4 w-4" aria-hidden="true" />
+              Tvoj pôrodný príbeh
+            </p>
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
@@ -441,16 +463,19 @@ export default function CommunityCycle() {
               </>
             ) : (
               <>
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  Každý pôrod má svoj vlastný príbeh — nežný aj drsný, krehký aj silný. Napísať si ho vie pomôcť
-                  uložiť v sebe s pokojom, nech bol akýkoľvek. Vidíš ho len ty.
+                <p className="text-sm font-medium leading-relaxed text-foreground/90">
+                  Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
                 </p>
-                <Button variant="outline" size="sm" onClick={() => setEditingBirthStory(true)}>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty.
+                </p>
+                <Button size="sm" className="mt-1 gap-2" onClick={() => setEditingBirthStory(true)}>
+                  <Feather className="h-4 w-4" aria-hidden="true" />
                   Napísať svoj príbeh
                 </Button>
               </>
             )}
-          </div>
+          </motion.div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
