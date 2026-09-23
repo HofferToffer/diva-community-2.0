@@ -206,24 +206,33 @@ export default function CommunityHome() {
             to="/community/cyklus"
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoja kapitola</p>
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("menopauseCard.chapterLabel")}</p>
             {menopauseStage ? (
               <>
-                <h2 className="mt-1 font-display text-2xl text-primary">{menopauseStage.name}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{menopauseStage.message}</p>
+                <h2 className="mt-1 font-display text-2xl text-primary">
+                  {isEnglish ? t(`menopause.stages.${menopauseStage.key}.name`) : menopauseStage.name}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {isEnglish ? t(`menopause.stages.${menopauseStage.key}.message`) : menopauseStage.message}
+                </p>
                 <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
-                  „{menopauseStage.mantra}" — {menopauseStage.archetype}
+                  „{isEnglish ? t(`menopause.stages.${menopauseStage.key}.mantra`) : menopauseStage.mantra}" —{" "}
+                  {isEnglish ? t(`menopause.stages.${menopauseStage.key}.archetype`) : menopauseStage.archetype}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Typické teraz: {menopauseStage.symptoms.join(" · ")}
+                  {t("menopauseCard.typicalNow", {
+                    list: (isEnglish
+                      ? (t(`menopause.stages.${menopauseStage.key}.symptoms`, { returnObjects: true }) as string[])
+                      : menopauseStage.symptoms
+                    ).join(" · "),
+                  })}
                 </p>
               </>
             ) : (
               <>
-                <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
+                <h2 className="mt-1 font-display text-2xl text-primary">{t("menopauseCard.unselectedTitle")}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Únava, návaly aj výkyvy energie sú normálna súčasť tejto kapitoly, nie zlyhanie. Tipy pre teba
-                  nájdeš tu.
+                  {t("menopauseCard.unselectedMessage")}
                 </p>
               </>
             )}

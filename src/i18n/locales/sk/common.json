@@ -1,4 +1,16 @@
 {
+  "menopauseCard": {
+    "chapterLabel": "Tvoja kapitola",
+    "title": "V menopauze",
+    "intro": "Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Únava, návaly aj výkyvy energie sú normálna súčasť tejto kapitoly, nie zlyhanie. Počúvaj, čo potrebuješ dnes.",
+    "editProfileButton": "Upraviť v profile",
+    "tipsForYouTitle": "Tipy pre teba",
+    "stagesTitle": "Fázy menopauzy — kde sa možno spoznáš",
+    "stagesHint": "Ťuknutím si označ fázu, v ktorej si práve teraz — kedykoľvek to môžeš zmeniť. Ak si nie si istá, pokojne to nechaj nevybrané.",
+    "unselectedTitle": "V menopauze",
+    "unselectedMessage": "Únava, návaly aj výkyvy energie sú normálna súčasť tejto kapitoly, nie zlyhanie. Tipy pre teba nájdeš tu.",
+    "typicalNow": "Typické teraz: {{list}}"
+  },
   "pregnancyCard": {
     "weekCounter": "{{count}}. týždeň tehotenstva",
     "babySizeNote": "Tvoje bábätko má teraz veľkosť ako {{size}}.",

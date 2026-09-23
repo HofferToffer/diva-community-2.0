@@ -1055,19 +1055,18 @@ export default function CommunityCycle() {
       {profile.is_menopause && (
         <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Tvoja kapitola</p>
-            <p className="font-display text-2xl text-primary">V menopauze</p>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Tvoje telo teraz prechádza inou fázou — bez tlaku sledovať cyklus. Únava, návaly aj výkyvy energie sú
-              normálna súčasť tejto kapitoly, nie zlyhanie. Počúvaj, čo potrebuješ dnes.
-            </p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("menopauseCard.chapterLabel")}</p>
+            <p className="font-display text-2xl text-primary">{t("menopauseCard.title")}</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t("menopauseCard.intro")}</p>
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
-              Upraviť v profile
+              {t("menopauseCard.editProfileButton")}
             </Button>
           </div>
 
           <div className="rounded-xl border border-border/50 bg-background/60 p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tipy pre teba</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              {t("menopauseCard.tipsForYouTitle")}
+            </p>
             <div className="mt-4">
               <TipGrid tips={MENOPAUSE_TIPS} color={{ fill: "hsl(265, 25%, 62%, 0.12)", dot: "hsl(265, 25%, 45%)" }} />
             </div>
@@ -1076,11 +1075,9 @@ export default function CommunityCycle() {
           <div className="space-y-3">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Fázy menopauzy — kde sa možno spoznáš
+                {t("menopauseCard.stagesTitle")}
               </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Ťuknutím si označ fázu, v ktorej si práve teraz — kedykoľvek to môžeš zmeniť. Ak si nie si istá, pokojne to nechaj nevybrané.
-              </p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("menopauseCard.stagesHint")}</p>
             </div>
             {MENOPAUSE_STAGES.map((stage) => {
               const selected = menopauseStage === stage.key;
@@ -1099,8 +1096,14 @@ export default function CommunityCycle() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-display text-lg text-primary">{stage.name}</p>
-                      {!expanded && <p className="text-xs text-muted-foreground">{stage.ageRange}</p>}
+                      <p className="font-display text-lg text-primary">
+                        {isEnglish ? t(`menopause.stages.${stage.key}.name`) : stage.name}
+                      </p>
+                      {!expanded && (
+                        <p className="text-xs text-muted-foreground">
+                          {isEnglish ? t(`menopause.stages.${stage.key}.ageRange`) : stage.ageRange}
+                        </p>
+                      )}
                     </div>
                     {selected && (
                       <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
@@ -1110,10 +1113,17 @@ export default function CommunityCycle() {
                   </div>
                   {expanded && (
                     <>
-                      <p className="text-xs text-muted-foreground">{stage.ageRange}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-foreground/85">{stage.message}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {isEnglish ? t(`menopause.stages.${stage.key}.ageRange`) : stage.ageRange}
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-foreground/85">
+                        {isEnglish ? t(`menopause.stages.${stage.key}.message`) : stage.message}
+                      </p>
                       <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                        {stage.symptoms.map((symptom) => (
+                        {(isEnglish
+                          ? (t(`menopause.stages.${stage.key}.symptoms`, { returnObjects: true }) as string[])
+                          : stage.symptoms
+                        ).map((symptom) => (
                           <li key={symptom} className="flex items-start gap-2">
                             <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
                             {symptom}
@@ -1122,9 +1132,12 @@ export default function CommunityCycle() {
                       </ul>
                       <div className="mt-3 border-t border-border/50 pt-3">
                         <p className="text-sm italic leading-relaxed text-foreground/85">
-                          „{stage.mantra}" — {stage.archetype}
+                          „{isEnglish ? t(`menopause.stages.${stage.key}.mantra`) : stage.mantra}" —{" "}
+                          {isEnglish ? t(`menopause.stages.${stage.key}.archetype`) : stage.archetype}
                         </p>
-                        <p className="mt-1 text-xs text-muted-foreground">{stage.keywords}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {isEnglish ? t(`menopause.stages.${stage.key}.keywords`) : stage.keywords}
+                        </p>
                       </div>
                     </>
                   )}

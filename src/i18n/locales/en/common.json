@@ -1,4 +1,71 @@
 {
+  "menopauseCard": {
+    "chapterLabel": "Your Chapter",
+    "title": "In Menopause",
+    "intro": "Your body is going through a different phase now — no pressure to track a cycle. Fatigue, hot flashes and energy swings are a normal part of this chapter, not a failure. Listen to what you need today.",
+    "editProfileButton": "Edit in profile",
+    "tipsForYouTitle": "Tips for you",
+    "stagesTitle": "Menopause stages — see where you recognize yourself",
+    "stagesHint": "Tap to mark the stage you're in right now — you can change it anytime. If you're not sure, feel free to leave it unselected.",
+    "unselectedTitle": "In Menopause",
+    "unselectedMessage": "Fatigue, hot flashes and energy swings are a normal part of this chapter, not a failure. You'll find tips for you here.",
+    "typicalNow": "Typical now: {{list}}"
+  },
+  "menopause": {
+    "stages": {
+      "perimenopauza_skora": {
+        "name": "Early perimenopause",
+        "ageRange": "usually mid-40s (average around 47)",
+        "message": "The first sign is usually a change in cycle length — a week or more, sometimes a skipped cycle. Hot flashes, mood or sleep changes can show up now too, though not yet in full force.",
+        "symptoms": [
+          "a more irregular cycle (shifting by 7+ days)",
+          "first hot flashes",
+          "mood or sleep changes",
+          "\"brain fog\" — trouble concentrating (an often-overlooked sign)"
+        ],
+        "archetype": "The Awakening One",
+        "keywords": "first signs • awareness • sensitivity • new beginning",
+        "mantra": "I am starting to notice the change."
+      },
+      "perimenopauza_neskora": {
+        "name": "Late perimenopause",
+        "ageRange": "usually a few years before your last period",
+        "message": "Cycles are now clearly irregular, with gaps of 60 days or more. Hot flashes, night sweats, sleep disturbances and mood swings tend to be at their most intense right now — hormones are fluctuating the most, just before your period stops for good.",
+        "symptoms": [
+          "markedly irregular cycle",
+          "more intense hot flashes and night sweats",
+          "sleep disturbances",
+          "irritability, tearfulness or anxiety"
+        ],
+        "archetype": "The Transforming One",
+        "keywords": "letting go • intensity • depth • cleansing",
+        "mantra": "I let go of what no longer serves me."
+      },
+      "menopauza": {
+        "name": "Menopause",
+        "ageRange": "on average around age 52",
+        "message": "Menopause isn't a period of time, but a single point in time — a day confirmed retrospectively, once you've gone 12 months without a period. Your ovaries have stopped releasing eggs and producing estrogen at previous levels. What you're feeling now is usually a continuation of what started in late perimenopause, not something entirely new.",
+        "symptoms": ["hot flashes and night sweats may still linger", "sleep and mood disturbances are fading slowly"],
+        "archetype": "Woman at the Threshold",
+        "keywords": "threshold • initiation • silence • new beginning",
+        "mantra": "I am crossing over."
+      },
+      "postmenopauza": {
+        "name": "Postmenopause",
+        "ageRange": "from confirmed menopause for the rest of your life",
+        "message": "Hot flashes and night sweats usually ease over time — on average about 4.5 years after your last period, although about a third of women still feel them 10 years later. Other changes deserve attention, not waiting: bone loss is accelerating the most right now, and cardiovascular risk catches up to men of the same age within a few years. Dryness, discomfort during sex, or frequent urges to urinate also won't resolve on their own — but they can be treated well, all it takes is talking to your doctor about it.",
+        "symptoms": [
+          "hot flashes gradually ease (4-5 years on average, longer for some)",
+          "accelerated bone loss — watch your movement and calcium",
+          "increased cardiovascular risk",
+          "dryness or discomfort that won't resolve on its own — treatable"
+        ],
+        "archetype": "The Free Queen",
+        "keywords": "freedom • wisdom • sovereignty • wholeness",
+        "mantra": "I am free to be myself."
+      }
+    }
+  },
   "pregnancyCard": {
     "weekCounter": "Week {{count}} of pregnancy",
     "babySizeNote": "Your baby is now about the size of {{size}}.",
