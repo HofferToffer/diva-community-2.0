@@ -545,7 +545,7 @@ export default function CommunityCycle() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="relative space-y-2 overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-sm"
           >
-            {!profile.birth_story && !editingBirthStory && (
+            {!profile.birth_story && !profile.birth_story_audio && !editingBirthStory && (
               <motion.span
                 aria-hidden="true"
                 animate={{ y: [0, 6, 0] }}
@@ -572,7 +572,8 @@ export default function CommunityCycle() {
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje. K príbehu môžeš pridať aj fotku.
+                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, príbeh môžeš jednoducho nahrať
+                  hlasom — alebo pridať fotku.
                 </p>
                 <Textarea
                   rows={6}
@@ -609,8 +610,8 @@ export default function CommunityCycle() {
                   Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty. Príbeh môžeš aj
-                  nahrať — stačí fotka.
+                   Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
+                   nepíše, nahraj si ho hlasom — alebo pridaj fotku.
                 </p>
                 <Button size="sm" className="mt-1 gap-2" onClick={() => setEditingBirthStory(true)}>
                   <Feather className="h-4 w-4" aria-hidden="true" />
