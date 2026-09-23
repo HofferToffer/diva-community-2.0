@@ -336,6 +336,12 @@ export default function CommunityCycle() {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-3 border-t border-border/50 pt-3">
+                    <p className="text-sm italic leading-relaxed text-foreground/85">
+                      „{stage.mantra}" — {stage.archetype}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">{stage.keywords}</p>
+                  </div>
                 </button>
               );
             })}

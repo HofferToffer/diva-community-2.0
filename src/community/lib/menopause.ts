@@ -27,6 +27,10 @@ export type MenopauseStage = {
   ageRange: string;
   message: string;
   symptoms: string[];
+  /** The energetic/inner layer alongside the physical facts above — not medical, not religious, just the deeper meaning of the stage. */
+  archetype: string;
+  keywords: string;
+  mantra: string;
 };
 
 /**
@@ -49,6 +53,9 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
       "zmeny nálady alebo spánku",
       "„hmla v hlave“ — problémy so sústredením (často prehliadaný signál)",
     ],
+    archetype: "Prebúdzajúca sa",
+    keywords: "prvé signály • všímavosť • citlivosť • nový začiatok",
+    mantra: "Začínam si všímať zmenu.",
   },
   {
     key: "perimenopauza_neskora",
@@ -62,6 +69,9 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
       "poruchy spánku",
       "podráždenosť, plačlivosť alebo úzkosť",
     ],
+    archetype: "Tá, čo sa premieňa",
+    keywords: "pustenie • intenzita • hĺbka • očista",
+    mantra: "Nechávam odísť, čo už neslúži.",
   },
   {
     key: "menopauza",
@@ -70,6 +80,9 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
     message:
       "Menopauza nie je obdobie, ale jeden bod v čase — deň, ktorý sa spätne potvrdí, keď máš za sebou 12 mesiacov bez menštruácie. Vaječníky už prestali uvoľňovať vajíčka aj tvoriť estrogén v predošlom množstve. To, čo teraz cítiš, je zvyčajne pokračovanie toho, čo začalo v neskorej perimenopauze, nie niečo úplne nové.",
     symptoms: ["návaly a nočné potenie môžu ešte pretrvávať", "poruchy spánku a nálady doznievajú pomaly"],
+    archetype: "Žena na prahu",
+    keywords: "prah • iniciácia • ticho • nový začiatok",
+    mantra: "Prekračujem.",
   },
   {
     key: "postmenopauza",
@@ -83,6 +96,9 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
       "zvýšené kardiovaskulárne riziko",
       "suchosť či nepohodlie, ktoré samo neustúpi — dá sa liečiť",
     ],
+    archetype: "Slobodná kráľovná",
+    keywords: "sloboda • múdrosť • suverenita • celistvosť",
+    mantra: "Som slobodná byť sama sebou.",
   },
 ];
 
