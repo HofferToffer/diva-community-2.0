@@ -122,7 +122,7 @@ export default function CommunityHome() {
                 <h2 className="mt-1 font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</h2>
                 {pregnancyWeekSize(pregnancy.week) && (
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
+                    Tvoje bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
                   </p>
                 )}
                 <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">

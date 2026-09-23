@@ -492,7 +492,7 @@ export default function CommunityCycle() {
               <p className="font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</p>
               {pregnancyWeekSize(pregnancy.week) && (
                 <p className="text-sm text-muted-foreground">
-                  Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
+                  Tvoje bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
                 </p>
               )}
               <p className="text-sm italic leading-relaxed text-foreground/85">

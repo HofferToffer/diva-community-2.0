@@ -16,7 +16,7 @@ import type { CycleTip } from "@/community/lib/cycle";
  * time to hold with patience.
  */
 export const TTC_ARCHETYPE = {
-  archetype: "Trpezlivá nádejná",
+  archetype: "Trpezlivá nádej",
   keywords: "nádej • trpezlivosť • dôvera • vytrvalosť",
   mantra: "Dôverujem svojmu telu aj jeho vlastnému času.",
 };

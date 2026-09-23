@@ -170,7 +170,7 @@ export const TRIMESTER_LABEL: Record<1 | 2 | 3, string> = {
 const TRIMESTER_SOUL_NOTE: Record<1 | 2 | 3, string> = {
   1: "Nový život rastie potichu vo vnútri — dôveruj tomu, čo ešte nevidíš.",
   2: "Cítiš prvé pohyby a spojenie sa prehlbuje — telo aj duša sa spolu učia byť dvoma.",
-  3: "Blížite sa k veľkému stretnutiu. Tvoje telo vie, čo robiť — dôveruj jeho múdrosti.",
+  3: "Blížiš sa k veľkému stretnutiu. Tvoje telo vie, čo robiť — dôveruj jeho múdrosti.",
 };
 
 /**
@@ -181,7 +181,7 @@ const TRIMESTER_SOUL_NOTE: Record<1 | 2 | 3, string> = {
 export const PREGNANCY_TRIMESTER_ARCHETYPE: Record<1 | 2 | 3, { archetype: string; keywords: string }> = {
   1: { archetype: "Strážkyňa tajomstva", keywords: "tajomstvo • dôvera • krehkosť • nový začiatok" },
   2: { archetype: "Žiariaca", keywords: "spojenie • pohyb • energia • dôvera" },
-  3: { archetype: "Plná mesiaca", keywords: "pripravenosť • sila • dôvera • telo" },
+  3: { archetype: "Žena v splne", keywords: "pripravenosť • sila • dôvera • telo" },
 };
 
 /** Soft background fill + dot color for the pregnancy tip grid. */
