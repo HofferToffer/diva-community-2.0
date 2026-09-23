@@ -211,6 +211,22 @@ export function CommunityShell({ children }: { children: ReactNode }) {
     let lastDx = 0;
     let startedNearEdge = false;
 
+    // Pull-to-refresh only makes sense once nothing above the touch can
+    // scroll any further — which "window.scrollY <= 0" alone doesn't capture
+    // when the touch lands inside its own scrollable region (e.g. the chat
+    // message list, which scrolls internally while the page itself never
+    // moves). Without this, preventDefault() on the pull gesture ate every
+    // downward drag meant to reveal older messages above.
+    const nearestScrollableAncestor = (el: Element | null): Element | null => {
+      let node: Element | null = el;
+      while (node && node !== document.body) {
+        const style = window.getComputedStyle(node);
+        if (/(auto|scroll)/.test(style.overflowY) && node.scrollHeight > node.clientHeight) return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
     const onTouchStart = (e: TouchEvent) => {
       // Let Leaflet (or anything similar) own its own pan/pinch entirely — starting
       // to track this gesture here at all, even just to preventDefault() later on
@@ -227,7 +243,9 @@ export function CommunityShell({ children }: { children: ReactNode }) {
         lastDx = 0;
         return;
       }
-      startY = window.scrollY <= 0 ? e.touches[0].clientY : null;
+      const scrollable = nearestScrollableAncestor(target);
+      const atTop = window.scrollY <= 0 && (!scrollable || scrollable.scrollTop <= 0);
+      startY = atTop ? e.touches[0].clientY : null;
       startX = e.touches[0].clientX;
       startedNearEdge = e.touches[0].clientX <= EDGE_ZONE;
       axis = null;
