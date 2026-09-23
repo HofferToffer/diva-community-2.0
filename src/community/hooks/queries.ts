@@ -909,10 +909,19 @@ export function useFriends(profileId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("follows")
-        .select(`following_id, following:profiles!follows_following_id_fkey(${DIVA_SELECT})`)
+        .select("following_id")
         .eq("follower_id", profileId!);
       if (error) throw error;
-      return (data ?? []) as unknown as { following_id: string; following: DivaProfile | null }[];
+      const ids = (data ?? []).map((f) => f.following_id);
+      if (ids.length === 0) return [] as { following_id: string; following: DivaProfile | null }[];
+      // `chapter` only exists on the directory view, so profiles are fetched there, not via the FK join.
+      const { data: divas, error: divasError } = await supabase
+        .from("profiles_directory")
+        .select(DIVA_SELECT)
+        .in("id", ids);
+      if (divasError) throw divasError;
+      const byId = new Map((divas ?? []).map((d) => [(d as unknown as DivaProfile).id, d as unknown as DivaProfile]));
+      return ids.map((id) => ({ following_id: id, following: byId.get(id) ?? null }));
     },
   });
 }
