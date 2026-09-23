@@ -194,6 +194,14 @@ export default function CommunityCycle() {
         </p>
       </motion.header>
 
+      <motion.p
+        {...fadeUp(0.5)}
+        className="rounded-xl bg-secondary/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground"
+      >
+        Bez ohľadu na fázu, v ktorej práve si — pravidelná ročná kontrola u gynekológa/gynekologičky patrí k
+        starostlivosti o seba. Nie je to niečo, na čo treba čakať, kým sa niečo pokazí.
+      </motion.p>
+
       {profile.is_pregnant && (
         <motion.section {...fadeUp(1)} className="relative space-y-2 overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           {pregnancy && (() => {
