@@ -38,7 +38,7 @@ import { toast } from "sonner";
 import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { useLiveDictation } from "@/community/hooks/useLiveDictation";
-import { validateImage, normalizeImage, uploadImage, uploadAudio, deleteStoredImage } from "@/community/lib/storage";
+import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
 
@@ -73,11 +73,8 @@ export default function CommunityCycle() {
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
-  const [recordingStory, setRecordingStory] = useState(false);
   const [savingStoryAudio, setSavingStoryAudio] = useState(false);
   const [transcribingStory, setTranscribingStory] = useState(false);
-  const storyRecorderRef = useRef<MediaRecorder | null>(null);
-  const storyChunksRef = useRef<Blob[]>([]);
   const dictation = useLiveDictation((chunk) =>
     setBirthStory((prev) => {
       const base = prev.replace(/\s+$/, "");
@@ -187,63 +184,11 @@ export default function CommunityCycle() {
     }
   };
 
-  const startStoryRecording = async () => {
-    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
-      toast.error("Toto zariadenie nepodporuje nahrávanie zvuku.");
-      return;
-    }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mimeType = ["audio/webm", "audio/mp4", "audio/ogg"].find((t) => MediaRecorder.isTypeSupported(t)) ?? "";
-      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
-      storyChunksRef.current = [];
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) storyChunksRef.current.push(e.data);
-      };
-      recorder.onstop = async () => {
-        stream.getTracks().forEach((t) => t.stop());
-        const type = recorder.mimeType || "audio/webm";
-        const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
-        const blob = new Blob(storyChunksRef.current, { type });
-        setSavingStoryAudio(true);
-        try {
-          const stored = await uploadAudio("birth-stories", profile.user_id ?? profile.id, blob, ext);
-          if (profile.birth_story_audio) await deleteStoredImage(profile.birth_story_audio);
-          const { error } = await supabase
-            .from("profiles")
-            .update({ birth_story_audio: stored } as never)
-            .eq("id", profile.id);
-          if (error) throw error;
-          refreshProfile();
-          toast.success("Tvoj príbeh je nahratý.");
-        } catch (e) {
-          console.error("birth story audio upload failed", e);
-          toast.error("Nahrávku sa nepodarilo uložiť.");
-        } finally {
-          setSavingStoryAudio(false);
-        }
-      };
-      storyRecorderRef.current = recorder;
-      recorder.start();
-      setRecordingStory(true);
-    } catch {
-      toast.error("Bez povolenia mikrofónu nahrávku neuložím. Skús to znova a povoliť mikrofón.");
-    }
-  };
-
-  const stopStoryRecording = () => {
-    storyRecorderRef.current?.stop();
-    storyRecorderRef.current = null;
-    setRecordingStory(false);
-  };
-
   const startDictation = () => {
     setEditingBirthStory(true);
     const ok = dictation.start();
     if (!ok) {
-      toast.error(
-        "Tento prehliadač nevie písať naživo. Nahraj príbeh hlasom a potom ťukni na „Prepísať na text“.",
-      );
+      toast.error("Tento prehliadač nevie písať naživo. Skús to v prehliadači Chrome, alebo príbeh pokojne napíš.");
       return;
     }
     toast.success("Počúvam — hovor a text sa bude písať sám.");
