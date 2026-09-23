@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +19,7 @@ import { ImageCropDialog } from "@/community/components/ImageCropDialog";
 import { cn } from "@/lib/utils";
 
 export default function CommunityOnboarding() {
+  const { t } = useTranslation();
   const { profile, user, refreshProfile } = useCommunityAuth();
   const [step, setStep] = useState(0);
   const [name, setName] = useState(profile?.name || (user?.user_metadata?.name as string) || "");
@@ -40,7 +42,7 @@ export default function CommunityOnboarding() {
 
   const returnToSignIn = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) toast.error("Návrat na prihlásenie sa nepodaril. Skús to prosím znova.");
+    if (error) toast.error(t("onboarding.signOutFailed"));
   };
 
   const pickAvatar = (file: File) => {
@@ -59,7 +61,7 @@ export default function CommunityOnboarding() {
       const path = await uploadImage("avatars", user!.id, file);
       setAvatarPath(path);
     } catch {
-      toast.error("Fotku sa nepodarilo nahrať.");
+      toast.error(t("onboarding.photoUploadFailed"));
     } finally {
       closeCrop();
     }
@@ -68,8 +70,8 @@ export default function CommunityOnboarding() {
   const finish = async () => {
     if (!profile) return;
     const cleanUsername = normalizeUsername(username);
-    if (!name.trim()) return toast.error("Zadaj prosím svoje meno.");
-    if (cleanUsername.length < 3) return toast.error("Prezývka musí mať aspoň 3 znaky.");
+    if (!name.trim()) return toast.error(t("onboarding.nameRequired"));
+    if (cleanUsername.length < 3) return toast.error(t("onboarding.usernameTooShort"));
     setSaving(true);
     try {
       const { data: available, error: checkError } = await supabase.rpc("is_username_available", {
@@ -78,7 +80,7 @@ export default function CommunityOnboarding() {
       if (checkError) throw checkError;
       if (!available && cleanUsername !== profile.username) {
         setSaving(false);
-        return toast.error("Táto prezývka je už obsadená.");
+        return toast.error(t("onboarding.usernameTaken"));
       }
       const { error } = await supabase
         .from("profiles")
@@ -98,9 +100,9 @@ export default function CommunityOnboarding() {
         .eq("id", profile.id);
       if (error) throw error;
       refreshProfile();
-      toast.success("Vitaj v komunite.");
+      toast.success(t("onboarding.welcomeSuccess"));
     } catch {
-      toast.error("Profil sa nepodarilo uložiť.");
+      toast.error(t("onboarding.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -111,21 +113,21 @@ export default function CommunityOnboarding() {
       {step === 0 && (
         <Button variant="ghost" className="mb-5 -ml-3 gap-2" onClick={returnToSignIn}>
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Späť na prihlásenie
+          {t("onboarding.backToSignIn")}
         </Button>
       )}
       <p className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">
-        Krok {step + 1} zo 4
+        {t("onboarding.stepLabel", { step: step + 1 })}
       </p>
 
       {step === 0 && (
         <section className="mt-4 space-y-6">
-          <h1 className="font-display text-3xl">Povedz nám, kto si</h1>
+          <h1 className="font-display text-3xl">{t("onboarding.step0Title")}</h1>
           <div className="flex items-center gap-4">
             <ProfileAvatar path={avatarPath} name={name || "Diva"} size={72} />
             <div>
               <Label htmlFor="avatar" className="cursor-pointer underline">
-                Nahrať fotku
+                {t("onboarding.uploadPhoto")}
               </Label>
               <input
                 id="avatar"
@@ -142,40 +144,42 @@ export default function CommunityOnboarding() {
                 image={cropImage}
                 aspect={1}
                 round
-                title="Uprav si profilovú fotku"
+                title={t("onboarding.editPhotoTitle")}
                 onCancel={closeCrop}
                 onConfirm={handleAvatar}
               />
-              <p className="mt-1 text-xs text-muted-foreground">Nepovinné, môžeš pridať kedykoľvek.</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("onboarding.photoOptional")}</p>
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="onb-name">Meno</Label>
+            <Label htmlFor="onb-name">{t("onboarding.nameLabel")}</Label>
             <Input id="onb-name" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="onb-username">Prezývka</Label>
+            <Label htmlFor="onb-username">{t("onboarding.usernameLabel")}</Label>
             <Input
               id="onb-username"
               value={username}
               onChange={(e) => setUsername(normalizeUsername(e.target.value))}
-              placeholder="napr. diva.michaela"
+              placeholder={t("onboarding.usernamePlaceholder")}
             />
-            <p className="text-xs text-muted-foreground">Tvoja adresa: /community/divy/{username || "prezyvka"}</p>
+            <p className="text-xs text-muted-foreground">
+              {t("onboarding.usernameHint", { username: username || t("onboarding.usernamePlaceholderShort") })}
+            </p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="onb-city">Mesto</Label>
+            <Label htmlFor="onb-city">{t("onboarding.cityLabel")}</Label>
             <Input id="onb-city" value={city} onChange={(e) => setCity(e.target.value)} />
           </div>
           <Button className="w-full" onClick={() => setStep(1)} disabled={!name.trim() || username.length < 3}>
-            Pokračovať
+            {t("onboarding.continueButton")}
           </Button>
         </section>
       )}
 
       {step === 1 && (
         <section className="mt-4 space-y-6">
-          <h1 className="font-display text-3xl">Ako sa hýbeš?</h1>
+          <h1 className="font-display text-3xl">{t("onboarding.step1Title")}</h1>
           <div className="flex flex-wrap gap-2">
             {MOVEMENT_INTERESTS.map((item) => {
               const selected = interests.includes(item);
@@ -200,13 +204,13 @@ export default function CommunityOnboarding() {
             })}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="onb-bio">Pár slov o tebe</Label>
+            <Label htmlFor="onb-bio">{t("onboarding.bioLabel")}</Label>
             <Textarea id="onb-bio" value={bio} onChange={(e) => setBio(e.target.value)} rows={4} maxLength={300} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="onb-gifts">Moje dary</Label>
+            <Label htmlFor="onb-gifts">{t("onboarding.giftsLabel")}</Label>
             <p className="text-xs text-muted-foreground">
-              Čo môžeš priniesť do komunity? Napr. kaderníčka, maliarka, strih videí, fotografka, jogínka, koučka, masérka...
+              {t("onboarding.giftsHint")}
             </p>
             <Textarea
               id="onb-gifts"
@@ -214,15 +218,15 @@ export default function CommunityOnboarding() {
               onChange={(e) => setGifts(e.target.value)}
               rows={3}
               maxLength={300}
-              placeholder="Čo môžeš priniesť do komunity?"
+              placeholder={t("onboarding.giftsPlaceholder")}
             />
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="flex-1" onClick={() => setStep(0)}>
-              Späť
+              {t("onboarding.backButton")}
             </Button>
             <Button className="flex-1" onClick={() => setStep(2)}>
-              Pokračovať
+              {t("onboarding.continueButton")}
             </Button>
           </div>
         </section>
@@ -230,27 +234,26 @@ export default function CommunityOnboarding() {
 
       {step === 2 && (
         <section className="mt-4 space-y-6">
-          <h1 className="font-display text-3xl">Tvoj cyklus</h1>
+          <h1 className="font-display text-3xl">{t("onboarding.step2Title")}</h1>
           <p className="text-sm text-muted-foreground">
-            Nepovinné. Ak nám povieš dĺžku svojho cyklu a dátum poslednej menštruácie, v profile ti ukážeme, v ktorej
-            fáze sa práve nachádzaš a kedy príde ďalšia.
+            {t("onboarding.step2Subtitle")}
           </p>
           <div className="space-y-2">
-            <Label htmlFor="onb-cycle-length">Dĺžka cyklu v dňoch</Label>
+            <Label htmlFor="onb-cycle-length">{t("onboarding.cycleLengthLabel")}</Label>
             <Input
               id="onb-cycle-length"
               type="number"
               inputMode="numeric"
               min={21}
               max={40}
-              placeholder="napr. 28"
+              placeholder={t("onboarding.cycleLengthPlaceholder")}
               value={cycleLength}
               onChange={(e) => setCycleLength(e.target.value)}
             />
-            <p className="text-xs text-muted-foreground">Zvyčajne 21 až 40 dní, najčastejšie 28.</p>
+            <p className="text-xs text-muted-foreground">{t("onboarding.cycleLengthHint")}</p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="onb-last-period">Prvý deň poslednej menštruácie</Label>
+            <Label htmlFor="onb-last-period">{t("onboarding.lastPeriodLabel")}</Label>
             <Input
               id="onb-last-period"
               type="date"
@@ -260,7 +263,7 @@ export default function CommunityOnboarding() {
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            Tieto údaje vidíš len ty. Vyplniť ich môžeš aj neskôr v Nastaveniach.
+            {t("onboarding.privateDataHint")}
           </p>
           {(cycleLength.trim() || lastPeriod) && (
             <div className="flex items-start gap-3 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
@@ -271,9 +274,9 @@ export default function CommunityOnboarding() {
                 className="mt-0.5"
               />
               <Label htmlFor="onb-health-consent" className="text-xs font-normal leading-relaxed text-muted-foreground">
-                Súhlasím so spracovaním týchto údajov o mojom cykle na účely appky. Viac v{" "}
+                {t("onboarding.healthConsentText")}{" "}
                 <Link to="/zasady-ochrany-udajov" target="_blank" className="underline hover:text-foreground">
-                  Zásadách ochrany osobných údajov
+                  {t("onboarding.healthConsentLinkText")}
                 </Link>
                 .
               </Label>
@@ -281,14 +284,14 @@ export default function CommunityOnboarding() {
           )}
           <div className="flex gap-3">
             <Button variant="outline" className="flex-1" onClick={() => setStep(1)}>
-              Späť
+              {t("onboarding.backButton")}
             </Button>
             <Button
               className="flex-1"
               onClick={() => setStep(3)}
               disabled={Boolean(cycleLength.trim() || lastPeriod) && !healthConsent}
             >
-              Pokračovať
+              {t("onboarding.continueButton")}
             </Button>
           </div>
         </section>
@@ -296,25 +299,25 @@ export default function CommunityOnboarding() {
 
       {step === 3 && (
         <section className="mt-4 space-y-6">
-          <h1 className="font-display text-3xl">Tvoje súkromie</h1>
+          <h1 className="font-display text-3xl">{t("onboarding.step3Title")}</h1>
           <div className="flex items-start justify-between gap-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
             <div>
-              <p className="font-medium">Verejný profil</p>
+              <p className="font-medium">{t("onboarding.publicProfileLabel")}</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Ostatné divy uvidia tvoj profil a aktivity, ktoré zdieľaš s komunitou.
+                {t("onboarding.publicProfileDescription")}
               </p>
             </div>
-            <Switch checked={isPublic} onCheckedChange={setIsPublic} aria-label="Verejný profil" />
+            <Switch checked={isPublic} onCheckedChange={setIsPublic} aria-label={t("onboarding.publicProfileLabel")} />
           </div>
           <p className="text-sm text-muted-foreground">
-            Pri každej aktivite si vyberáš, či ju vidí celá komunita alebo len ty. Nastavenia môžeš kedykoľvek zmeniť.
+            {t("onboarding.activityVisibilityHint")}
           </p>
           <div className="flex gap-3">
             <Button variant="outline" className="flex-1" onClick={() => setStep(2)}>
-              Späť
+              {t("onboarding.backButton")}
             </Button>
             <Button className="flex-1" onClick={finish} disabled={saving}>
-              Vstúpiť do komunity
+              {t("onboarding.enterCommunityButton")}
             </Button>
           </div>
         </section>
