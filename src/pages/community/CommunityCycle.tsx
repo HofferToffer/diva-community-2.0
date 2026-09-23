@@ -519,7 +519,7 @@ export default function CommunityCycle() {
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
 
-          <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+          <div className="rounded-2xl bg-secondary/30 p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Knihy, ktoré ti môžu pomôcť
             </p>
@@ -572,44 +572,53 @@ export default function CommunityCycle() {
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, príbeh môžeš jednoducho nahrať
-                  hlasom — alebo pridať fotku.
+                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, ťukni na mikrofón a hovor — text sa
+                  napíše sám.
                 </p>
-                <Textarea
-                  rows={6}
-                  value={
-                    dictation.interim
-                      ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
-                      : birthStory
-                  }
-                  onChange={(e) => {
-                    if (dictation.listening) return;
-                    setBirthStory(e.target.value);
-                  }}
-                  readOnly={dictation.listening}
-                  placeholder="Môj pôrodný príbeh…"
-                />
+                <div className="relative">
+                  <Textarea
+                    rows={6}
+                    className="rounded-2xl border-border/50 pr-14"
+                    value={
+                      dictation.interim
+                        ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
+                        : birthStory
+                    }
+                    onChange={(e) => {
+                      if (dictation.listening) return;
+                      setBirthStory(e.target.value);
+                    }}
+                    readOnly={dictation.listening}
+                    placeholder="Môj pôrodný príbeh…"
+                  />
+                  <button
+                    type="button"
+                    aria-label={dictation.listening ? "Skončiť diktovanie" : "Diktovať mikrofónom"}
+                    onClick={() => (dictation.listening ? dictation.stop() : startDictation())}
+                    className={cn(
+                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+                      dictation.listening
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary/60 text-primary hover:bg-secondary",
+                    )}
+                  >
+                    {dictation.listening ? (
+                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                    ) : (
+                      <Mic className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
                 {dictation.listening && (
                   <p className="flex items-center gap-2 text-xs text-primary">
                     <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
                     Počúvam ťa — hovor pokojne, text sa píše sám.
                   </p>
                 )}
-                <div className="flex flex-wrap gap-2">
-                  {dictation.listening ? (
-                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={dictation.stop}>
-                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
-                      Skončiť diktovanie
-                    </Button>
-                  ) : (
-                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={startDictation}>
-                      <Mic className="h-4 w-4" aria-hidden="true" />
-                      Diktovať naživo
-                    </Button>
-                  )}
+                <div className="flex flex-wrap gap-2 pt-1">
                   <Button
                     size="sm"
-                    className="flex-1"
+                    className="rounded-full"
                     disabled={savingBirthStory}
                     onClick={() => {
                       dictation.stop();
@@ -621,6 +630,7 @@ export default function CommunityCycle() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="rounded-full text-muted-foreground"
                     onClick={() => {
                       dictation.stop();
                       setBirthStory(profile.birth_story ?? "");
