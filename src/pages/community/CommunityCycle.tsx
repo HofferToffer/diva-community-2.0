@@ -65,6 +65,9 @@ export default function CommunityCycle() {
   const [editingBirthStory, setEditingBirthStory] = useState(false);
   const [savingBirthStory, setSavingBirthStory] = useState(false);
   const birthStoryRef = useRef<HTMLDivElement>(null);
+  const storyPhotoInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
+  const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
