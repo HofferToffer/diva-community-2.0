@@ -178,6 +178,74 @@ export default function CommunityCycle() {
     }
   };
 
+  const startStoryRecording = async () => {
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+      toast.error("Toto zariadenie nepodporuje nahrávanie zvuku.");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = ["audio/webm", "audio/mp4", "audio/ogg"].find((t) => MediaRecorder.isTypeSupported(t)) ?? "";
+      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      storyChunksRef.current = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) storyChunksRef.current.push(e.data);
+      };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const type = recorder.mimeType || "audio/webm";
+        const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
+        const blob = new Blob(storyChunksRef.current, { type });
+        setSavingStoryAudio(true);
+        try {
+          const stored = await uploadAudio("birth-stories", profile.id, blob, ext);
+          if (profile.birth_story_audio) await deleteStoredImage(profile.birth_story_audio);
+          const { error } = await supabase
+            .from("profiles")
+            .update({ birth_story_audio: stored } as never)
+            .eq("id", profile.id);
+          if (error) throw error;
+          refreshProfile();
+          toast.success("Tvoj príbeh je nahratý.");
+        } catch {
+          toast.error("Nahrávku sa nepodarilo uložiť.");
+        } finally {
+          setSavingStoryAudio(false);
+        }
+      };
+      storyRecorderRef.current = recorder;
+      recorder.start();
+      setRecordingStory(true);
+    } catch {
+      toast.error("Bez povolenia mikrofónu nahrávku neuložím. Skús to znova a povoliť mikrofón.");
+    }
+  };
+
+  const stopStoryRecording = () => {
+    storyRecorderRef.current?.stop();
+    storyRecorderRef.current = null;
+    setRecordingStory(false);
+  };
+
+  const removeStoryAudio = async () => {
+    if (!profile?.birth_story_audio) return;
+    setSavingStoryAudio(true);
+    try {
+      await deleteStoredImage(profile.birth_story_audio);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_audio: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Nahrávka je odstránená.");
+    } catch {
+      toast.error("Nahrávku sa nepodarilo odstrániť.");
+    } finally {
+      setSavingStoryAudio(false);
+    }
+  };
+
   const markBirth = async () => {
     if (!window.confirm("Narodilo sa ti bábätko? Toto ukončí sledovanie tehotenstva.")) return;
     try {
