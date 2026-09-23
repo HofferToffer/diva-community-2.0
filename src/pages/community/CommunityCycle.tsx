@@ -207,7 +207,8 @@ export default function CommunityCycle() {
           if (error) throw error;
           refreshProfile();
           toast.success("Tvoj príbeh je nahratý.");
-        } catch {
+        } catch (e) {
+          console.error("birth story audio upload failed", e);
           toast.error("Nahrávku sa nepodarilo uložiť.");
         } finally {
           setSavingStoryAudio(false);
