@@ -139,7 +139,7 @@ const PREGNANCY_WEEK_BANDS: WeekBand[] = [
   {
     maxWeek: 41,
     message:
-      "Ak si už prekročila predpokladaný termín, neznamená to automaticky, že niečo nie je v poriadku — termín je len odhad, najčastejšie počítaný z prvého dňa poslednej menštruácie, a pri nepravidelnom cykle pred otehotnením môže byť skutočný vek tehotenstva iný, než dátum ukazuje. Od tohto týždňa ťa aj bábätko zvyčajne sledujú trochu častejšie — bežné sú dodatočné kontroly aj ultrazvuk. Niekedy sa pri nich preberá aj vyvolanie pôrodu, no je to bežná téma rozhovoru, nie znak, že niečo nie je v poriadku — o ďalšom kroku sa rozhodujete spolu s gynekologičkou, v jej vlastnom tempe.",
+      "Toto posledné obdobie pred pôrodom vie byť mega náročné — dni okolo termínu si sleduješ takmer nonstop a samotné čakanie unavuje možno viac než čokoľvek predtým. Ak si termín už prekročila, neznamená to, že niečo nie je v poriadku — je to len odhad, a pri nepravidelnom cykle pred otehotnením môže byť skutočný vek tehotenstva iný, než dátum ukazuje. Kontroly bývajú teraz trochu častejšie, ale to je len starostlivosť, nie dôvod na obavy. Vydrž — stretnutie s bábätkom je naozaj na dosah.",
     symptoms: ["častejšie kontrolné vyšetrenia", "silné Braxtonove kontrakcie", "netrpezlivosť a očakávanie"],
   },
 ];
