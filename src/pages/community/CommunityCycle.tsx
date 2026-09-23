@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function NotAloneNote() {
@@ -62,6 +62,7 @@ export default function CommunityCycle() {
   const [birthStory, setBirthStory] = useState(profile?.birth_story ?? "");
   const [editingBirthStory, setEditingBirthStory] = useState(false);
   const [savingBirthStory, setSavingBirthStory] = useState(false);
+  const birthStoryRef = useRef<HTMLDivElement>(null);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -130,6 +131,8 @@ export default function CommunityCycle() {
       refreshProfile();
       setJustGaveBirth(true);
       setTimeout(() => setJustGaveBirth(false), 4500);
+      // Po osláve jemne posuň pohľad na pôrodný príbeh.
+      setTimeout(() => birthStoryRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 4600);
     } catch {
       toast.error("Nepodarilo sa uložiť.");
     }
