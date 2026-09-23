@@ -38,7 +38,7 @@ import { toast } from "sonner";
 import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { useLiveDictation } from "@/community/hooks/useLiveDictation";
-import { validateImage, normalizeImage, uploadImage, uploadAudio, deleteStoredImage } from "@/community/lib/storage";
+import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
 
@@ -73,11 +73,8 @@ export default function CommunityCycle() {
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
-  const [recordingStory, setRecordingStory] = useState(false);
   const [savingStoryAudio, setSavingStoryAudio] = useState(false);
   const [transcribingStory, setTranscribingStory] = useState(false);
-  const storyRecorderRef = useRef<MediaRecorder | null>(null);
-  const storyChunksRef = useRef<Blob[]>([]);
   const dictation = useLiveDictation((chunk) =>
     setBirthStory((prev) => {
       const base = prev.replace(/\s+$/, "");
@@ -187,63 +184,11 @@ export default function CommunityCycle() {
     }
   };
 
-  const startStoryRecording = async () => {
-    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
-      toast.error("Toto zariadenie nepodporuje nahrávanie zvuku.");
-      return;
-    }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mimeType = ["audio/webm", "audio/mp4", "audio/ogg"].find((t) => MediaRecorder.isTypeSupported(t)) ?? "";
-      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
-      storyChunksRef.current = [];
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) storyChunksRef.current.push(e.data);
-      };
-      recorder.onstop = async () => {
-        stream.getTracks().forEach((t) => t.stop());
-        const type = recorder.mimeType || "audio/webm";
-        const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
-        const blob = new Blob(storyChunksRef.current, { type });
-        setSavingStoryAudio(true);
-        try {
-          const stored = await uploadAudio("birth-stories", profile.user_id ?? profile.id, blob, ext);
-          if (profile.birth_story_audio) await deleteStoredImage(profile.birth_story_audio);
-          const { error } = await supabase
-            .from("profiles")
-            .update({ birth_story_audio: stored } as never)
-            .eq("id", profile.id);
-          if (error) throw error;
-          refreshProfile();
-          toast.success("Tvoj príbeh je nahratý.");
-        } catch (e) {
-          console.error("birth story audio upload failed", e);
-          toast.error("Nahrávku sa nepodarilo uložiť.");
-        } finally {
-          setSavingStoryAudio(false);
-        }
-      };
-      storyRecorderRef.current = recorder;
-      recorder.start();
-      setRecordingStory(true);
-    } catch {
-      toast.error("Bez povolenia mikrofónu nahrávku neuložím. Skús to znova a povoliť mikrofón.");
-    }
-  };
-
-  const stopStoryRecording = () => {
-    storyRecorderRef.current?.stop();
-    storyRecorderRef.current = null;
-    setRecordingStory(false);
-  };
-
   const startDictation = () => {
     setEditingBirthStory(true);
     const ok = dictation.start();
     if (!ok) {
-      toast.error(
-        "Tento prehliadač nevie písať naživo. Nahraj príbeh hlasom a potom ťukni na „Prepísať na text“.",
-      );
+      toast.error("Tento prehliadač nevie písať naživo. Skús to v prehliadači Chrome, alebo príbeh pokojne napíš.");
       return;
     }
     toast.success("Počúvam — hovor a text sa bude písať sám.");
@@ -574,7 +519,7 @@ export default function CommunityCycle() {
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
 
-          <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+          <div className="rounded-2xl bg-secondary/30 p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Knihy, ktoré ti môžu pomôcť
             </p>
@@ -627,44 +572,53 @@ export default function CommunityCycle() {
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, príbeh môžeš jednoducho nahrať
-                  hlasom — alebo pridať fotku.
+                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, ťukni na mikrofón a hovor — text sa
+                  napíše sám.
                 </p>
-                <Textarea
-                  rows={6}
-                  value={
-                    dictation.interim
-                      ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
-                      : birthStory
-                  }
-                  onChange={(e) => {
-                    if (dictation.listening) return;
-                    setBirthStory(e.target.value);
-                  }}
-                  readOnly={dictation.listening}
-                  placeholder="Môj pôrodný príbeh…"
-                />
+                <div className="relative">
+                  <Textarea
+                    rows={6}
+                    className="rounded-2xl border-border/50 pr-14"
+                    value={
+                      dictation.interim
+                        ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
+                        : birthStory
+                    }
+                    onChange={(e) => {
+                      if (dictation.listening) return;
+                      setBirthStory(e.target.value);
+                    }}
+                    readOnly={dictation.listening}
+                    placeholder="Môj pôrodný príbeh…"
+                  />
+                  <button
+                    type="button"
+                    aria-label={dictation.listening ? "Skončiť diktovanie" : "Diktovať mikrofónom"}
+                    onClick={() => (dictation.listening ? dictation.stop() : startDictation())}
+                    className={cn(
+                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+                      dictation.listening
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary/60 text-primary hover:bg-secondary",
+                    )}
+                  >
+                    {dictation.listening ? (
+                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                    ) : (
+                      <Mic className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
                 {dictation.listening && (
                   <p className="flex items-center gap-2 text-xs text-primary">
                     <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
                     Počúvam ťa — hovor pokojne, text sa píše sám.
                   </p>
                 )}
-                <div className="flex flex-wrap gap-2">
-                  {dictation.listening ? (
-                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={dictation.stop}>
-                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
-                      Skončiť diktovanie
-                    </Button>
-                  ) : (
-                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={startDictation}>
-                      <Mic className="h-4 w-4" aria-hidden="true" />
-                      Diktovať naživo
-                    </Button>
-                  )}
+                <div className="flex flex-wrap gap-2 pt-1">
                   <Button
                     size="sm"
-                    className="flex-1"
+                    className="rounded-full"
                     disabled={savingBirthStory}
                     onClick={() => {
                       dictation.stop();
@@ -676,6 +630,7 @@ export default function CommunityCycle() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="rounded-full text-muted-foreground"
                     onClick={() => {
                       dictation.stop();
                       setBirthStory(profile.birth_story ?? "");
@@ -700,17 +655,21 @@ export default function CommunityCycle() {
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
                    Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
-                   nepíše, jednoducho hovor a text sa bude písať sám — alebo pridaj fotku.
+                   nepíše, ťukni na mikrofón a hovor — text sa bude písať sám.
                 </p>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  <Button size="sm" className="gap-2" onClick={() => setEditingBirthStory(true)}>
+                <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <Button size="sm" className="rounded-full gap-2" onClick={() => setEditingBirthStory(true)}>
                     <Feather className="h-4 w-4" aria-hidden="true" />
                     Napísať svoj príbeh
                   </Button>
-                  <Button size="sm" variant="outline" className="gap-2" onClick={startDictation}>
+                  <button
+                    type="button"
+                    aria-label="Diktovať mikrofónom"
+                    onClick={startDictation}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/50 text-primary shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:bg-secondary"
+                  >
                     <Mic className="h-4 w-4" aria-hidden="true" />
-                    Diktovať naživo
-                  </Button>
+                  </button>
                 </div>
               </>
             )}
@@ -721,51 +680,24 @@ export default function CommunityCycle() {
               className="hidden"
               onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
             />
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              {recordingStory ? (
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              {profile.birth_story_audio && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-0 text-primary"
-                  onClick={stopStoryRecording}
-                >
-                  <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
-                  Zastaviť a uložiť nahrávku
-                </Button>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 px-0 text-primary"
-                  disabled={savingStoryAudio}
-                  onClick={startStoryRecording}
-                >
-                  <Mic className="h-4 w-4" aria-hidden="true" />
-                  {savingStoryAudio
-                    ? "Ukladám…"
-                    : profile.birth_story_audio
-                      ? "Nahrať znova"
-                      : "Nahrať hlasom"}
-                </Button>
-              )}
-              {profile.birth_story_audio && !recordingStory && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 px-0 text-primary"
-                  disabled={transcribingStory || savingStoryAudio}
+                  className="rounded-full bg-secondary/40 px-4 text-primary hover:bg-secondary/60"
+                  disabled={transcribingStory}
                   onClick={transcribeStoryAudio}
                 >
                   <FileText className="h-4 w-4" aria-hidden="true" />
                   {transcribingStory ? "Prepisujem…" : "Prepísať na text"}
                 </Button>
               )}
-              {profile.birth_story_audio && !recordingStory && (
+              {profile.birth_story_audio && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-0 text-muted-foreground"
-                  disabled={savingStoryAudio}
+                  className="rounded-full bg-secondary/30 px-4 text-muted-foreground hover:bg-secondary/50"
                   onClick={removeStoryAudio}
                 >
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
@@ -775,7 +707,7 @@ export default function CommunityCycle() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-1.5 px-0 text-primary"
+                className="rounded-full bg-secondary/40 px-4 text-primary hover:bg-secondary/60"
                 disabled={uploadingStoryPhoto}
                 onClick={() => storyPhotoInputRef.current?.click()}
               >
@@ -790,7 +722,7 @@ export default function CommunityCycle() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-0 text-muted-foreground"
+                  className="rounded-full bg-secondary/30 px-4 text-muted-foreground hover:bg-secondary/50"
                   disabled={uploadingStoryPhoto}
                   onClick={removeStoryPhoto}
                 >
