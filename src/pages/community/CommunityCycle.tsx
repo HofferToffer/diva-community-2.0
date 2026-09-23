@@ -29,6 +29,18 @@ import { toast } from "sonner";
 import { ArrowLeft, RefreshCcw, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+function NotAloneNote() {
+  return (
+    <p className="border-t border-border/50 pt-3 text-xs leading-relaxed text-muted-foreground">
+      Nie si na to sama — zdieľanie so ženami, kamarátkami aj skúsenejšími, dokáže uľaviť viac, než si myslíš.{" "}
+      <Link to="/community/diva-kruh" className="underline hover:text-primary">
+        Skús DIVA KRUH
+      </Link>
+      .
+    </p>
+  );
+}
+
 export default function CommunityCycle() {
   const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
   const navigate = useNavigate();
@@ -256,6 +268,7 @@ export default function CommunityCycle() {
               Narodilo sa bábätko 🎉
             </Button>
           </div>
+          <NotAloneNote />
         </motion.section>
       )}
 
@@ -373,6 +386,7 @@ export default function CommunityCycle() {
               )}
             </div>
           )}
+          <NotAloneNote />
         </motion.section>
       )}
 
@@ -446,6 +460,7 @@ export default function CommunityCycle() {
               );
             })}
           </div>
+          <NotAloneNote />
         </motion.section>
       )}
 
@@ -608,6 +623,7 @@ export default function CommunityCycle() {
             </>
           )}
           </div>
+          <NotAloneNote />
         </motion.section>
       ) : (
         <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
