@@ -632,12 +632,45 @@ export default function CommunityCycle() {
                 </p>
                 <Textarea
                   rows={6}
-                  value={birthStory}
-                  onChange={(e) => setBirthStory(e.target.value)}
+                  value={
+                    dictation.interim
+                      ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
+                      : birthStory
+                  }
+                  onChange={(e) => {
+                    if (dictation.listening) return;
+                    setBirthStory(e.target.value);
+                  }}
+                  readOnly={dictation.listening}
                   placeholder="Môj pôrodný príbeh…"
                 />
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1" disabled={savingBirthStory} onClick={saveBirthStory}>
+                {dictation.listening && (
+                  <p className="flex items-center gap-2 text-xs text-primary">
+                    <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
+                    Počúvam ťa — hovor pokojne, text sa píše sám.
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {dictation.listening ? (
+                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={dictation.stop}>
+                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                      Skončiť diktovanie
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={startDictation}>
+                      <Mic className="h-4 w-4" aria-hidden="true" />
+                      Diktovať naživo
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    disabled={savingBirthStory}
+                    onClick={() => {
+                      dictation.stop();
+                      saveBirthStory();
+                    }}
+                  >
                     {savingBirthStory ? "Ukladám…" : "Uložiť"}
                   </Button>
                   <Button
