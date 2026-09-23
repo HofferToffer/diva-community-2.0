@@ -4,12 +4,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
+import { PREGNANCY_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
 import { MENOPAUSE_TIPS, MENOPAUSE_STAGES } from "@/community/lib/menopause";
@@ -50,6 +52,9 @@ export default function CommunityCycle() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
+  const [birthStory, setBirthStory] = useState(profile?.birth_story ?? "");
+  const [editingBirthStory, setEditingBirthStory] = useState(false);
+  const [savingBirthStory, setSavingBirthStory] = useState(false);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -85,6 +90,24 @@ export default function CommunityCycle() {
     } catch {
       setMenopauseStage(previous);
       toast.error("Nepodarilo sa uložiť fázu.");
+    }
+  };
+
+  const saveBirthStory = async () => {
+    setSavingBirthStory(true);
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story: birthStory.trim() || null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      setEditingBirthStory(false);
+      toast.success("Tvoj príbeh je uložený.");
+    } catch {
+      toast.error("Nepodarilo sa uložiť.");
+    } finally {
+      setSavingBirthStory(false);
     }
   };
 
@@ -260,6 +283,41 @@ export default function CommunityCycle() {
               Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva.
             </p>
           )}
+          <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Príprav sa aj v hlave</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                Všetko je aj o hlave — afirmácie a spojenie s bábätkom ťa vedia na pôrod pripraviť rovnako ako telo.
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {AFFIRMATION_LINKS.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full border border-border/50 px-3 py-1.5 text-xs text-foreground/85 transition-colors hover:border-primary/50 hover:text-primary"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="border-t border-border/50 pt-3">
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Knihy, ktoré ti môžu pomôcť
+              </p>
+              <ul className="mt-2 space-y-2">
+                {PREGNANCY_BOOKS.map((book) => (
+                  <li key={book.title} className="text-sm">
+                    <span className="font-medium text-foreground/85">{book.title}</span>
+                    <p className="text-xs text-muted-foreground">{book.note}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Upraviť v profile
@@ -319,6 +377,56 @@ export default function CommunityCycle() {
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
+
+          <div className="space-y-2 rounded-xl border border-border/50 bg-background/60 p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tvoj pôrodný príbeh</p>
+            {editingBirthStory ? (
+              <div className="space-y-2">
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Napíš si sem, ako si to prežívala — pokojne aj to, čo bolo ťažké. Nádherné, náročné, bolestivé,
+                  úžasné — všetky pocity sú v poriadku, toto je len pre teba.
+                </p>
+                <Textarea
+                  rows={6}
+                  value={birthStory}
+                  onChange={(e) => setBirthStory(e.target.value)}
+                  placeholder="Môj pôrodný príbeh…"
+                />
+                <div className="flex gap-2">
+                  <Button size="sm" className="flex-1" disabled={savingBirthStory} onClick={saveBirthStory}>
+                    {savingBirthStory ? "Ukladám…" : "Uložiť"}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setBirthStory(profile.birth_story ?? "");
+                      setEditingBirthStory(false);
+                    }}
+                  >
+                    Zrušiť
+                  </Button>
+                </div>
+              </div>
+            ) : profile.birth_story ? (
+              <>
+                <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/85">{profile.birth_story}</p>
+                <Button variant="ghost" size="sm" className="px-0" onClick={() => setEditingBirthStory(true)}>
+                  Upraviť
+                </Button>
+              </>
+            ) : (
+              <>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Vidíš len ty. Napísať si, ako si to prežívala, vie pomôcť spracovať aj to ťažšie.
+                </p>
+                <Button variant="outline" size="sm" onClick={() => setEditingBirthStory(true)}>
+                  Napísať príbeh
+                </Button>
+              </>
+            )}
+          </div>
+
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Upraviť v profile

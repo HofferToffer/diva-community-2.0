@@ -11,6 +11,7 @@ export type Profile = {
   bio: string | null;
   gifts: string | null;
   children_count: number | null;
+  birth_story: string | null;
   city: string | null;
   city_lat: number | null;
   city_lng: number | null;
