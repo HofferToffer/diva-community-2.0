@@ -24,6 +24,14 @@ export const PREGNANCY_BOOKS: PregnancyBook[] = [
     title: "Veľká kniha o matke a dieťati",
     note: "Nestarnúca klasika — sprevádza od počatia až po tri roky dieťaťa.",
   },
+  {
+    title: "Hypnopôrod",
+    note: "Marie F. Mongan — relaxačné a dychové techniky, ktoré pomáhajú zvládnuť strach z pôrodu.",
+  },
+  {
+    title: "Prečo sú dánske deti šťastné?",
+    note: "Jessica Joelle Alexander, Iben Dissing Sandahl — dánsky prístup k výchove: autenticita, empatia, hra bez tlaku.",
+  },
 ];
 
 export type AffirmationLink = { label: string; url: string };
