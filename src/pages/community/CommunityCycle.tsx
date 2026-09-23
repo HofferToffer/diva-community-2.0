@@ -16,7 +16,7 @@ import {
   TRIMESTER_LABEL,
   PREGNANCY_TRIMESTER_ARCHETYPE,
 } from "@/community/lib/pregnancy";
-import { getPostpartumInfo } from "@/community/lib/postpartum";
+import { getPostpartumInfo, POSTPARTUM_TIPS, POSTPARTUM_TIP_COLOR } from "@/community/lib/postpartum";
 import { PREGNANCY_BOOKS, POSTPARTUM_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
@@ -603,6 +603,19 @@ export default function CommunityCycle() {
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">{postpartum.keywords}</p>
               </div>
+              <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Strava, pohyb a rituály šestonedelia
+                </p>
+                <div className="mt-4">
+                  <TipGrid tips={POSTPARTUM_TIPS} color={POSTPARTUM_TIP_COLOR} />
+                </div>
+                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                  Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac
+                  než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je
+                  v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.
+                </p>
+              </div>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
@@ -667,7 +680,7 @@ export default function CommunityCycle() {
                 <div className="relative">
                   <Textarea
                     rows={6}
-                    className="rounded-2xl border-border/50 pr-14"
+                    className="rounded-2xl border-border/50 pr-14 text-base"
                     value={
                       dictation.interim
                         ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`

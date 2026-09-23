@@ -1,3 +1,24 @@
+import {
+  Soup,
+  Egg,
+  Beef,
+  Wheat,
+  Fish,
+  Milk,
+  GlassWater,
+  Footprints,
+  Wind,
+  HeartPulse,
+  Stethoscope,
+  Bath,
+  Baby,
+  HeartHandshake,
+  Moon,
+  NotebookPen,
+  ShieldCheck,
+} from "lucide-react";
+import type { CycleTip } from "./cycle";
+
 function daysBetween(a: Date, b: Date): number {
   const start = new Date(a.getFullYear(), a.getMonth(), a.getDate());
   const end = new Date(b.getFullYear(), b.getMonth(), b.getDate());
@@ -112,6 +133,40 @@ const FALLBACK: WeekBand = {
   keywords: "rovnováha • celistvosť • matka aj žena • vlastné tempo",
   mantra: "Môžem byť matka aj sama sebou naraz.",
 };
+
+/** Soft background fill + dot color for the postpartum tip grid — warm and healing, distinct from the cycle-phase palette. */
+export const POSTPARTUM_TIP_COLOR: { fill: string; dot: string } = {
+  fill: "hsl(12, 38%, 48%, 0.14)",
+  dot: "hsl(12, 38%, 48%)",
+};
+
+/**
+ * Food, movement and rituals for šestonedelie — grounded in widely-shared
+ * postpartum guidance (iron/protein/fiber for healing and the common
+ * post-birth constipation, hydration for milk supply, pelvic floor
+ * physiotherapy, calendula/chamomile sitz baths for perineal comfort).
+ * General wellness tips, not medical prescriptions — always alongside,
+ * never instead of, guidance from your own gynecologist/pediatrician.
+ */
+export const POSTPARTUM_TIPS: CycleTip[] = [
+  { label: "Teplá, výživná polievka", category: "eat", icon: Soup },
+  { label: "Bielkoviny na hojenie", category: "eat", icon: Egg },
+  { label: "Železo — červené mäso, špenát", category: "eat", icon: Beef },
+  { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
+  { label: "Mastné ryby (omega-3)", category: "eat", icon: Fish },
+  { label: "Vápnik pri dojčení", category: "eat", icon: Milk },
+  { label: "Veľa vody, najmä pri dojčení", category: "eat", icon: GlassWater },
+  { label: "Krátke, pomalé prechádzky", category: "move", icon: Footprints },
+  { label: "Dychové cvičenia s bránicou", category: "move", icon: Wind },
+  { label: "Jemné cvičenia na panvové dno", category: "move", icon: HeartPulse },
+  { label: "Fyzioterapeut na panvové dno", category: "move", icon: Stethoscope },
+  { label: "Sitz kúpeľ s harmančekom a nechtíkom", category: "do", icon: Bath },
+  { label: "Kožný kontakt s bábätkom", category: "do", icon: Baby },
+  { label: "Nechaj si pomáhať", category: "do", icon: HeartHandshake },
+  { label: "Spávaj, keď spí bábätko", category: "do", icon: Moon },
+  { label: "Zapíš si pôrodný príbeh", category: "do", icon: NotebookPen },
+  { label: "Prehliadka po šestonedelí", category: "do", icon: ShieldCheck },
+];
 
 export function getPostpartumInfo(sinceDate: string, today = new Date()): PostpartumInfo {
   const since = new Date(sinceDate);

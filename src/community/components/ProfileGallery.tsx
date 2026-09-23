@@ -37,7 +37,7 @@ export function ProfileGallery({
                 type="button"
                 aria-label="Odstrániť fotku"
                 onClick={() => onRemove(i)}
-                className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-foreground/60 text-background opacity-0 transition-opacity group-hover:opacity-100"
+                className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-foreground/60 text-background opacity-100 transition-opacity md:opacity-0 md:group-hover:opacity-100"
               >
                 <X className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
