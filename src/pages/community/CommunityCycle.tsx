@@ -67,6 +67,7 @@ export default function CommunityCycle() {
   const birthStoryRef = useRef<HTMLDivElement>(null);
   const storyPhotoInputRef = useRef<HTMLInputElement>(null);
   const endPostpartumRef = useRef<HTMLDivElement>(null);
+  const endPostpartumAnswerRef = useRef<HTMLDivElement>(null);
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
@@ -595,10 +596,32 @@ export default function CommunityCycle() {
               <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
               {periodReturnedChoice === null && (
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPeriodReturnedChoice("yes")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => {
+                      setPeriodReturnedChoice("yes");
+                      setTimeout(
+                        () => endPostpartumAnswerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }),
+                        120,
+                      );
+                    }}
+                  >
                     Áno
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPeriodReturnedChoice("no")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => {
+                      setPeriodReturnedChoice("no");
+                      setTimeout(
+                        () => endPostpartumAnswerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }),
+                        120,
+                      );
+                    }}
+                  >
                     Ešte nie
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setEndingPostpartum(false)}>
@@ -607,7 +630,7 @@ export default function CommunityCycle() {
                 </div>
               )}
               {periodReturnedChoice === "yes" && (
-                <div className="space-y-3">
+                <div ref={endPostpartumAnswerRef} className="scroll-mt-24 space-y-3">
                   <div className="space-y-2">
                     <Label htmlFor="pp-last-period">Dátum poslednej menštruácie</Label>
                     <Input
@@ -633,7 +656,7 @@ export default function CommunityCycle() {
                 </div>
               )}
               {periodReturnedChoice === "no" && (
-                <div className="space-y-3">
+                <div ref={endPostpartumAnswerRef} className="scroll-mt-24 space-y-3">
                   <p className="text-xs leading-relaxed text-muted-foreground">
                     To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj
                     vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.
