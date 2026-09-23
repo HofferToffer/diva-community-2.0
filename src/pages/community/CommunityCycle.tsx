@@ -146,8 +146,8 @@ export default function CommunityCycle() {
       <motion.header {...fadeUp(0)} className="space-y-1">
         <h1 className="font-display text-3xl">{PHASE_LABEL[getLifePhase(profile)]}</h1>
         <p className="text-sm text-muted-foreground">
-          Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie. Každá to prežívame trochu inak —
-          ber to ako inšpiráciu, nie presný predpis.
+          Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie. Každá to prežívame inak a po
+          svojom, ber to ako inšpiráciu, nie presný predpis.
         </p>
       </motion.header>
 
