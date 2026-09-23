@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import {
   CYCLE_PHASE_TIPS,
@@ -10,26 +11,39 @@ import {
   type CycleTipCategory,
 } from "@/community/lib/cycle";
 
-const FILTERS: Array<{ key: CycleTipCategory | "all"; label: string }> = [
-  { key: "all", label: "Všetko" },
-  { key: "do", label: CYCLE_TIP_CATEGORIES.do },
-  { key: "eat", label: CYCLE_TIP_CATEGORIES.eat },
-  { key: "move", label: CYCLE_TIP_CATEGORIES.move },
-];
-
 export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
   return <TipGrid tips={CYCLE_PHASE_TIPS[phase]} color={CYCLE_PHASE_COLORS[phase]} />;
 }
 
+/**
+ * Tip labels and category filters are translated here, in the one shared
+ * component every tip grid app-wide renders through (cycle/menopause/
+ * postpartum/pregnancy/TTC) — via i18next's defaultValue fallback, so
+ * Slovak (the default) needs no "tips" resource bundle at all, and English
+ * lights up automatically for every label added to en/common.json's "tips"
+ * namespace, without touching any content file.
+ */
 export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: string; dot: string } }) {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<CycleTipCategory | "all">("all");
   const visible = filter === "all" ? tips : tips.filter((tip) => tip.category === filter);
   const softFill = color.fill.replace(/0\.\d+\)/, "0.6)");
+  // Looked up as a plain object (not a dotted t() key) because several Slovak
+  // labels contain periods, which i18next's default key separator would
+  // otherwise try to parse as nested paths.
+  const tipTranslations = t("tips", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+
+  const filters: Array<{ key: CycleTipCategory | "all"; label: string }> = [
+    { key: "all", label: t("tipCategories.all", { defaultValue: "Všetko" }) },
+    { key: "do", label: t("tipCategories.do", { defaultValue: CYCLE_TIP_CATEGORIES.do }) },
+    { key: "eat", label: t("tipCategories.eat", { defaultValue: CYCLE_TIP_CATEGORIES.eat }) },
+    { key: "move", label: t("tipCategories.move", { defaultValue: CYCLE_TIP_CATEGORIES.move }) },
+  ];
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter tipov">
-        {FILTERS.map((item) => (
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label={t("tipCategories.filterAriaLabel", { defaultValue: "Filter tipov" })}>
+        {filters.map((item) => (
           <motion.button
             key={item.key}
             type="button"
@@ -69,7 +83,9 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
               >
                 <Icon className="h-6 w-6" style={{ color: color.dot }} />
               </span>
-              <p className="text-xs leading-tight text-foreground/85">{tip.label}</p>
+              <p className="text-xs leading-tight text-foreground/85">
+                {tipTranslations[tip.label] ?? tip.label}
+              </p>
             </motion.div>
           );
         })}

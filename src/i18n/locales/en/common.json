@@ -1,4 +1,204 @@
 {
+  "cycle": {
+    "phaseNames": {
+      "menstruacna": "Menstrual phase",
+      "folikularna": "Follicular phase",
+      "ovulacia": "Ovulation",
+      "lutealna": "Luteal phase"
+    },
+    "phases": {
+      "menstruacna": {
+        "name": "Menstrual phase",
+        "description": "You're in your inner winter. The body goes quiet and asks for rest — like nature in January. It's not weakness, it's the body's wisdom: only do as much as you feel up to."
+      },
+      "folikularna": {
+        "name": "Follicular phase",
+        "description": "You're entering your inner spring. Hormones are waking up, your head clears, and the urge to create grows with each day — a great time for new challenges, strength training and longer runs."
+      },
+      "ovulacia": {
+        "name": "Ovulation",
+        "description": "You're in your inner summer. The sun is at its highest — energy, confidence and the urge to be around people are all at their peak — time for personal records and community activities."
+      },
+      "lutealna": {
+        "name": "Luteal phase",
+        "description": "You're entering your inner autumn. Energy slowly quiets down and your body invites you to harvest — finish what you started, and choose gentler movement: yoga, walks, recovery."
+      }
+    },
+    "subPhases": {
+      "menstruacna_tazke_dni": {
+        "name": "Winter — the deepest dark",
+        "description": "The first days tend to be the hardest, just like the shortest days of the year. Energy is at its lowest, so let yourself stop — warmth, calm, and nothing to prove."
+      },
+      "menstruacna_doznievanie": {
+        "name": "Winter — the light is returning",
+        "description": "Bleeding is easing, strength is slowly coming back, as if the days were growing a little longer again. If you feel like moving, pick a short walk, but don't push yourself."
+      },
+      "folikularna_rozbeh": {
+        "name": "Spring — the first buds",
+        "description": "Hormones are rising and your head clears, as if the first buds were sprouting from the ground. A great time to launch new ideas and plans."
+      },
+      "folikularna_vrchol": {
+        "name": "Spring — full bloom",
+        "description": "You're in great shape — energy, self-confidence and performance are growing as fast as spring greenery. Your body can handle more demanding training now."
+      },
+      "ovulacia": {
+        "name": "Summer — full sun",
+        "description": "You're at the peak of your cycle, just like the sun on the longest day of the year. Energy, confidence and the urge to be around people are all at their highest — time for personal records."
+      },
+      "lutealna_stabilna": {
+        "name": "Autumn — harvest time",
+        "description": "Energy is still good, just slowly settling, like warm September days. Finish what you've started while you still have the strength for it."
+      },
+      "lutealna_premenliva": {
+        "name": "Autumn — the wind is changing",
+        "description": "Moods can shift and you're more sensitive, much like autumn weather changing. Be patient with yourself and don't plan anything demanding for these days."
+      },
+      "lutealna_neskora": {
+        "name": "Autumn — the last leaves fall",
+        "description": "Energy is at its lowest and PMS is at its strongest, right before calm winter arrives. Give yourself rest, gentleness and as few obligations as possible."
+      }
+    },
+    "archetypes": {
+      "menstruacna": { "archetype": "The Crone", "keywords": "inward • rest • intuition • letting go", "mantra": "I am within." },
+      "folikularna": { "archetype": "The Maiden", "keywords": "newness • curiosity • creativity • playfulness", "mantra": "I am at the beginning." },
+      "ovulacia": { "archetype": "The Lover", "keywords": "radiance • connection • attraction • energy", "mantra": "I am out in the world." },
+      "lutealna": { "archetype": "The Queen", "keywords": "boundaries • strength • truth • completion", "mantra": "I return to myself." }
+    },
+    "seasons": {
+      "menstruacna": { "season": "Winter", "tagline": "The cycle's inner winter — time to let go and go quiet." },
+      "folikularna": { "season": "Spring", "tagline": "The cycle's inner spring — time to sprout and begin." },
+      "ovulacia": { "season": "Summer", "tagline": "The cycle's inner summer — time to shine and connect." },
+      "lutealna": { "season": "Autumn", "tagline": "The cycle's inner autumn — time to harvest and slow down." }
+    }
+  },
+  "tipCategories": {
+    "all": "All",
+    "do": "Rituals",
+    "eat": "Food",
+    "move": "Movement",
+    "filterAriaLabel": "Filter tips"
+  },
+  "tips": {
+    "Bielkoviny": "Protein",
+    "Bielkoviny na hojenie": "Protein for healing",
+    "Bielkoviny na rast bábätka": "Protein for your baby's growth",
+    "Bielkoviny pri každom jedle": "Protein with every meal",
+    "Bobuľové ovocie": "Berries",
+    "Bonding s bábätkom": "Bonding with your baby",
+    "Brokolica a kel": "Broccoli and kale",
+    "Celozrnné jedlo": "Whole grains",
+    "Celozrnné obilniny": "Whole grain cereals",
+    "Chia a ľanové semienka": "Chia and flax seeds",
+    "Chladenie pri návaloch": "Cooling down during hot flashes",
+    "Choď medzi ľudí": "Get out among people",
+    "Choď sa prejsť": "Go for a walk",
+    "Choď skôr spať": "Go to bed earlier",
+    "Citrusy": "Citrus fruits",
+    "Cvič s kamoškami": "Work out with friends",
+    "Cvičenia na panvové dno": "Pelvic floor exercises",
+    "Daj si teplý kúpeľ": "Take a warm bath",
+    "Dopraj si oddych": "Give yourself rest",
+    "Dopraj si rituál pokoja": "Treat yourself to a calming ritual",
+    "Dostatok vody": "Plenty of water",
+    "Dychové cvičenia s bránicou": "Diaphragmatic breathing exercises",
+    "Farebná zelenina": "Colorful vegetables",
+    "Fyzioterapeut na panvové dno": "Pelvic floor physiotherapist",
+    "Horká čokoláda": "Dark chocolate",
+    "Horúci čaj": "Hot tea",
+    "Horčík a orechy": "Magnesium and nuts",
+    "Hovor o tom nahlas": "Talk about it out loud",
+    "Hovor o tom nahlas, keď je to ťažké": "Talk about it out loud when it's hard",
+    "Jemná joga": "Gentle yoga",
+    "Jemné cvičenia na panvové dno": "Gentle pelvic floor exercises",
+    "Joga a strečing": "Yoga and stretching",
+    "Jogurt a kyslá kapusta": "Yogurt and sauerkraut",
+    "Krátke, pomalé prechádzky": "Short, slow walks",
+    "Kyselina listová": "Folic acid",
+    "Kyselina listová / prenatálne vitamíny": "Folic acid / prenatal vitamins",
+    "Listová zelenina a sladké zemiaky": "Leafy greens and sweet potatoes",
+    "Malinové listy (čaj)": "Raspberry leaf (tea)",
+    "Malé porcie, aj 6x denne": "Small portions, even 6x a day",
+    "Mastné ryby": "Fatty fish",
+    "Mastné ryby (omega-3)": "Fatty fish (omega-3)",
+    "Masírovanie hrádze, ak sa cítiš pripravená": "Perineal massage, if you feel ready",
+    "Medovka na upokojenie": "Lemon balm to calm down",
+    "Menej alkoholu, kofeín do 1–2 káv denne": "Less alcohol, caffeine down to 1–2 coffees a day",
+    "Menšie porcie častejšie (menej pálenia záhy)": "Smaller, more frequent meals (less heartburn)",
+    "Mierne, nie extrémne cvičenie": "Moderate, not extreme exercise",
+    "Nacvič si dýchanie na pôrod": "Practice breathing for labor",
+    "Naplánuj si niečo nové": "Plan something new",
+    "Nauč sa niečo nové": "Learn something new",
+    "Nechaj si pomáhať": "Let yourself be helped",
+    "Nefajčiť": "Don't smoke",
+    "Nemusíš jesť za dvoch": "You don't have to eat for two",
+    "Obmedz kofeín": "Cut back on caffeine",
+    "Odpočívaj, keď si unavená": "Rest when you're tired",
+    "Odľahči si program": "Lighten your schedule",
+    "Omega-3 pre vývoj mozgu": "Omega-3 for brain development",
+    "Orechy": "Nuts",
+    "Pi dosť vody": "Drink enough water",
+    "Pi viac vody": "Drink more water",
+    "Pi, aj keď nemáš chuť jesť": "Drink, even when you don't feel like eating",
+    "Plávanie": "Swimming",
+    "Podpora — partner, kamošky, poradňa": "Support — partner, friends, counseling",
+    "Poriadne sa rozcvič": "Warm up properly",
+    "Potraviny bohaté na železo": "Iron-rich foods",
+    "Počúvaj svoje telo": "Listen to your body",
+    "Pravidelný spánkový režim": "A regular sleep schedule",
+    "Prechádzka v prírode": "A walk in nature",
+    "Prechádzky na čerstvom vzduchu": "Walks in the fresh air",
+    "Predpôrodné kurzy, pokojne aj s partnerom": "Prenatal classes, with your partner too",
+    "Prehliadka po šestonedelí": "Postpartum checkup",
+    "Prenatálne vitamíny podľa lekárky": "Prenatal vitamins as advised by your doctor",
+    "Pretiahni sa": "Stretch",
+    "Priprav detskú izbičku": "Get the nursery ready",
+    "Príprava pôrodnej tašky": "Packing your hospital bag",
+    "Píš si tehotenský denník": "Keep a pregnancy journal",
+    "Píš si vďačnosť": "Write down what you're grateful for",
+    "Rezká chôdza": "Brisk walking",
+    "Rozbehni nový nápad": "Get a new idea moving",
+    "Rozprávaj sa s bábätkom": "Talk to your baby",
+    "Sedací kúpeľ s harmančekom a nechtíkom": "Sitz bath with chamomile and calendula",
+    "Sex každý 1.–2. deň okolo ovulácie": "Sex every 1–2 days around ovulation",
+    "Silový tréning": "Strength training",
+    "Skús osobný rekord": "Go for a personal record",
+    "Sladké zemiaky a strukoviny": "Sweet potatoes and legumes",
+    "Spi o niečo dlhšie": "Sleep a little longer",
+    "Spávaj, keď spí bábätko": "Sleep when your baby sleeps",
+    "Spíš si pôrodný plán": "Write up your birth plan",
+    "Stretni sa s divami": "Meet up with Divas",
+    "Suché sušienky hneď ráno": "Dry crackers first thing in the morning",
+    "Sójové a strukovinové jedlá": "Soy and legume-based meals",
+    "Tai chi": "Tai chi",
+    "Tehotenská joga": "Prenatal yoga",
+    "Tekvicové semienka": "Pumpkin seeds",
+    "Teplá, výživná polievka": "Warm, nourishing soup",
+    "Upokojujúci čaj": "Calming tea",
+    "Ver si": "Believe in yourself",
+    "Veľa vody": "Plenty of water",
+    "Veľa vody, najmä pri dojčení": "Plenty of water, especially while breastfeeding",
+    "Vláknina proti zápche": "Fiber against constipation",
+    "Vyraz na bicykli": "Go for a bike ride",
+    "Vyrieš dôležitý rozhovor": "Have that important conversation",
+    "Vyskúšaj niečo nové": "Try something new",
+    "Vápnik a vitamín D": "Calcium and vitamin D",
+    "Vápnik pri dojčení": "Calcium while breastfeeding",
+    "Zabehni si naplno": "Go for a full-effort run",
+    "Zacvič si posilku": "Do a strength workout",
+    "Zajdi si zaplávať": "Go for a swim",
+    "Zapoj partnera do príprav": "Involve your partner in the preparations",
+    "Zapíš si pôrodný príbeh": "Write down your birth story",
+    "Zatancuj si": "Dance",
+    "Zdravá váha a mierny pohyb": "A healthy weight and moderate movement",
+    "Zvažuj dulu k pôrodu": "Consider a doula for the birth",
+    "Zázvorový čaj proti nevoľnosti": "Ginger tea for nausea",
+    "Čerstvé ovocie": "Fresh fruit",
+    "Ľahká chôdza, ak vládzeš": "Easy walking, if you're up for it",
+    "Ľahké bielkoviny": "Light protein",
+    "Šetri si silu, oddychuj": "Save your energy, rest",
+    "Špenát a strukoviny": "Spinach and legumes",
+    "Železo — červené mäso, špenát": "Iron — red meat, spinach"
+  },
   "nav": {
     "home": "Home",
     "feeling": "How do you feel today?",
@@ -28,6 +228,19 @@
   "language": {
     "switchToEnglish": "English",
     "switchToSlovak": "Slovenčina"
+  },
+  "cycleCard": {
+    "title": "Cycle overview",
+    "dayOfCycle": "Day {{count}} of cycle",
+    "editButton": "Edit",
+    "lastPeriodLabel": "First day of your last period",
+    "cycleLengthLabel": "Cycle length in days",
+    "saveButton": "Save",
+    "cancelButton": "Cancel",
+    "nextPeriod": "Next period",
+    "nextOvulation": "Estimated ovulation",
+    "inDays": "(in {{count}} days)",
+    "tipsForThisPhase": "Tips for this phase"
   },
   "home": {
     "tagline": "Our strength is in our gentleness.",

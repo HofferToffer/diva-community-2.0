@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -67,6 +68,8 @@ function NotAloneNote() {
 }
 
 export default function CommunityCycle() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
   const navigate = useNavigate();
 
@@ -1117,13 +1120,13 @@ export default function CommunityCycle() {
           <div className="flex items-baseline justify-between gap-3">
             <div className="flex items-center gap-2">
               <RefreshCcw className="h-5 w-5 text-primary" />
-              <h2 className="font-display text-2xl">Prehľad cyklu</h2>
+              <h2 className="font-display text-2xl">{t("cycleCard.title")}</h2>
             </div>
             {!editingCycle && (
               <div className="flex items-center gap-2">
-                <p className="text-xs text-muted-foreground">{cycle.dayOfCycle}. deň cyklu</p>
+                <p className="text-xs text-muted-foreground">{t("cycleCard.dayOfCycle", { count: cycle.dayOfCycle })}</p>
                 <Button variant="ghost" size="sm" onClick={startEditingCycle}>
-                  Upraviť
+                  {t("cycleCard.editButton")}
                 </Button>
               </div>
             )}
@@ -1132,7 +1135,7 @@ export default function CommunityCycle() {
           {editingCycle ? (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="cycle-last-period">Prvý deň poslednej menštruácie</Label>
+                <Label htmlFor="cycle-last-period">{t("cycleCard.lastPeriodLabel")}</Label>
                 <Input
                   id="cycle-last-period"
                   type="date"
@@ -1142,7 +1145,7 @@ export default function CommunityCycle() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="cycle-length">Dĺžka cyklu v dňoch</Label>
+                <Label htmlFor="cycle-length">{t("cycleCard.cycleLengthLabel")}</Label>
                 <Input
                   id="cycle-length"
                   type="number"
@@ -1155,40 +1158,54 @@ export default function CommunityCycle() {
               </div>
               <div className="flex gap-2">
                 <Button className="flex-1" onClick={saveCycle} disabled={savingCycle}>
-                  Uložiť
+                  {t("cycleCard.saveButton")}
                 </Button>
                 <Button variant="outline" className="flex-1" onClick={() => setEditingCycle(false)} disabled={savingCycle}>
-                  Zrušiť
+                  {t("cycleCard.cancelButton")}
                 </Button>
               </div>
             </div>
           ) : (
             <>
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {cycle.phase.name} · {CYCLE_PHASE_SEASON[cycle.phaseKey].season}
+                {isEnglish ? t(`cycle.phases.${cycle.phaseKey}.name`) : cycle.phase.name} ·{" "}
+                {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.season`) : CYCLE_PHASE_SEASON[cycle.phaseKey].season}
               </p>
-              <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+              <p className="font-display text-xl text-primary">
+                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.name`) : cycle.subPhase.name}
+              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.description`) : cycle.subPhase.description}
+              </p>
 
               <div>
                 <p className="text-sm italic leading-relaxed text-foreground/85">
-                  „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}" — {CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
+                  „{isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.mantra`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}" —{" "}
+                  {isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.archetype`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].keywords}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{CYCLE_PHASE_SEASON[cycle.phaseKey].tagline}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.keywords`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].keywords}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.tagline`) : CYCLE_PHASE_SEASON[cycle.phaseKey].tagline}
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="rounded-xl border border-border/50 p-3">
-                  <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
+                  <p className="text-xs text-muted-foreground">{t("cycleCard.nextPeriod")}</p>
                   <p className="mt-1 font-medium">
-                    {formatCycleDate(cycle.nextPeriodDate)}
-                    <span className="ml-1 text-xs text-muted-foreground">(o {cycle.daysUntilNextPeriod} dní)</span>
+                    {formatCycleDate(cycle.nextPeriodDate, isEnglish ? "en-US" : "sk-SK")}
+                    <span className="ml-1 text-xs text-muted-foreground">
+                      {t("cycleCard.inDays", { count: cycle.daysUntilNextPeriod })}
+                    </span>
                   </p>
                 </div>
                 <div className="rounded-xl border border-border/50 p-3">
-                  <p className="text-xs text-muted-foreground">Predpokladaná ovulácia</p>
-                  <p className="mt-1 font-medium">{formatCycleDate(cycle.nextOvulationDate)}</p>
+                  <p className="text-xs text-muted-foreground">{t("cycleCard.nextOvulation")}</p>
+                  <p className="mt-1 font-medium">
+                    {formatCycleDate(cycle.nextOvulationDate, isEnglish ? "en-US" : "sk-SK")}
+                  </p>
                 </div>
               </div>
 
@@ -1264,7 +1281,7 @@ export default function CommunityCycle() {
 
               <div className="rounded-xl border border-border/50 bg-background/60 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Tipy pre túto fázu
+                  {t("cycleCard.tipsForThisPhase")}
                 </p>
                 <div className="mt-4">
                   <CyclePhaseTips phase={cycle.phaseKey} />

@@ -335,6 +335,6 @@ export function getCycleDayForDate(
   return ((daysSince % length) + length) % length + 1;
 }
 
-export function formatCycleDate(date: Date) {
-  return new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(date);
+export function formatCycleDate(date: Date, locale: string = "sk-SK") {
+  return new Intl.DateTimeFormat(locale, { day: "numeric", month: "long" }).format(date);
 }

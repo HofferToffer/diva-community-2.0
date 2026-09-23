@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CalendarHeart, ChevronLeft, ChevronRight, Egg, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -36,6 +37,11 @@ export function CycleCalendar({
   intimacyDates?: Set<string>;
   onToggleIntimacy?: (dateKey: string) => void;
 }) {
+  const { t, i18n } = useTranslation();
+  // Only the phase name text is translated here — the calendar's swipe/tap
+  // handling and date math below are untouched.
+  const phaseName = (phase: CyclePhaseKey) =>
+    i18n.language === "en" ? t(`cycle.phaseNames.${phase}`) : CYCLE_PHASES[phase].name;
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const [pendingDateKey, setPendingDateKey] = useState<string | null>(null);
   const today = new Date();
@@ -127,7 +133,7 @@ export function CycleCalendar({
                 <button
                   type="button"
                   disabled={!canOpen}
-                  title={cell.phase ? CYCLE_PHASES[cell.phase].name : undefined}
+                  title={cell.phase ? phaseName(cell.phase) : undefined}
                   aria-label={
                     canLogIntimacy
                       ? `${cell.date.getDate()}. ${monthLabel}${isLogged ? " — zapísané, ťuknutím odznačíš" : " — ťuknutím zapíšeš"}`
@@ -176,7 +182,7 @@ export function CycleCalendar({
                         </p>
                         {cell.phase && (
                           <p className="text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[cell.phase].dot }}>
-                            {CYCLE_PHASES[cell.phase].name}
+                            {phaseName(cell.phase)}
                             {isPeakFertility && " · najvyššia šanca na otehotnenie"}
                           </p>
                         )}
@@ -235,7 +241,7 @@ export function CycleCalendar({
               className="inline-block h-3 w-3 rounded-full"
               style={{ background: CYCLE_PHASE_COLORS[phase].fill.replace(/0\.\d+\)/, "0.6)") }}
             />
-            {CYCLE_PHASES[phase].name}
+            {phaseName(phase)}
           </li>
         ))}
         {onToggleIntimacy && (

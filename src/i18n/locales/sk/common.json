@@ -29,6 +29,19 @@
     "switchToEnglish": "English",
     "switchToSlovak": "Slovenčina"
   },
+  "cycleCard": {
+    "title": "Prehľad cyklu",
+    "dayOfCycle": "{{count}}. deň cyklu",
+    "editButton": "Upraviť",
+    "lastPeriodLabel": "Prvý deň poslednej menštruácie",
+    "cycleLengthLabel": "Dĺžka cyklu v dňoch",
+    "saveButton": "Uložiť",
+    "cancelButton": "Zrušiť",
+    "nextPeriod": "Ďalšia menštruácia",
+    "nextOvulation": "Predpokladaná ovulácia",
+    "inDays": "(o {{count}} dní)",
+    "tipsForThisPhase": "Tipy pre túto fázu"
+  },
   "home": {
     "tagline": "V jemnosti je naša sila.",
     "statThisMonth": "Tento mesiac",
