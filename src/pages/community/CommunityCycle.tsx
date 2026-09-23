@@ -1212,18 +1212,25 @@ export default function CommunityCycle() {
               {profile.is_trying_to_conceive && (
                 <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
                   <p className="text-sm text-foreground/85">
-                    Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na
-                    deň si vieš súkromne zapísať, kedy ste boli spolu.
+                    {isEnglish ? t("ttc.intro") : "Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na deň si vieš súkromne zapísať, kedy ste boli spolu."}
                   </p>
                   <div className="border-t border-border/50 pt-3">
                     <p className="text-sm italic leading-relaxed text-foreground/85">
-                      „{TTC_ARCHETYPE.mantra}" — {TTC_ARCHETYPE.archetype}
+                      „{isEnglish ? t("ttc.mantra") : TTC_ARCHETYPE.mantra}" — {isEnglish ? t("ttc.archetype") : TTC_ARCHETYPE.archetype}
                     </p>
-                    <p className="mt-1 text-xs text-muted-foreground">{TTC_ARCHETYPE.keywords}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {isEnglish ? t("ttc.keywords") : TTC_ARCHETYPE.keywords}
+                    </p>
                   </div>
-                  <p className="text-sm leading-relaxed text-foreground/85">{TTC_TIMELINE_NOTE}</p>
-                  <p className="text-xs italic text-muted-foreground">{TTC_STRESS_NOTE}</p>
-                  <p className="text-sm leading-relaxed text-foreground/85">{TTC_EMOTIONAL_NOTE}</p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {isEnglish ? t("ttc.timelineNote") : TTC_TIMELINE_NOTE}
+                  </p>
+                  <p className="text-xs italic text-muted-foreground">
+                    {isEnglish ? t("ttc.stressNote") : TTC_STRESS_NOTE}
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {isEnglish ? t("ttc.emotionalNote") : TTC_EMOTIONAL_NOTE}
+                  </p>
 
                   <Button
                     variant="ghost"
@@ -1231,20 +1238,27 @@ export default function CommunityCycle() {
                     className="w-full justify-between px-2 text-muted-foreground"
                     onClick={() => setShowMoreTTC((v) => !v)}
                   >
-                    {showMoreTTC ? "Skryť tipy a zdroje" : "Vyšetrenia, tipy a mýty"}
+                    {showMoreTTC ? t("ttc.showLessButton") : t("ttc.showMoreButton")}
                     {showMoreTTC ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </Button>
                   {showMoreTTC && (
                     <>
                       <div className="rounded-xl border border-border/50 bg-card p-3">
                         <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                          Kedy sa oplatí ísť na vyšetrenie
+                          {t("ttc.doctorGuidanceTitle")}
                         </p>
-                        <p className="mt-2 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.ageUnder35}</p>
-                        <p className="mt-1 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.age35Plus}</p>
-                        <p className="mt-2 text-xs text-muted-foreground">Skôr, ak máš:</p>
+                        <p className="mt-2 text-sm text-foreground/85">
+                          {isEnglish ? t("ttc.ageUnder35") : TTC_DOCTOR_GUIDANCE.ageUnder35}
+                        </p>
+                        <p className="mt-1 text-sm text-foreground/85">
+                          {isEnglish ? t("ttc.age35Plus") : TTC_DOCTOR_GUIDANCE.age35Plus}
+                        </p>
+                        <p className="mt-2 text-xs text-muted-foreground">{t("ttc.soonerIfLabel")}</p>
                         <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
-                          {TTC_DOCTOR_GUIDANCE.soonerIf.map((item) => (
+                          {(isEnglish
+                            ? (t("ttc.soonerIf", { returnObjects: true }) as string[])
+                            : TTC_DOCTOR_GUIDANCE.soonerIf
+                          ).map((item) => (
                             <li key={item} className="flex items-start gap-2">
                               <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
                               {item}
@@ -1255,17 +1269,20 @@ export default function CommunityCycle() {
 
                       <div>
                         <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                          Čo naozaj pomáha
+                          {t("ttc.tipsTitle")}
                         </p>
                         <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
                       </div>
 
                       <div className="rounded-xl border border-border/50 bg-card p-3">
                         <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                          Mýty, ktoré môžeš pustiť z hlavy
+                          {t("ttc.mythsTitle")}
                         </p>
                         <ul className="mt-2 space-y-2 text-sm">
-                          {TTC_MYTHS.map((item) => (
+                          {(isEnglish
+                            ? (t("ttc.myths", { returnObjects: true }) as { myth: string; fact: string }[])
+                            : TTC_MYTHS
+                          ).map((item) => (
                             <li key={item.myth}>
                               <span className="text-muted-foreground line-through">{item.myth}</span>
                               <br />

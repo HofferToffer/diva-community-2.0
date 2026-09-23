@@ -1,4 +1,42 @@
 {
+  "ttc": {
+    "intro": "Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na deň si vieš súkromne zapísať, kedy ste boli spolu.",
+    "archetype": "Trpezlivá nádej",
+    "keywords": "nádej • trpezlivosť • dôvera • vytrvalosť",
+    "mantra": "Dôverujem svojmu telu aj jeho vlastnému času.",
+    "timelineNote": "Asi 30 % žien otehotnie hneď v prvom cykle, 66–80 % do 6 mesiacov a približne 85 % do roka pravidelných pokusov. Ak skúšaš už 9 mesiacov, si stále úplne v bežnom rozmedzí — to, že to ešte neprišlo, neznamená, že niečo nie je v poriadku.",
+    "stressNote": "Dôležité: neexistuje dôkaz, že by stres priamo spôsoboval neplodnosť. Ak je to náročné, je to náročné samo osebe — nie preto, že by si sa \"dostatočne neuvoľnila\". Starostlivosť o seba má zmysel pre teba, nie ako spôsob, ako si to \"vymodliť\".",
+    "emotionalNote": "Smútok, úzkosť aj to dvojtýždňové čakanie na výsledok testu sú skutočné a uznané — nie prehnaná reakcia. Rozhovor s niekým, kto tomu rozumie (partner, kamošky, podporná skupina, poradňa), naozaj pomáha uniesť to.",
+    "showMoreButton": "Vyšetrenia, tipy a mýty",
+    "showLessButton": "Skryť tipy a zdroje",
+    "doctorGuidanceTitle": "Kedy sa oplatí ísť na vyšetrenie",
+    "ageUnder35": "Do 35 rokov sa vyšetrenie zvyčajne odporúča po 12 mesiacoch pravidelných pokusov bez počatia.",
+    "age35Plus": "Od 35 rokov je to už po 6 mesiacoch, a nad 40 rokov je dobré poradiť sa hneď, bez čakania.",
+    "soonerIfLabel": "Skôr, ak máš:",
+    "soonerIf": [
+      "nepravidelný alebo chýbajúci cyklus",
+      "diagnostikovaný PCOS, endometrióza alebo myómy",
+      "predchádzajúca operácia v oblasti panvy",
+      "2 a viac potratov v minulosti",
+      "známy alebo podozrivý faktor na strane partnera"
+    ],
+    "tipsTitle": "Čo naozaj pomáha",
+    "mythsTitle": "Mýty, ktoré môžeš pustiť z hlavy",
+    "myths": [
+      {
+        "myth": "Po sexe treba ešte chvíľu ležať so zdvihnutými nohami.",
+        "fact": "Nič to nemení — spermie sa dostanú tam, kam majú, v priebehu pár minút bez ohľadu na polohu."
+      },
+      {
+        "myth": "Na otehotnenie je lepšia nejaká konkrétna poloha.",
+        "fact": "Žiadny výskum nepotvrdzuje, že by poloha pri sexe ovplyvňovala šancu na počatie."
+      },
+      {
+        "myth": "Ak si nedosiahla orgazmus, šanca je nižšia.",
+        "fact": "Otehotnieť sa dá s orgazmom aj bez neho — nie je to podmienka."
+      }
+    ]
+  },
   "calendar": {
     "weekdays": ["Po", "Ut", "St", "Št", "Pi", "So", "Ne"],
     "prevMonth": "Predchádzajúci mesiac",

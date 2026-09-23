@@ -1,4 +1,42 @@
 {
+  "ttc": {
+    "intro": "You're trying to conceive — the days around ovulation are highlighted in color in the calendar below. Tap a day to privately log when you were intimate.",
+    "archetype": "Patient Hope",
+    "keywords": "hope • patience • trust • perseverance",
+    "mantra": "I trust my body and its own timing.",
+    "timelineNote": "About 30% of women conceive in their very first cycle, 66–80% within 6 months, and around 85% within a year of trying regularly. If you've been trying for 9 months, you're still well within the normal range — it not having happened yet doesn't mean something's wrong.",
+    "stressNote": "Important: there's no evidence that stress directly causes infertility. If this is hard, it's hard on its own terms — not because you haven't \"relaxed enough.\" Taking care of yourself matters for you, not as a way to \"pray it into happening.\"",
+    "emotionalNote": "Sadness, anxiety and the two-week wait for a test result are real and valid — not an overreaction. Talking to someone who understands (a partner, friends, a support group, counseling) genuinely helps carry it.",
+    "showMoreButton": "Check-ups, tips and myths",
+    "showLessButton": "Hide tips and resources",
+    "doctorGuidanceTitle": "When it's worth getting checked",
+    "ageUnder35": "Under 35, a check-up is usually recommended after 12 months of trying regularly without conceiving.",
+    "age35Plus": "From 35, it's after 6 months, and over 40 it's good to consult sooner rather than waiting.",
+    "soonerIfLabel": "Sooner, if you have:",
+    "soonerIf": [
+      "an irregular or absent cycle",
+      "a diagnosis of PCOS, endometriosis or fibroids",
+      "previous pelvic surgery",
+      "2 or more previous miscarriages",
+      "a known or suspected factor on your partner's side"
+    ],
+    "tipsTitle": "What actually helps",
+    "mythsTitle": "Myths you can let go of",
+    "myths": [
+      {
+        "myth": "After sex you need to lie with your legs up for a while.",
+        "fact": "It doesn't change anything — sperm reach where they need to within minutes, regardless of position."
+      },
+      {
+        "myth": "A specific sex position is better for conceiving.",
+        "fact": "No research confirms that sex position affects the chance of conception."
+      },
+      {
+        "myth": "If you didn't have an orgasm, your chances are lower.",
+        "fact": "You can conceive with or without an orgasm — it's not a requirement."
+      }
+    ]
+  },
   "calendar": {
     "weekdays": ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
     "prevMonth": "Previous month",
