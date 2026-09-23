@@ -78,6 +78,13 @@ export default function CommunityCycle() {
   const [transcribingStory, setTranscribingStory] = useState(false);
   const storyRecorderRef = useRef<MediaRecorder | null>(null);
   const storyChunksRef = useRef<Blob[]>([]);
+  const dictation = useLiveDictation((chunk) =>
+    setBirthStory((prev) => {
+      const base = prev.replace(/\s+$/, "");
+      if (!base) return chunk.charAt(0).toUpperCase() + chunk.slice(1);
+      return /[.!?]$/.test(base) ? `${base} ${chunk.charAt(0).toUpperCase()}${chunk.slice(1)}` : `${base} ${chunk}`;
+    }),
+  );
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
