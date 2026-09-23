@@ -34,6 +34,21 @@ export const PREGNANCY_BOOKS: PregnancyBook[] = [
   },
 ];
 
+export const POSTPARTUM_BOOKS: PregnancyBook[] = [
+  {
+    title: "Návrat k materskej intuícii",
+    note: "Jana Krpalová Mračková — hygiena, životospráva, hranice a spoločenský tlak, aj rozpoznanie popôrodnej depresie.",
+  },
+  {
+    title: "Čtvrtý trimestr",
+    note: "Kimberly Ann Johnson (česky, prekl. Miroslava Lánská) — sprievodca telesným aj emocionálnym hojením po pôrode.",
+  },
+  {
+    title: "Materstvo a stretnutie ženy s vlastným tieňom",
+    note: "Laura Gutmanová (česky) — o emocionálnej búrke materstva, o ktorej sa stále málo hovorí nahlas.",
+  },
+];
+
 export type AffirmationLink = { label: string; url: string };
 
 export const AFFIRMATION_LINKS: AffirmationLink[] = [

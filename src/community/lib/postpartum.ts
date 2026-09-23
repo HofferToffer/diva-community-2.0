@@ -34,7 +34,7 @@ const WEEK_BANDS: WeekBand[] = [
   {
     maxWeek: 1,
     message:
-      "Prvý týždeň je o prežití a spoznávaní sa navzájom. Krvácanie je teraz najsilnejšie a tmavočervené, sťahy maternice (najviac cítiť pri dojčení) sú najintenzívnejšie — takto sa maternica vracia k svojej veľkosti. Okolo 3.–5. dňa príde mnohým ženám vlna plaču či precitlivenosti — hovorí sa tomu baby blues a do dvoch týždňov to zvyčajne samo odznie.",
+      "Prvý týždeň je o prežití a spoznávaní sa navzájom. Krvácanie je teraz najsilnejšie a tmavočervené, sťahy maternice (najviac cítiť pri dojčení) sú najintenzívnejšie — takto sa maternica vracia k svojej veľkosti. Okolo 3.–5. dňa príde mnohým ženám vlna plaču či precitlivenosti — hovorí sa tomu baby blues a do dvoch týždňov to zvyčajne samo odznie. Ty a tvoje bábätko ste teraz predovšetkým nová rodina — máš právo hneď na začiatku určiť si vlastné hranice: koho a kedy prijať na návštevu, čo práve potrebuješ, kedy chceš byť len vy dvaja. Nič iné nemá prednosť pred týmto vzťahom.",
     symptoms: [
       "silné krvácanie (tmavočervené)",
       "kŕče/sťahy maternice, najmä pri dojčení",

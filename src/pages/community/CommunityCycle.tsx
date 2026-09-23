@@ -11,7 +11,7 @@ import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
-import { PREGNANCY_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
+import { PREGNANCY_BOOKS, POSTPARTUM_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
 import { MENOPAUSE_TIPS, MENOPAUSE_STAGES } from "@/community/lib/menopause";
@@ -377,6 +377,20 @@ export default function CommunityCycle() {
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
+
+          <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Knihy, ktoré ti môžu pomôcť
+            </p>
+            <ul className="mt-2 space-y-2">
+              {POSTPARTUM_BOOKS.map((book) => (
+                <li key={book.title} className="text-sm">
+                  <span className="font-medium text-foreground/85">{book.title}</span>
+                  <p className="text-xs text-muted-foreground">{book.note}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="space-y-2 rounded-xl border border-border/50 bg-background/60 p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tvoj pôrodný príbeh</p>
