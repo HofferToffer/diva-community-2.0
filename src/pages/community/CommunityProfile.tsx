@@ -18,7 +18,7 @@ import {
 } from "@/community/hooks/queries";
 import { formatKm, pluralActivities } from "@/community/lib/format";
 import { ProfileSettings } from "@/community/components/ProfileSettings";
-import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE } from "@/community/lib/cycle";
+import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON } from "@/community/lib/cycle";
 import { getArchetype } from "@/community/lib/archetype";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -418,7 +418,7 @@ export default function CommunityProfile() {
           {cycle && (
             <div className="mt-4 border-t border-border/50 pt-4">
               <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                A dnes v cykle
+                A dnes v cykle · {CYCLE_PHASE_SEASON[cycle.phaseKey].season}
               </p>
               <p className="mt-1 font-display text-lg text-primary">
                 {CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
@@ -503,7 +503,9 @@ export default function CommunityProfile() {
             </div>
           ) : (
             <>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">{cycle.phase.name}</p>
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {cycle.phase.name} · {CYCLE_PHASE_SEASON[cycle.phaseKey].season}
+              </p>
               <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
               <div className="grid grid-cols-2 gap-3 text-sm">

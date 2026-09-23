@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
-import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
+import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
@@ -363,7 +363,9 @@ export default function CommunityCycle() {
             </div>
           ) : (
             <>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">{cycle.phase.name}</p>
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {cycle.phase.name} · {CYCLE_PHASE_SEASON[cycle.phaseKey].season}
+              </p>
               <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
 
@@ -372,6 +374,7 @@ export default function CommunityCycle() {
                   „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}" — {CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].keywords}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{CYCLE_PHASE_SEASON[cycle.phaseKey].tagline}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-sm">

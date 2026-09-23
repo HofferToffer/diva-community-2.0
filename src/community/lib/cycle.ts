@@ -63,36 +63,41 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
   if (dayOfCycle <= 2) {
     return {
       key: "menstruacna_tazke_dni",
-      name: "Menštruácia — ťažké dni",
-      description: "Prvé dni bývajú najťažšie. Energia je na dne, tak si dovoľ zastaviť sa — teplo, pokoj a nič si nemusíš dokazovať.",
+      name: "Zima — najhlbšia tma",
+      description:
+        "Prvé dni bývajú najťažšie, presne ako najkratšie dni roka. Energia je na dne, tak si dovoľ zastaviť sa — teplo, pokoj a nič si nemusíš dokazovať.",
     };
   }
   if (dayOfCycle <= 5) {
     return {
       key: "menstruacna_doznievanie",
-      name: "Menštruácia — doznievanie",
-      description: "Krvácanie slabne, sila sa pomaly vracia. Ak máš chuť na pohyb, vyber si krátku prechádzku, no netlač na seba.",
+      name: "Zima — svetlo sa vracia",
+      description:
+        "Krvácanie slabne, sila sa pomaly vracia, akoby dni boli zas o čosi dlhšie. Ak máš chuť na pohyb, vyber si krátku prechádzku, no netlač na seba.",
     };
   }
   if (dayOfCycle <= 9) {
     return {
       key: "folikularna_rozbeh",
-      name: "Folikulárna — rozbeh",
-      description: "Hormóny idú hore a hlava sa čistí. Skvelý čas naštartovať nové nápady a plány.",
+      name: "Jar — prvé puky",
+      description:
+        "Hormóny idú hore a hlava sa čistí, akoby zo zeme vyklíčili prvé puky. Skvelý čas naštartovať nové nápady a plány.",
     };
   }
   if (dayOfCycle <= 12) {
     return {
       key: "folikularna_vrchol",
-      name: "Folikulárna — vrchol energie",
-      description: "Si vo forme — energia, sebadôvera aj výkon rastú. Telo teraz unesie aj náročnejší tréning.",
+      name: "Jar — plný rozkvet",
+      description:
+        "Si vo forme — energia, sebadôvera aj výkon rastú tak rýchlo ako jarná zeleň. Telo teraz unesie aj náročnejší tréning.",
     };
   }
   if (dayOfCycle <= 16) {
     return {
       key: "ovulacia",
-      name: "Ovulácia",
-      description: "Si na vrchole cyklu. Energia, sebavedomie aj chuť byť medzi ľuďmi sú najvyššie — čas na osobné rekordy.",
+      name: "Leto — plné slnko",
+      description:
+        "Si na vrchole cyklu, presne ako slnko v najdlhší deň roka. Energia, sebavedomie aj chuť byť medzi ľuďmi sú najvyššie — čas na osobné rekordy.",
     };
   }
 
@@ -104,21 +109,24 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
   if (dayOfCycle <= lutealStart + third - 1) {
     return {
       key: "lutealna_stabilna",
-      name: "Luteálna — stabilná",
-      description: "Energia je ešte dobrá, len sa pomaly stišuje. Dobehni rozbehnuté veci, kým na to máš silu.",
+      name: "Jeseň — zber úrody",
+      description:
+        "Energia je ešte dobrá, len sa pomaly stišuje, ako teplé septembrové dni. Dobehni rozbehnuté veci, kým na to máš silu.",
     };
   }
   if (dayOfCycle <= lutealStart + 2 * third - 1) {
     return {
       key: "lutealna_premenliva",
-      name: "Luteálna — premenlivá",
-      description: "Nálady môžu kolísať a si citlivejšia. Buď k sebe trpezlivá a na tieto dni si neplánuj nič náročné.",
+      name: "Jeseň — vietor sa mení",
+      description:
+        "Nálady môžu kolísať a si citlivejšia, podobne ako sa mení jesenné počasie. Buď k sebe trpezlivá a na tieto dni si neplánuj nič náročné.",
     };
   }
   return {
     key: "lutealna_neskora",
-    name: "Luteálna — neskorá (PMS)",
-    description: "Energia je najnižšia a PMS sa hlási najviac. Dopraj si pokoj, jemnosť a čo najmenej povinností.",
+    name: "Jeseň — posledné lístie padá",
+    description:
+      "Energia je najnižšia a PMS sa hlási najviac, presne pred príchodom pokojnej zimy. Dopraj si pokoj, jemnosť a čo najmenej povinností.",
   };
 }
 
@@ -141,24 +149,24 @@ export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number): C
       ? {
           name: "Menštruačná fáza",
           description:
-            "Telo si odpočíva. Energia môže byť nižšia — buď na seba milá, choď do toho len toľko, koľko cítiš.",
+            "Si vo svojej vnútornej zime. Telo stíchne a pýta si pokoj — ako príroda v januári. Nie je to slabosť, je to múdrosť tela: choď do toho len toľko, koľko cítiš.",
         }
       : dayOfCycle <= 12
         ? {
             name: "Folikulárna fáza",
             description:
-              "Energia stúpa. Skvelý čas na nové výzvy, silové tréningy a dlhšie behy.",
+              "Vchádzaš do svojej jari. Hormóny sa prebúdzajú, hlava sa čistí a chuť tvoriť rastie s každým dňom — skvelý čas na nové výzvy, silové tréningy a dlhšie behy.",
           }
         : dayOfCycle <= 16
           ? {
               name: "Ovulácia",
               description:
-                "Si na vrchole energie a sebadôvery. Ideálny čas na osobné rekordy a aktivity v komunite.",
+                "Si vo svojom lete. Slnko je najvyššie, energia, sebavedomie aj chuť byť medzi ľuďmi sú na vrchole — čas na osobné rekordy aj aktivity v komunite.",
             }
           : {
               name: "Luteálna fáza",
               description:
-                "Energia postupne klesá. Zvoľ jemnejší pohyb — joga, prechádzky, regenerácia.",
+                "Vchádzaš do svojej jesene. Energia sa pomaly stišuje a telo ťa pozýva k zberu úrody — dokonči, čo si začala, a zvoľ jemnejší pohyb: jogu, prechádzky, regeneráciu.",
             };
 
   const phaseKey: CyclePhaseKey =
@@ -204,6 +212,18 @@ export const CYCLE_PHASE_ARCHETYPE: Record<CyclePhaseKey, { archetype: string; k
   folikularna: { archetype: "Dievča", keywords: "novosť • zvedavosť • tvorivosť • hravosť", mantra: "Som na začiatku." },
   ovulacia: { archetype: "Milenka", keywords: "žiarenie • spojenie • príťažlivosť • energia", mantra: "Som vonku." },
   lutealna: { archetype: "Kráľovná", keywords: "hranice • sila • pravda • dokončenie", mantra: "Vraciam sa k sebe." },
+};
+
+/**
+ * The same 4 phases, framed as the seasons of the year — a second, natural-world
+ * lens on the same energy as the archetype above (Zima↔Starena, Jar↔Dievča,
+ * Leto↔Milenka, Jeseň↔Kráľovná), for the short "season tag" shown beside it.
+ */
+export const CYCLE_PHASE_SEASON: Record<CyclePhaseKey, { season: string; tagline: string }> = {
+  menstruacna: { season: "Zima", tagline: "Vnútorná zima cyklu — čas pustiť a stíchnuť." },
+  folikularna: { season: "Jar", tagline: "Vnútorná jar cyklu — čas klíčiť a začínať." },
+  ovulacia: { season: "Leto", tagline: "Vnútorné leto cyklu — čas žiariť a spájať sa." },
+  lutealna: { season: "Jeseň", tagline: "Vnútorná jeseň cyklu — čas zberu a spomaľovania." },
 };
 
 export type CycleTipCategory = "do" | "eat" | "move";
