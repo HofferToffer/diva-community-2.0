@@ -1,4 +1,24 @@
 {
+  "calendar": {
+    "weekdays": ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "dayLoggedAriaSuffix": " — logged, tap to unmark",
+    "dayLogAriaSuffix": " — tap to log",
+    "periodStartAriaSuffix": " — start of last period",
+    "peakFertilitySuffix": " · highest chance of conception",
+    "setPeriodStartQuestion": "Set this day as the first day of your last period? We'll recalculate your cycle phases from it.",
+    "cancelButton": "Cancel",
+    "setButton": "Set",
+    "estimateNote": "Estimate based on your cycle.",
+    "intimacyHintBefore": "Tap a day and mark it with a heart",
+    "intimacyHintAfter": "— the day you had sex. Tap again to unmark it.",
+    "periodEditHint": "Tap the day your last period actually started, if it's different from the estimate.",
+    "futureDayHint": "You can tap a future day too — we'll show you which phase you're estimated to be in then.",
+    "legendAriaLabel": "Cycle phase legend",
+    "sex": "Sex",
+    "highestFertilityLegend": "Highest chance of conception"
+  },
   "cycle": {
     "phaseNames": {
       "menstruacna": "Menstrual phase",

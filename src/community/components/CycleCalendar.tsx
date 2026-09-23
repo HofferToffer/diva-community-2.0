@@ -6,8 +6,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
 
-const WEEKDAYS = ["Po", "Ut", "St", "Št", "Pi", "So", "Ne"];
-
 function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
@@ -38,10 +36,12 @@ export function CycleCalendar({
   onToggleIntimacy?: (dateKey: string) => void;
 }) {
   const { t, i18n } = useTranslation();
-  // Only the phase name text is translated here — the calendar's swipe/tap
-  // handling and date math below are untouched.
+  // Only text/labels are translated below — the calendar's swipe/tap
+  // handling and date math are untouched.
   const phaseName = (phase: CyclePhaseKey) =>
     i18n.language === "en" ? t(`cycle.phaseNames.${phase}`) : CYCLE_PHASES[phase].name;
+  const weekdays = t("calendar.weekdays", { returnObjects: true }) as string[];
+  const dateLocale = i18n.language === "en" ? "en-US" : "sk-SK";
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const [pendingDateKey, setPendingDateKey] = useState<string | null>(null);
   const today = new Date();
@@ -92,23 +92,23 @@ export function CycleCalendar({
     return rows;
   }, [monthCursor, lastPeriodDate, cycleLengthDays]);
 
-  const monthLabel = new Intl.DateTimeFormat("sk-SK", { month: "long", year: "numeric" }).format(monthCursor);
+  const monthLabel = new Intl.DateTimeFormat(dateLocale, { month: "long", year: "numeric" }).format(monthCursor);
 
   return (
     <div className="rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
       <div className="flex items-center justify-between">
-        <Button type="button" variant="ghost" size="icon" aria-label="Predchádzajúci mesiac" onClick={goToPrevMonth}>
+        <Button type="button" variant="ghost" size="icon" aria-label={t("calendar.prevMonth")} onClick={goToPrevMonth}>
           <ChevronLeft className="h-4 w-4" />
         </Button>
         <p className="font-display text-lg capitalize">{monthLabel}</p>
-        <Button type="button" variant="ghost" size="icon" aria-label="Nasledujúci mesiac" onClick={goToNextMonth}>
+        <Button type="button" variant="ghost" size="icon" aria-label={t("calendar.nextMonth")} onClick={goToNextMonth}>
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
 
       <div onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
         <div className="mt-4 grid grid-cols-7 gap-1 text-center text-[0.65rem] uppercase tracking-wide text-muted-foreground">
-          {WEEKDAYS.map((day) => (
+          {weekdays.map((day) => (
             <span key={day}>{day}</span>
           ))}
         </div>
@@ -136,8 +136,8 @@ export function CycleCalendar({
                   title={cell.phase ? phaseName(cell.phase) : undefined}
                   aria-label={
                     canLogIntimacy
-                      ? `${cell.date.getDate()}. ${monthLabel}${isLogged ? " — zapísané, ťuknutím odznačíš" : " — ťuknutím zapíšeš"}`
-                      : `${cell.date.getDate()}. ${monthLabel}${isPeriodStart ? " — začiatok poslednej menštruácie" : ""}`
+                      ? `${cell.date.getDate()}. ${monthLabel}${isLogged ? t("calendar.dayLoggedAriaSuffix") : t("calendar.dayLogAriaSuffix")}`
+                      : `${cell.date.getDate()}. ${monthLabel}${isPeriodStart ? t("calendar.periodStartAriaSuffix") : ""}`
                   }
                   onClick={() => (canLogIntimacy ? onToggleIntimacy!(dateKey) : setPendingDateKey(dateKey))}
                   className={cn(
@@ -178,12 +178,12 @@ export function CycleCalendar({
                       <CalendarHeart className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="font-display text-lg leading-tight">
-                          {new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long" }).format(cell.date)}
+                          {new Intl.DateTimeFormat(dateLocale, { day: "numeric", month: "long" }).format(cell.date)}
                         </p>
                         {cell.phase && (
                           <p className="text-sm font-medium" style={{ color: CYCLE_PHASE_COLORS[cell.phase].dot }}>
                             {phaseName(cell.phase)}
-                            {isPeakFertility && " · najvyššia šanca na otehotnenie"}
+                            {isPeakFertility && t("calendar.peakFertilitySuffix")}
                           </p>
                         )}
                       </div>
@@ -191,20 +191,18 @@ export function CycleCalendar({
 
                     {canEdit ? (
                       <>
-                        <p className="mt-3 text-sm text-muted-foreground">
-                          Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.
-                        </p>
+                        <p className="mt-3 text-sm text-muted-foreground">{t("calendar.setPeriodStartQuestion")}</p>
                         <div className="mt-3 flex gap-2">
                           <Button variant="outline" size="sm" className="flex-1" onClick={() => setPendingDateKey(null)}>
-                            Zrušiť
+                            {t("calendar.cancelButton")}
                           </Button>
                           <Button size="sm" className="flex-1" onClick={() => confirmPendingDate(cell.date)}>
-                            Nastaviť
+                            {t("calendar.setButton")}
                           </Button>
                         </div>
                       </>
                     ) : (
-                      <p className="mt-3 text-sm text-muted-foreground">Odhad podľa tvojho cyklu.</p>
+                      <p className="mt-3 text-sm text-muted-foreground">{t("calendar.estimateNote")}</p>
                     )}
                   </PopoverContent>
                 </Popover>
@@ -217,23 +215,19 @@ export function CycleCalendar({
 
       {onToggleIntimacy && (
         <p className="mt-3 text-xs text-muted-foreground">
-          Ťukni na deň a označ ho srdiečkom{" "}
+          {t("calendar.intimacyHintBefore")}{" "}
           <Heart className="inline h-3 w-3 align-[-1px]" style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }} aria-hidden="true" />{" "}
-          — deň, kedy ste mali sex. Znova ťukni, ak ho chceš odznačiť.
+          {t("calendar.intimacyHintAfter")}
         </p>
       )}
 
       {onSelectPeriodStart && !onToggleIntimacy && (
-        <p className="mt-3 text-xs text-muted-foreground">
-          Ťukni na deň, kedy ti naozaj začala posledná menštruácia, ak sa líši od odhadu.
-        </p>
+        <p className="mt-3 text-xs text-muted-foreground">{t("calendar.periodEditHint")}</p>
       )}
 
-      <p className="mt-3 text-xs text-muted-foreground">
-        Ťukni aj na budúci deň — ukážeme ti, akú fázu vtedy podľa odhadu budeš mať.
-      </p>
+      <p className="mt-3 text-xs text-muted-foreground">{t("calendar.futureDayHint")}</p>
 
-      <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda fáz cyklu">
+      <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={t("calendar.legendAriaLabel")}>
         {(Object.keys(CYCLE_PHASES) as CyclePhaseKey[]).map((phase) => (
           <li key={phase} className="flex items-center gap-1.5">
             <span
@@ -251,12 +245,12 @@ export function CycleCalendar({
               style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }}
               aria-hidden="true"
             />
-            Sex
+            {t("calendar.sex")}
           </li>
         )}
         <li className="flex items-center gap-1.5">
           <Egg className="h-3 w-3" style={{ color: "hsl(32, 45%, 46%)" }} aria-hidden="true" />
-          Najvyššia šanca na otehotnenie
+          {t("calendar.highestFertilityLegend")}
         </li>
       </ul>
     </div>

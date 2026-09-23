@@ -1,4 +1,24 @@
 {
+  "calendar": {
+    "weekdays": ["Po", "Ut", "St", "Št", "Pi", "So", "Ne"],
+    "prevMonth": "Predchádzajúci mesiac",
+    "nextMonth": "Nasledujúci mesiac",
+    "dayLoggedAriaSuffix": " — zapísané, ťuknutím odznačíš",
+    "dayLogAriaSuffix": " — ťuknutím zapíšeš",
+    "periodStartAriaSuffix": " — začiatok poslednej menštruácie",
+    "peakFertilitySuffix": " · najvyššia šanca na otehotnenie",
+    "setPeriodStartQuestion": "Nastaviť tento deň ako prvý deň poslednej menštruácie? Prepočítame podľa neho fázy cyklu.",
+    "cancelButton": "Zrušiť",
+    "setButton": "Nastaviť",
+    "estimateNote": "Odhad podľa tvojho cyklu.",
+    "intimacyHintBefore": "Ťukni na deň a označ ho srdiečkom",
+    "intimacyHintAfter": "— deň, kedy ste mali sex. Znova ťukni, ak ho chceš odznačiť.",
+    "periodEditHint": "Ťukni na deň, kedy ti naozaj začala posledná menštruácia, ak sa líši od odhadu.",
+    "futureDayHint": "Ťukni aj na budúci deň — ukážeme ti, akú fázu vtedy podľa odhadu budeš mať.",
+    "legendAriaLabel": "Legenda fáz cyklu",
+    "sex": "Sex",
+    "highestFertilityLegend": "Najvyššia šanca na otehotnenie"
+  },
   "nav": {
     "home": "Domov",
     "feeling": "Ako sa dnes cítim?",
