@@ -568,6 +568,11 @@ export default function CommunityCycle() {
                 />
               </div>
             )}
+            {birthStoryAudio && (
+              <audio controls src={birthStoryAudio} className="w-full" preload="metadata">
+                Tvoje zariadenie nepodporuje prehrávanie zvuku.
+              </audio>
+            )}
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
@@ -627,6 +632,44 @@ export default function CommunityCycle() {
               onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
             />
             <div className="flex flex-wrap items-center gap-3 pt-1">
+              {recordingStory ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-primary"
+                  onClick={stopStoryRecording}
+                >
+                  <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                  Zastaviť a uložiť nahrávku
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-primary"
+                  disabled={savingStoryAudio}
+                  onClick={startStoryRecording}
+                >
+                  <Mic className="h-4 w-4" aria-hidden="true" />
+                  {savingStoryAudio
+                    ? "Ukladám…"
+                    : profile.birth_story_audio
+                      ? "Nahrať znova"
+                      : "Nahrať hlasom"}
+                </Button>
+              )}
+              {profile.birth_story_audio && !recordingStory && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-muted-foreground"
+                  disabled={savingStoryAudio}
+                  onClick={removeStoryAudio}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  Odstrániť nahrávku
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
