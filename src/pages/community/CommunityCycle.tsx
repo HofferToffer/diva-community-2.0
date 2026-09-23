@@ -35,7 +35,7 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { validateImage, normalizeImage, uploadImage, uploadAudio, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
@@ -74,6 +74,7 @@ export default function CommunityCycle() {
   const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
   const [recordingStory, setRecordingStory] = useState(false);
   const [savingStoryAudio, setSavingStoryAudio] = useState(false);
+  const [transcribingStory, setTranscribingStory] = useState(false);
   const storyRecorderRef = useRef<MediaRecorder | null>(null);
   const storyChunksRef = useRef<Blob[]>([]);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
@@ -226,6 +227,34 @@ export default function CommunityCycle() {
     storyRecorderRef.current?.stop();
     storyRecorderRef.current = null;
     setRecordingStory(false);
+  };
+
+  const transcribeStoryAudio = async () => {
+    if (!profile?.birth_story_audio || !birthStoryAudio) return;
+    setTranscribingStory(true);
+    try {
+      const res = await fetch(birthStoryAudio);
+      if (!res.ok) throw new Error("download failed");
+      const blob = await res.blob();
+      if (!blob.size) throw new Error("empty audio");
+      const ext = (profile.birth_story_audio.split(".").pop() || "webm").toLowerCase();
+      const type = blob.type.startsWith("audio/") ? blob.type : `audio/${ext === "m4a" ? "mp4" : ext}`;
+      const file = new File([blob], `porodny-pribeh.${ext}`, { type });
+      const form = new FormData();
+      form.append("file", file);
+      const { data, error } = await supabase.functions.invoke("transcribe-birth-story", { body: form });
+      if (error) throw error;
+      const text = String(data?.text ?? "").trim();
+      if (!text) throw new Error("empty transcript");
+      setBirthStory((prev) => (prev.trim() ? `${prev.trim()}\n\n${text}` : text));
+      setEditingBirthStory(true);
+      toast.success("Prepis je hotový — prečítaj si ho a ulož.");
+    } catch (e) {
+      console.error("birth story transcription failed", e);
+      toast.error("Prepis sa nepodaril. Skús to znova.");
+    } finally {
+      setTranscribingStory(false);
+    }
   };
 
   const removeStoryAudio = async () => {
@@ -657,6 +686,18 @@ export default function CommunityCycle() {
                     : profile.birth_story_audio
                       ? "Nahrať znova"
                       : "Nahrať hlasom"}
+                </Button>
+              )}
+              {profile.birth_story_audio && !recordingStory && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-primary"
+                  disabled={transcribingStory || savingStoryAudio}
+                  onClick={transcribeStoryAudio}
+                >
+                  <FileText className="h-4 w-4" aria-hidden="true" />
+                  {transcribingStory ? "Prepisujem…" : "Prepísať na text"}
                 </Button>
               )}
               {profile.birth_story_audio && !recordingStory && (
