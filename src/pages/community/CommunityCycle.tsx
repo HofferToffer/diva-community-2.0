@@ -66,6 +66,7 @@ export default function CommunityCycle() {
   const [savingBirthStory, setSavingBirthStory] = useState(false);
   const birthStoryRef = useRef<HTMLDivElement>(null);
   const storyPhotoInputRef = useRef<HTMLInputElement>(null);
+  const endPostpartumRef = useRef<HTMLDivElement>(null);
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
@@ -193,6 +194,8 @@ export default function CommunityCycle() {
     setPeriodReturnedChoice(null);
     setNewLastPeriod("");
     setEndingPostpartum(true);
+    // Jemne posuň pohľad na otázky, aby ich bolo vidieť na mobile aj na počítači.
+    setTimeout(() => endPostpartumRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
   };
 
   const confirmEndPostpartum = async () => {
