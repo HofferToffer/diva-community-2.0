@@ -9,7 +9,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
-import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import {
+  getPregnancyInfo,
+  pregnancyWeekIcon,
+  pregnancyWeekSize,
+  TRIMESTER_LABEL,
+  PREGNANCY_TRIMESTER_ARCHETYPE,
+} from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { PREGNANCY_BOOKS, POSTPARTUM_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
@@ -257,7 +263,10 @@ export default function CommunityCycle() {
                   Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
                 </p>
               )}
-              <p className="text-sm italic leading-relaxed text-foreground/85">{pregnancy.soulNote}</p>
+              <p className="text-sm italic leading-relaxed text-foreground/85">
+                „{pregnancy.soulNote}" — {PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].archetype}
+              </p>
+              <p className="text-xs text-muted-foreground">{PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].keywords}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {pregnancy.daysUntilDue > 0
                   ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`

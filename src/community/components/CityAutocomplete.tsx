@@ -26,14 +26,28 @@ export function CityAutocomplete({
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  // Set right before setQuery() in pick(), so the effect it triggers can skip re-searching for what was just chosen.
-  const justPickedRef = useRef(false);
-
-  useEffect(() => setQuery(value), [value]);
+  // Set whenever `query` changes programmatically rather than by the user typing
+  // (picking a suggestion, or an external `value` change, e.g. the initial load
+  // of a saved city) so the search effect below doesn't treat that as a fresh
+  // search and pop the dropdown open on its own — e.g. right after opening
+  // "Upraviť profil" with a saved city already filled in.
+  const skipSearchRef = useRef(true);
 
   useEffect(() => {
-    if (justPickedRef.current) {
-      justPickedRef.current = false;
+    // Typing calls onChange(), which the parent echoes straight back down as a
+    // new `value` — that's not an external change, so only treat this as one
+    // (and skip the resulting search) when `value` actually differs from what
+    // we already have locally.
+    setQuery((current) => {
+      if (current === value) return current;
+      skipSearchRef.current = true;
+      return value;
+    });
+  }, [value]);
+
+  useEffect(() => {
+    if (skipSearchRef.current) {
+      skipSearchRef.current = false;
       return;
     }
     const trimmed = query.trim();
@@ -68,7 +82,7 @@ export function CityAutocomplete({
   }, []);
 
   const pick = (s: CitySuggestion) => {
-    justPickedRef.current = true;
+    skipSearchRef.current = true;
     setQuery(s.label);
     onChange(s.label, s.lat, s.lng);
     setSuggestions([]);

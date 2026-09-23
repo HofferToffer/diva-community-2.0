@@ -13,7 +13,13 @@ import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
 import { getCycleInfo, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
-import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
+import {
+  getPregnancyInfo,
+  pregnancyWeekIcon,
+  pregnancyWeekSize,
+  TRIMESTER_LABEL,
+  PREGNANCY_TRIMESTER_ARCHETYPE,
+} from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { MENOPAUSE_STAGES } from "@/community/lib/menopause";
 import { getLifePhase, quoteForDate } from "@/community/lib/quotes";
@@ -119,7 +125,12 @@ export default function CommunityHome() {
                     Vaše bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
                   </p>
                 )}
-                <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">{pregnancy.soulNote}</p>
+                <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
+                  „{pregnancy.soulNote}" — {PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].archetype}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].keywords}
+                </p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {pregnancy.daysUntilDue > 0
                     ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`

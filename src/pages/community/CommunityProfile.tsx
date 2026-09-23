@@ -411,8 +411,8 @@ export default function CommunityProfile() {
         <div className="space-y-1">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Materstvo</p>
           <p className="text-sm leading-relaxed text-foreground/85">
-            Mama {profile.children_count} {pluralChildren(profile.children_count)} — frajerka a bohyňa, ktorá to
-            zvláda.
+            Mama {profile.children_count} {pluralChildren(profile.children_count)} — nesie v sebe viac sily a lásky,
+            než si sama niekedy uvedomila.
           </p>
         </div>
       )}

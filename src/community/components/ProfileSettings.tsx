@@ -37,6 +37,20 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
       chapterRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [focusChapter]);
+
+  // This is a long form — on mobile, the on-screen keyboard opening can leave
+  // the field a woman just tapped hidden behind it. Scroll whatever gets
+  // focused into view once the keyboard has had a moment to animate open.
+  useEffect(() => {
+    const onFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.matches("input, textarea, select")) {
+        setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
+      }
+    };
+    document.addEventListener("focusin", onFocusIn);
+    return () => document.removeEventListener("focusin", onFocusIn);
+  }, []);
   const [name, setName] = useState(profile?.name ?? "");
   const [username, setUsername] = useState(profile?.username ?? "");
   const [bio, setBio] = useState(profile?.bio ?? "");
@@ -278,6 +292,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             id="s-children"
             type="number"
             inputMode="numeric"
+            autoComplete="off"
             min={0}
             max={20}
             value={childrenCount}

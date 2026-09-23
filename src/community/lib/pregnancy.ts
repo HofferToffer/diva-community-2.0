@@ -153,6 +153,17 @@ const TRIMESTER_SOUL_NOTE: Record<1 | 2 | 3, string> = {
   3: "Blížite sa k veľkému stretnutiu. Tvoje telo vie, čo robiť — dôveruj jeho múdrosti.",
 };
 
+/**
+ * The energetic/inner layer for each trimester, in the same shape as
+ * CYCLE_PHASE_ARCHETYPE — the mantra reuses TRIMESTER_SOUL_NOTE, already
+ * shown elsewhere, so this just adds the archetype name and keywords beside it.
+ */
+export const PREGNANCY_TRIMESTER_ARCHETYPE: Record<1 | 2 | 3, { archetype: string; keywords: string }> = {
+  1: { archetype: "Strážkyňa tajomstva", keywords: "tajomstvo • dôvera • krehkosť • nový začiatok" },
+  2: { archetype: "Žiariaca", keywords: "spojenie • pohyb • energia • dôvera" },
+  3: { archetype: "Plná mesiaca", keywords: "pripravenosť • sila • dôvera • telo" },
+};
+
 /** Playful size comparison per pregnancy week, the way most pregnancy calendar apps show it. */
 const WEEK_SIZE: Record<number, string> = {
   4: "zrnko maku",
