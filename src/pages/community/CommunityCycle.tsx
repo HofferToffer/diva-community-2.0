@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -560,22 +561,29 @@ export default function CommunityCycle() {
         </motion.section>
       )}
 
-      {justGaveBirth && (
-        <>
-          <ConfettiBurst />
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 px-6 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-xs rounded-2xl border border-border/50 bg-card p-8 text-center shadow-lg"
-            >
-              <p className="font-display text-3xl text-primary">Gratulujeme, Diva! 🎉</p>
-              <p className="mt-2 text-sm text-muted-foreground">Vitaj v novej kapitole.</p>
-            </motion.div>
-          </div>
-        </>
-      )}
+      {justGaveBirth &&
+        createPortal(
+          <>
+            {/* The backdrop+card render first so the confetti below sits crisply on
+                top of it, instead of being caught in its own backdrop-blur. Portalled
+                straight to <body> so this full-screen layer actually sits above the
+                fixed app header (z-40) instead of being trapped inside a lower local
+                stacking context. */}
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/60 px-6 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="max-w-xs rounded-2xl border border-border/50 bg-card p-8 text-center shadow-lg"
+              >
+                <p className="font-display text-3xl text-primary">Gratulujeme, Diva! 🎉</p>
+                <p className="mt-2 text-sm text-muted-foreground">Vitaj v novej kapitole.</p>
+              </motion.div>
+            </div>
+            <ConfettiBurst className="z-[101]" />
+          </>,
+          document.body,
+        )}
 
       {profile.is_postpartum && (
         <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">

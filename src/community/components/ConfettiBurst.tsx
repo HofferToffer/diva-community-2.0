@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const COLORS = ["hsl(344, 55%, 72%)", "hsl(344, 37%, 60%)", "hsl(354, 45%, 58%)", "hsl(40, 33%, 80%)", "hsl(30, 25%, 85%)"];
 
 /** A one-shot burst of falling confetti pieces, meant to unmount itself after a few seconds. */
-export function ConfettiBurst() {
+export function ConfettiBurst({ className }: { className?: string }) {
   const pieces = Array.from({ length: 40 }, (_, i) => i);
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
+    <div className={cn("pointer-events-none fixed inset-0 z-50 overflow-hidden", className)} aria-hidden="true">
       {pieces.map((i) => {
         const left = Math.random() * 100;
         const delay = Math.random() * 0.3;
