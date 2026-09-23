@@ -12,6 +12,8 @@ export type Profile = {
   gifts: string | null;
   children_count: number | null;
   birth_story: string | null;
+  birth_story_photo: string | null;
+  birth_story_audio: string | null;
   city: string | null;
   city_lat: number | null;
   city_lng: number | null;

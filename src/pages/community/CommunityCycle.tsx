@@ -35,8 +35,12 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText } from "lucide-react";
+import { useSignedImage } from "@/community/hooks/useSignedImage";
+import { useLiveDictation } from "@/community/hooks/useLiveDictation";
+import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
+import MedicalNote from "@/community/components/MedicalNote";
 
 function NotAloneNote() {
   return (
@@ -59,10 +63,27 @@ export default function CommunityCycle() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
-  const birthStoryRef = useRef<HTMLDivElement>(null);
   const [birthStory, setBirthStory] = useState(profile?.birth_story ?? "");
   const [editingBirthStory, setEditingBirthStory] = useState(false);
   const [savingBirthStory, setSavingBirthStory] = useState(false);
+  const birthStoryRef = useRef<HTMLDivElement>(null);
+  const storyPhotoInputRef = useRef<HTMLInputElement>(null);
+  const endPostpartumRef = useRef<HTMLDivElement>(null);
+  const endPostpartumAnswerRef = useRef<HTMLDivElement>(null);
+  const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
+  const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
+  const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
+  const [savingStoryAudio, setSavingStoryAudio] = useState(false);
+  const [transcribingStory, setTranscribingStory] = useState(false);
+  const [fallbackRecording, setFallbackRecording] = useState(false);
+  const fallbackRecorderRef = useRef<MediaRecorder | null>(null);
+  const dictation = useLiveDictation((chunk) =>
+    setBirthStory((prev) => {
+      const base = prev.replace(/\s+$/, "");
+      if (!base) return chunk.charAt(0).toUpperCase() + chunk.slice(1);
+      return /[.!?]$/.test(base) ? `${base} ${chunk.charAt(0).toUpperCase()}${chunk.slice(1)}` : `${base} ${chunk}`;
+    }),
+  );
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -119,6 +140,196 @@ export default function CommunityCycle() {
     }
   };
 
+  const handleStoryPhoto = async (file: File | undefined) => {
+    if (!file || !profile) return;
+    const validationError = validateImage(file);
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
+    setUploadingStoryPhoto(true);
+    try {
+      const normalized = await normalizeImage(file);
+      const stored = await uploadImage("profile-gallery", profile.id, normalized);
+      if (profile.birth_story_photo) await deleteStoredImage(profile.birth_story_photo);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_photo: stored } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Fotka je uložená.");
+    } catch {
+      toast.error("Fotku sa nepodarilo nahrať.");
+    } finally {
+      setUploadingStoryPhoto(false);
+      if (storyPhotoInputRef.current) storyPhotoInputRef.current.value = "";
+    }
+  };
+
+  const removeStoryPhoto = async () => {
+    if (!profile?.birth_story_photo) return;
+    setUploadingStoryPhoto(true);
+    try {
+      await deleteStoredImage(profile.birth_story_photo);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_photo: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Fotka je odstránená.");
+    } catch {
+      toast.error("Fotku sa nepodarilo odstrániť.");
+    } finally {
+      setUploadingStoryPhoto(false);
+    }
+  };
+
+  /** Uloží text príbehu rovno do profilu, nech sa nadiktované slová nestratia. */
+  const persistStory = async (text: string) => {
+    const clean = text.trim();
+    if (!clean) return;
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story: clean } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+    } catch (e) {
+      console.error("birth story autosave failed", e);
+    }
+  };
+
+  const transcribeBlob = async (blob: Blob, ext: string) => {
+    setTranscribingStory(true);
+    try {
+      if (!blob.size) throw new Error("empty audio");
+      const file = new File([blob], `porodny-pribeh.${ext}`, { type: blob.type || `audio/${ext}` });
+      const form = new FormData();
+      form.append("file", file);
+      const { data, error } = await supabase.functions.invoke("transcribe-birth-story", { body: form });
+      if (error) throw error;
+      const text = String(data?.text ?? "").trim();
+      if (!text) throw new Error("empty transcript");
+      const merged = birthStory.trim() ? `${birthStory.trim()} ${text}` : text;
+      setBirthStory(merged);
+      setEditingBirthStory(true);
+      await persistStory(merged);
+      toast.success("Hotovo — text je uložený, môžeš ho ešte upraviť.");
+    } catch (e) {
+      console.error("dictation fallback failed", e);
+      toast.error("Nahrávku sa nepodarilo prepísať. Skús to prosím znova.");
+    } finally {
+      setTranscribingStory(false);
+    }
+  };
+
+  /** Safari/iOS nepodporuje živý prepis — nahráme zvuk a prepíšeme ho po skončení. */
+  const startFallbackRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const preferred = ["audio/webm", "audio/mp4", "audio/aac"].find(
+        (t) => typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported?.(t),
+      );
+      const recorder = new MediaRecorder(stream, preferred ? { mimeType: preferred } : undefined);
+      const chunks: BlobPart[] = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data?.size) chunks.push(e.data);
+      };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        fallbackRecorderRef.current = null;
+        setFallbackRecording(false);
+        const type = recorder.mimeType || "audio/webm";
+        const ext = type.includes("mp4") || type.includes("aac") ? "mp4" : "webm";
+        await transcribeBlob(new Blob(chunks, { type }), ext);
+      };
+      recorder.start();
+      fallbackRecorderRef.current = recorder;
+      setFallbackRecording(true);
+      toast.success("Počúvam — keď skončíš, ťukni na štvorček a text sa doplní.");
+    } catch (e) {
+      console.error("microphone unavailable", e);
+      toast.error("Nepodarilo sa spustiť mikrofón. Skontroluj povolenie mikrofónu v prehliadači.");
+    }
+  };
+
+  const micActive = dictation.listening || fallbackRecording;
+
+  const startDictation = () => {
+    setEditingBirthStory(true);
+    if (dictation.supported) {
+      const ok = dictation.start();
+      if (ok) {
+        toast.success("Počúvam — hovor a text sa bude písať sám.");
+        return;
+      }
+    }
+    void startFallbackRecording();
+  };
+
+  const stopMic = () => {
+    if (dictation.listening) {
+      dictation.stop();
+      void persistStory(birthStory);
+      return;
+    }
+    try {
+      fallbackRecorderRef.current?.stop();
+    } catch {
+      setFallbackRecording(false);
+    }
+  };
+
+  const transcribeStoryAudio = async () => {
+    if (!profile?.birth_story_audio || !birthStoryAudio) return;
+    setTranscribingStory(true);
+    try {
+      const res = await fetch(birthStoryAudio);
+      if (!res.ok) throw new Error("download failed");
+      const blob = await res.blob();
+      if (!blob.size) throw new Error("empty audio");
+      const ext = (profile.birth_story_audio.split(".").pop() || "webm").toLowerCase();
+      const type = blob.type.startsWith("audio/") ? blob.type : `audio/${ext === "m4a" ? "mp4" : ext}`;
+      const file = new File([blob], `porodny-pribeh.${ext}`, { type });
+      const form = new FormData();
+      form.append("file", file);
+      const { data, error } = await supabase.functions.invoke("transcribe-birth-story", { body: form });
+      if (error) throw error;
+      const text = String(data?.text ?? "").trim();
+      if (!text) throw new Error("empty transcript");
+      setBirthStory((prev) => (prev.trim() ? `${prev.trim()}\n\n${text}` : text));
+      setEditingBirthStory(true);
+      toast.success("Prepis je hotový — prečítaj si ho a ulož.");
+    } catch (e) {
+      console.error("birth story transcription failed", e);
+      toast.error("Prepis sa nepodaril. Skús to znova.");
+    } finally {
+      setTranscribingStory(false);
+    }
+  };
+
+  const removeStoryAudio = async () => {
+    if (!profile?.birth_story_audio) return;
+    setSavingStoryAudio(true);
+    try {
+      await deleteStoredImage(profile.birth_story_audio);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_audio: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Nahrávka je odstránená.");
+    } catch {
+      toast.error("Nahrávku sa nepodarilo odstrániť.");
+    } finally {
+      setSavingStoryAudio(false);
+    }
+  };
+
   const markBirth = async () => {
     if (!window.confirm("Narodilo sa ti bábätko? Toto ukončí sledovanie tehotenstva.")) return;
     try {
@@ -130,10 +341,9 @@ export default function CommunityCycle() {
       if (error) throw error;
       refreshProfile();
       setJustGaveBirth(true);
-      setTimeout(() => {
-        setJustGaveBirth(false);
-        birthStoryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 4500);
+      setTimeout(() => setJustGaveBirth(false), 4500);
+      // Po osláve jemne posuň pohľad na pôrodný príbeh.
+      setTimeout(() => birthStoryRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 4600);
     } catch {
       toast.error("Nepodarilo sa uložiť.");
     }
@@ -143,6 +353,8 @@ export default function CommunityCycle() {
     setPeriodReturnedChoice(null);
     setNewLastPeriod("");
     setEndingPostpartum(true);
+    // Jemne posuň pohľad na otázky, aby ich bolo vidieť na mobile aj na počítači.
+    setTimeout(() => endPostpartumRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
   };
 
   const confirmEndPostpartum = async () => {
@@ -161,11 +373,14 @@ export default function CommunityCycle() {
       refreshProfile();
       setEndingPostpartum(false);
       if (periodReturnedChoice === "yes") {
-        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.");
+        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.", {
+          description: "Nezabudni na prehliadku u gynekológa/gynekologičky po šestonedelí.",
+          duration: 7000,
+        });
       } else {
         toast.success("Šestonedelie je ukončené.", {
           description:
-            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí.",
+            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí. Prehliadku u gynekológa/gynekologičky si však nechaj urobiť.",
           duration: 8000,
         });
       }
@@ -341,6 +556,7 @@ export default function CommunityCycle() {
             </Button>
           </div>
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       )}
 
@@ -392,7 +608,7 @@ export default function CommunityCycle() {
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
 
-          <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+          <div className="rounded-2xl bg-secondary/30 p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Knihy, ktoré ti môžu pomôcť
             </p>
@@ -406,28 +622,112 @@ export default function CommunityCycle() {
             </ul>
           </div>
 
-          <div ref={birthStoryRef} className="space-y-2 rounded-xl border border-border/50 bg-background/60 p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tvoj pôrodný príbeh</p>
+          <motion.div
+            ref={birthStoryRef}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="relative space-y-2 overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-sm"
+          >
+            {!profile.birth_story && !profile.birth_story_audio && !editingBirthStory && (
+              <motion.span
+                aria-hidden="true"
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute right-4 top-3.5 text-primary/70"
+              >
+                <ArrowDown className="h-5 w-5" />
+              </motion.span>
+            )}
+            <p className="flex items-center gap-2 font-display text-xl text-primary">
+              <Feather className="h-4 w-4" aria-hidden="true" />
+              Tvoj pôrodný príbeh
+            </p>
+            {birthStoryPhoto && (
+              <div className="overflow-hidden rounded-xl shadow-sm">
+                <img
+                  src={birthStoryPhoto}
+                  alt="Fotka k pôrodnému príbehu"
+                  className="max-h-72 w-full object-cover"
+                />
+              </div>
+            )}
+            {birthStoryAudio && (
+              <audio controls src={birthStoryAudio} className="w-full" preload="metadata">
+                Tvoje zariadenie nepodporuje prehrávanie zvuku.
+              </audio>
+            )}
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje.
+                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, ťukni na mikrofón a hovor — text sa
+                  napíše sám.
                 </p>
-                <Textarea
-                  rows={6}
-                  value={birthStory}
-                  onChange={(e) => setBirthStory(e.target.value)}
-                  placeholder="Môj pôrodný príbeh…"
-                />
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1" disabled={savingBirthStory} onClick={saveBirthStory}>
+                <div className="relative">
+                  <Textarea
+                    rows={6}
+                    className="rounded-2xl border-border/50 pr-14"
+                    value={
+                      dictation.interim
+                        ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
+                        : birthStory
+                    }
+                    onChange={(e) => {
+                      if (dictation.listening) return;
+                      setBirthStory(e.target.value);
+                    }}
+                    readOnly={dictation.listening}
+                    placeholder="Môj pôrodný príbeh…"
+                  />
+                  <button
+                    type="button"
+                    disabled={transcribingStory}
+                    aria-label={micActive ? "Skončiť nahrávanie" : "Diktovať mikrofónom"}
+                    onClick={() => (micActive ? stopMic() : startDictation())}
+                    className={cn(
+                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] disabled:opacity-60",
+                      micActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary/60 text-primary hover:bg-secondary",
+                    )}
+                  >
+                    {micActive ? (
+                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                    ) : (
+                      <Mic className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
+                {micActive && (
+                  <p className="flex items-center gap-2 text-xs text-primary">
+                    <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
+                    {dictation.listening
+                      ? "Počúvam ťa — hovor pokojne, text sa píše sám."
+                      : "Počúvam ťa — keď skončíš, ťukni znova a text sa doplní."}
+                  </p>
+                )}
+                {transcribingStory && !micActive && (
+                  <p className="text-xs text-muted-foreground">Prepisujem, čo si povedala…</p>
+                )}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <Button
+                    size="sm"
+                    className="rounded-full"
+                    disabled={savingBirthStory}
+                    onClick={() => {
+                      dictation.stop();
+                      saveBirthStory();
+                    }}
+                  >
                     {savingBirthStory ? "Ukladám…" : "Uložiť"}
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="rounded-full text-muted-foreground"
                     onClick={() => {
+                      dictation.stop();
                       setBirthStory(profile.birth_story ?? "");
                       setEditingBirthStory(false);
                     }}
@@ -445,16 +745,88 @@ export default function CommunityCycle() {
               </>
             ) : (
               <>
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  Každý pôrod má svoj vlastný príbeh — nežný aj drsný, krehký aj silný. Napísať si ho vie pomôcť
-                  uložiť v sebe s pokojom, nech bol akýkoľvek. Vidíš ho len ty.
+                <p className="text-sm font-medium leading-relaxed text-foreground/90">
+                  Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
                 </p>
-                <Button variant="outline" size="sm" onClick={() => setEditingBirthStory(true)}>
-                  Napísať svoj príbeh
-                </Button>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                   Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
+                   nepíše, ťukni na mikrofón a hovor — text sa bude písať sám.
+                </p>
+                <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <Button size="sm" className="rounded-full gap-2" onClick={() => setEditingBirthStory(true)}>
+                    <Feather className="h-4 w-4" aria-hidden="true" />
+                    Napísať svoj príbeh
+                  </Button>
+                  <button
+                    type="button"
+                    aria-label="Diktovať mikrofónom"
+                    onClick={startDictation}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/50 text-primary shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:bg-secondary"
+                  >
+                    <Mic className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
               </>
             )}
-          </div>
+            <input
+              ref={storyPhotoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
+            />
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              {profile.birth_story_audio && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full bg-secondary/40 px-4 text-primary hover:bg-secondary/60"
+                  disabled={transcribingStory}
+                  onClick={transcribeStoryAudio}
+                >
+                  <FileText className="h-4 w-4" aria-hidden="true" />
+                  {transcribingStory ? "Prepisujem…" : "Prepísať na text"}
+                </Button>
+              )}
+              {profile.birth_story_audio && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full bg-secondary/30 px-4 text-muted-foreground hover:bg-secondary/50"
+                  onClick={removeStoryAudio}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  Odstrániť nahrávku
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full bg-secondary/40 px-4 text-primary hover:bg-secondary/60"
+                disabled={uploadingStoryPhoto}
+                onClick={() => storyPhotoInputRef.current?.click()}
+              >
+                <ImagePlus className="h-4 w-4" aria-hidden="true" />
+                {uploadingStoryPhoto
+                  ? "Nahrávam…"
+                  : profile.birth_story_photo
+                    ? "Zmeniť fotku"
+                    : "Nahrať fotku"}
+              </Button>
+              {profile.birth_story_photo && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full bg-secondary/30 px-4 text-muted-foreground hover:bg-secondary/50"
+                  disabled={uploadingStoryPhoto}
+                  onClick={removeStoryPhoto}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  Odstrániť fotku
+                </Button>
+              )}
+            </div>
+          </motion.div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
@@ -468,14 +840,36 @@ export default function CommunityCycle() {
           </div>
 
           {endingPostpartum && (
-            <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+            <div ref={endPostpartumRef} className="scroll-mt-24 space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
               <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
               {periodReturnedChoice === null && (
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPeriodReturnedChoice("yes")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => {
+                      setPeriodReturnedChoice("yes");
+                      setTimeout(
+                        () => endPostpartumAnswerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }),
+                        120,
+                      );
+                    }}
+                  >
                     Áno
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPeriodReturnedChoice("no")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => {
+                      setPeriodReturnedChoice("no");
+                      setTimeout(
+                        () => endPostpartumAnswerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }),
+                        120,
+                      );
+                    }}
+                  >
                     Ešte nie
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setEndingPostpartum(false)}>
@@ -484,7 +878,7 @@ export default function CommunityCycle() {
                 </div>
               )}
               {periodReturnedChoice === "yes" && (
-                <div className="space-y-3">
+                <div ref={endPostpartumAnswerRef} className="scroll-mt-24 space-y-3">
                   <div className="space-y-2">
                     <Label htmlFor="pp-last-period">Dátum poslednej menštruácie</Label>
                     <Input
@@ -495,6 +889,10 @@ export default function CommunityCycle() {
                       onChange={(e) => setNewLastPeriod(e.target.value)}
                     />
                   </div>
+                  <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
+                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí. Táto aplikácia je len
+                    podpora, nenahrádza lekársku starostlivosť ani diagnózu.
+                  </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={!newLastPeriod || savingEndPostpartum} onClick={confirmEndPostpartum}>
                       {savingEndPostpartum ? "Ukladám…" : "Potvrdiť"}
@@ -506,10 +904,15 @@ export default function CommunityCycle() {
                 </div>
               )}
               {periodReturnedChoice === "no" && (
-                <div className="space-y-3">
+                <div ref={endPostpartumAnswerRef} className="scroll-mt-24 space-y-3">
                   <p className="text-xs leading-relaxed text-muted-foreground">
                     To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj
                     vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.
+                  </p>
+                  <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
+                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí — aj keď sa cítiš dobre.
+                    Ak ťa čokoľvek trápi (silné krvácanie, bolesť, horúčka, výtok, zmeny nálady), neodkladaj návštevu
+                    lekára. Táto aplikácia je len podpora, nenahrádza lekársku starostlivosť ani diagnózu.
                   </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={savingEndPostpartum} onClick={confirmEndPostpartum}>
@@ -524,6 +927,7 @@ export default function CommunityCycle() {
             </div>
           )}
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       )}
 
@@ -598,6 +1002,7 @@ export default function CommunityCycle() {
             })}
           </div>
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       )}
 
@@ -767,6 +1172,7 @@ export default function CommunityCycle() {
           )}
           </div>
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       ) : (
         <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
@@ -804,6 +1210,7 @@ export default function CommunityCycle() {
               Nastaviť v profile
             </Button>
           </div>
+          <MedicalNote className="mt-5 text-left" />
         </motion.section>
       ))}
     </div>
