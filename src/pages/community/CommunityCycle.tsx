@@ -383,8 +383,8 @@ export default function CommunityCycle() {
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Napíš si sem, ako si to prežívala — pokojne aj to, čo bolo ťažké. Nádherné, náročné, bolestivé,
-                  úžasné — všetky pocity sú v poriadku, toto je len pre teba.
+                  Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
+                  zmysel pre nikoho iného. Toto je len tvoje.
                 </p>
                 <Textarea
                   rows={6}
@@ -418,10 +418,11 @@ export default function CommunityCycle() {
             ) : (
               <>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Vidíš len ty. Napísať si, ako si to prežívala, vie pomôcť spracovať aj to ťažšie.
+                  Každý pôrod má svoj vlastný príbeh — nežný aj drsný, krehký aj silný. Napísať si ho vie pomôcť
+                  uložiť v sebe s pokojom, nech bol akýkoľvek. Vidíš ho len ty.
                 </p>
                 <Button variant="outline" size="sm" onClick={() => setEditingBirthStory(true)}>
-                  Napísať príbeh
+                  Napísať svoj príbeh
                 </Button>
               </>
             )}
