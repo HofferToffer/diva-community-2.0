@@ -50,10 +50,19 @@ export function formatDate(value: string, locale: "sk" | "en" = "sk"): string {
   return `${d.getDate()}. ${SK_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-export function formatRelative(value: string): string {
+export function formatRelative(value: string, locale: "sk" | "en" = "sk"): string {
   const then = new Date(value).getTime();
   const diff = Date.now() - then;
   const min = Math.round(diff / 60000);
+  if (locale === "en") {
+    if (min < 1) return "just now";
+    if (min < 60) return `${min} min ago`;
+    const hours = Math.round(min / 60);
+    if (hours < 24) return `${hours} h ago`;
+    const days = Math.round(hours / 24);
+    if (days < 7) return `${days} d ago`;
+    return formatDate(value, "en");
+  }
   if (min < 1) return "práve teraz";
   if (min < 60) return `pred ${min} min`;
   const hours = Math.round(min / 60);

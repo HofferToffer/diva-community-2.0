@@ -5,6 +5,57 @@
     "dní": "days",
     "aktivít": "activities"
   },
+  "activityTypeLabel": {
+    "Beh": "Run",
+    "Chôdza": "Walking",
+    "Bicykel": "Cycling",
+    "Plávanie": "Swimming",
+    "Joga": "Yoga",
+    "Tanec": "Dance",
+    "Silový tréning": "Strength Training",
+    "Iné": "Other"
+  },
+  "activity": {
+    "editAriaLabel": "Edit activity",
+    "deleteAriaLabel": "Delete activity",
+    "viewPhotoAriaLabel": "View activity photo",
+    "deleteConfirm": "Really delete this activity?",
+    "deleteFailed": "Couldn't delete the activity.",
+    "deleteSuccess": "Activity deleted.",
+    "photoAlt": "Activity photo",
+    "metricDistance": "Distance",
+    "metricType": "Type",
+    "metricTime": "Time",
+    "metricDate": "Date",
+    "unlikeAriaLabel": "Remove support",
+    "likeAriaLabel": "Support",
+    "likeFailed": "Couldn't save.",
+    "noComments": "No comments yet. Be the first.",
+    "commentPlaceholder": "Write a few kind words...",
+    "commentAriaLabel": "New comment",
+    "addCommentButton": "Add comment",
+    "commentAdded": "Comment added.",
+    "commentAddFailed": "Couldn't add the comment.",
+    "deleteCommentAriaLabel": "Delete comment"
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "Private conversations with your Divas.",
+    "emptyTitle": "No messages yet",
+    "emptyDescription": "Message a Diva on her profile and the conversation will show up here."
+  },
+  "chat": {
+    "profileNotFound": "Profile not found.",
+    "emptyConversation": "Write the first one — the message is private, only the two of you can see it.",
+    "placeholder": "Write a message...",
+    "sendButton": "Send",
+    "sendFailed": "Couldn't send the message."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "emptyTitle": "Nothing new",
+    "emptyDescription": "When someone supports or replies to you, you'll find it here."
+  },
   "challenges": {
     "subtitle": "Shared challenges, where every step from every one of us counts.",
     "emptyTitle": "No challenge yet",

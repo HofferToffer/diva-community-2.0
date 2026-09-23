@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
@@ -14,11 +15,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { fadeUp } from "@/community/lib/motion";
 import { cn } from "@/lib/utils";
 
-function formatTime(iso: string) {
-  return new Intl.DateTimeFormat("sk-SK", { hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+function formatTime(iso: string, locale: "sk" | "en" = "sk") {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "sk-SK", { hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
 }
 
 export default function CommunityChat() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const navigate = useNavigate();
   const { profileId } = useParams<{ profileId: string }>();
   const { profile: me } = useCommunityAuth();
@@ -65,7 +68,7 @@ export default function CommunityChat() {
       await sendMessage.mutateAsync(body);
       setDraft("");
     } catch {
-      toast.error("Správu sa nepodarilo odoslať.");
+      toast.error(t("chat.sendFailed"));
     }
   };
 
@@ -73,7 +76,7 @@ export default function CommunityChat() {
     <div className="flex h-[calc(100vh-8rem)] flex-col space-y-4">
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Domov
+        {t("nav.home")}
       </Link>
 
       {loadingOther ? (
@@ -88,14 +91,14 @@ export default function CommunityChat() {
           <p className="font-display text-xl">{other.name}</p>
         </button>
       ) : (
-        <p className="text-sm text-muted-foreground">Profil sa nenašiel.</p>
+        <p className="text-sm text-muted-foreground">{t("chat.profileNotFound")}</p>
       )}
 
       <div className="flex-1 space-y-3 overflow-y-auto rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
         {loadingMessages && <Skeleton className="h-24 w-full" />}
         {!loadingMessages && messages?.length === 0 && (
           <p className="py-8 text-center text-sm text-muted-foreground">
-            Napíš prvá — správa je súkromná, vidíte ju len vy dve.
+            {t("chat.emptyConversation")}
           </p>
         )}
         {messages?.map((m, i) => {
@@ -109,7 +112,7 @@ export default function CommunityChat() {
                 )}
               >
                 <p className="leading-relaxed">{m.body}</p>
-                <p className={cn("mt-1 text-[0.65rem] opacity-70")}>{formatTime(m.created_at)}</p>
+                <p className={cn("mt-1 text-[0.65rem] opacity-70")}>{formatTime(m.created_at, isEnglish ? "en" : "sk")}</p>
               </div>
             </motion.div>
           );
@@ -121,7 +124,7 @@ export default function CommunityChat() {
         <Textarea
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Napíš správu..."
+          placeholder={t("chat.placeholder")}
           rows={1}
           maxLength={1000}
           className="min-h-11 flex-1 resize-none rounded-2xl border-border/50 text-base shadow-sm lg:text-sm"
@@ -133,7 +136,7 @@ export default function CommunityChat() {
           }}
         />
         <Button size="lg" onClick={submit} disabled={!draft.trim() || sendMessage.isPending}>
-          Odoslať
+          {t("chat.sendButton")}
         </Button>
       </div>
     </div>

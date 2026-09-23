@@ -5,6 +5,57 @@
     "dní": "dní",
     "aktivít": "aktivít"
   },
+  "activityTypeLabel": {
+    "Beh": "Beh",
+    "Chôdza": "Chôdza",
+    "Bicykel": "Bicykel",
+    "Plávanie": "Plávanie",
+    "Joga": "Joga",
+    "Tanec": "Tanec",
+    "Silový tréning": "Silový tréning",
+    "Iné": "Iné"
+  },
+  "activity": {
+    "editAriaLabel": "Upraviť aktivitu",
+    "deleteAriaLabel": "Zmazať aktivitu",
+    "viewPhotoAriaLabel": "Zobraziť fotku aktivity",
+    "deleteConfirm": "Naozaj zmazať túto aktivitu?",
+    "deleteFailed": "Aktivitu sa nepodarilo zmazať.",
+    "deleteSuccess": "Aktivita zmazaná.",
+    "photoAlt": "Fotka z aktivity",
+    "metricDistance": "Vzdialenosť",
+    "metricType": "Typ",
+    "metricTime": "Čas",
+    "metricDate": "Dátum",
+    "unlikeAriaLabel": "Zrušiť podporu",
+    "likeAriaLabel": "Podporiť",
+    "likeFailed": "Nepodarilo sa uložiť.",
+    "noComments": "Zatiaľ bez komentárov. Buď prvá.",
+    "commentPlaceholder": "Napíš pár milých slov...",
+    "commentAriaLabel": "Nový komentár",
+    "addCommentButton": "Pridať komentár",
+    "commentAdded": "Komentár je pridaný.",
+    "commentAddFailed": "Komentár sa nepodarilo pridať.",
+    "deleteCommentAriaLabel": "Zmazať komentár"
+  },
+  "messages": {
+    "title": "Správy",
+    "subtitle": "Súkromné rozhovory s tvojimi divami.",
+    "emptyTitle": "Zatiaľ žiadne správy",
+    "emptyDescription": "Napíš niektorej z divov na jej profile a rozhovor sa tu zobrazí."
+  },
+  "chat": {
+    "profileNotFound": "Profil sa nenašiel.",
+    "emptyConversation": "Napíš prvá — správa je súkromná, vidíte ju len vy dve.",
+    "placeholder": "Napíš správu...",
+    "sendButton": "Odoslať",
+    "sendFailed": "Správu sa nepodarilo odoslať."
+  },
+  "notifications": {
+    "title": "Notifikácie",
+    "emptyTitle": "Nič nové",
+    "emptyDescription": "Keď ťa niekto podporí alebo odpovie, nájdeš to tu."
+  },
   "challenges": {
     "subtitle": "Spoločné výzvy, kde sa počíta každý krok každej z nás.",
     "emptyTitle": "Zatiaľ žiadna výzva",

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProfileAvatar } from "@/community/components/StoredImage";
@@ -10,6 +11,8 @@ import { formatRelative } from "@/community/lib/format";
 import { fadeUp } from "@/community/lib/motion";
 
 export default function CommunityMessages() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const { profile } = useCommunityAuth();
   const { data: conversations, isLoading } = useConversations(profile?.id);
 
@@ -17,12 +20,12 @@ export default function CommunityMessages() {
     <div className="space-y-6">
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Domov
+        {t("nav.home")}
       </Link>
 
       <header>
-        <h1 className="font-display text-3xl">Správy</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Súkromné rozhovory s tvojimi divami.</p>
+        <h1 className="font-display text-3xl">{t("messages.title")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("messages.subtitle")}</p>
       </header>
 
       {isLoading && (
@@ -34,8 +37,8 @@ export default function CommunityMessages() {
 
       {!isLoading && conversations?.length === 0 && (
         <EmptyState
-          title="Zatiaľ žiadne správy"
-          description="Napíš niektorej z divov na jej profile a rozhovor sa tu zobrazí."
+          title={t("messages.emptyTitle")}
+          description={t("messages.emptyDescription")}
         />
       )}
 
@@ -50,7 +53,7 @@ export default function CommunityMessages() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <p className="truncate font-display text-lg leading-tight">{c.otherName}</p>
-                  <span className="shrink-0 text-xs text-muted-foreground">{formatRelative(c.lastCreatedAt)}</span>
+                  <span className="shrink-0 text-xs text-muted-foreground">{formatRelative(c.lastCreatedAt, isEnglish ? "en" : "sk")}</span>
                 </div>
                 <p className="truncate text-sm text-muted-foreground">{c.lastBody}</p>
               </div>

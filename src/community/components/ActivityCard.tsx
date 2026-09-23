@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, MessageCircle, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -24,6 +25,10 @@ export function ActivityCard({
   activity: FeedActivity;
   interactive?: boolean;
 }) {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
+  const activityTypeTranslations = t("activityTypeLabel", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translateType = (label: string) => (isEnglish ? activityTypeTranslations[label] ?? label : label);
   const navigate = useNavigate();
   const { profile } = useCommunityAuth();
   const [showComments, setShowComments] = useState(false);
@@ -62,12 +67,12 @@ export function ActivityCard({
     try {
       await add.mutateAsync({ profileId: profile.id, body });
       setDraft("");
-      toast.success("Komentár je pridaný.");
+      toast.success(t("activity.commentAdded"));
       requestAnimationFrame(() => {
         commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
       });
     } catch {
-      toast.error("Komentár sa nepodarilo pridať.");
+      toast.error(t("activity.commentAddFailed"));
     }
   };
 
@@ -89,15 +94,15 @@ export function ActivityCard({
             </p>
           )}
           <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
-            {activityTypeLabel(activity.kind, activity.activity_type)} ·{" "}
-            {formatRelative(activity.created_at)}
+            {translateType(activityTypeLabel(activity.kind, activity.activity_type))} ·{" "}
+            {formatRelative(activity.created_at, isEnglish ? "en" : "sk")}
           </p>
         </div>
         {isMine && (
           <div className="flex items-center">
             <button
               type="button"
-              aria-label="Upraviť aktivitu"
+              aria-label={t("activity.editAriaLabel")}
               className="p-2 text-muted-foreground transition-colors hover:text-foreground"
               onClick={() => navigate(`/community/aktivita/${activity.id}/upravit`)}
             >
@@ -105,13 +110,13 @@ export function ActivityCard({
             </button>
             <button
               type="button"
-              aria-label="Zmazať aktivitu"
+              aria-label={t("activity.deleteAriaLabel")}
               className="p-2 text-muted-foreground transition-colors hover:text-destructive"
               onClick={() => {
-                if (window.confirm("Naozaj zmazať túto aktivitu?")) {
+                if (window.confirm(t("activity.deleteConfirm"))) {
                   deleteActivity.mutate(activity.id, {
-                    onError: () => toast.error("Aktivitu sa nepodarilo zmazať."),
-                    onSuccess: () => toast.success("Aktivita zmazaná."),
+                    onError: () => toast.error(t("activity.deleteFailed")),
+                    onSuccess: () => toast.success(t("activity.deleteSuccess")),
                   });
                 }
               }}
@@ -125,7 +130,7 @@ export function ActivityCard({
       <div
         role={activity.photo_url ? "button" : undefined}
         tabIndex={activity.photo_url ? 0 : undefined}
-        aria-label={activity.photo_url ? "Zobraziť fotku aktivity" : undefined}
+        aria-label={activity.photo_url ? t("activity.viewPhotoAriaLabel") : undefined}
         aria-expanded={activity.photo_url ? showPhoto : undefined}
         className={activity.photo_url ? "cursor-pointer" : undefined}
         onClick={activity.photo_url ? () => setShowPhoto((v) => !v) : undefined}
@@ -139,14 +144,18 @@ export function ActivityCard({
       >
         <div className={`grid gap-2 px-4 py-4 ${activity.distance_km ? "grid-cols-1" : "grid-cols-2"}`}>
           {activity.distance_km ? (
-            <Metric label="Vzdialenosť" value={formatKm(activity.distance_km)} large />
+            <Metric label={t("activity.metricDistance")} value={formatKm(activity.distance_km)} large />
           ) : (
             <>
-              <Metric label="Typ" value={activityTypeLabel(activity.kind, activity.activity_type)} />
+              <Metric label={t("activity.metricType")} value={translateType(activityTypeLabel(activity.kind, activity.activity_type))} />
               {activity.duration_seconds > 0 ? (
-                <Metric label="Čas" value={formatDuration(activity.duration_seconds)} large />
+                <Metric label={t("activity.metricTime")} value={formatDuration(activity.duration_seconds)} large />
               ) : (
-                <Metric label="Dátum" value={new Date(activity.activity_date).toLocaleDateString("sk-SK")} large />
+                <Metric
+                  label={t("activity.metricDate")}
+                  value={new Date(activity.activity_date).toLocaleDateString(isEnglish ? "en-US" : "sk-SK")}
+                  large
+                />
               )}
             </>
           )}
@@ -167,7 +176,7 @@ export function ActivityCard({
               >
                 <StoredImage
                   path={activity.photo_url}
-                  alt="Fotka z aktivity"
+                  alt={t("activity.photoAlt")}
                   className="aspect-[4/5] w-full object-cover"
                 />
               </motion.div>
@@ -181,14 +190,14 @@ export function ActivityCard({
         <button
           type="button"
           className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          aria-label={liked ? "Zrušiť podporu" : "Podporiť"}
+          aria-label={liked ? t("activity.unlikeAriaLabel") : t("activity.likeAriaLabel")}
           aria-pressed={liked}
           disabled={!profile || toggleLike.isPending}
           onClick={() =>
             profile &&
             toggleLike.mutate(
               { activityId: activity.id, profileId: profile.id, liked },
-              { onError: () => toast.error("Nepodarilo sa uložiť.") },
+              { onError: () => toast.error(t("activity.likeFailed")) },
             )
           }
         >
@@ -219,14 +228,14 @@ export function ActivityCard({
                 <div className="min-w-0 flex-1">
                   <p className="text-sm">
                     <span className="font-medium">{c.profile?.name ?? "Diva"}</span>{" "}
-                    <span className="text-xs text-muted-foreground">{formatRelative(c.created_at)}</span>
+                    <span className="text-xs text-muted-foreground">{formatRelative(c.created_at, isEnglish ? "en" : "sk")}</span>
                   </p>
                   <p className="text-sm text-foreground/85">{c.body}</p>
                 </div>
                 {c.profile_id === profile?.id && (
                   <button
                     type="button"
-                    aria-label="Zmazať komentár"
+                    aria-label={t("activity.deleteCommentAriaLabel")}
                     className="text-muted-foreground hover:text-destructive"
                     onClick={() => remove.mutate(c.id)}
                   >
@@ -236,20 +245,20 @@ export function ActivityCard({
               </li>
             ))}
             {comments.data?.length === 0 && (
-              <li className="text-sm text-muted-foreground">Zatiaľ bez komentárov. Buď prvá.</li>
+              <li className="text-sm text-muted-foreground">{t("activity.noComments")}</li>
             )}
           </ul>
           <div className="mt-4 space-y-2">
             <Textarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="Napíš pár milých slov..."
+              placeholder={t("activity.commentPlaceholder")}
               rows={2}
               maxLength={500}
-              aria-label="Nový komentár"
+              aria-label={t("activity.commentAriaLabel")}
             />
             <Button size="sm" onClick={submitComment} disabled={!draft.trim() || add.isPending}>
-              Pridať komentár
+              {t("activity.addCommentButton")}
             </Button>
           </div>
         </div>
