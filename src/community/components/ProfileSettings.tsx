@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Activity, Bell, Download, Footprints, KeyRound, Palette, ShieldAlert, Sparkles, User } from "lucide-react";
 import { toast } from "sonner";
@@ -29,6 +30,8 @@ import { downloadJson, exportMyData } from "@/community/lib/exportData";
 import { cn } from "@/lib/utils";
 
 export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => void; focusChapter?: boolean }) {
+  const { t } = useTranslation();
+  const deleteConfirmWord = t("profile.deleteConfirmWord");
   const { profile, refreshProfile, signOut } = useCommunityAuth();
   const chapterRef = useRef<HTMLDivElement>(null);
 
@@ -118,16 +121,16 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
         redirect_uri: `${window.location.origin}/community/strava/callback`,
       },
     });
-    if (error || !data?.url) return toast.error("Strava zatiaľ nie je nastavená.");
+    if (error || !data?.url) return toast.error(t("profile.toastStravaNotSetUp"));
     window.location.href = data.url;
   };
 
   const disconnectStrava = async () => {
     if (!stravaConnection) return;
     const { error } = await supabase.from("strava_connections").delete().eq("id", stravaConnection.id);
-    if (error) return toast.error("Odpojenie sa nepodarilo.");
+    if (error) return toast.error(t("profile.toastStravaDisconnectFailed"));
     queryClient.invalidateQueries({ queryKey: ["strava-connection"] });
-    toast.success("Strava je odpojená.");
+    toast.success(t("profile.toastStravaDisconnected"));
   };
 
   const hasHealthData = Boolean(
@@ -137,9 +140,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const save = async () => {
     if (!profile) return;
     const cleanUsername = normalizeUsername(username);
-    if (cleanUsername.length < 3) return toast.error("Prezývka musí mať aspoň 3 znaky.");
+    if (cleanUsername.length < 3) return toast.error(t("profile.toastUsernameTooShort"));
     if (hasHealthData && !healthConsent) {
-      return toast.error("Na uloženie údajov o cykle/tehotenstve/menopauze potrebujeme tvoj súhlas nižšie.");
+      return toast.error(t("profile.toastHealthConsentRequired"));
     }
     setSaving(true);
     try {
@@ -147,7 +150,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
         const { data: available } = await supabase.rpc("is_username_available", { _username: cleanUsername });
         if (!available) {
           setSaving(false);
-          return toast.error("Táto prezývka je už obsadená.");
+          return toast.error(t("profile.toastUsernameTaken"));
         }
       }
 
@@ -191,28 +194,28 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
         .eq("id", profile.id);
       if (error) throw error;
       refreshProfile();
-      toast.success("Zmeny sú uložené.");
+      toast.success(t("profile.toastChangesSaved"));
       onSaved?.();
     } catch {
-      toast.error("Nastavenia sa nepodarilo uložiť.");
+      toast.error(t("profile.toastSaveFailed"));
     } finally {
       setSaving(false);
     }
   };
 
   const changePassword = async () => {
-    if (newPassword.length < 8) return toast.error("Nové heslo musí mať aspoň 8 znakov.");
+    if (newPassword.length < 8) return toast.error(t("profile.toastPasswordTooShort"));
     const { error } = await supabase.auth.updateUser({
       password: newPassword,
       current_password: currentPassword,
     });
     if (error) {
-      toast.error("Heslo sa nepodarilo zmeniť. Skontroluj súčasné heslo.");
+      toast.error(t("profile.toastPasswordChangeFailed"));
       return;
     }
     setCurrentPassword("");
     setNewPassword("");
-    toast.success("Heslo je zmenené.");
+    toast.success(t("profile.toastPasswordChanged"));
   };
 
   const handleExportData = async () => {
@@ -221,9 +224,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
     try {
       const data = await exportMyData(profile.id);
       downloadJson(data, `diva-community-moje-udaje-${new Date().toISOString().slice(0, 10)}.json`);
-      toast.success("Tvoje údaje sú stiahnuté.");
+      toast.success(t("profile.toastDataDownloaded"));
     } catch {
-      toast.error("Stiahnutie údajov sa nepodarilo.");
+      toast.error(t("profile.toastDataDownloadFailed"));
     } finally {
       setExporting(false);
     }
@@ -234,10 +237,10 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
     try {
       const { error } = await supabase.functions.invoke("delete-account", { body: {} });
       if (error) throw error;
-      toast.success("Tvoj účet je vymazaný. Zbohom, Diva — dvere sú vždy otvorené.");
+      toast.success(t("profile.toastAccountDeleted"));
       await signOut();
     } catch {
-      toast.error("Vymazanie účtu sa nepodarilo. Napíš nám prosím na didka0105@gmail.com.");
+      toast.error(t("profile.toastAccountDeleteFailed"));
     } finally {
       setDeleting(false);
     }
@@ -246,23 +249,21 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-display text-2xl">Upraviť profil</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Tieto zmeny uložíš jedným tlačidlom nižšie. Strava, heslo a odhlásenie sa riešia samostatne.
-        </p>
+        <h2 className="font-display text-2xl">{t("profile.title")}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t("profile.subtitle")}</p>
       </div>
 
-      <SectionCard icon={User} title="Základné údaje">
+      <SectionCard icon={User} title={t("profile.basicInfoTitle")}>
         <div className="space-y-2">
-          <Label htmlFor="s-name">Meno</Label>
+          <Label htmlFor="s-name">{t("profile.nameLabel")}</Label>
           <Input id="s-name" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="s-username">Prezývka</Label>
+          <Label htmlFor="s-username">{t("profile.usernameLabel")}</Label>
           <Input id="s-username" value={username} onChange={(e) => setUsername(normalizeUsername(e.target.value))} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="s-city">Mesto</Label>
+          <Label htmlFor="s-city">{t("profile.cityLabel")}</Label>
           <CityAutocomplete
             id="s-city"
             value={city}
@@ -274,7 +275,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="s-dob">Dátum narodenia (nepovinné)</Label>
+          <Label htmlFor="s-dob">{t("profile.dobLabel")}</Label>
           <Input
             id="s-dob"
             type="date"
@@ -282,12 +283,10 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
           />
-          <p className="text-xs text-muted-foreground">
-            Podľa toho ti tu v profile ukážeme tvoj životný archetyp. Vidíš to len ty.
-          </p>
+          <p className="text-xs text-muted-foreground">{t("profile.dobHint")}</p>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="s-children">Koľko máš detí? (nepovinné)</Label>
+          <Label htmlFor="s-children">{t("profile.childrenLabel")}</Label>
           <Input
             id="s-children"
             type="number"
@@ -298,22 +297,20 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             value={childrenCount}
             onChange={(e) => setChildrenCount(e.target.value)}
           />
-          <p className="text-xs text-muted-foreground">Ukážeme to v tvojom profile ako niečo, na čo môžeš byť hrdá.</p>
+          <p className="text-xs text-muted-foreground">{t("profile.childrenHint")}</p>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="s-bio">O mne</Label>
+          <Label htmlFor="s-bio">{t("profile.bioLabel")}</Label>
           <Textarea id="s-bio" rows={4} maxLength={300} value={bio} onChange={(e) => setBio(e.target.value)} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="s-gifts">Moje dary</Label>
-          <p className="text-xs text-muted-foreground">
-            Čo môžeš priniesť do komunity? Napr. kaderníčka, maliarka, strih videí, fotografka, jogínka, koučka, masérka...
-          </p>
+          <Label htmlFor="s-gifts">{t("profile.giftsLabel")}</Label>
+          <p className="text-xs text-muted-foreground">{t("profile.giftsHint")}</p>
           <Textarea
             id="s-gifts"
             rows={3}
             maxLength={300}
-            placeholder="Čo môžeš priniesť do komunity?"
+            placeholder={t("profile.giftsPlaceholder")}
             value={gifts}
             onChange={(e) => setGifts(e.target.value)}
           />
@@ -323,12 +320,12 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
       <div ref={chapterRef}>
       <SectionCard
         icon={Sparkles}
-        title="Moja životná kapitola"
-        description="Vyber si, kde práve si — podľa toho ti prispôsobíme citáty, kalendár aj tipy na Domove. Vidíš to len ty."
+        title={t("profile.chapterTitle")}
+        description={t("profile.chapterDescription")}
       >
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-trying" className="text-sm">Cesta k bábätku</Label>
+            <Label htmlFor="s-is-trying" className="text-sm">{t("profile.tryingToConceiveLabel")}</Label>
             <Switch
               id="s-is-trying"
               checked={isTryingToConceive}
@@ -343,7 +340,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-pregnant" className="text-sm">Moje tehotenstvo</Label>
+            <Label htmlFor="s-is-pregnant" className="text-sm">{t("profile.pregnantLabel")}</Label>
             <Switch
               id="s-is-pregnant"
               checked={isPregnant}
@@ -358,7 +355,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-postpartum" className="text-sm">Šestonedelie / Obnova</Label>
+            <Label htmlFor="s-is-postpartum" className="text-sm">{t("profile.postpartumLabel")}</Label>
             <Switch
               id="s-is-postpartum"
               checked={isPostpartum}
@@ -373,7 +370,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="s-is-menopause" className="text-sm">Moja menopauza</Label>
+            <Label htmlFor="s-is-menopause" className="text-sm">{t("profile.menopauseLabel")}</Label>
             <Switch
               id="s-is-menopause"
               checked={isMenopause}
@@ -391,7 +388,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
 
         {isPostpartum && (
           <div className="space-y-2 border-t border-border/50 pt-4">
-            <Label htmlFor="s-postpartum-since">Dátum pôrodu</Label>
+            <Label htmlFor="s-postpartum-since">{t("profile.postpartumSinceLabel")}</Label>
             <Input
               id="s-postpartum-since"
               type="date"
@@ -399,15 +396,12 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
               value={postpartumSince}
               onChange={(e) => setPostpartumSince(e.target.value)}
             />
-            <p className="text-xs text-muted-foreground">
-              Šestonedelie sa síce podľa mena končí po šiestich týždňoch, ale vieme, že to zvyčajne trvá dlhšie —
-              táto sekcia zostáva, kým si ju sama nevypneš.
-            </p>
+            <p className="text-xs text-muted-foreground">{t("profile.postpartumSinceHint")}</p>
           </div>
         )}
         {isMenopause && (
           <div className="space-y-2 border-t border-border/50 pt-4">
-            <Label htmlFor="s-last-period">Prvý deň poslednej menštruácie (nepovinné)</Label>
+            <Label htmlFor="s-last-period">{t("profile.lastPeriodMenopauseLabel")}</Label>
             <Input
               id="s-last-period"
               type="date"
@@ -415,17 +409,14 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
               value={lastPeriod}
               onChange={(e) => setLastPeriod(e.target.value)}
             />
-            <p className="text-xs text-muted-foreground">
-              Nikde ti to nezobrazujeme ako odpočítavanie — necháme si to len ako tichý údaj, ktorý sa môže zísť
-              napríklad na gynekológii. Vidíš ho len ty.
-            </p>
+            <p className="text-xs text-muted-foreground">{t("profile.lastPeriodMenopauseHint")}</p>
           </div>
         )}
         {!isMenopause && !isPostpartum && (
           <div className="space-y-4 border-t border-border/50 pt-4">
             <div className="space-y-2">
               <Label htmlFor="s-last-period">
-                {isPregnant ? "Prvý deň poslednej menštruácie" : "Prvý deň poslednej menštruácie (nepovinné)"}
+                {isPregnant ? t("profile.lastPeriodPregnantLabel") : t("profile.lastPeriodOptionalLabel")}
               </Label>
               <Input
                 id="s-last-period"
@@ -436,22 +427,22 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
               />
               <p className="text-xs text-muted-foreground">
                 {isPregnant
-                  ? "Podľa toho ti na Domove ukážeme, koľký týždeň tehotenstva máš a predpokladaný termín pôrodu."
+                  ? t("profile.lastPeriodHintPregnant")
                   : isTryingToConceive
-                    ? "Podľa toho ti v kalendári zvýrazníme plodné dni. Tieto údaje vidíš len ty."
-                    : "Podľa toho ti tu ukážeme aktuálnu fázu cyklu. Tieto údaje vidíš len ty."}
+                    ? t("profile.lastPeriodHintTTC")
+                    : t("profile.lastPeriodHintCycle")}
               </p>
             </div>
             {!isPregnant && (
               <div className="space-y-2">
-                <Label htmlFor="s-cycle-length">Dĺžka cyklu v dňoch (nepovinné)</Label>
+                <Label htmlFor="s-cycle-length">{t("profile.cycleLengthLabel")}</Label>
                 <Input
                   id="s-cycle-length"
                   type="number"
                   inputMode="numeric"
                   min={21}
                   max={40}
-                  placeholder="napr. 28"
+                  placeholder={t("profile.cycleLengthPlaceholder")}
                   value={cycleLength}
                   onChange={(e) => setCycleLength(e.target.value)}
                 />
@@ -469,9 +460,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
               className="mt-0.5"
             />
             <Label htmlFor="s-health-consent" className="text-xs font-normal leading-relaxed text-muted-foreground">
-              Súhlasím so spracovaním týchto údajov o mojom cykle/tehotenstve/menopauze na účely appky. Viac v{" "}
+              {t("profile.healthConsentText")}{" "}
               <Link to="/zasady-ochrany-udajov" target="_blank" className="underline hover:text-foreground">
-                Zásadách ochrany osobných údajov
+                {t("profile.healthConsentLinkText")}
               </Link>
               .
             </Label>
@@ -480,20 +471,16 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
 
         <div className="space-y-2 border-t border-border/50 pt-4">
           <ToggleRow
-            label="Zobrazovať moju kapitolu ostatným Divám"
+            label={t("profile.shareChapterLabel")}
             checked={shareChapter}
             onChange={setShareChapter}
           />
-          <p className="text-xs text-muted-foreground">
-            Keď to zdieľaš, ostatné Divy v Divách uvidia, v akej si životnej kapitole — vďaka tomu môžeš nájsť aj
-            byť nájdená Divami v tej istej kapitole a navzájom sa podporiť. Predvolene je to vypnuté a nikdy
-            neukazujeme konkrétne dátumy ani iné údaje — len názov kapitoly.
-          </p>
+          <p className="text-xs text-muted-foreground">{t("profile.shareChapterHint")}</p>
         </div>
       </SectionCard>
       </div>
 
-      <SectionCard icon={Footprints} title="Ako sa hýbem">
+      <SectionCard icon={Footprints} title={t("profile.movementTitle")}>
         <div className="flex flex-wrap gap-2">
           {MOVEMENT_INTERESTS.map((item) => {
             const selected = interests.includes(item);
@@ -517,48 +504,46 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
 
       <SectionCard
         icon={Palette}
-        title="Vzhľad appky"
-        description="Keď je zapnuté, farby appky sa jemne menia podľa toho, v akej fáze cyklu práve si."
+        title={t("profile.appearanceTitle")}
+        description={t("profile.appearanceDescription")}
       >
-        <ToggleRow label="Automaticky podľa fázy cyklu" checked={dynamicTheme} onChange={setDynamicTheme} />
+        <ToggleRow label={t("profile.dynamicThemeLabel")} checked={dynamicTheme} onChange={setDynamicTheme} />
       </SectionCard>
 
-      <SectionCard icon={Bell} title="Súkromie a notifikácie">
+      <SectionCard icon={Bell} title={t("profile.privacyTitle")}>
         <div className="space-y-2">
-          <ToggleRow label="Verejný profil" checked={isPublic} onChange={setIsPublic} />
-          <ToggleRow label="Upozornenia na podporu (srdiečka)" checked={notifyLikes} onChange={setNotifyLikes} />
-          <ToggleRow label="Upozornenia na komentáre" checked={notifyComments} onChange={setNotifyComments} />
-          <ToggleRow label="Upozornenia na výzvy" checked={notifyChallenges} onChange={setNotifyChallenges} />
+          <ToggleRow label={t("profile.publicProfileLabel")} checked={isPublic} onChange={setIsPublic} />
+          <ToggleRow label={t("profile.notifyLikesLabel")} checked={notifyLikes} onChange={setNotifyLikes} />
+          <ToggleRow label={t("profile.notifyCommentsLabel")} checked={notifyComments} onChange={setNotifyComments} />
+          <ToggleRow label={t("profile.notifyChallengesLabel")} checked={notifyChallenges} onChange={setNotifyChallenges} />
         </div>
       </SectionCard>
 
       <Button className="w-full" size="lg" onClick={save} disabled={saving}>
-        Uložiť zmeny
+        {t("profile.saveButton")}
       </Button>
 
       <div className="border-t border-border/60 pt-8">
-        <p className="mb-4 text-xs uppercase tracking-[0.15em] text-muted-foreground">Účet</p>
+        <p className="mb-4 text-xs uppercase tracking-[0.15em] text-muted-foreground">{t("profile.accountSection")}</p>
         <div className="space-y-6">
-          <SectionCard icon={Activity} title="Strava">
+          <SectionCard icon={Activity} title={t("profile.stravaTitle")}>
             <p className="text-sm">
-              {stravaConnection
-                ? "Strava je prepojená. Nové aktivity sa importujú automaticky."
-                : "Prepoj si Strava účet a tvoje aktivity sa budú importovať automaticky."}
+              {stravaConnection ? t("profile.stravaConnected") : t("profile.stravaNotConnected")}
             </p>
             {stravaConnection ? (
               <Button variant="outline" className="w-full" onClick={disconnectStrava}>
-                Odpojiť Stravu
+                {t("profile.stravaDisconnectButton")}
               </Button>
             ) : (
               <Button className="w-full" onClick={connectStrava}>
-                Pripojiť Stravu
+                {t("profile.stravaConnectButton")}
               </Button>
             )}
           </SectionCard>
 
-          <SectionCard icon={KeyRound} title="Zmena hesla">
+          <SectionCard icon={KeyRound} title={t("profile.passwordTitle")}>
             <div className="space-y-2">
-              <Label htmlFor="cur-pass">Súčasné heslo</Label>
+              <Label htmlFor="cur-pass">{t("profile.currentPasswordLabel")}</Label>
               <Input
                 id="cur-pass"
                 type={showPassword ? "text" : "password"}
@@ -568,7 +553,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="new-pass">Nové heslo</Label>
+              <Label htmlFor="new-pass">{t("profile.newPasswordLabel")}</Label>
               <Input
                 id="new-pass"
                 type={showPassword ? "text" : "password"}
@@ -577,50 +562,50 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
                 onChange={(e) => setNewPassword(e.target.value)}
               />
             </div>
-            <ToggleRow label="Zobraziť heslo" checked={showPassword} onChange={setShowPassword} />
+            <ToggleRow label={t("profile.showPasswordLabel")} checked={showPassword} onChange={setShowPassword} />
             <Button variant="outline" className="w-full" onClick={changePassword}>
-              Zmeniť heslo
+              {t("profile.changePasswordButton")}
             </Button>
           </SectionCard>
 
           <SectionCard
             icon={ShieldAlert}
-            title="Moje údaje"
-            description="Podľa GDPR máš právo kedykoľvek vidieť, stiahnuť alebo vymazať všetky svoje údaje."
+            title={t("profile.dataTitle")}
+            description={t("profile.dataDescription")}
           >
             <Button variant="outline" className="w-full gap-2" onClick={handleExportData} disabled={exporting}>
               <Download className="h-4 w-4" aria-hidden="true" />
-              {exporting ? "Sťahujem…" : "Stiahnuť moje dáta"}
+              {exporting ? t("profile.downloading") : t("profile.downloadDataButton")}
             </Button>
 
             <AlertDialog onOpenChange={(open) => !open && setDeleteConfirmText("")}>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" className="w-full">
-                  Vymazať účet
+                  {t("profile.deleteAccountButton")}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Naozaj chceš vymazať svoj účet?</AlertDialogTitle>
+                  <AlertDialogTitle>{t("profile.deleteConfirmTitle")}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Toto natrvalo vymaže tvoj profil, aktivity, pocity, správy aj fotky. Táto akcia sa nedá vrátiť
-                    späť. Pre potvrdenie napíš nižšie slovo <strong className="text-foreground">VYMAZAŤ</strong>.
+                    {t("profile.deleteConfirmDescription")}{" "}
+                    <strong className="text-foreground">{deleteConfirmWord}</strong>.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <Input
                   value={deleteConfirmText}
                   onChange={(e) => setDeleteConfirmText(e.target.value)}
-                  placeholder="VYMAZAŤ"
-                  aria-label="Napíš VYMAZAŤ pre potvrdenie"
+                  placeholder={deleteConfirmWord}
+                  aria-label={t("profile.deleteConfirmAriaLabel", { word: deleteConfirmWord })}
                 />
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Zrušiť</AlertDialogCancel>
+                  <AlertDialogCancel>{t("profile.cancelButton")}</AlertDialogCancel>
                   <AlertDialogAction
                     className={cn(buttonVariants({ variant: "destructive" }))}
-                    disabled={deleteConfirmText !== "VYMAZAŤ" || deleting}
+                    disabled={deleteConfirmText !== deleteConfirmWord || deleting}
                     onClick={handleDeleteAccount}
                   >
-                    {deleting ? "Mažem…" : "Natrvalo vymazať"}
+                    {deleting ? t("profile.deleting") : t("profile.deletePermanentlyButton")}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -628,7 +613,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           </SectionCard>
 
           <Button variant="outline" className="w-full" onClick={signOut}>
-            Odhlásiť sa
+            {t("profile.signOutButton")}
           </Button>
         </div>
       </div>
