@@ -631,6 +631,11 @@ export default function CommunityCycle() {
                     To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj
                     vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.
                   </p>
+                  <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
+                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí — aj keď sa cítiš dobre.
+                    Ak ťa čokoľvek trápi (silné krvácanie, bolesť, horúčka, výtok, zmeny nálady), neodkladaj návštevu
+                    lekára. Táto aplikácia je len podpora, nenahrádza lekársku starostlivosť ani diagnózu.
+                  </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={savingEndPostpartum} onClick={confirmEndPostpartum}>
                       {savingEndPostpartum ? "Ukladám…" : "Rozumiem, ukončiť"}
