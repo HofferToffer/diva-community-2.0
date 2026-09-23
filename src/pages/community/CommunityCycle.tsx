@@ -680,51 +680,24 @@ export default function CommunityCycle() {
               className="hidden"
               onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
             />
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              {recordingStory ? (
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              {profile.birth_story_audio && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-0 text-primary"
-                  onClick={stopStoryRecording}
-                >
-                  <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
-                  Zastaviť a uložiť nahrávku
-                </Button>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 px-0 text-primary"
-                  disabled={savingStoryAudio}
-                  onClick={startStoryRecording}
-                >
-                  <Mic className="h-4 w-4" aria-hidden="true" />
-                  {savingStoryAudio
-                    ? "Ukladám…"
-                    : profile.birth_story_audio
-                      ? "Nahrať znova"
-                      : "Nahrať hlasom"}
-                </Button>
-              )}
-              {profile.birth_story_audio && !recordingStory && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 px-0 text-primary"
-                  disabled={transcribingStory || savingStoryAudio}
+                  className="rounded-full bg-secondary/40 px-4 text-primary hover:bg-secondary/60"
+                  disabled={transcribingStory}
                   onClick={transcribeStoryAudio}
                 >
                   <FileText className="h-4 w-4" aria-hidden="true" />
                   {transcribingStory ? "Prepisujem…" : "Prepísať na text"}
                 </Button>
               )}
-              {profile.birth_story_audio && !recordingStory && (
+              {profile.birth_story_audio && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-0 text-muted-foreground"
-                  disabled={savingStoryAudio}
+                  className="rounded-full bg-secondary/30 px-4 text-muted-foreground hover:bg-secondary/50"
                   onClick={removeStoryAudio}
                 >
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
@@ -734,7 +707,7 @@ export default function CommunityCycle() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-1.5 px-0 text-primary"
+                className="rounded-full bg-secondary/40 px-4 text-primary hover:bg-secondary/60"
                 disabled={uploadingStoryPhoto}
                 onClick={() => storyPhotoInputRef.current?.click()}
               >
@@ -749,7 +722,7 @@ export default function CommunityCycle() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-0 text-muted-foreground"
+                  className="rounded-full bg-secondary/30 px-4 text-muted-foreground hover:bg-secondary/50"
                   disabled={uploadingStoryPhoto}
                   onClick={removeStoryPhoto}
                 >
