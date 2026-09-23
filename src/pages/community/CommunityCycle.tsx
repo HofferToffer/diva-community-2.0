@@ -517,7 +517,7 @@ export default function CommunityCycle() {
               <p className="text-sm leading-relaxed text-foreground/85">
                 {isEnglish ? t(`pregnancy.weekBands.${pregnancy.bandKey}.message`) : pregnancy.message}
               </p>
-              <div className="rounded-xl border border-border/50 bg-background/60 p-3">
+              <div className="rounded-2xl border border-border/50 bg-background/60 p-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("pregnancyCard.typicalThisWeekTitle")}
                 </p>
@@ -536,7 +536,7 @@ export default function CommunityCycle() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-between border-primary/30 bg-primary/5 px-4 font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
                 onClick={() => setShowMorePregnancy((v) => !v)}
               >
                 {showMorePregnancy ? t("pregnancyCard.showLessButton") : t("pregnancyCard.showMoreButton")}
@@ -544,8 +544,8 @@ export default function CommunityCycle() {
               </Button>
               {showMorePregnancy && (
                 <>
-                  <div className="rounded-xl border border-border/50 bg-background/60 p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                       {t("pregnancyCard.tipsTitle")}
                     </p>
                     <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
@@ -556,8 +556,8 @@ export default function CommunityCycle() {
                     </div>
                   </div>
                   {pregnancy.week >= 34 && (
-                    <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
-                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                         {t("pregnancyCard.latePrepTitle")}
                       </p>
                       <div className="mt-4">
@@ -568,7 +568,7 @@ export default function CommunityCycle() {
                       </p>
                     </div>
                   )}
-                  <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
+                  <p className="rounded-2xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
                     {isEnglish ? t("pregnancy.partnerNote") : PARTNER_SUPPORT_NOTE_PREGNANCY}
                   </p>
                 </>
@@ -578,7 +578,7 @@ export default function CommunityCycle() {
             <p className="text-sm text-muted-foreground">{t("pregnancyCard.enterLastPeriod")}</p>
           )}
           {showMorePregnancy && (
-            <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+            <div className="space-y-3 rounded-2xl border border-border/50 bg-background/60 p-4">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("pregnancyCard.prepareMindTitle")}
@@ -664,7 +664,7 @@ export default function CommunityCycle() {
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.message`) : postpartum.message}
               </p>
-              <div className="rounded-xl border border-border/50 bg-background/60 p-3">
+              <div className="rounded-2xl border border-border/50 bg-background/60 p-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("postpartumCard.symptomsTitle")}
                 </p>
@@ -692,7 +692,7 @@ export default function CommunityCycle() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-between border-primary/30 bg-primary/5 px-4 font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
                 onClick={() => setShowMorePostpartum((v) => !v)}
               >
                 {showMorePostpartum ? t("postpartumCard.showLessButton") : t("postpartumCard.showMoreButton")}
@@ -700,8 +700,8 @@ export default function CommunityCycle() {
               </Button>
               {showMorePostpartum && (
                 <>
-                  <div className="rounded-xl border border-border/50 bg-background/60 p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                       {t("postpartumCard.tipsTitle")}
                     </p>
                     <div className="mt-4">
@@ -711,7 +711,7 @@ export default function CommunityCycle() {
                       {t("postpartumCard.hydrationNote")}
                     </p>
                   </div>
-                  <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
+                  <p className="rounded-2xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
                     {isEnglish ? t("postpartum.partnerNote") : PARTNER_SUPPORT_NOTE_POSTPARTUM}
                   </p>
                   <div className="rounded-2xl bg-secondary/30 p-4">
@@ -952,7 +952,7 @@ export default function CommunityCycle() {
           </div>
 
           {endingPostpartum && (
-            <div ref={endPostpartumRef} className="scroll-mt-24 space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+            <div ref={endPostpartumRef} className="scroll-mt-24 space-y-3 rounded-2xl border border-border/50 bg-background/60 p-4">
               <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
               {periodReturnedChoice === null && (
                 <div className="flex gap-2">
@@ -1054,8 +1054,8 @@ export default function CommunityCycle() {
             </Button>
           </div>
 
-          <div className="rounded-xl border border-border/50 bg-background/60 p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               {t("menopauseCard.tipsForYouTitle")}
             </p>
             <div className="mt-4">
@@ -1081,7 +1081,7 @@ export default function CommunityCycle() {
                   type="button"
                   onClick={() => selectMenopauseStage(stage.key)}
                   className={cn(
-                    "w-full rounded-xl border p-4 text-left transition-colors",
+                    "w-full rounded-2xl border p-4 text-left transition-colors",
                     selected ? "border-primary bg-primary/10" : "border-border/50 bg-background/60 hover:border-primary/40",
                   )}
                 >
@@ -1244,7 +1244,7 @@ export default function CommunityCycle() {
               </div>
 
               {profile.is_trying_to_conceive && (
-                <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+                <div className="space-y-3 rounded-2xl border border-border/50 bg-background/60 p-4">
                   <p className="text-sm text-foreground/85">
                     {isEnglish ? t("ttc.intro") : "Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na deň si vieš súkromne zapísať, kedy ste boli spolu."}
                   </p>
@@ -1269,7 +1269,7 @@ export default function CommunityCycle() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full justify-between border-primary/30 bg-primary/5 px-4 font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                    className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
                     onClick={() => setShowMoreTTC((v) => !v)}
                   >
                     {showMoreTTC ? t("ttc.showLessButton") : t("ttc.showMoreButton")}
@@ -1277,7 +1277,7 @@ export default function CommunityCycle() {
                   </Button>
                   {showMoreTTC && (
                     <>
-                      <div className="rounded-xl border border-border/50 bg-card p-3">
+                      <div className="rounded-2xl border border-border/50 bg-card p-3">
                         <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                           {t("ttc.doctorGuidanceTitle")}
                         </p>
@@ -1301,11 +1301,13 @@ export default function CommunityCycle() {
                         </ul>
                       </div>
 
-                      <div>
-                        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                           {t("ttc.tipsTitle")}
                         </p>
-                        <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
+                        <div className="mt-4">
+                          <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
+                        </div>
                       </div>
 
                       <div className="rounded-xl border border-border/50 bg-card p-3">
@@ -1330,7 +1332,7 @@ export default function CommunityCycle() {
                 </div>
               )}
 
-              <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+              <div className="rounded-2xl border border-border/50 bg-background/60 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("cycleCard.tipsForThisPhase")}
                 </p>
