@@ -45,9 +45,8 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   const { data: notifications } = useNotifications(profile?.id);
   const { data: conversations } = useConversations(profile?.id);
   const { data: isAdmin } = useIsAdmin();
-  // The cycle nav item's label is still Slovak-only (PHASE_LABEL isn't translated
-  // yet) — it overrides the translated default until that content is migrated too.
-  const chapterLabel = PHASE_LABEL[getLifePhase(profile)];
+  const lifePhase = getLifePhase(profile);
+  const chapterLabel = i18n.language === "en" ? t(`phaseLabel.${lifePhase}`) : PHASE_LABEL[lifePhase];
   const baseNav = NAV.map((item) => ({
     ...item,
     label: item.to === "/community/cyklus" ? chapterLabel : t(item.labelKey),

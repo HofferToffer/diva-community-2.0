@@ -462,15 +462,14 @@ export default function CommunityCycle() {
     <div className="space-y-8">
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Domov
+        {t("nav.home")}
       </Link>
 
       <motion.header {...fadeUp(0)} className="space-y-1">
-        <h1 className="font-display text-3xl">{PHASE_LABEL[getLifePhase(profile)]}</h1>
-        <p className="text-sm text-muted-foreground">
-          Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie. Každá to prežívame inak a po
-          svojom, ber to ako inšpiráciu, nie presný predpis.
-        </p>
+        <h1 className="font-display text-3xl">
+          {isEnglish ? t(`phaseLabel.${getLifePhase(profile)}`) : PHASE_LABEL[getLifePhase(profile)]}
+        </h1>
+        <p className="text-sm text-muted-foreground">{t("cycleCard.pageIntro")}</p>
       </motion.header>
 
       <motion.p

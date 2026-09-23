@@ -1,4 +1,45 @@
 {
+  "map": {
+    "title": "Diva Map",
+    "subtitle": "Where we all are. We only show the city, never the exact address — if you find someone nearby, message her.",
+    "emptyTitle": "No one is here yet",
+    "emptyDescription": "Once Divas fill in their city in their profile, you'll see them here.",
+    "meMarker": "(you)",
+    "viewProfile": "View profile"
+  },
+  "divy": {
+    "friendButton": "Friend",
+    "addButton": "Add",
+    "title": "Divas",
+    "subtitle": "Find a Diva who inspires and supports you — by name, city, favorite movement, or life chapter.",
+    "mapLink": "Map",
+    "searchPlaceholder": "Search by name or username",
+    "searchAriaLabel": "Search Divas",
+    "cityPlaceholder": "City",
+    "cityAriaLabel": "Filter by city",
+    "movementAriaLabel": "Filter by movement",
+    "movementPlaceholder": "Movement",
+    "allMovement": "All kinds of movement",
+    "chapterAriaLabel": "Filter by life chapter",
+    "chapterPlaceholder": "Life chapter",
+    "allChapters": "All chapters",
+    "chapterFilterNote": "Showing only Divas who chose to share their life chapter with the community.",
+    "searchResultsTitle": "Search results",
+    "communityDivyTitle": "Divas in the community",
+    "emptyTitle": "We couldn't find anyone",
+    "emptyDescription": "Try a different name, city, or filter.",
+    "myFriendsTitle": "My friends",
+    "friendAdded": "{{name}} is now your friend.",
+    "friendRemoved": "{{name}} is no longer among your friends.",
+    "toastSaveFailed": "Couldn't save."
+  },
+  "phaseLabel": {
+    "cycle": "My cycle",
+    "trying": "Trying to conceive",
+    "pregnant": "My pregnancy",
+    "postpartum": "Postpartum / Recovery",
+    "menopause": "My menopause"
+  },
   "menopauseCard": {
     "chapterLabel": "Your Chapter",
     "title": "In Menopause",
@@ -535,6 +576,7 @@
     "switchToSlovak": "Slovenčina"
   },
   "cycleCard": {
+    "pageIntro": "Track your cycle phases and tips to help you feel better. Every one of us experiences it differently and in our own way, so take this as inspiration, not a strict prescription.",
     "title": "Cycle overview",
     "dayOfCycle": "Day {{count}} of cycle",
     "editButton": "Edit",

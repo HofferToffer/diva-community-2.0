@@ -1,4 +1,45 @@
 {
+  "map": {
+    "title": "Mapa Divy",
+    "subtitle": "Kde všade sme. Ukazujeme len mesto, nikdy presnú adresu — ak si niekoho nájdeš nablízku, napíš jej.",
+    "emptyTitle": "Zatiaľ tu nikto nie je",
+    "emptyDescription": "Keď si Divy vyplnia mesto v profile, uvidíš ich tu.",
+    "meMarker": "(ty)",
+    "viewProfile": "Pozrieť profil"
+  },
+  "divy": {
+    "friendButton": "Kamoška",
+    "addButton": "Pridať",
+    "title": "Divy",
+    "subtitle": "Nájdi si Divu, ktorá ťa inšpiruje a podporuje — podľa mena, mesta, obľúbeného pohybu alebo životnej kapitoly.",
+    "mapLink": "Mapa",
+    "searchPlaceholder": "Hľadaj podľa mena alebo prezývky",
+    "searchAriaLabel": "Hľadať divu",
+    "cityPlaceholder": "Mesto",
+    "cityAriaLabel": "Filtrovať podľa mesta",
+    "movementAriaLabel": "Filtrovať podľa pohybu",
+    "movementPlaceholder": "Pohyb",
+    "allMovement": "Všetky druhy pohybu",
+    "chapterAriaLabel": "Filtrovať podľa životnej kapitoly",
+    "chapterPlaceholder": "Životná kapitola",
+    "allChapters": "Všetky kapitoly",
+    "chapterFilterNote": "Zobrazujeme len Divy, ktoré sa rozhodli svoju životnú kapitolu zdieľať s komunitou.",
+    "searchResultsTitle": "Výsledky hľadania",
+    "communityDivyTitle": "Divy v komunite",
+    "emptyTitle": "Nikoho sme nenašli",
+    "emptyDescription": "Skús iné meno, mesto alebo filter.",
+    "myFriendsTitle": "Moje kamošky",
+    "friendAdded": "{{name}} je tvoja kamoška.",
+    "friendRemoved": "{{name}} už nie je medzi kamoškami.",
+    "toastSaveFailed": "Nepodarilo sa uložiť."
+  },
+  "phaseLabel": {
+    "cycle": "Môj cyklus",
+    "trying": "Cesta k bábätku",
+    "pregnant": "Moje tehotenstvo",
+    "postpartum": "Šestonedelie / Obnova",
+    "menopause": "Moja menopauza"
+  },
   "menopauseCard": {
     "chapterLabel": "Tvoja kapitola",
     "title": "V menopauze",
@@ -128,6 +169,7 @@
     "switchToSlovak": "Slovenčina"
   },
   "cycleCard": {
+    "pageIntro": "Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie. Každá to prežívame inak a po svojom, ber to ako inšpiráciu, nie presný predpis.",
     "title": "Prehľad cyklu",
     "dayOfCycle": "{{count}}. deň cyklu",
     "editButton": "Upraviť",

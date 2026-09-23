@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
@@ -68,6 +69,7 @@ function FitToDivas({ points }: { points: [number, number][] }) {
 }
 
 export default function CommunityMap() {
+  const { t } = useTranslation();
   const { profile } = useCommunityAuth();
   const { data: divas, isLoading } = useMapDivas();
 
@@ -85,20 +87,18 @@ export default function CommunityMap() {
     <div className="space-y-6">
       <Link to="/community/divy" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Divy
+        {t("divy.title")}
       </Link>
 
       <motion.header {...fadeUp(0)} className="space-y-1">
-        <h1 className="font-display text-3xl">Mapa Divy</h1>
-        <p className="text-sm text-muted-foreground">
-          Kde všade sme. Ukazujeme len mesto, nikdy presnú adresu — ak si niekoho nájdeš nablízku, napíš jej.
-        </p>
+        <h1 className="font-display text-3xl">{t("map.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("map.subtitle")}</p>
       </motion.header>
 
       {isLoading && <Skeleton className="h-[60vh] w-full rounded-2xl" />}
 
       {!isLoading && points.length === 0 && (
-        <EmptyState title="Zatiaľ tu nikto nie je" description="Keď si Divy vyplnia mesto v profile, uvidíš ich tu." />
+        <EmptyState title={t("map.emptyTitle")} description={t("map.emptyDescription")} />
       )}
 
       {!isLoading && points.length > 0 && (
@@ -142,6 +142,8 @@ export default function CommunityMap() {
 }
 
 function DivaMarker({ diva, coords, isMe }: { diva: MapDiva; coords: [number, number]; isMe: boolean }) {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   return (
     <Marker position={coords} icon={isMe ? myDivaIcon : divaIcon}>
       <Popup>
@@ -149,15 +151,19 @@ function DivaMarker({ diva, coords, isMe }: { diva: MapDiva; coords: [number, nu
           <ProfileAvatar path={diva.avatar_url} name={diva.name} size={36} />
           <div className="min-w-0">
             <p className="truncate font-display text-base leading-tight">
-              {diva.name} {isMe && "(ty)"}
+              {diva.name} {isMe && t("map.meMarker")}
             </p>
             <p className="truncate text-xs text-muted-foreground">{diva.city}</p>
             {diva.chapter && (
-              <p className="truncate text-xs text-primary">{PHASE_LABEL[diva.chapter as LifePhase] ?? diva.chapter}</p>
+              <p className="truncate text-xs text-primary">
+                {isEnglish
+                  ? t(`phaseLabel.${diva.chapter}`, { defaultValue: diva.chapter })
+                  : PHASE_LABEL[diva.chapter as LifePhase] ?? diva.chapter}
+              </p>
             )}
             {diva.username && !isMe && (
               <Link to={`/community/divy/${diva.username}`} className="text-xs underline">
-                Pozrieť profil
+                {t("map.viewProfile")}
               </Link>
             )}
           </div>

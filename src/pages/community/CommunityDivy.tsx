@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Map, Search } from "lucide-react";
@@ -34,6 +35,8 @@ function DivaRow({
   onToggle: () => void;
   pending: boolean;
 }) {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const inner = (
     <>
       <ProfileAvatar path={diva.avatar_url} name={diva.name} size={44} />
@@ -44,7 +47,9 @@ function DivaRow({
         </p>
         {diva.chapter && (
           <p className="truncate text-xs text-primary">
-            {PHASE_LABEL[diva.chapter as LifePhase] ?? diva.chapter}
+            {isEnglish
+              ? t(`phaseLabel.${diva.chapter}`, { defaultValue: diva.chapter })
+              : PHASE_LABEL[diva.chapter as LifePhase] ?? diva.chapter}
           </p>
         )}
       </div>
@@ -61,13 +66,15 @@ function DivaRow({
         <div className="flex min-w-0 flex-1 items-center gap-3">{inner}</div>
       )}
       <Button size="sm" variant={isFriend ? "outline" : "default"} disabled={pending} onClick={onToggle}>
-        {isFriend ? "Kamoška" : "Pridať"}
+        {isFriend ? t("divy.friendButton") : t("divy.addButton")}
       </Button>
     </li>
   );
 }
 
 export default function CommunityDivy() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const { profile } = useCommunityAuth();
   const [term, setTerm] = useState("");
   const [city, setCity] = useState("");
@@ -97,8 +104,12 @@ export default function CommunityDivy() {
       { targetId: diva.id, isFriend },
       {
         onSuccess: () =>
-          toast.success(isFriend ? `${diva.name} už nie je medzi kamoškami.` : `${diva.name} je tvoja kamoška.`),
-        onError: () => toast.error("Nepodarilo sa uložiť."),
+          toast.success(
+            isFriend
+              ? t("divy.friendRemoved", { name: diva.name })
+              : t("divy.friendAdded", { name: diva.name }),
+          ),
+        onError: () => toast.error(t("divy.toastSaveFailed")),
       },
     );
   };
@@ -109,22 +120,20 @@ export default function CommunityDivy() {
     <div className="space-y-8">
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Domov
+        {t("nav.home")}
       </Link>
 
       <motion.header {...fadeUp(0)} className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <h1 className="font-display text-3xl">Divy</h1>
-          <p className="text-sm text-muted-foreground">
-            Nájdi si Divu, ktorá ťa inšpiruje a podporuje — podľa mena, mesta, obľúbeného pohybu alebo životnej kapitoly.
-          </p>
+          <h1 className="font-display text-3xl">{t("divy.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("divy.subtitle")}</p>
         </div>
         <Link
           to="/community/mapa"
           className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/50 bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-sm hover:text-foreground"
         >
           <Map className="h-3.5 w-3.5" aria-hidden="true" />
-          Mapa
+          {t("divy.mapLink")}
         </Link>
       </motion.header>
 
@@ -134,8 +143,8 @@ export default function CommunityDivy() {
           <Input
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            placeholder="Hľadaj podľa mena alebo prezývky"
-            aria-label="Hľadať divu"
+            placeholder={t("divy.searchPlaceholder")}
+            aria-label={t("divy.searchAriaLabel")}
             className="pl-9"
           />
         </div>
@@ -143,15 +152,15 @@ export default function CommunityDivy() {
           <Input
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            placeholder="Mesto"
-            aria-label="Filtrovať podľa mesta"
+            placeholder={t("divy.cityPlaceholder")}
+            aria-label={t("divy.cityAriaLabel")}
           />
           <Select value={interest || "all"} onValueChange={(v) => setInterest(v === "all" ? "" : v)}>
-            <SelectTrigger aria-label="Filtrovať podľa pohybu">
-              <SelectValue placeholder="Pohyb" />
+            <SelectTrigger aria-label={t("divy.movementAriaLabel")}>
+              <SelectValue placeholder={t("divy.movementPlaceholder")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Všetky druhy pohybu</SelectItem>
+              <SelectItem value="all">{t("divy.allMovement")}</SelectItem>
               {MOVEMENT_INTERESTS.map((item) => (
                 <SelectItem key={item} value={item}>
                   {item}
@@ -160,33 +169,33 @@ export default function CommunityDivy() {
             </SelectContent>
           </Select>
           <Select value={chapter || "all"} onValueChange={(v) => setChapter(v === "all" ? "" : v)}>
-            <SelectTrigger aria-label="Filtrovať podľa životnej kapitoly">
-              <SelectValue placeholder="Životná kapitola" />
+            <SelectTrigger aria-label={t("divy.chapterAriaLabel")}>
+              <SelectValue placeholder={t("divy.chapterPlaceholder")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Všetky kapitoly</SelectItem>
+              <SelectItem value="all">{t("divy.allChapters")}</SelectItem>
               {CHAPTER_OPTIONS.map((key) => (
                 <SelectItem key={key} value={key}>
-                  {PHASE_LABEL[key]}
+                  {isEnglish ? t(`phaseLabel.${key}`) : PHASE_LABEL[key]}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         {filters.chapter && (
-          <p className="text-xs text-muted-foreground">
-            Zobrazujeme len Divy, ktoré sa rozhodli svoju životnú kapitolu zdieľať s komunitou.
-          </p>
+          <p className="text-xs text-muted-foreground">{t("divy.chapterFilterNote")}</p>
         )}
       </motion.div>
 
       <motion.section {...fadeUp(2)} className="space-y-3">
-        <h2 className="font-display text-2xl">{searching || hasFilters ? "Výsledky hľadania" : "Divy v komunite"}</h2>
+        <h2 className="font-display text-2xl">
+          {searching || hasFilters ? t("divy.searchResultsTitle") : t("divy.communityDivyTitle")}
+        </h2>
         {isLoading && <Skeleton className="h-32 w-full" />}
         {!isLoading && list.length === 0 && (
           <EmptyState
-            title="Nikoho sme nenašli"
-            description="Skús iné meno, mesto alebo filter."
+            title={t("divy.emptyTitle")}
+            description={t("divy.emptyDescription")}
           />
         )}
         {list.length > 0 && (
@@ -206,7 +215,7 @@ export default function CommunityDivy() {
 
       {myFriends.length > 0 && (
         <motion.section {...fadeUp(3)} className="space-y-3">
-          <h2 className="font-display text-2xl">Moje kamošky</h2>
+          <h2 className="font-display text-2xl">{t("divy.myFriendsTitle")}</h2>
           <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
             {myFriends.map((d) => (
               <DivaRow
