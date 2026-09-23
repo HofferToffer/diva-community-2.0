@@ -655,17 +655,21 @@ export default function CommunityCycle() {
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
                    Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
-                   nepíše, jednoducho hovor a text sa bude písať sám — alebo pridaj fotku.
+                   nepíše, ťukni na mikrofón a hovor — text sa bude písať sám.
                 </p>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  <Button size="sm" className="gap-2" onClick={() => setEditingBirthStory(true)}>
+                <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <Button size="sm" className="rounded-full gap-2" onClick={() => setEditingBirthStory(true)}>
                     <Feather className="h-4 w-4" aria-hidden="true" />
                     Napísať svoj príbeh
                   </Button>
-                  <Button size="sm" variant="outline" className="gap-2" onClick={startDictation}>
+                  <button
+                    type="button"
+                    aria-label="Diktovať mikrofónom"
+                    onClick={startDictation}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/50 text-primary shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:bg-secondary"
+                  >
                     <Mic className="h-4 w-4" aria-hidden="true" />
-                    Diktovať naživo
-                  </Button>
+                  </button>
                 </div>
               </>
             )}
