@@ -186,10 +186,20 @@ export default function CommunityCycle() {
     }
   };
 
-  const appendStoryText = (text: string) => {
+  /** Uloží text príbehu rovno do profilu, nech sa nadiktované slová nestratia. */
+  const persistStory = async (text: string) => {
     const clean = text.trim();
     if (!clean) return;
-    setBirthStory((prev) => (prev.trim() ? `${prev.trim()} ${clean}` : clean));
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story: clean } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+    } catch (e) {
+      console.error("birth story autosave failed", e);
+    }
   };
 
   const transcribeBlob = async (blob: Blob, ext: string) => {
@@ -203,8 +213,11 @@ export default function CommunityCycle() {
       if (error) throw error;
       const text = String(data?.text ?? "").trim();
       if (!text) throw new Error("empty transcript");
-      appendStoryText(text);
-      toast.success("Hotovo — prečítaj si text a ulož ho.");
+      const merged = birthStory.trim() ? `${birthStory.trim()} ${text}` : text;
+      setBirthStory(merged);
+      setEditingBirthStory(true);
+      await persistStory(merged);
+      toast.success("Hotovo — text je uložený, môžeš ho ešte upraviť.");
     } catch (e) {
       console.error("dictation fallback failed", e);
       toast.error("Nahrávku sa nepodarilo prepísať. Skús to prosím znova.");
