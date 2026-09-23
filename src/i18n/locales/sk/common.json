@@ -1,4 +1,21 @@
 {
+  "divaKruh": {
+    "title": "DIVA KRUH",
+    "heroText": "Online priestor, kde sa ženy stretávajú, zdieľajú a navzájom podporujú. Bez hodnotenia, v úplnej úprimnosti, v kruhu, ktorý drží.",
+    "forWhomTitle": "Pre koho",
+    "forWhomText": "Pre každú ženu, ktorá túži po bezpečnom priestore na rozhovor, smiech aj ticho.",
+    "howTitle": "Ako",
+    "howText": "Online stretnutie cez video alebo audio — tak, ako ti to práve vyhovuje.",
+    "whatTitle": "Čo prinesie",
+    "whatText": "Pocit, že nie si sama. Inšpiráciu, pochopenie a nové priateľstvá.",
+    "joinTitle": "Chceš sa pripojiť?",
+    "joinText": "Napíš nám a my ti pošleme termín najbližšieho DIVA KRUHu a odkaz na pripojenie.",
+    "whatsappButton": "Napísať na WhatsApp",
+    "whatsappMessage": "Ahoj, mám záujem o DIVA KRUH.",
+    "orEmailUs": "Alebo nám napíš na",
+    "emailSubject": "Chcem sa pripojiť do DIVA KRUHU",
+    "quote": "„V kruhu žien sa netreba pretvarovať. Stačí prísť taká, aká si.\""
+  },
   "map": {
     "title": "Mapa Divy",
     "subtitle": "Kde všade sme. Ukazujeme len mesto, nikdy presnú adresu — ak si niekoho nájdeš nablízku, napíš jej.",

@@ -1,4 +1,21 @@
 {
+  "divaKruh": {
+    "title": "DIVA CIRCLE",
+    "heroText": "An online space where women meet, share and support each other. No judgment, in complete honesty, in a circle that holds you.",
+    "forWhomTitle": "Who it's for",
+    "forWhomText": "For every woman longing for a safe space for conversation, laughter and silence too.",
+    "howTitle": "How",
+    "howText": "An online meeting over video or audio — whichever suits you right now.",
+    "whatTitle": "What it brings",
+    "whatText": "The feeling that you're not alone. Inspiration, understanding, and new friendships.",
+    "joinTitle": "Want to join?",
+    "joinText": "Message us and we'll send you the date of the next DIVA CIRCLE and a link to join.",
+    "whatsappButton": "Message on WhatsApp",
+    "whatsappMessage": "Hi, I'm interested in DIVA CIRCLE.",
+    "orEmailUs": "Or email us at",
+    "emailSubject": "I want to join DIVA CIRCLE",
+    "quote": "\"In a circle of women, there's no need to pretend. Just come as you are.\""
+  },
   "map": {
     "title": "Diva Map",
     "subtitle": "Where we all are. We only show the city, never the exact address — if you find someone nearby, message her.",
