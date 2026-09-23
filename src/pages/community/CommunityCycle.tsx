@@ -198,7 +198,7 @@ export default function CommunityCycle() {
         const blob = new Blob(storyChunksRef.current, { type });
         setSavingStoryAudio(true);
         try {
-          const stored = await uploadAudio("birth-stories", profile.id, blob, ext);
+          const stored = await uploadAudio("birth-stories", profile.user_id ?? profile.id, blob, ext);
           if (profile.birth_story_audio) await deleteStoredImage(profile.birth_story_audio);
           const { error } = await supabase
             .from("profiles")
@@ -207,7 +207,8 @@ export default function CommunityCycle() {
           if (error) throw error;
           refreshProfile();
           toast.success("Tvoj príbeh je nahratý.");
-        } catch {
+        } catch (e) {
+          console.error("birth story audio upload failed", e);
           toast.error("Nahrávku sa nepodarilo uložiť.");
         } finally {
           setSavingStoryAudio(false);
