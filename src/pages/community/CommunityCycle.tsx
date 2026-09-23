@@ -20,6 +20,7 @@ import {
   PREGNANCY_TIP_COLOR,
   PREGNANCY_LATE_TIPS,
   PREGNANCY_LATE_NOTE,
+  PREGNANCY_TIPS_INTRO,
   PARTNER_SUPPORT_NOTE_PREGNANCY,
 } from "@/community/lib/pregnancy";
 import {
@@ -521,6 +522,7 @@ export default function CommunityCycle() {
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Strava, pohyb a rituály tehotenstva
                 </p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_TIPS_INTRO}</p>
                 <div className="mt-4">
                   <TipGrid tips={PREGNANCY_TIPS} color={PREGNANCY_TIP_COLOR} />
                 </div>

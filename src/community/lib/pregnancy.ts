@@ -221,6 +221,7 @@ export const PREGNANCY_TIPS: CycleTip[] = [
  */
 export const PREGNANCY_LATE_TIPS: CycleTip[] = [
   { label: "Malinové listy (čaj)", category: "eat", icon: Droplets },
+  { label: "Medovka na upokojenie", category: "eat", icon: Droplets },
   { label: "Masírovanie hrádze, ak sa cítiš pripravená", category: "do", icon: Hand },
   { label: "Príprava pôrodnej tašky", category: "do", icon: Backpack },
   { label: "Nacvič si dýchanie na pôrod", category: "move", icon: Wind },
@@ -229,7 +230,15 @@ export const PREGNANCY_LATE_TIPS: CycleTip[] = [
 ];
 
 export const PREGNANCY_LATE_NOTE =
-  "Malinové listy sa v niektorých štúdiách spájajú s kratšou druhou dobou pôrodnou, ak sa pijú postupne od cca 32.-34. týždňa (začni jednou šálkou denne, postupne pridávaj) — dôkazy sú zatiaľ mierne, nie isté, tak to vždy najprv preber so svojou pôrodnou asistentkou alebo gynekologičkou. Alchemilka sa k nim v ľudovej tradícii často pridáva, no pre tehotenstvo pre ňu chýbajú bezpečnostné údaje — radšej ju vynechaj, kým ti ju vyslovene neodporučí tvoja lekárka. Masírovanie hrádze zase má za sebou solídne dôkazy, že od cca 34.-35. týždňa znižuje riziko poranenia pri pôrode — rob ho len vtedy, keď sa na to naozaj cítiš, pokojne aj s partnerom.";
+  "Malinové listy sa v niektorých štúdiách spájajú s kratšou druhou dobou pôrodnou, ak sa pijú postupne od cca 32.-34. týždňa (začni jednou šálkou denne, postupne pridávaj) — dôkazy sú zatiaľ mierne, nie isté, tak to vždy najprv preber so svojou pôrodnou asistentkou alebo gynekologičkou. Medovka je upokojujúca a pomáha pri nespavosti či nepokoji, vo všeobecnosti sa považuje za bezpečnú — bylinkové čaje v tehotenstve sa ale odporúča držať okolo 1-2 šálok denne. Harmanček zámerne nespomíname — v treťom trimestri sa jeho vplyv na maternicu hodnotí nejednotne. Alchemilka sa k nim v ľudovej tradícii často pridáva, no pre tehotenstvo pre ňu chýbajú bezpečnostné údaje — radšej ju vynechaj, kým ti ju vyslovene neodporučí tvoja lekárka. Masírovanie hrádze zase má za sebou solídne dôkazy, že od cca 34.-35. týždňa znižuje riziko poranenia pri pôrode — rob ho len vtedy, keď sa na to naozaj cítiš, pokojne aj s partnerom.";
+
+/**
+ * A short holistic framing line above the pregnancy tip grid — telo, myseľ
+ * aj rituál patria k sebe, and (mirroring the cycle's own disclaimer) this
+ * is inspiration, not a checklist to complete.
+ */
+export const PREGNANCY_TIPS_INTRO =
+  "Telo, myseľ aj rituál idú v tehotenstve ruka v ruke — jedlo, pohyb aj to, čomu dávaš pozornosť, sú súčasť tej istej cesty. Každá to prežívame inak a po svojom, ber to ako inšpiráciu, nie presný predpis.";
 
 /** Shown in the pregnancy section — the same teamwork framing repeats (adapted) in postpartum. */
 export const PARTNER_SUPPORT_NOTE_PREGNANCY =
