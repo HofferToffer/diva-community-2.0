@@ -35,7 +35,9 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2 } from "lucide-react";
+import { useSignedImage } from "@/community/hooks/useSignedImage";
+import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 
 function NotAloneNote() {
@@ -63,6 +65,9 @@ export default function CommunityCycle() {
   const [editingBirthStory, setEditingBirthStory] = useState(false);
   const [savingBirthStory, setSavingBirthStory] = useState(false);
   const birthStoryRef = useRef<HTMLDivElement>(null);
+  const storyPhotoInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
+  const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -116,6 +121,52 @@ export default function CommunityCycle() {
       toast.error("Nepodarilo sa uložiť.");
     } finally {
       setSavingBirthStory(false);
+    }
+  };
+
+  const handleStoryPhoto = async (file: File | undefined) => {
+    if (!file || !profile) return;
+    const validationError = validateImage(file);
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
+    setUploadingStoryPhoto(true);
+    try {
+      const normalized = await normalizeImage(file);
+      const stored = await uploadImage("profile-gallery", profile.id, normalized);
+      if (profile.birth_story_photo) await deleteStoredImage(profile.birth_story_photo);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_photo: stored } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Fotka je uložená.");
+    } catch {
+      toast.error("Fotku sa nepodarilo nahrať.");
+    } finally {
+      setUploadingStoryPhoto(false);
+      if (storyPhotoInputRef.current) storyPhotoInputRef.current.value = "";
+    }
+  };
+
+  const removeStoryPhoto = async () => {
+    if (!profile?.birth_story_photo) return;
+    setUploadingStoryPhoto(true);
+    try {
+      await deleteStoredImage(profile.birth_story_photo);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_photo: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Fotka je odstránená.");
+    } catch {
+      toast.error("Fotku sa nepodarilo odstrániť.");
+    } finally {
+      setUploadingStoryPhoto(false);
     }
   };
 
@@ -426,11 +477,20 @@ export default function CommunityCycle() {
               <Feather className="h-4 w-4" aria-hidden="true" />
               Tvoj pôrodný príbeh
             </p>
+            {birthStoryPhoto && (
+              <div className="overflow-hidden rounded-xl shadow-sm">
+                <img
+                  src={birthStoryPhoto}
+                  alt="Fotka k pôrodnému príbehu"
+                  className="max-h-72 w-full object-cover"
+                />
+              </div>
+            )}
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje.
+                  zmysel pre nikoho iného. Toto je len tvoje. K príbehu môžeš pridať aj fotku.
                 </p>
                 <Textarea
                   rows={6}
@@ -467,7 +527,8 @@ export default function CommunityCycle() {
                   Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty.
+                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty. Príbeh môžeš aj
+                  nahrať — stačí fotka.
                 </p>
                 <Button size="sm" className="mt-1 gap-2" onClick={() => setEditingBirthStory(true)}>
                   <Feather className="h-4 w-4" aria-hidden="true" />
@@ -475,6 +536,41 @@ export default function CommunityCycle() {
                 </Button>
               </>
             )}
+            <input
+              ref={storyPhotoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
+            />
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 px-0 text-primary"
+                disabled={uploadingStoryPhoto}
+                onClick={() => storyPhotoInputRef.current?.click()}
+              >
+                <ImagePlus className="h-4 w-4" aria-hidden="true" />
+                {uploadingStoryPhoto
+                  ? "Nahrávam…"
+                  : profile.birth_story_photo
+                    ? "Zmeniť fotku"
+                    : "Nahrať fotku"}
+              </Button>
+              {profile.birth_story_photo && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-muted-foreground"
+                  disabled={uploadingStoryPhoto}
+                  onClick={removeStoryPhoto}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  Odstrániť fotku
+                </Button>
+              )}
+            </div>
           </motion.div>
 
           <div className="flex flex-wrap items-center gap-2">

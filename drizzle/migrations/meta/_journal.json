@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790161137011,
+      "tag": "0000_add_birth_story_photo",
+      "breakpoints": true
+    }
+  ]
+}
