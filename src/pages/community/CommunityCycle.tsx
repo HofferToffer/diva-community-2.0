@@ -35,7 +35,9 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2 } from "lucide-react";
+import { useSignedImage } from "@/community/hooks/useSignedImage";
+import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 
 function NotAloneNote() {
