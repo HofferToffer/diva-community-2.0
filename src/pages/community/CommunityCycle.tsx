@@ -124,6 +124,52 @@ export default function CommunityCycle() {
     }
   };
 
+  const handleStoryPhoto = async (file: File | undefined) => {
+    if (!file || !profile) return;
+    const validationError = validateImage(file);
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
+    setUploadingStoryPhoto(true);
+    try {
+      const normalized = await normalizeImage(file);
+      const stored = await uploadImage("profile-gallery", profile.id, normalized);
+      if (profile.birth_story_photo) await deleteStoredImage(profile.birth_story_photo);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_photo: stored } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Fotka je uložená.");
+    } catch {
+      toast.error("Fotku sa nepodarilo nahrať.");
+    } finally {
+      setUploadingStoryPhoto(false);
+      if (storyPhotoInputRef.current) storyPhotoInputRef.current.value = "";
+    }
+  };
+
+  const removeStoryPhoto = async () => {
+    if (!profile?.birth_story_photo) return;
+    setUploadingStoryPhoto(true);
+    try {
+      await deleteStoredImage(profile.birth_story_photo);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_photo: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Fotka je odstránená.");
+    } catch {
+      toast.error("Fotku sa nepodarilo odstrániť.");
+    } finally {
+      setUploadingStoryPhoto(false);
+    }
+  };
+
   const markBirth = async () => {
     if (!window.confirm("Narodilo sa ti bábätko? Toto ukončí sledovanie tehotenstva.")) return;
     try {
