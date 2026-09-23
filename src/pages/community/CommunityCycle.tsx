@@ -66,6 +66,7 @@ export default function CommunityCycle() {
   const [savingBirthStory, setSavingBirthStory] = useState(false);
   const birthStoryRef = useRef<HTMLDivElement>(null);
   const storyPhotoInputRef = useRef<HTMLInputElement>(null);
+  const endPostpartumRef = useRef<HTMLDivElement>(null);
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
@@ -193,6 +194,8 @@ export default function CommunityCycle() {
     setPeriodReturnedChoice(null);
     setNewLastPeriod("");
     setEndingPostpartum(true);
+    // Jemne posuň pohľad na otázky, aby ich bolo vidieť na mobile aj na počítači.
+    setTimeout(() => endPostpartumRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
   };
 
   const confirmEndPostpartum = async () => {
@@ -211,11 +214,14 @@ export default function CommunityCycle() {
       refreshProfile();
       setEndingPostpartum(false);
       if (periodReturnedChoice === "yes") {
-        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.");
+        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.", {
+          description: "Nezabudni na prehliadku u gynekológa/gynekologičky po šestonedelí.",
+          duration: 7000,
+        });
       } else {
         toast.success("Šestonedelie je ukončené.", {
           description:
-            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí.",
+            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí. Prehliadku u gynekológa/gynekologičky si však nechaj urobiť.",
           duration: 8000,
         });
       }
@@ -585,7 +591,7 @@ export default function CommunityCycle() {
           </div>
 
           {endingPostpartum && (
-            <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+            <div ref={endPostpartumRef} className="scroll-mt-24 space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
               <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
               {periodReturnedChoice === null && (
                 <div className="flex gap-2">
@@ -612,6 +618,10 @@ export default function CommunityCycle() {
                       onChange={(e) => setNewLastPeriod(e.target.value)}
                     />
                   </div>
+                  <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
+                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí. Táto aplikácia je len
+                    podpora, nenahrádza lekársku starostlivosť ani diagnózu.
+                  </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={!newLastPeriod || savingEndPostpartum} onClick={confirmEndPostpartum}>
                       {savingEndPostpartum ? "Ukladám…" : "Potvrdiť"}
@@ -627,6 +637,11 @@ export default function CommunityCycle() {
                   <p className="text-xs leading-relaxed text-muted-foreground">
                     To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj
                     vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.
+                  </p>
+                  <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
+                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí — aj keď sa cítiš dobre.
+                    Ak ťa čokoľvek trápi (silné krvácanie, bolesť, horúčka, výtok, zmeny nálady), neodkladaj návštevu
+                    lekára. Táto aplikácia je len podpora, nenahrádza lekársku starostlivosť ani diagnózu.
                   </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={savingEndPostpartum} onClick={confirmEndPostpartum}>
