@@ -588,7 +588,7 @@ export default function CommunityCycle() {
           </div>
 
           {endingPostpartum && (
-            <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+            <div ref={endPostpartumRef} className="scroll-mt-24 space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
               <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
               {periodReturnedChoice === null && (
                 <div className="flex gap-2">
