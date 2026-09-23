@@ -524,7 +524,7 @@ export default function CommunityCycle() {
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_TIPS_INTRO}</p>
                 <div className="mt-4">
-                  <TipGrid tips={PREGNANCY_TIPS} color={PREGNANCY_TIP_COLOR} />
+                  <TipGrid tips={PREGNANCY_TIPS[pregnancy.trimester]} color={PREGNANCY_TIP_COLOR} />
                 </div>
               </div>
               {pregnancy.week >= 34 && (

@@ -28,6 +28,11 @@ import {
   Hand,
   Backpack,
   Wind,
+  Cookie,
+  Leaf,
+  GraduationCap,
+  Users,
+  Heart,
 } from "lucide-react";
 import { Avocado, Mango, Pineapple, Pumpkin, Strawberry, Tomato, WatermelonSlice } from "@/community/components/FruitIcons";
 import type { CycleTip } from "./cycle";
@@ -190,25 +195,59 @@ export const PREGNANCY_TIP_COLOR: { fill: string; dot: string } = {
   dot: "hsl(140, 18%, 42%)",
 };
 
-/** Food, movement and rituals for pregnancy in general — safe across all three trimesters. */
-export const PREGNANCY_TIPS: CycleTip[] = [
-  { label: "Kyselina listová a železo", category: "eat", icon: Pill },
-  { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
-  { label: "Bielkoviny na rast bábätka", category: "eat", icon: Egg },
-  { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
-  { label: "Omega-3 pre vývoj mozgu", category: "eat", icon: Fish },
-  { label: "Veľa vody", category: "eat", icon: GlassWater },
-  { label: "Menšie porcie častejšie", category: "eat", icon: UtensilsCrossed },
-  { label: "Prechádzky na čerstvom vzduchu", category: "move", icon: Footprints },
-  { label: "Tehotenská joga", category: "move", icon: PersonStanding },
-  { label: "Plávanie", category: "move", icon: Waves },
-  { label: "Cvičenia na panvové dno", category: "move", icon: HeartPulse },
-  { label: "Rozprávaj sa s bábätkom", category: "do", icon: MessageCircle },
-  { label: "Píš si tehotenský denník", category: "do", icon: NotebookPen },
-  { label: "Zapoj partnera do príprav", category: "do", icon: HeartHandshake },
-  { label: "Dopraj si oddych", category: "do", icon: Bed },
-  { label: "Priprav detskú izbičku", category: "do", icon: Home },
-];
+/**
+ * Split by trimester rather than by exact week — food/rituals genuinely
+ * don't change day to day, but nausea in the first trimester makes early
+ * "eat well" advice actively unhelpful, so it gets its own, gentler set.
+ * The prenatal-vitamin reminder deliberately repeats in all three so it's
+ * always visible whenever she opens this page, not just once.
+ */
+export const PREGNANCY_TIPS: Record<1 | 2 | 3, CycleTip[]> = {
+  1: [
+    { label: "Prenatálne vitamíny podľa lekárky", category: "eat", icon: Pill },
+    { label: "Kyselina listová", category: "eat", icon: Pill },
+    { label: "Malé porcie, aj 6x denne", category: "eat", icon: UtensilsCrossed },
+    { label: "Suché sušienky hneď ráno", category: "eat", icon: Cookie },
+    { label: "Zázvorový čaj proti nevoľnosti", category: "eat", icon: Leaf },
+    { label: "Pi, aj keď nemáš chuť jesť", category: "eat", icon: GlassWater },
+    { label: "Ľahká chôdza, ak vládzeš", category: "move", icon: Footprints },
+    { label: "Odpočívaj, keď si unavená", category: "do", icon: Bed },
+    { label: "Nemusíš jesť za dvoch", category: "do", icon: Heart },
+    { label: "Rozprávaj sa s bábätkom", category: "do", icon: MessageCircle },
+  ],
+  2: [
+    { label: "Prenatálne vitamíny podľa lekárky", category: "eat", icon: Pill },
+    { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
+    { label: "Bielkoviny na rast bábätka", category: "eat", icon: Egg },
+    { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
+    { label: "Omega-3 pre vývoj mozgu", category: "eat", icon: Fish },
+    { label: "Veľa vody", category: "eat", icon: GlassWater },
+    { label: "Prechádzky na čerstvom vzduchu", category: "move", icon: Footprints },
+    { label: "Tehotenská joga", category: "move", icon: PersonStanding },
+    { label: "Plávanie", category: "move", icon: Waves },
+    { label: "Cvičenia na panvové dno", category: "move", icon: HeartPulse },
+    { label: "Rozprávaj sa s bábätkom", category: "do", icon: MessageCircle },
+    { label: "Píš si tehotenský denník", category: "do", icon: NotebookPen },
+    { label: "Zapoj partnera do príprav", category: "do", icon: HeartHandshake },
+    { label: "Priprav detskú izbičku", category: "do", icon: Home },
+  ],
+  3: [
+    { label: "Prenatálne vitamíny podľa lekárky", category: "eat", icon: Pill },
+    { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
+    { label: "Bielkoviny na rast bábätka", category: "eat", icon: Egg },
+    { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
+    { label: "Menšie porcie častejšie (menej pálenia záhy)", category: "eat", icon: UtensilsCrossed },
+    { label: "Veľa vody", category: "eat", icon: GlassWater },
+    { label: "Prechádzky na čerstvom vzduchu", category: "move", icon: Footprints },
+    { label: "Tehotenská joga", category: "move", icon: PersonStanding },
+    { label: "Cvičenia na panvové dno", category: "move", icon: HeartPulse },
+    { label: "Predpôrodné kurzy, pokojne aj s partnerom", category: "do", icon: GraduationCap },
+    { label: "Zvažuj dulu k pôrodu", category: "do", icon: Users },
+    { label: "Píš si tehotenský denník", category: "do", icon: NotebookPen },
+    { label: "Dopraj si oddych", category: "do", icon: Bed },
+    { label: "Priprav detskú izbičku", category: "do", icon: Home },
+  ],
+};
 
 /**
  * From roughly 34.-36. týždňa — birth-prep rituals distinct from the rest of
