@@ -273,6 +273,7 @@ export default function CommunityCycle() {
   const stopMic = () => {
     if (dictation.listening) {
       dictation.stop();
+      void persistStory(birthStory);
       return;
     }
     try {
