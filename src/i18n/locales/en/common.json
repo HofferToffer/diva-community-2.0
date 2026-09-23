@@ -1,4 +1,32 @@
 {
+  "gate": {
+    "title": "Invited Divas only, for now",
+    "subtitle": "This section is still being prepared. Enter the access code to come in.",
+    "codeLabel": "Access code",
+    "wrongCode": "Incorrect code. Please try again.",
+    "enterButton": "Enter"
+  },
+  "imageCrop": {
+    "defaultTitle": "Edit your photo",
+    "zoomLabel": "Zoom",
+    "dragHint": "Drag the photo and choose the crop area.",
+    "cancelButton": "Cancel",
+    "savingButton": "Saving…",
+    "confirmButton": "Use crop"
+  },
+  "stravaCallback": {
+    "connectionCancelled": "The Strava connection was cancelled.",
+    "connectionSuccess": "Strava is connected. New activities will import automatically.",
+    "connectionFailed": "Couldn't connect to Strava. Try again.",
+    "connecting": "Connecting to Strava…"
+  },
+  "medicalNote": {
+    "text": "Content on DIVA COMMUNITY is for support and information only — it doesn't replace a medical exam, diagnosis, or treatment. If you have any concerns, doubts, or changes that worry you, always talk to your doctor."
+  },
+  "notAloneNote": {
+    "text": "You don't have to do this alone — sharing with other women, friends and those with more experience, can help more than you think.",
+    "linkText": "Try DIVA CIRCLE"
+  },
   "goalUnit": {
     "km": "km",
     "min": "min",
@@ -703,6 +731,42 @@
     "showMoreButton": "Food, movement, rituals and resources",
     "showLessButton": "Hide tips and resources",
     "tipsTitle": "Food, movement and rituals for šestonedelie",
+    "storyTitle": "Your birth story",
+    "storyPhotoAlt": "Photo for your birth story",
+    "audioNotSupported": "Your device doesn't support audio playback.",
+    "writingPrompt": "Write it exactly as you experienced it — tender or harsh, fragile or strong. It doesn't have to sound good or make sense to anyone else. This is just yours. If writing isn't flowing, tap the microphone and talk — the text will write itself.",
+    "storyPlaceholder": "My birth story…",
+    "stopDictationAriaLabel": "Stop recording",
+    "startDictationAriaLabel": "Dictate with microphone",
+    "listeningActive": "Listening — speak freely, the text is writing itself.",
+    "listeningPaused": "Listening — tap again when you're done and the text will be added.",
+    "transcribing": "Transcribing what you said…",
+    "savingButton": "Saving…",
+    "saveButton": "Save",
+    "cancelButton": "Cancel",
+    "editButton": "Edit",
+    "storyDeservesPlace": "Your story deserves a place. Write it now, while it's still fresh — even just a few sentences.",
+    "storyIntro": "Tender or harsh, fragile or strong — every birth has its own story. Only you see and hear it. If writing isn't flowing, tap the microphone and talk — the text will write itself.",
+    "writeStoryButton": "Write your story",
+    "transcribeButton": "Transcribe to text",
+    "transcribingButton": "Transcribing…",
+    "removeAudioButton": "Remove recording",
+    "changePhotoButton": "Change photo",
+    "uploadPhotoButton": "Upload photo",
+    "uploadingPhoto": "Uploading…",
+    "removePhotoButton": "Remove photo",
+    "editInProfileButton": "Edit in profile",
+    "endPostpartumButton": "End postpartum period",
+    "periodReturnedQuestion": "Has your period come back yet?",
+    "yesButton": "Yes",
+    "notYetButton": "Not yet",
+    "lastPeriodDateLabel": "Date of your last period",
+    "gynecologistNoteAfterYes": "Don't forget your mandatory postpartum check-up with your gynecologist. This app is only a support tool — it doesn't replace medical care or diagnosis.",
+    "confirmButton": "Confirm",
+    "backButton": "Back",
+    "periodNotReturnedNote": "That's completely normal — especially while breastfeeding, your cycle can come back many months later, sometimes even over a year. When it does, just enter the date in your profile and your cycle will start tracking.",
+    "gynecologistNoteAfterNo": "Don't forget your mandatory postpartum check-up with your gynecologist — even if you feel fine. If anything is bothering you (heavy bleeding, pain, fever, discharge, mood changes), don't delay seeing a doctor. This app is only a support tool — it doesn't replace medical care or diagnosis.",
+    "understoodEndButton": "Understood, end it",
     "hydrationNote": "Don't forget to drink — especially while breastfeeding it's easy to forget, even though your body needs even more water now than before. If healing is taking longer than you expect, or something feels off with your pelvic floor, a pelvic floor physiotherapist can help much faster than you'd think.",
     "booksTitle": "Books that might help",
     "typicalThisWeek": "Typical this week: {{list}}",
@@ -1077,7 +1141,13 @@
     "nextOvulation": "Estimated ovulation",
     "inDays": "(in {{count}} days)",
     "tipsForThisPhase": "Tips for this phase",
-    "gynecologistNote": "A regular yearly check-up with your gynecologist is part of taking care of yourself — whatever phase you're in."
+    "gynecologistNote": "A regular yearly check-up with your gynecologist is part of taking care of yourself — whatever phase you're in.",
+    "noCycleTitle": "You haven't set up your cycle yet",
+    "noCycleDescription": "Enter the date of your last period and your cycle length so we can show you phases and recommendations.",
+    "saveCycleButton": "Save cycle",
+    "setInProfileButton": "Set in profile",
+    "cycleSaved": "Cycle updated.",
+    "cycleSaveFailed": "Couldn't update the cycle."
   },
   "home": {
     "tagline": "Our strength is in our gentleness.",

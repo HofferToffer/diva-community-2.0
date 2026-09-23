@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Cropper, { type Area } from "react-easy-crop";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,7 @@ async function cropToFile(src: string, area: Area): Promise<File> {
 
 /** Modal that lets the user pan & zoom a photo and confirm the cropped area. */
 export function ImageCropDialog({ image, aspect, round, title, onCancel, onConfirm }: ImageCropDialogProps) {
+  const { t } = useTranslation();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area | null>(null);
@@ -61,7 +63,7 @@ export function ImageCropDialog({ image, aspect, round, title, onCancel, onConfi
     <Dialog open={!!image} onOpenChange={(open) => !open && onCancel()}>
       <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-md overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-display">{title ?? "Uprav si fotku"}</DialogTitle>
+          <DialogTitle className="font-display">{title ?? t("imageCrop.defaultTitle")}</DialogTitle>
         </DialogHeader>
         <div
           className="relative w-full touch-none overflow-hidden rounded-xl bg-foreground/5"
@@ -82,16 +84,16 @@ export function ImageCropDialog({ image, aspect, round, title, onCancel, onConfi
           )}
         </div>
         <div className="flex items-center gap-3 px-1">
-          <span className="text-xs text-muted-foreground">Priblíženie</span>
-          <Slider min={1} max={3} step={0.01} value={[zoom]} onValueChange={([v]) => setZoom(v)} aria-label="Priblíženie" />
+          <span className="text-xs text-muted-foreground">{t("imageCrop.zoomLabel")}</span>
+          <Slider min={1} max={3} step={0.01} value={[zoom]} onValueChange={([v]) => setZoom(v)} aria-label={t("imageCrop.zoomLabel")} />
         </div>
-        <p className="text-center text-xs text-muted-foreground">Potiahni fotku a vyber výrez.</p>
+        <p className="text-center text-xs text-muted-foreground">{t("imageCrop.dragHint")}</p>
         <DialogFooter className="gap-2 sm:gap-2">
           <Button variant="outline" onClick={onCancel} disabled={saving}>
-            Zrušiť
+            {t("imageCrop.cancelButton")}
           </Button>
           <Button onClick={confirm} disabled={saving || !area}>
-            {saving ? "Ukladám…" : "Použiť výrez"}
+            {saving ? t("imageCrop.savingButton") : t("imageCrop.confirmButton")}
           </Button>
         </DialogFooter>
       </DialogContent>

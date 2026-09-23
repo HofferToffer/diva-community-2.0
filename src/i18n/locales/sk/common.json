@@ -1,4 +1,32 @@
 {
+  "gate": {
+    "title": "Zatiaľ pre pozvané divy",
+    "subtitle": "Táto časť sa ešte pripravuje. Zadaj prístupové heslo a poď dovnútra.",
+    "codeLabel": "Prístupové heslo",
+    "wrongCode": "Nesprávne heslo. Skús to prosím znova.",
+    "enterButton": "Vstúpiť"
+  },
+  "imageCrop": {
+    "defaultTitle": "Uprav si fotku",
+    "zoomLabel": "Priblíženie",
+    "dragHint": "Potiahni fotku a vyber výrez.",
+    "cancelButton": "Zrušiť",
+    "savingButton": "Ukladám…",
+    "confirmButton": "Použiť výrez"
+  },
+  "stravaCallback": {
+    "connectionCancelled": "Prepojenie so Stravou bolo zrušené.",
+    "connectionSuccess": "Strava je prepojená. Nové aktivity sa budú importovať automaticky.",
+    "connectionFailed": "Prepojenie so Stravou sa nepodarilo. Skús to znova.",
+    "connecting": "Prepájam so Stravou…"
+  },
+  "medicalNote": {
+    "text": "Obsah v DIVA COMMUNITY má podporný a informačný charakter — nenahrádza vyšetrenie, diagnózu ani liečbu. Pri akýchkoľvek ťažkostiach, pochybnostiach alebo zmenách, ktoré ťa znepokojujú, sa vždy obráť na svojho lekára či lekárku."
+  },
+  "notAloneNote": {
+    "text": "Nie si na to sama — zdieľanie so ženami, kamarátkami aj skúsenejšími, dokáže uľaviť viac, než si myslíš.",
+    "linkText": "Skús DIVA KRUH"
+  },
   "goalUnit": {
     "km": "km",
     "min": "min",
@@ -394,6 +422,42 @@
     "showMoreButton": "Strava, pohyb, rituály a zdroje",
     "showLessButton": "Skryť tipy a zdroje",
     "tipsTitle": "Strava, pohyb a rituály šestonedelia",
+    "storyTitle": "Tvoj pôrodný príbeh",
+    "storyPhotoAlt": "Fotka k pôrodnému príbehu",
+    "audioNotSupported": "Tvoje zariadenie nepodporuje prehrávanie zvuku.",
+    "writingPrompt": "Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, ťukni na mikrofón a hovor — text sa napíše sám.",
+    "storyPlaceholder": "Môj pôrodný príbeh…",
+    "stopDictationAriaLabel": "Skončiť nahrávanie",
+    "startDictationAriaLabel": "Diktovať mikrofónom",
+    "listeningActive": "Počúvam ťa — hovor pokojne, text sa píše sám.",
+    "listeningPaused": "Počúvam ťa — keď skončíš, ťukni znova a text sa doplní.",
+    "transcribing": "Prepisujem, čo si povedala…",
+    "savingButton": "Ukladám…",
+    "saveButton": "Uložiť",
+    "cancelButton": "Zrušiť",
+    "editButton": "Upraviť",
+    "storyDeservesPlace": "Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.",
+    "storyIntro": "Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti nepíše, ťukni na mikrofón a hovor — text sa bude písať sám.",
+    "writeStoryButton": "Napísať svoj príbeh",
+    "transcribeButton": "Prepísať na text",
+    "transcribingButton": "Prepisujem…",
+    "removeAudioButton": "Odstrániť nahrávku",
+    "changePhotoButton": "Zmeniť fotku",
+    "uploadPhotoButton": "Nahrať fotku",
+    "uploadingPhoto": "Nahrávam…",
+    "removePhotoButton": "Odstrániť fotku",
+    "editInProfileButton": "Upraviť v profile",
+    "endPostpartumButton": "Ukončiť šestonedelie",
+    "periodReturnedQuestion": "Vrátila sa ti už menštruácia?",
+    "yesButton": "Áno",
+    "notYetButton": "Ešte nie",
+    "lastPeriodDateLabel": "Dátum poslednej menštruácie",
+    "gynecologistNoteAfterYes": "Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí. Táto aplikácia je len podpora, nenahrádza lekársku starostlivosť ani diagnózu.",
+    "confirmButton": "Potvrdiť",
+    "backButton": "Späť",
+    "periodNotReturnedNote": "To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.",
+    "gynecologistNoteAfterNo": "Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí — aj keď sa cítiš dobre. Ak ťa čokoľvek trápi (silné krvácanie, bolesť, horúčka, výtok, zmeny nálady), neodkladaj návštevu lekára. Táto aplikácia je len podpora, nenahrádza lekársku starostlivosť ani diagnózu.",
+    "understoodEndButton": "Rozumiem, ukončiť",
     "hydrationNote": "Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.",
     "booksTitle": "Knihy, ktoré ti môžu pomôcť",
     "typicalThisWeek": "Typické tento týždeň: {{list}}",
@@ -500,7 +564,13 @@
     "nextOvulation": "Predpokladaná ovulácia",
     "inDays": "(o {{count}} dní)",
     "tipsForThisPhase": "Tipy pre túto fázu",
-    "gynecologistNote": "Pravidelná ročná prehliadka u gynekológa/gynekologičky patrí k starostlivosti o seba — bez ohľadu na fázu, v ktorej si."
+    "gynecologistNote": "Pravidelná ročná prehliadka u gynekológa/gynekologičky patrí k starostlivosti o seba — bez ohľadu na fázu, v ktorej si.",
+    "noCycleTitle": "Zatiaľ nemáš nastavený cyklus",
+    "noCycleDescription": "Zadaj dátum poslednej menštruácie a dĺžku cyklu, aby sme ti mohli ukázať fázy a odporúčania.",
+    "saveCycleButton": "Uložiť cyklus",
+    "setInProfileButton": "Nastaviť v profile",
+    "cycleSaved": "Cyklus je upravený.",
+    "cycleSaveFailed": "Cyklus sa nepodarilo upraviť."
   },
   "home": {
     "tagline": "V jemnosti je naša sila.",

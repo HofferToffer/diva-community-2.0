@@ -56,11 +56,12 @@ import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
 
 function NotAloneNote() {
+  const { t } = useTranslation();
   return (
     <p className="border-t border-border/50 pt-3 text-xs leading-relaxed text-muted-foreground">
-      Nie si na to sama — zdieľanie so ženami, kamarátkami aj skúsenejšími, dokáže uľaviť viac, než si myslíš.{" "}
+      {t("notAloneNote.text")}{" "}
       <Link to="/community/diva-kruh" className="underline hover:text-primary">
-        Skús DIVA KRUH
+        {t("notAloneNote.linkText")}
       </Link>
       .
     </p>
@@ -449,10 +450,10 @@ export default function CommunityCycle() {
         .eq("id", profile.id);
       if (error) throw error;
       refreshProfile();
-      toast.success("Cyklus je upravený.");
+      toast.success(t("cycleCard.cycleSaved"));
       setEditingCycle(false);
     } catch {
-      toast.error("Cyklus sa nepodarilo upraviť.");
+      toast.error(t("cycleCard.cycleSaveFailed"));
     } finally {
       setSavingCycle(false);
     }
@@ -731,7 +732,7 @@ export default function CommunityCycle() {
               )}
             </>
           ) : (
-            <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
+            <p className="text-sm text-muted-foreground">{t("postpartumCard.enterBirthDate")}</p>
           )}
 
           <motion.div
@@ -753,28 +754,26 @@ export default function CommunityCycle() {
             )}
             <p className="flex items-center gap-2 font-display text-xl text-primary">
               <Feather className="h-4 w-4" aria-hidden="true" />
-              Tvoj pôrodný príbeh
+              {t("postpartumCard.storyTitle")}
             </p>
             {birthStoryPhoto && (
               <div className="overflow-hidden rounded-xl shadow-sm">
                 <img
                   src={birthStoryPhoto}
-                  alt="Fotka k pôrodnému príbehu"
+                  alt={t("postpartumCard.storyPhotoAlt")}
                   className="max-h-72 w-full object-cover"
                 />
               </div>
             )}
             {birthStoryAudio && (
               <audio controls src={birthStoryAudio} className="w-full" preload="metadata">
-                Tvoje zariadenie nepodporuje prehrávanie zvuku.
+                {t("postpartumCard.audioNotSupported")}
               </audio>
             )}
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, ťukni na mikrofón a hovor — text sa
-                  napíše sám.
+                  {t("postpartumCard.writingPrompt")}
                 </p>
                 <div className="relative">
                   <Textarea
@@ -790,12 +789,12 @@ export default function CommunityCycle() {
                       setBirthStory(e.target.value);
                     }}
                     readOnly={dictation.listening}
-                    placeholder="Môj pôrodný príbeh…"
+                    placeholder={t("postpartumCard.storyPlaceholder")}
                   />
                   <button
                     type="button"
                     disabled={transcribingStory}
-                    aria-label={micActive ? "Skončiť nahrávanie" : "Diktovať mikrofónom"}
+                    aria-label={micActive ? t("postpartumCard.stopDictationAriaLabel") : t("postpartumCard.startDictationAriaLabel")}
                     onClick={() => (micActive ? stopMic() : startDictation())}
                     className={cn(
                       "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] disabled:opacity-60",
@@ -815,12 +814,12 @@ export default function CommunityCycle() {
                   <p className="flex items-center gap-2 text-xs text-primary">
                     <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
                     {dictation.listening
-                      ? "Počúvam ťa — hovor pokojne, text sa píše sám."
-                      : "Počúvam ťa — keď skončíš, ťukni znova a text sa doplní."}
+                      ? t("postpartumCard.listeningActive")
+                      : t("postpartumCard.listeningPaused")}
                   </p>
                 )}
                 {transcribingStory && !micActive && (
-                  <p className="text-xs text-muted-foreground">Prepisujem, čo si povedala…</p>
+                  <p className="text-xs text-muted-foreground">{t("postpartumCard.transcribing")}</p>
                 )}
                 <div className="flex flex-wrap gap-2 pt-1">
                   <Button
@@ -832,7 +831,7 @@ export default function CommunityCycle() {
                       saveBirthStory();
                     }}
                   >
-                    {savingBirthStory ? "Ukladám…" : "Uložiť"}
+                    {savingBirthStory ? t("postpartumCard.savingButton") : t("postpartumCard.saveButton")}
                   </Button>
                   <Button
                     variant="ghost"
@@ -844,7 +843,7 @@ export default function CommunityCycle() {
                       setEditingBirthStory(false);
                     }}
                   >
-                    Zrušiť
+                    {t("postpartumCard.cancelButton")}
                   </Button>
                 </div>
               </div>
@@ -852,26 +851,25 @@ export default function CommunityCycle() {
               <>
                 <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/85">{profile.birth_story}</p>
                 <Button variant="ghost" size="sm" className="px-0" onClick={() => setEditingBirthStory(true)}>
-                  Upraviť
+                  {t("postpartumCard.editButton")}
                 </Button>
               </>
             ) : (
               <>
                 <p className="text-sm font-medium leading-relaxed text-foreground/90">
-                  Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
+                  {t("postpartumCard.storyDeservesPlace")}
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                   Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
-                   nepíše, ťukni na mikrofón a hovor — text sa bude písať sám.
+                   {t("postpartumCard.storyIntro")}
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-2">
                   <Button size="sm" className="rounded-full gap-2" onClick={() => setEditingBirthStory(true)}>
                     <Feather className="h-4 w-4" aria-hidden="true" />
-                    Napísať svoj príbeh
+                    {t("postpartumCard.writeStoryButton")}
                   </Button>
                   <button
                     type="button"
-                    aria-label="Diktovať mikrofónom"
+                    aria-label={t("postpartumCard.startDictationAriaLabel")}
                     onClick={startDictation}
                     className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/50 text-primary shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:bg-secondary"
                   >
@@ -897,7 +895,7 @@ export default function CommunityCycle() {
                   onClick={transcribeStoryAudio}
                 >
                   <FileText className="h-4 w-4" aria-hidden="true" />
-                  {transcribingStory ? "Prepisujem…" : "Prepísať na text"}
+                  {transcribingStory ? t("postpartumCard.transcribingButton") : t("postpartumCard.transcribeButton")}
                 </Button>
               )}
               {profile.birth_story_audio && (
@@ -908,7 +906,7 @@ export default function CommunityCycle() {
                   onClick={removeStoryAudio}
                 >
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
-                  Odstrániť nahrávku
+                  {t("postpartumCard.removeAudioButton")}
                 </Button>
               )}
               <Button
@@ -920,10 +918,10 @@ export default function CommunityCycle() {
               >
                 <ImagePlus className="h-4 w-4" aria-hidden="true" />
                 {uploadingStoryPhoto
-                  ? "Nahrávam…"
+                  ? t("postpartumCard.uploadingPhoto")
                   : profile.birth_story_photo
-                    ? "Zmeniť fotku"
-                    : "Nahrať fotku"}
+                    ? t("postpartumCard.changePhotoButton")
+                    : t("postpartumCard.uploadPhotoButton")}
               </Button>
               {profile.birth_story_photo && (
                 <Button
@@ -934,7 +932,7 @@ export default function CommunityCycle() {
                   onClick={removeStoryPhoto}
                 >
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
-                  Odstrániť fotku
+                  {t("postpartumCard.removePhotoButton")}
                 </Button>
               )}
             </div>
@@ -942,18 +940,18 @@ export default function CommunityCycle() {
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
-              Upraviť v profile
+              {t("postpartumCard.editInProfileButton")}
             </Button>
             {!endingPostpartum && (
               <Button variant="outline" size="sm" onClick={startEndingPostpartum}>
-                Ukončiť šestonedelie
+                {t("postpartumCard.endPostpartumButton")}
               </Button>
             )}
           </div>
 
           {endingPostpartum && (
             <div ref={endPostpartumRef} className="scroll-mt-24 space-y-3 rounded-2xl border border-border/50 bg-background/60 p-4">
-              <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
+              <p className="text-sm font-medium text-foreground/85">{t("postpartumCard.periodReturnedQuestion")}</p>
               {periodReturnedChoice === null && (
                 <div className="flex gap-2">
                   <Button
@@ -968,7 +966,7 @@ export default function CommunityCycle() {
                       );
                     }}
                   >
-                    Áno
+                    {t("postpartumCard.yesButton")}
                   </Button>
                   <Button
                     variant="outline"
@@ -982,17 +980,17 @@ export default function CommunityCycle() {
                       );
                     }}
                   >
-                    Ešte nie
+                    {t("postpartumCard.notYetButton")}
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setEndingPostpartum(false)}>
-                    Zrušiť
+                    {t("postpartumCard.cancelButton")}
                   </Button>
                 </div>
               )}
               {periodReturnedChoice === "yes" && (
                 <div ref={endPostpartumAnswerRef} className="scroll-mt-24 space-y-3">
                   <div className="space-y-2">
-                    <Label htmlFor="pp-last-period">Dátum poslednej menštruácie</Label>
+                    <Label htmlFor="pp-last-period">{t("postpartumCard.lastPeriodDateLabel")}</Label>
                     <Input
                       id="pp-last-period"
                       type="date"
@@ -1002,15 +1000,14 @@ export default function CommunityCycle() {
                     />
                   </div>
                   <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
-                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí. Táto aplikácia je len
-                    podpora, nenahrádza lekársku starostlivosť ani diagnózu.
+                    {t("postpartumCard.gynecologistNoteAfterYes")}
                   </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={!newLastPeriod || savingEndPostpartum} onClick={confirmEndPostpartum}>
-                      {savingEndPostpartum ? "Ukladám…" : "Potvrdiť"}
+                      {savingEndPostpartum ? t("postpartumCard.savingButton") : t("postpartumCard.confirmButton")}
                     </Button>
                     <Button variant="ghost" size="sm" onClick={() => setPeriodReturnedChoice(null)}>
-                      Späť
+                      {t("postpartumCard.backButton")}
                     </Button>
                   </div>
                 </div>
@@ -1018,20 +1015,17 @@ export default function CommunityCycle() {
               {periodReturnedChoice === "no" && (
                 <div ref={endPostpartumAnswerRef} className="scroll-mt-24 space-y-3">
                   <p className="text-xs leading-relaxed text-muted-foreground">
-                    To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj
-                    vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.
+                    {t("postpartumCard.periodNotReturnedNote")}
                   </p>
                   <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
-                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí — aj keď sa cítiš dobre.
-                    Ak ťa čokoľvek trápi (silné krvácanie, bolesť, horúčka, výtok, zmeny nálady), neodkladaj návštevu
-                    lekára. Táto aplikácia je len podpora, nenahrádza lekársku starostlivosť ani diagnózu.
+                    {t("postpartumCard.gynecologistNoteAfterNo")}
                   </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={savingEndPostpartum} onClick={confirmEndPostpartum}>
-                      {savingEndPostpartum ? "Ukladám…" : "Rozumiem, ukončiť"}
+                      {savingEndPostpartum ? t("postpartumCard.savingButton") : t("postpartumCard.understoodEndButton")}
                     </Button>
                     <Button variant="ghost" size="sm" onClick={() => setPeriodReturnedChoice(null)}>
-                      Späť
+                      {t("postpartumCard.backButton")}
                     </Button>
                   </div>
                 </div>
@@ -1356,13 +1350,13 @@ export default function CommunityCycle() {
         </motion.section>
       ) : (
         <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
-          <h2 className="font-display text-xl">Zatiaľ nemáš nastavený cyklus</h2>
+          <h2 className="font-display text-xl">{t("cycleCard.noCycleTitle")}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Zadaj dátum poslednej menštruácie a dĺžku cyklu, aby sme ti mohli ukázať fázy a odporúčania.
+            {t("cycleCard.noCycleDescription")}
           </p>
           <div className="mt-5 flex flex-col gap-3">
             <div className="space-y-2 text-left">
-              <Label htmlFor="cycle-last-period">Prvý deň poslednej menštruácie</Label>
+              <Label htmlFor="cycle-last-period">{t("cycleCard.lastPeriodLabel")}</Label>
               <Input
                 id="cycle-last-period"
                 type="date"
@@ -1372,7 +1366,7 @@ export default function CommunityCycle() {
               />
             </div>
             <div className="space-y-2 text-left">
-              <Label htmlFor="cycle-length">Dĺžka cyklu v dňoch</Label>
+              <Label htmlFor="cycle-length">{t("cycleCard.cycleLengthLabel")}</Label>
               <Input
                 id="cycle-length"
                 type="number"
@@ -1384,10 +1378,10 @@ export default function CommunityCycle() {
               />
             </div>
             <Button className="w-full" onClick={saveCycle} disabled={savingCycle || !lastPeriodEdit}>
-              Uložiť cyklus
+              {t("cycleCard.saveCycleButton")}
             </Button>
             <Button variant="ghost" className="w-full" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
-              Nastaviť v profile
+              {t("cycleCard.setInProfileButton")}
             </Button>
           </div>
           <MedicalNote className="mt-5 text-left" />

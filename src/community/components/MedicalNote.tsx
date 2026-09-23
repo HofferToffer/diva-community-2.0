@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ShieldCheck } from "lucide-react";
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
  * Shared safety disclaimer shown in every health-related section.
  */
 export default function MedicalNote({ extra, className }: Props) {
+  const { t } = useTranslation();
   return (
     <div
       className={
@@ -20,9 +22,7 @@ export default function MedicalNote({ extra, className }: Props) {
       <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" aria-hidden="true" />
       <p>
         {extra ? `${extra} ` : ""}
-        Obsah v DIVA COMMUNITY má podporný a informačný charakter — nenahrádza vyšetrenie, diagnózu ani liečbu. Pri
-        akýchkoľvek ťažkostiach, pochybnostiach alebo zmenách, ktoré ťa znepokojujú, sa vždy obráť na svojho lekára či
-        lekárku.
+        {t("medicalNote.text")}
       </p>
     </div>
   );
