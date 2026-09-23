@@ -32,6 +32,8 @@ export type PostpartumInfo = {
   archetype: string;
   keywords: string;
   mantra: string;
+  /** Which week band matched ("1" | "2" | "3" | "4" | "6" | "8" | "12" | "fallback") — lets translated UI look up the same band's English copy. */
+  bandKey: string;
 };
 
 type WeekBand = {
@@ -185,5 +187,6 @@ export function getPostpartumInfo(sinceDate: string, today = new Date()): Postpa
     archetype: band.archetype,
     keywords: band.keywords,
     mantra: band.mantra,
+    bandKey: band === FALLBACK ? "fallback" : String(band.maxWeek),
   };
 }

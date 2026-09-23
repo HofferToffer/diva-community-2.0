@@ -67,6 +67,7 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
 
 export default function CommunityHome() {
   const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const { profile } = useCommunityAuth();
   const { data: stats } = useProfileStats(profile?.id);
   const feed = useFeed();
@@ -158,20 +159,30 @@ export default function CommunityHome() {
             to="/community/cyklus"
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Šestonedelie</p>
+            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("postpartumCard.title")}</p>
             {postpartum ? (
               <>
-                <h2 className="mt-1 font-display text-2xl text-primary">{postpartum.week}. týždeň po pôrode</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{postpartum.message}</p>
+                <h2 className="mt-1 font-display text-2xl text-primary">
+                  {t("postpartumCard.weekCounter", { count: postpartum.week })}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.message`) : postpartum.message}
+                </p>
                 <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
-                  „{postpartum.mantra}" — {postpartum.archetype}
+                  „{isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.mantra`) : postpartum.mantra}" —{" "}
+                  {isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.archetype`) : postpartum.archetype}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Typické tento týždeň: {postpartum.symptoms.join(" · ")}
+                  {t("postpartumCard.typicalThisWeek", {
+                    list: (isEnglish
+                      ? (t(`postpartum.weekBands.${postpartum.bandKey}.symptoms`, { returnObjects: true }) as string[])
+                      : postpartum.symptoms
+                    ).join(" · "),
+                  })}
                 </p>
               </>
             ) : (
-              <p className="mt-1 text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t("postpartumCard.enterBirthDate")}</p>
             )}
           </Link>
         </motion.div>

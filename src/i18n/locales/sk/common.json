@@ -1,4 +1,16 @@
 {
+  "postpartumCard": {
+    "title": "Šestonedelie",
+    "weekCounter": "{{count}}. týždeň po pôrode",
+    "symptomsTitle": "Typické príznaky tento týždeň",
+    "showMoreButton": "Strava, pohyb, rituály a zdroje",
+    "showLessButton": "Skryť tipy a zdroje",
+    "tipsTitle": "Strava, pohyb a rituály šestonedelia",
+    "hydrationNote": "Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.",
+    "booksTitle": "Knihy, ktoré ti môžu pomôcť",
+    "typicalThisWeek": "Typické tento týždeň: {{list}}",
+    "enterBirthDate": "Zadaj dátum pôrodu v profile."
+  },
   "ttc": {
     "intro": "Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na deň si vieš súkromne zapísať, kedy ste boli spolu.",
     "archetype": "Trpezlivá nádej",

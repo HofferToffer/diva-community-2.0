@@ -642,17 +642,24 @@ export default function CommunityCycle() {
 
       {profile.is_postpartum && (
         <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Šestonedelie</p>
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("postpartumCard.title")}</p>
           {postpartum ? (
             <>
-              <p className="font-display text-2xl text-primary">{postpartum.week}. týždeň po pôrode</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">{postpartum.message}</p>
+              <p className="font-display text-2xl text-primary">
+                {t("postpartumCard.weekCounter", { count: postpartum.week })}
+              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.message`) : postpartum.message}
+              </p>
               <div className="rounded-xl border border-border/50 bg-background/60 p-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Typické príznaky tento týždeň
+                  {t("postpartumCard.symptomsTitle")}
                 </p>
                 <ul className="mt-2 space-y-1 text-sm text-foreground/85">
-                  {postpartum.symptoms.map((symptom) => (
+                  {(isEnglish
+                    ? (t(`postpartum.weekBands.${postpartum.bandKey}.symptoms`, { returnObjects: true }) as string[])
+                    : postpartum.symptoms
+                  ).map((symptom) => (
                     <li key={symptom} className="flex items-start gap-2">
                       <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
                       {symptom}
@@ -662,9 +669,12 @@ export default function CommunityCycle() {
               </div>
               <div className="border-t border-border/50 pt-3">
                 <p className="text-sm italic leading-relaxed text-foreground/85">
-                  „{postpartum.mantra}" — {postpartum.archetype}
+                  „{isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.mantra`) : postpartum.mantra}" —{" "}
+                  {isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.archetype`) : postpartum.archetype}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">{postpartum.keywords}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.keywords`) : postpartum.keywords}
+                </p>
               </div>
               <Button
                 variant="ghost"
@@ -672,30 +682,28 @@ export default function CommunityCycle() {
                 className="w-full justify-between px-2 text-muted-foreground"
                 onClick={() => setShowMorePostpartum((v) => !v)}
               >
-                {showMorePostpartum ? "Skryť tipy a zdroje" : "Strava, pohyb, rituály a zdroje"}
+                {showMorePostpartum ? t("postpartumCard.showLessButton") : t("postpartumCard.showMoreButton")}
                 {showMorePostpartum ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
               {showMorePostpartum && (
                 <>
                   <div className="rounded-xl border border-border/50 bg-background/60 p-4">
                     <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Strava, pohyb a rituály šestonedelia
+                      {t("postpartumCard.tipsTitle")}
                     </p>
                     <div className="mt-4">
                       <TipGrid tips={POSTPARTUM_TIPS} color={POSTPARTUM_TIP_COLOR} />
                     </div>
                     <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                      Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac
-                      než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je
-                      v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.
+                      {t("postpartumCard.hydrationNote")}
                     </p>
                   </div>
                   <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
-                    {PARTNER_SUPPORT_NOTE_POSTPARTUM}
+                    {isEnglish ? t("postpartum.partnerNote") : PARTNER_SUPPORT_NOTE_POSTPARTUM}
                   </p>
                   <div className="rounded-2xl bg-secondary/30 p-4">
                     <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Knihy, ktoré ti môžu pomôcť
+                      {t("postpartumCard.booksTitle")}
                     </p>
                     <ul className="mt-2 space-y-2">
                       {POSTPARTUM_BOOKS.map((book) => (

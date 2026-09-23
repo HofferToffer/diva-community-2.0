@@ -1,4 +1,84 @@
 {
+  "postpartumCard": {
+    "title": "Šestonedelie",
+    "weekCounter": "Week {{count}} postpartum",
+    "symptomsTitle": "Typical symptoms this week",
+    "showMoreButton": "Food, movement, rituals and resources",
+    "showLessButton": "Hide tips and resources",
+    "tipsTitle": "Food, movement and rituals for šestonedelie",
+    "hydrationNote": "Don't forget to drink — especially while breastfeeding it's easy to forget, even though your body needs even more water now than before. If healing is taking longer than you expect, or something feels off with your pelvic floor, a pelvic floor physiotherapist can help much faster than you'd think.",
+    "booksTitle": "Books that might help",
+    "typicalThisWeek": "Typical this week: {{list}}",
+    "enterBirthDate": "Enter your baby's birth date in your profile."
+  },
+  "postpartum": {
+    "partnerNote": "Šestonedelie isn't a test you have to endure alone — it's also a time when your partner is learning to be a parent too. Let them take on what they can — housework, night wakings, visitors — so you can heal and get to know your baby. You're a new family, and this is shared work from day one, not something only one of you has to carry.",
+    "weekBands": {
+      "1": {
+        "message": "The first week is about survival and getting to know each other. Bleeding is now at its heaviest and dark red, uterine contractions (felt most during breastfeeding) are at their strongest — this is how the uterus returns to its size. Around days 3–5, many women get a wave of crying or heightened sensitivity — it's called the baby blues and usually resolves on its own within two weeks. You and your baby are, above all, a new family right now — you have the right to set your own boundaries from the very start: who to let visit and when, what you need right now, when you want it to be just the two of you. Nothing else takes priority over this relationship.",
+        "symptoms": [
+          "heavy bleeding (dark red)",
+          "cramps/uterine contractions, especially while breastfeeding",
+          "tight, tender breasts around days 3–5",
+          "extreme fatigue and night sweats",
+          "tenderness of the perineum or C-section scar",
+          "possible baby blues (crying, heightened sensitivity)"
+        ],
+        "archetype": "The Newborn Mother",
+        "keywords": "survival • getting to know • fragility • new beginning",
+        "mantra": "I am being born too, right now."
+      },
+      "2": {
+        "message": "Bleeding is turning lighter, pinkish to brownish. Cramps and breast tenderness should gradually be easing. The baby blues should be fading by the end of this week — if sadness or anxiety are getting stronger instead, it's time to ask for help, not just push through.",
+        "symptoms": ["lighter, pinkish bleeding", "easing cramps", "ongoing fatigue", "possible night sweats"],
+        "archetype": "The Fragile One",
+        "keywords": "trust • gentleness • sensitivity • care",
+        "mantra": "I am learning to trust my body and myself."
+      },
+      "3": {
+        "message": "Bleeding is now light, yellowish to white, and may only show up occasionally. This period is also the most common onset of postpartum depression — not because you're doing anything wrong, but because your body and hormones are going through a huge change. If sadness, anxiety or a feeling of disconnection from your baby last longer than a few days, don't close yourself off — reach out to someone you trust (a friend, DIVA CIRCLE) as well as your gynecologist or pediatrician. Help works, and you don't have to wait for the six-week check-up, or handle it alone.",
+        "symptoms": ["light, pale bleeding", "ongoing fatigue", "a more sensitive mood — pay attention to how you feel"],
+        "archetype": "The One in the Fog",
+        "keywords": "darkness • support • truth • you're not alone",
+        "mantra": "I am not alone, even when it feels that way."
+      },
+      "4": {
+        "message": "The uterus is nearing its original size, and the scar — whether from birth or a C-section — should feel noticeably calmer. Around this time, some women start losing more hair. It's a normal reaction of the body to the hormone drop, not something you did wrong.",
+        "symptoms": ["hair loss (may begin)", "easing scar tenderness", "fatigue still present"],
+        "archetype": "The Healing One",
+        "keywords": "healing • patience • body • renewal",
+        "mantra": "My body remembers how to heal."
+      },
+      "6": {
+        "message": "Bleeding should be stopping around now. Your six-week gynecologist check-up is approaching — a good opportunity to talk through everything you're feeling, physically and emotionally. Your pelvic floor muscles are still noticeably weaker than before pregnancy — exercises to strengthen them genuinely matter now, it's not just a formality.",
+        "symptoms": ["bleeding should be ending", "weaker pelvic floor", "for C-section: usually cleared for normal activities"],
+        "archetype": "The One Returning to Herself",
+        "keywords": "return • strength • boundaries • foundation",
+        "mantra": "I am slowly coming home — to myself."
+      },
+      "8": {
+        "message": "Most women are bleeding-free by now and cramps are gone. If you're not breastfeeding, your period may return; if you're exclusively breastfeeding, it may be delayed for months. Note — fertility can return even before your first period does. At your six-week check-up you may have gotten medical clearance for sex — but that's only permission, not an obligation. It's completely fine if you don't feel ready yet, whether that's now, in a month, or later. If you're breastfeeding, lower desire isn't just in your head — breastfeeding raises prolactin, which naturally suppresses libido. Nature set it up this way on purpose, so your body isn't banking on another pregnancy right now. Both body and mind take their own time with this, not the calendar's.",
+        "symptoms": ["possible return of your period (if not breastfeeding)", "a noticeable rise in energy", "sleep-deficit fatigue continues"],
+        "archetype": "Awakening Strength",
+        "keywords": "energy • awakening • body • strength",
+        "mantra": "I feel my strength returning."
+      },
+      "12": {
+        "message": "Physical healing is complete for most women by now. Hair loss may be at its peak — hang in there, it settles within a year. Core and pelvic floor strength are still gradually returning, especially if you keep working on them regularly.",
+        "symptoms": ["hair loss may be peaking", "gradually returning core and pelvic floor strength"],
+        "archetype": "The One Who Integrates",
+        "keywords": "integration • wholeness • growth • transformation",
+        "mantra": "I am joining who I was with who I am now."
+      },
+      "fallback": {
+        "message": "You've been on this new path for several months now. Hair settles within a year, the scar keeps maturing for months, and the pelvic floor and core keep strengthening with regular exercise. Healing, hormones and the bond with your child all move at their own pace — trust it, it's not a race.",
+        "symptoms": ["hair is gradually settling", "energy and libido return at their own individual pace"],
+        "archetype": "Mother and Woman at Once",
+        "keywords": "balance • wholeness • mother and woman • your own pace",
+        "mantra": "I can be a mother and myself, both at once."
+      }
+    }
+  },
   "ttc": {
     "intro": "You're trying to conceive — the days around ovulation are highlighted in color in the calendar below. Tap a day to privately log when you were intimate.",
     "archetype": "Patient Hope",
