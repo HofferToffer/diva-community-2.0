@@ -615,6 +615,10 @@ export default function CommunityCycle() {
                       onChange={(e) => setNewLastPeriod(e.target.value)}
                     />
                   </div>
+                  <p className="rounded-xl bg-secondary/40 p-3 text-xs leading-relaxed text-foreground/80">
+                    Nezabudni na povinnú prehliadku u gynekológa/gynekologičky po šestonedelí. Táto aplikácia je len
+                    podpora, nenahrádza lekársku starostlivosť ani diagnózu.
+                  </p>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" disabled={!newLastPeriod || savingEndPostpartum} onClick={confirmEndPostpartum}>
                       {savingEndPostpartum ? "Ukladám…" : "Potvrdiť"}
