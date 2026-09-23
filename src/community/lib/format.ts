@@ -39,8 +39,14 @@ const SK_MONTHS = [
   "júla", "augusta", "septembra", "októbra", "novembra", "decembra",
 ];
 
-export function formatDate(value: string): string {
+const EN_MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+export function formatDate(value: string, locale: "sk" | "en" = "sk"): string {
   const d = new Date(value);
+  if (locale === "en") return `${EN_MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   return `${d.getDate()}. ${SK_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 

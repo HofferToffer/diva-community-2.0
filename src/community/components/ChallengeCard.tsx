@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { StoredImage } from "./StoredImage";
@@ -51,6 +52,9 @@ function formatValue(value: number): string {
 }
 
 export function ChallengeCard({ challenge }: { challenge: Challenge }) {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
+  const goalUnitTranslations = t("goalUnit", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
   const { data } = useChallengeProgress(challenge.id);
   const [open, setOpen] = useState(false);
   const progress = data?.progress ?? 0;
@@ -60,6 +64,10 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
     leaderboardMetric(challenge.goal_type),
   );
   const unit = leaderboardUnit(challenge.goal_type);
+  const translatedUnit = isEnglish ? goalUnitTranslations[unit] ?? unit : unit;
+  const goalUnitValue = goalUnit(challenge.goal_type);
+  const translatedGoalUnit = isEnglish ? goalUnitTranslations[goalUnitValue] ?? goalUnitValue : goalUnitValue;
+  const participants = data?.participants ?? 0;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm transition-colors hover:border-primary/40">
@@ -69,16 +77,17 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
         )}
         <div className="p-5">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-            {formatDate(challenge.start_date)} – {formatDate(challenge.end_date)}
+            {formatDate(challenge.start_date, isEnglish ? "en" : "sk")} – {formatDate(challenge.end_date, isEnglish ? "en" : "sk")}
           </p>
           <h3 className="mt-1 font-display text-2xl text-foreground">{challenge.title}</h3>
           {challenge.description && (
             <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{challenge.description}</p>
           )}
           <div className="mt-4">
-            <Progress value={percent} aria-label="Spoločný progres výzvy" />
+            <Progress value={percent} aria-label={t("challenges.progressAriaLabel")} />
             <p className="mt-2 text-xs text-muted-foreground">
-              {Math.round(progress)} / {challenge.goal} {goalUnit(challenge.goal_type)} · {data?.participants ?? 0} {pluralDivy(data?.participants ?? 0)}
+              {Math.round(progress)} / {challenge.goal} {translatedGoalUnit} ·{" "}
+              {isEnglish ? t("challenges.divasCount", { count: participants }) : `${participants} ${pluralDivy(participants)}`}
             </p>
           </div>
         </div>
@@ -90,18 +99,18 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
         aria-expanded={open}
         className="flex w-full items-center justify-between border-t border-border px-5 py-3 text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
       >
-        <span>Poradie div</span>
+        <span>{t("challenges.leaderboardToggle")}</span>
         {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
       </button>
 
       {open && (
         <div className="border-t border-border px-5 py-3">
           {leaderboardLoading && (
-            <p className="py-2 text-center text-xs text-muted-foreground">Načítavam poradie…</p>
+            <p className="py-2 text-center text-xs text-muted-foreground">{t("challenges.leaderboardLoading")}</p>
           )}
           {!leaderboardLoading && (leaderboard?.length ?? 0) === 0 && (
             <p className="py-2 text-center text-xs text-muted-foreground">
-              Zatiaľ nikto neprispel. Buď prvá.
+              {t("challenges.leaderboardEmpty")}
             </p>
           )}
           {!leaderboardLoading && leaderboard && leaderboard.length > 0 && (
@@ -113,7 +122,7 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
                     <span className="truncate">{row.name}</span>
                   </span>
                   <span className="shrink-0 text-muted-foreground">
-                    {formatValue(Number(row.value))} {unit}
+                    {formatValue(Number(row.value))} {translatedUnit}
                   </span>
                 </li>
               ))}
