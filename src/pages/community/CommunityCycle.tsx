@@ -214,11 +214,14 @@ export default function CommunityCycle() {
       refreshProfile();
       setEndingPostpartum(false);
       if (periodReturnedChoice === "yes") {
-        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.");
+        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.", {
+          description: "Nezabudni na prehliadku u gynekológa/gynekologičky po šestonedelí.",
+          duration: 7000,
+        });
       } else {
         toast.success("Šestonedelie je ukončené.", {
           description:
-            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí.",
+            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí. Prehliadku u gynekológa/gynekologičky si však nechaj urobiť.",
           duration: 8000,
         });
       }
