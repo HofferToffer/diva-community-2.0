@@ -15,6 +15,7 @@ import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/li
 import { getCycleInfo, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import { getPregnancyInfo, pregnancyWeekIcon, pregnancyWeekSize, TRIMESTER_LABEL } from "@/community/lib/pregnancy";
 import { getPostpartumInfo } from "@/community/lib/postpartum";
+import { MENOPAUSE_STAGES } from "@/community/lib/menopause";
 import { getLifePhase, quoteForDate } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
@@ -84,6 +85,11 @@ export default function CommunityHome() {
   const postpartum = useMemo(
     () => (profile?.is_postpartum && profile?.postpartum_since ? getPostpartumInfo(profile.postpartum_since) : null),
     [profile?.is_postpartum, profile?.postpartum_since],
+  );
+
+  const menopauseStage = useMemo(
+    () => MENOPAUSE_STAGES.find((s) => s.key === profile?.menopause_stage) ?? null,
+    [profile?.menopause_stage],
   );
 
   return (
@@ -161,10 +167,23 @@ export default function CommunityHome() {
             className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
           >
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoja kapitola</p>
-            <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Únava, návaly aj výkyvy energie sú normálna súčasť tejto kapitoly, nie zlyhanie. Tipy pre teba nájdeš tu.
-            </p>
+            {menopauseStage ? (
+              <>
+                <h2 className="mt-1 font-display text-2xl text-primary">{menopauseStage.name}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{menopauseStage.message}</p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Typické teraz: {menopauseStage.symptoms.join(" · ")}
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="mt-1 font-display text-2xl text-primary">V menopauze</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Únava, návaly aj výkyvy energie sú normálna súčasť tejto kapitoly, nie zlyhanie. Tipy pre teba
+                  nájdeš tu.
+                </p>
+              </>
+            )}
           </Link>
         </motion.div>
       )}
