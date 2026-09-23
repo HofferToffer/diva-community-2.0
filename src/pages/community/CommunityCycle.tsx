@@ -39,6 +39,7 @@ import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2 } f
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
+import MedicalNote from "@/community/components/MedicalNote";
 
 function NotAloneNote() {
   return (
@@ -398,6 +399,7 @@ export default function CommunityCycle() {
             </Button>
           </div>
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       )}
 
@@ -679,6 +681,7 @@ export default function CommunityCycle() {
             </div>
           )}
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       )}
 
@@ -753,6 +756,7 @@ export default function CommunityCycle() {
             })}
           </div>
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       )}
 
@@ -922,6 +926,7 @@ export default function CommunityCycle() {
           )}
           </div>
           <NotAloneNote />
+          <MedicalNote />
         </motion.section>
       ) : (
         <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
@@ -959,6 +964,7 @@ export default function CommunityCycle() {
               Nastaviť v profile
             </Button>
           </div>
+          <MedicalNote className="mt-5 text-left" />
         </motion.section>
       ))}
     </div>
