@@ -74,6 +74,18 @@ export async function uploadBlogImage(file: File): Promise<string> {
   return supabase.storage.from("blog-images").getPublicUrl(path).data.publicUrl;
 }
 
+/** Uploads an audio recording (e.g. a voice birth story). */
+export async function uploadAudio(bucket: "birth-stories", userId: string, blob: Blob, ext: string) {
+  const path = `${userId}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, blob, {
+    cacheControl: "3600",
+    upsert: false,
+    contentType: blob.type || "audio/webm",
+  });
+  if (error) throw error;
+  return `${bucket}/${path}`;
+}
+
 /** Stored value is "bucket/path" — removes the underlying file. */
 export async function deleteStoredImage(stored: string): Promise<void> {
   const [bucket, ...rest] = stored.split("/");
