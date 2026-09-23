@@ -14,5 +14,18 @@
   "language": {
     "switchToEnglish": "English",
     "switchToSlovak": "Slovenčina"
+  },
+  "home": {
+    "tagline": "V jemnosti je naša sila.",
+    "statThisMonth": "Tento mesiac",
+    "statFeelingsThisMonth": "Zapísané pocity tento mesiac",
+    "quoteOfTheDay": "Citát dňa",
+    "customPhotoLink": "Vlastná fotka a ďalšie možnosti →",
+    "currentChallenge": "Aktuálna výzva",
+    "viewChallenge": "Zobraziť výzvu",
+    "challengeProgressLabel": "Progres výzvy",
+    "feed": "Feed",
+    "feedEmptyTitle": "Feed je zatiaľ tichý",
+    "feedEmptyDescription": "Zapíš svoju prvú aktivitu a inšpiruj ostatné divy."
   }
 }

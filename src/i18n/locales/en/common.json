@@ -14,5 +14,20 @@
   "language": {
     "switchToEnglish": "English",
     "switchToSlovak": "Slovenčina"
+  },
+  "home": {
+    "tagline": "Our strength is in our gentleness.",
+    "statThisMonth": "This month",
+    "statFeelingsThisMonth": "Feelings logged this month",
+    "statActivities_one": "{{count}} activity this month",
+    "statActivities_other": "{{count}} activities this month",
+    "quoteOfTheDay": "Quote of the day",
+    "customPhotoLink": "Custom photo and more options →",
+    "currentChallenge": "Current challenge",
+    "viewChallenge": "View challenge",
+    "challengeProgressLabel": "Challenge progress",
+    "feed": "Feed",
+    "feedEmptyTitle": "The feed is quiet for now",
+    "feedEmptyDescription": "Log your first activity and inspire the other Divas."
   }
 }
