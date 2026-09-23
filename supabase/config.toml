@@ -1,1 +1,9 @@
 project_id = "nvtmglinuttddoenvhpu"
+
+# Strava calls this directly (webhook handshake + activity push events) with no
+# Supabase auth header at all — its own security is the hub.verify_token check
+# inside the function, not a JWT. Without this, Supabase's gateway would 401
+# every request from Strava before it ever reaches our code, so nothing would
+# ever auto-import.
+[functions.strava-webhook]
+verify_jwt = false
