@@ -677,6 +677,7 @@ export default function CommunityCycle() {
                     variant="ghost"
                     size="sm"
                     onClick={() => {
+                      dictation.stop();
                       setBirthStory(profile.birth_story ?? "");
                       setEditingBirthStory(false);
                     }}
