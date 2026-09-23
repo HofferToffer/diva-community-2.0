@@ -136,12 +136,18 @@ const PREGNANCY_WEEK_BANDS: WeekBand[] = [
       "Bábätko sa blíži k termínu, stráca ochlpenie a pripravuje si reflexy na pôrod. Hlavička sa často zasadí hlbšie do panvy, čo môže uľaviť dýchaniu, ale pridá tlak dole.",
     symptoms: ["ľahšie dýchanie, ale viac tlaku v panve", "kačacia chôdza", "zvýšený výtok", "silnejšie, častejšie Braxtonove kontrakcie", "možný pud hniezdenia"],
   },
+  {
+    maxWeek: 41,
+    message:
+      "Ak si už prekročila predpokladaný termín, neznamená to automaticky, že niečo nie je v poriadku — termín je len odhad, najčastejšie počítaný z prvého dňa poslednej menštruácie, a pri nepravidelnom cykle pred otehotnením môže byť skutočný vek tehotenstva iný, než dátum ukazuje. Od tohto týždňa ťa aj bábätko zvyčajne sledujú častejšie — bežné sú dodatočné kontroly aj ultrazvuk — a s gynekologičkou sa môžete rozprávať aj o tom, či a kedy by dávalo zmysel pôrod vyvolať.",
+    symptoms: ["častejšie kontrolné vyšetrenia", "možný rozhovor o vyvolaní pôrodu", "silné Braxtonove kontrakcie", "netrpezlivosť a očakávanie"],
+  },
 ];
 
 const PREGNANCY_FALLBACK: WeekBand = {
   maxWeek: Infinity,
   message:
-    "Bábätko je už donosené — orgány sú zrelé, telo pokračuje v drobnom priberaní a nacvičuje dýchanie aj prehĺtanie. Teraz je čas sledovať vlastné telo a signály blížiaceho sa pôrodu.",
+    "Si na samej hranici toho, čo appka vie ukázať týždeň po týždni — bábätko je už dávno pripravené, orgány sú zrelé. Sledovanie zo strany gynekologičky teraz pokračuje ešte pozornejšie. Dôveruj svojmu telu aj tímu okolo seba — koniec je naozaj blízko.",
   symptoms: ["silné Braxtonove kontrakcie", "tlak v panve", "možná strata hlienovej zátky", "vlny energie striedané únavou"],
 };
 
