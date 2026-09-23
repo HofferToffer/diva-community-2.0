@@ -71,6 +71,8 @@ export default function CommunityCycle() {
   const navigate = useNavigate();
 
   const [showMorePregnancy, setShowMorePregnancy] = useState(false);
+  const [showMorePostpartum, setShowMorePostpartum] = useState(false);
+  const [showMoreTTC, setShowMoreTTC] = useState(false);
   const [editingCycle, setEditingCycle] = useState(false);
   const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
@@ -661,40 +663,52 @@ export default function CommunityCycle() {
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">{postpartum.keywords}</p>
               </div>
-              <div className="rounded-xl border border-border/50 bg-background/60 p-4">
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Strava, pohyb a rituály šestonedelia
-                </p>
-                <div className="mt-4">
-                  <TipGrid tips={POSTPARTUM_TIPS} color={POSTPARTUM_TIP_COLOR} />
-                </div>
-                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                  Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac
-                  než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je
-                  v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.
-                </p>
-              </div>
-              <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
-                {PARTNER_SUPPORT_NOTE_POSTPARTUM}
-              </p>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-between px-2 text-muted-foreground"
+                onClick={() => setShowMorePostpartum((v) => !v)}
+              >
+                {showMorePostpartum ? "Skryť tipy a zdroje" : "Strava, pohyb, rituály a zdroje"}
+                {showMorePostpartum ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+              {showMorePostpartum && (
+                <>
+                  <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Strava, pohyb a rituály šestonedelia
+                    </p>
+                    <div className="mt-4">
+                      <TipGrid tips={POSTPARTUM_TIPS} color={POSTPARTUM_TIP_COLOR} />
+                    </div>
+                    <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                      Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac
+                      než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je
+                      v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.
+                    </p>
+                  </div>
+                  <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
+                    {PARTNER_SUPPORT_NOTE_POSTPARTUM}
+                  </p>
+                  <div className="rounded-2xl bg-secondary/30 p-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Knihy, ktoré ti môžu pomôcť
+                    </p>
+                    <ul className="mt-2 space-y-2">
+                      {POSTPARTUM_BOOKS.map((book) => (
+                        <li key={book.title} className="text-sm">
+                          <span className="font-medium text-foreground/85">{book.title}</span>
+                          <p className="text-xs text-muted-foreground">{book.note}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
             </>
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
           )}
-
-          <div className="rounded-2xl bg-secondary/30 p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Knihy, ktoré ti môžu pomôcť
-            </p>
-            <ul className="mt-2 space-y-2">
-              {POSTPARTUM_BOOKS.map((book) => (
-                <li key={book.title} className="text-sm">
-                  <span className="font-medium text-foreground/85">{book.title}</span>
-                  <p className="text-xs text-muted-foreground">{book.note}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           <motion.div
             ref={birthStoryRef}
@@ -1037,6 +1051,9 @@ export default function CommunityCycle() {
             </div>
             {MENOPAUSE_STAGES.map((stage) => {
               const selected = menopauseStage === stage.key;
+              // Before she's picked a stage, show all four in full so she can read and choose.
+              // Once one is picked, the others collapse to a name she can still tap to switch.
+              const expanded = selected || !menopauseStage;
               return (
                 <button
                   key={stage.key}
@@ -1048,29 +1065,36 @@ export default function CommunityCycle() {
                   )}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-display text-lg text-primary">{stage.name}</p>
+                    <div>
+                      <p className="font-display text-lg text-primary">{stage.name}</p>
+                      {!expanded && <p className="text-xs text-muted-foreground">{stage.ageRange}</p>}
+                    </div>
                     {selected && (
                       <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                         <Check className="h-3 w-3" aria-hidden="true" />
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground">{stage.ageRange}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/85">{stage.message}</p>
-                  <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                    {stage.symptoms.map((symptom) => (
-                      <li key={symptom} className="flex items-start gap-2">
-                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                        {symptom}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-3 border-t border-border/50 pt-3">
-                    <p className="text-sm italic leading-relaxed text-foreground/85">
-                      „{stage.mantra}" — {stage.archetype}
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">{stage.keywords}</p>
-                  </div>
+                  {expanded && (
+                    <>
+                      <p className="text-xs text-muted-foreground">{stage.ageRange}</p>
+                      <p className="mt-2 text-sm leading-relaxed text-foreground/85">{stage.message}</p>
+                      <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                        {stage.symptoms.map((symptom) => (
+                          <li key={symptom} className="flex items-start gap-2">
+                            <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                            {symptom}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-3 border-t border-border/50 pt-3">
+                        <p className="text-sm italic leading-relaxed text-foreground/85">
+                          „{stage.mantra}" — {stage.archetype}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">{stage.keywords}</p>
+                      </div>
+                    </>
+                  )}
                 </button>
               );
             })}
@@ -1181,48 +1205,60 @@ export default function CommunityCycle() {
                     <p className="mt-1 text-xs text-muted-foreground">{TTC_ARCHETYPE.keywords}</p>
                   </div>
                   <p className="text-sm leading-relaxed text-foreground/85">{TTC_TIMELINE_NOTE}</p>
-
-                  <div className="rounded-xl border border-border/50 bg-card p-3">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Kedy sa oplatí ísť na vyšetrenie
-                    </p>
-                    <p className="mt-2 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.ageUnder35}</p>
-                    <p className="mt-1 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.age35Plus}</p>
-                    <p className="mt-2 text-xs text-muted-foreground">Skôr, ak máš:</p>
-                    <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
-                      {TTC_DOCTOR_GUIDANCE.soonerIf.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Čo naozaj pomáha
-                    </p>
-                    <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
-                  </div>
-
                   <p className="text-xs italic text-muted-foreground">{TTC_STRESS_NOTE}</p>
                   <p className="text-sm leading-relaxed text-foreground/85">{TTC_EMOTIONAL_NOTE}</p>
 
-                  <div className="rounded-xl border border-border/50 bg-card p-3">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Mýty, ktoré môžeš pustiť z hlavy
-                    </p>
-                    <ul className="mt-2 space-y-2 text-sm">
-                      {TTC_MYTHS.map((item) => (
-                        <li key={item.myth}>
-                          <span className="text-muted-foreground line-through">{item.myth}</span>
-                          <br />
-                          <span className="text-foreground/85">{item.fact}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-between px-2 text-muted-foreground"
+                    onClick={() => setShowMoreTTC((v) => !v)}
+                  >
+                    {showMoreTTC ? "Skryť tipy a zdroje" : "Vyšetrenia, tipy a mýty"}
+                    {showMoreTTC ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </Button>
+                  {showMoreTTC && (
+                    <>
+                      <div className="rounded-xl border border-border/50 bg-card p-3">
+                        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                          Kedy sa oplatí ísť na vyšetrenie
+                        </p>
+                        <p className="mt-2 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.ageUnder35}</p>
+                        <p className="mt-1 text-sm text-foreground/85">{TTC_DOCTOR_GUIDANCE.age35Plus}</p>
+                        <p className="mt-2 text-xs text-muted-foreground">Skôr, ak máš:</p>
+                        <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
+                          {TTC_DOCTOR_GUIDANCE.soonerIf.map((item) => (
+                            <li key={item} className="flex items-start gap-2">
+                              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                          Čo naozaj pomáha
+                        </p>
+                        <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
+                      </div>
+
+                      <div className="rounded-xl border border-border/50 bg-card p-3">
+                        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                          Mýty, ktoré môžeš pustiť z hlavy
+                        </p>
+                        <ul className="mt-2 space-y-2 text-sm">
+                          {TTC_MYTHS.map((item) => (
+                            <li key={item.myth}>
+                              <span className="text-muted-foreground line-through">{item.myth}</span>
+                              <br />
+                              <span className="text-foreground/85">{item.fact}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 
