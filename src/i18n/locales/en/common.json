@@ -9,7 +9,21 @@
     "map": "Diva map",
     "divaKruh": "DIVA CIRCLE",
     "admin": "Admin",
-    "backToWebsite": "Back to website"
+    "backToWebsite": "Back to website",
+    "logoHomeAriaLabel": "App home",
+    "logoWebAriaLabel": "DIVA Community website",
+    "feelingLogToday": "Log today's feeling",
+    "feelingHistory": "My feelings history",
+    "menuButtonAriaLabel": "Menu",
+    "menuTitle": "Menu",
+    "menuAriaLabel": "App menu",
+    "messages": "Messages",
+    "messagesUnread": "Messages ({{count}} unread)",
+    "notifications": "Notifications",
+    "notificationsUnread": "Notifications ({{count}} new)",
+    "account": "Account",
+    "myProfile": "My profile",
+    "signOut": "Sign out"
   },
   "language": {
     "switchToEnglish": "English",

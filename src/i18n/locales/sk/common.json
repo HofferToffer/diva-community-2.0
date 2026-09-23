@@ -9,7 +9,21 @@
     "map": "Mapa Divy",
     "divaKruh": "DIVA KRUH",
     "admin": "Admin",
-    "backToWebsite": "Späť na web"
+    "backToWebsite": "Späť na web",
+    "logoHomeAriaLabel": "Domov appky",
+    "logoWebAriaLabel": "DIVA Community web",
+    "feelingLogToday": "Zapísať dnešný pocit",
+    "feelingHistory": "História môjho prežívania",
+    "menuButtonAriaLabel": "Menu",
+    "menuTitle": "Menu",
+    "menuAriaLabel": "Menu appky",
+    "messages": "Správy",
+    "messagesUnread": "Správy ({{count}} neprečítaných)",
+    "notifications": "Notifikácie",
+    "notificationsUnread": "Notifikácie ({{count}} nových)",
+    "account": "Účet",
+    "myProfile": "Môj profil",
+    "signOut": "Odhlásiť sa"
   },
   "language": {
     "switchToEnglish": "English",

@@ -361,11 +361,11 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
         <div className="relative mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
           <div className="flex items-center">
-            <Link to="/community" className="flex shrink-0 items-center gap-2 lg:hidden" aria-label="Domov appky">
+            <Link to="/community" className="flex shrink-0 items-center gap-2 lg:hidden" aria-label={t("nav.logoHomeAriaLabel")}>
               <Home className="h-5 w-5 text-foreground" aria-hidden="true" />
               <span className="font-heading text-sm uppercase tracking-[0.2em] text-foreground">Diva</span>
             </Link>
-            <Link to="/" className="hidden shrink-0 items-center gap-2 lg:flex" aria-label="DIVA Community web">
+            <Link to="/" className="hidden shrink-0 items-center gap-2 lg:flex" aria-label={t("nav.logoWebAriaLabel")}>
               <Home className="h-5 w-5 text-foreground" aria-hidden="true" />
               <span className="font-heading text-sm uppercase tracking-[0.2em] text-foreground">Diva</span>
             </Link>
@@ -388,10 +388,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
                     <DropdownMenuItem asChild onClick={() => setPocitMenuOpen(false)}>
-                      <Link to="/community/pocit" className="cursor-pointer">Zapísať dnešný pocit</Link>
+                      <Link to="/community/pocit" className="cursor-pointer">{t("nav.feelingLogToday")}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild onClick={() => setPocitMenuOpen(false)}>
-                      <Link to="/community/pocit/historia" className="cursor-pointer">História môjho prežívania</Link>
+                      <Link to="/community/pocit/historia" className="cursor-pointer">{t("nav.feelingHistory")}</Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -416,7 +416,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
                 <button
-                  aria-label="Menu"
+                  aria-label={t("nav.menuButtonAriaLabel")}
                   className="flex rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground lg:hidden"
                 >
                   <Menu className="h-5 w-5" />
@@ -424,9 +424,9 @@ export function CommunityShell({ children }: { children: ReactNode }) {
               </SheetTrigger>
               <SheetContent side="right" className="w-[260px]">
                 <SheetHeader>
-                  <SheetTitle className="text-left font-heading">Menu</SheetTitle>
+                  <SheetTitle className="text-left font-heading">{t("nav.menuTitle")}</SheetTitle>
                 </SheetHeader>
-                <nav className="mt-8 flex flex-col gap-2" aria-label="Community menu">
+                <nav className="mt-8 flex flex-col gap-2" aria-label={t("nav.menuAriaLabel")}>
                   {nav.map((item, i) => (
                   <motion.div
                     key={item.to}
@@ -456,7 +456,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                             )}
                           >
                             <PenLine className="h-4 w-4 shrink-0" aria-hidden="true" />
-                            Zapísať dnešný pocit
+                            {t("nav.feelingLogToday")}
                           </Link>
                         </SheetClose>
                         <SheetClose asChild>
@@ -470,7 +470,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                             )}
                           >
                             <History className="h-4 w-4 shrink-0" aria-hidden="true" />
-                            História môjho prežívania
+                            {t("nav.feelingHistory")}
                           </Link>
                         </SheetClose>
                       </div>
@@ -509,7 +509,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
             </Sheet>
             <Link
               to="/community/spravy"
-              aria-label={unreadMessages > 0 ? `Správy (${unreadMessages} neprečítaných)` : "Správy"}
+              aria-label={unreadMessages > 0 ? t("nav.messagesUnread", { count: unreadMessages }) : t("nav.messages")}
               className="relative rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
             >
               <MessageCircle className="h-5 w-5" />
@@ -522,7 +522,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
             </Link>
             <Link
               to="/community/notifikacie"
-              aria-label={unread > 0 ? `Notifikácie (${unread} nových)` : "Notifikácie"}
+              aria-label={unread > 0 ? t("nav.notificationsUnread", { count: unread }) : t("nav.notifications")}
               className="relative rounded-md p-2 text-muted-foreground transition-colors hover:text-foreground"
             >
               <Bell className="h-5 w-5" />
@@ -534,14 +534,14 @@ export function CommunityShell({ children }: { children: ReactNode }) {
               )}
             </Link>
             <DropdownMenu>
-              <DropdownMenuTrigger aria-label="Účet" className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <DropdownMenuTrigger aria-label={t("nav.account")} className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
                 <ProfileAvatar path={profile?.avatar_url} name={profile?.name ?? "Diva"} size={32} />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
                   <Link to="/community/profil" className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Môj profil
+                    {t("nav.myProfile")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={toggleLanguage} className="cursor-pointer">
@@ -550,7 +550,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer text-primary focus:text-primary">
                   <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
-                  Odhlásiť sa
+                  {t("nav.signOut")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
