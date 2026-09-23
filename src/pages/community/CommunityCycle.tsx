@@ -47,7 +47,7 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText, ChevronDown, ChevronUp } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { useLiveDictation } from "@/community/hooks/useLiveDictation";
 import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
@@ -70,6 +70,7 @@ export default function CommunityCycle() {
   const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
   const navigate = useNavigate();
 
+  const [showMorePregnancy, setShowMorePregnancy] = useState(false);
   const [editingCycle, setEditingCycle] = useState(false);
   const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
@@ -518,69 +519,84 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-xl border border-border/50 bg-background/60 p-4">
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Strava, pohyb a rituály tehotenstva
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_TIPS_INTRO}</p>
-                <div className="mt-4">
-                  <TipGrid tips={PREGNANCY_TIPS[pregnancy.trimester]} color={PREGNANCY_TIP_COLOR} />
-                </div>
-              </div>
-              {pregnancy.week >= 34 && (
-                <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Príprava na pôrod — posledné týždne
-                  </p>
-                  <div className="mt-4">
-                    <TipGrid tips={PREGNANCY_LATE_TIPS} color={PREGNANCY_TIP_COLOR} />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-between px-2 text-muted-foreground"
+                onClick={() => setShowMorePregnancy((v) => !v)}
+              >
+                {showMorePregnancy ? "Skryť tipy a zdroje" : "Strava, pohyb, rituály a zdroje"}
+                {showMorePregnancy ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+              {showMorePregnancy && (
+                <>
+                  <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Strava, pohyb a rituály tehotenstva
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_TIPS_INTRO}</p>
+                    <div className="mt-4">
+                      <TipGrid tips={PREGNANCY_TIPS[pregnancy.trimester]} color={PREGNANCY_TIP_COLOR} />
+                    </div>
                   </div>
-                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_LATE_NOTE}</p>
-                </div>
+                  {pregnancy.week >= 34 && (
+                    <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Príprava na pôrod — posledné týždne
+                      </p>
+                      <div className="mt-4">
+                        <TipGrid tips={PREGNANCY_LATE_TIPS} color={PREGNANCY_TIP_COLOR} />
+                      </div>
+                      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_LATE_NOTE}</p>
+                    </div>
+                  )}
+                  <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
+                    {PARTNER_SUPPORT_NOTE_PREGNANCY}
+                  </p>
+                </>
               )}
-              <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
-                {PARTNER_SUPPORT_NOTE_PREGNANCY}
-              </p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">
               Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva.
             </p>
           )}
-          <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Príprav sa aj v hlave</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                Všetko je aj o hlave — afirmácie a spojenie s bábätkom ťa vedia na pôrod pripraviť rovnako ako telo.
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {AFFIRMATION_LINKS.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full border border-border/50 px-3 py-1.5 text-xs text-foreground/85 transition-colors hover:border-primary/50 hover:text-primary"
-                  >
-                    {link.label}
-                  </a>
-                ))}
+          {showMorePregnancy && (
+            <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Príprav sa aj v hlave</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  Všetko je aj o hlave — afirmácie a spojenie s bábätkom ťa vedia na pôrod pripraviť rovnako ako telo.
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {AFFIRMATION_LINKS.map((link) => (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-border/50 px-3 py-1.5 text-xs text-foreground/85 transition-colors hover:border-primary/50 hover:text-primary"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-border/50 pt-3">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Knihy, ktoré ti môžu pomôcť
+                </p>
+                <ul className="mt-2 space-y-2">
+                  {PREGNANCY_BOOKS.map((book) => (
+                    <li key={book.title} className="text-sm">
+                      <span className="font-medium text-foreground/85">{book.title}</span>
+                      <p className="text-xs text-muted-foreground">{book.note}</p>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-            <div className="border-t border-border/50 pt-3">
-              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Knihy, ktoré ti môžu pomôcť
-              </p>
-              <ul className="mt-2 space-y-2">
-                {PREGNANCY_BOOKS.map((book) => (
-                  <li key={book.title} className="text-sm">
-                    <span className="font-medium text-foreground/85">{book.title}</span>
-                    <p className="text-xs text-muted-foreground">{book.note}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          )}
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
