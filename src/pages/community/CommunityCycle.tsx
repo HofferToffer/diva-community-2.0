@@ -477,11 +477,20 @@ export default function CommunityCycle() {
               <Feather className="h-4 w-4" aria-hidden="true" />
               Tvoj pôrodný príbeh
             </p>
+            {birthStoryPhoto && (
+              <div className="overflow-hidden rounded-xl shadow-sm">
+                <img
+                  src={birthStoryPhoto}
+                  alt="Fotka k pôrodnému príbehu"
+                  className="max-h-72 w-full object-cover"
+                />
+              </div>
+            )}
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje.
+                  zmysel pre nikoho iného. Toto je len tvoje. K príbehu môžeš pridať aj fotku.
                 </p>
                 <Textarea
                   rows={6}
@@ -518,7 +527,8 @@ export default function CommunityCycle() {
                   Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty.
+                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty. Príbeh môžeš aj
+                  nahrať — stačí fotka.
                 </p>
                 <Button size="sm" className="mt-1 gap-2" onClick={() => setEditingBirthStory(true)}>
                   <Feather className="h-4 w-4" aria-hidden="true" />
@@ -526,6 +536,41 @@ export default function CommunityCycle() {
                 </Button>
               </>
             )}
+            <input
+              ref={storyPhotoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
+            />
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 px-0 text-primary"
+                disabled={uploadingStoryPhoto}
+                onClick={() => storyPhotoInputRef.current?.click()}
+              >
+                <ImagePlus className="h-4 w-4" aria-hidden="true" />
+                {uploadingStoryPhoto
+                  ? "Nahrávam…"
+                  : profile.birth_story_photo
+                    ? "Zmeniť fotku"
+                    : "Nahrať fotku"}
+              </Button>
+              {profile.birth_story_photo && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-muted-foreground"
+                  disabled={uploadingStoryPhoto}
+                  onClick={removeStoryPhoto}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  Odstrániť fotku
+                </Button>
+              )}
+            </div>
           </motion.div>
 
           <div className="flex flex-wrap items-center gap-2">
