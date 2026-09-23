@@ -87,6 +87,12 @@ export function pluralActivities(count: number): string {
   return "aktivít";
 }
 
+export function pluralChildren(count: number): string {
+  if (count === 1) return "dieťa";
+  if (count >= 2 && count <= 4) return "deti";
+  return "detí";
+}
+
 
 export function greeting(_name: string | null | undefined): string {
   return "Ahoj milá Diva.";

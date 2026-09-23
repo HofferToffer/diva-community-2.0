@@ -38,6 +38,10 @@ export default function CommunityCycle() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
+  const [endingPostpartum, setEndingPostpartum] = useState(false);
+  const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
+  const [newLastPeriod, setNewLastPeriod] = useState("");
+  const [savingEndPostpartum, setSavingEndPostpartum] = useState(false);
   const [menopauseStage, setMenopauseStage] = useState<string | null>(profile?.menopause_stage ?? null);
   const { data: intimacyDates } = useIntimacyLogs(profile?.id);
   const toggleIntimacy = useToggleIntimacyLog(profile?.id);
@@ -89,17 +93,40 @@ export default function CommunityCycle() {
     }
   };
 
-  const endPostpartum = async () => {
+  const startEndingPostpartum = () => {
+    setPeriodReturnedChoice(null);
+    setNewLastPeriod("");
+    setEndingPostpartum(true);
+  };
+
+  const confirmEndPostpartum = async () => {
+    if (periodReturnedChoice === "yes" && !newLastPeriod) return;
+    setSavingEndPostpartum(true);
     try {
       const { error } = await supabase
         .from("profiles")
-        .update({ is_postpartum: false, postpartum_since: null } as never)
+        .update({
+          is_postpartum: false,
+          postpartum_since: null,
+          ...(periodReturnedChoice === "yes" ? { last_period_date: newLastPeriod } : {}),
+        } as never)
         .eq("id", profile.id);
       if (error) throw error;
       refreshProfile();
-      toast.success("Šestonedelie je ukončené.");
+      setEndingPostpartum(false);
+      if (periodReturnedChoice === "yes") {
+        toast.success("Šestonedelie je ukončené — cyklus je opäť nastavený.");
+      } else {
+        toast.success("Šestonedelie je ukončené.", {
+          description:
+            "To, že sa menštruácia ešte nevrátila, je úplne bežné — najmä pri dojčení sa vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj vyše roka. Keď príde, len zadaj dátum v profile a cyklus sa ti spustí.",
+          duration: 8000,
+        });
+      }
     } catch {
       toast.error("Nepodarilo sa uložiť.");
+    } finally {
+      setSavingEndPostpartum(false);
     }
   };
 
@@ -275,10 +302,69 @@ export default function CommunityCycle() {
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
               Upraviť v profile
             </Button>
-            <Button variant="outline" size="sm" onClick={endPostpartum}>
-              Ukončiť šestonedelie
-            </Button>
+            {!endingPostpartum && (
+              <Button variant="outline" size="sm" onClick={startEndingPostpartum}>
+                Ukončiť šestonedelie
+              </Button>
+            )}
           </div>
+
+          {endingPostpartum && (
+            <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
+              <p className="text-sm font-medium text-foreground/85">Vrátila sa ti už menštruácia?</p>
+              {periodReturnedChoice === null && (
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPeriodReturnedChoice("yes")}>
+                    Áno
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPeriodReturnedChoice("no")}>
+                    Ešte nie
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setEndingPostpartum(false)}>
+                    Zrušiť
+                  </Button>
+                </div>
+              )}
+              {periodReturnedChoice === "yes" && (
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="pp-last-period">Dátum poslednej menštruácie</Label>
+                    <Input
+                      id="pp-last-period"
+                      type="date"
+                      max={new Date().toISOString().slice(0, 10)}
+                      value={newLastPeriod}
+                      onChange={(e) => setNewLastPeriod(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="flex-1" disabled={!newLastPeriod || savingEndPostpartum} onClick={confirmEndPostpartum}>
+                      {savingEndPostpartum ? "Ukladám…" : "Potvrdiť"}
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setPeriodReturnedChoice(null)}>
+                      Späť
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {periodReturnedChoice === "no" && (
+                <div className="space-y-3">
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    To je úplne bežné — najmä pri dojčení sa cyklus vie vrátiť aj o mnoho mesiacov neskôr, niekedy aj
+                    vyše roka. Keď príde, jednoducho zadaj dátum v profile a cyklus sa ti spustí.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="flex-1" disabled={savingEndPostpartum} onClick={confirmEndPostpartum}>
+                      {savingEndPostpartum ? "Ukladám…" : "Rozumiem, ukončiť"}
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setPeriodReturnedChoice(null)}>
+                      Späť
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </motion.section>
       )}
 

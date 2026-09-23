@@ -45,6 +45,9 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [cityLat, setCityLat] = useState<number | null>(profile?.city_lat ?? null);
   const [cityLng, setCityLng] = useState<number | null>(profile?.city_lng ?? null);
   const [dateOfBirth, setDateOfBirth] = useState(profile?.date_of_birth ?? "");
+  const [childrenCount, setChildrenCount] = useState(
+    profile?.children_count != null ? String(profile.children_count) : "",
+  );
   const [interests, setInterests] = useState<string[]>(profile?.interests ?? []);
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
@@ -155,6 +158,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           city_lat: finalCityLat,
           city_lng: finalCityLng,
           date_of_birth: dateOfBirth || null,
+          children_count: childrenCount.trim() ? Math.max(0, parseInt(childrenCount, 10) || 0) : null,
           interests,
           is_public: isPublic,
           notify_likes: notifyLikes,
@@ -267,6 +271,19 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           <p className="text-xs text-muted-foreground">
             Podľa toho ti tu v profile ukážeme tvoj životný archetyp. Vidíš to len ty.
           </p>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="s-children">Koľko máš detí? (nepovinné)</Label>
+          <Input
+            id="s-children"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={20}
+            value={childrenCount}
+            onChange={(e) => setChildrenCount(e.target.value)}
+          />
+          <p className="text-xs text-muted-foreground">Ukážeme to v tvojom profile ako niečo, na čo môžeš byť hrdá.</p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="s-bio">O mne</Label>

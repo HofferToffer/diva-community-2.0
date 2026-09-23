@@ -16,7 +16,7 @@ import {
   useProfileByUsername,
   useProfileStats,
 } from "@/community/hooks/queries";
-import { formatKm, pluralActivities } from "@/community/lib/format";
+import { formatKm, pluralActivities, pluralChildren } from "@/community/lib/format";
 import { ProfileSettings } from "@/community/components/ProfileSettings";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON } from "@/community/lib/cycle";
 import { getArchetype } from "@/community/lib/archetype";
@@ -404,6 +404,16 @@ export default function CommunityProfile() {
         <div className="space-y-1">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Moje dary</p>
           <p className="text-sm leading-relaxed text-foreground/85">{profile.gifts}</p>
+        </div>
+      )}
+
+      {!!profile.children_count && profile.children_count > 0 && (
+        <div className="space-y-1">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">Materstvo</p>
+          <p className="text-sm leading-relaxed text-foreground/85">
+            Mama {profile.children_count} {pluralChildren(profile.children_count)} — frajerka a bohyňa, ktorá to
+            zvláda.
+          </p>
         </div>
       )}
 

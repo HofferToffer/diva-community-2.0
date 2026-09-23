@@ -10,6 +10,7 @@ export type Profile = {
   username: string | null;
   bio: string | null;
   gifts: string | null;
+  children_count: number | null;
   city: string | null;
   city_lat: number | null;
   city_lng: number | null;

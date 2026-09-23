@@ -807,6 +807,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           bio: string | null
+          children_count: number | null
           city: string | null
           city_lat: number | null
           city_lng: number | null
@@ -843,6 +844,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           bio?: string | null
+          children_count?: number | null
           city?: string | null
           city_lat?: number | null
           city_lng?: number | null
@@ -879,6 +881,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           bio?: string | null
+          children_count?: number | null
           city?: string | null
           city_lat?: number | null
           city_lng?: number | null

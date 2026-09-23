@@ -77,7 +77,7 @@ const WEEK_BANDS: WeekBand[] = [
   {
     maxWeek: 6,
     message:
-      "Krvácanie by malo v tomto období ustať. Blíži sa (alebo už bola) šestotýždňová prehliadka — dobrá príležitosť prebrať s lekárom všetko, čo cítiš, aj fyzicky, aj psychicky. Svaly panvového dna sú stále citeľne slabšie než pred tehotenstvom — cvičenia na ich posilnenie majú teraz naozaj zmysel, nie je to len formalita. Na prehliadke zvyčajne dostaneš aj lekárske povolenie na intímny život — ale to je len povolenie, nie povinnosť. Je úplne v poriadku, ak sa naň ešte necítiš pripravená, či už teraz, o mesiac, alebo až neskôr. Telo aj hlava si na to berú svoj čas, nie kalendár.",
+      "Krvácanie by malo v tomto období ustať. Blíži sa (alebo už bola) šestotýždňová prehliadka — dobrá príležitosť prebrať s lekárom všetko, čo cítiš, aj fyzicky, aj psychicky. Svaly panvového dna sú stále citeľne slabšie než pred tehotenstvom — cvičenia na ich posilnenie majú teraz naozaj zmysel, nie je to len formalita. Na prehliadke zvyčajne dostaneš aj lekárske povolenie na intímny život — ale to je len povolenie, nie povinnosť. Je úplne v poriadku, ak sa naň ešte necítiš pripravená, či už teraz, o mesiac, alebo až neskôr. Ak dojčíš, nižšia chuť na sex nie je len v tvojej hlave — dojčenie zvyšuje prolaktín, ktorý libido prirodzene tlmí. Príroda to takto nastavila zámerne, aby telo teraz nerátalo s ďalším tehotenstvom. Telo aj hlava si na to berú svoj čas, nie kalendár.",
     symptoms: ["krvácanie by malo končiť", "slabšie panvové dno", "pri cisárskom reze: väčšinou povolenie na bežné aktivity"],
     archetype: "Tá, čo sa vracia k sebe",
     keywords: "návrat • sila • hranice • základ",
