@@ -964,6 +964,7 @@ export default function CommunityCycle() {
               Nastaviť v profile
             </Button>
           </div>
+          <MedicalNote className="mt-5 text-left" />
         </motion.section>
       ))}
     </div>

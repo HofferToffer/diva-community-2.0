@@ -12,6 +12,7 @@ import { type DailyFeeling, useDailyFeelings, useSaveDailyFeeling } from "@/comm
 import { DETAIL_SEPARATOR, MOODS } from "@/community/lib/feelings";
 import { fadeUp } from "@/community/lib/motion";
 import { cn } from "@/lib/utils";
+import MedicalNote from "@/community/components/MedicalNote";
 
 function localDateKey(date = new Date()) {
   const year = date.getFullYear();
@@ -206,6 +207,7 @@ export default function CommunityDailyFeeling() {
               </Button>
             </div>
           )}
+          <MedicalNote extra="Tvoje pocity sem patria — a ak je ti dlhšie ťažko, nezostávaj s tým sama." />
         </motion.section>
       )}
     </div>
