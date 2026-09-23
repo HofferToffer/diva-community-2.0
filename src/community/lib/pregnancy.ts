@@ -9,8 +9,28 @@ import {
   LeafyGreen,
   Sprout,
   Wheat,
+  Pill,
+  Milk,
+  Egg,
+  Fish,
+  GlassWater,
+  UtensilsCrossed,
+  Footprints,
+  PersonStanding,
+  Waves,
+  HeartPulse,
+  MessageCircle,
+  NotebookPen,
+  HeartHandshake,
+  Bed,
+  Home,
+  Droplets,
+  Hand,
+  Backpack,
+  Wind,
 } from "lucide-react";
 import { Avocado, Mango, Pineapple, Pumpkin, Strawberry, Tomato, WatermelonSlice } from "@/community/components/FruitIcons";
+import type { CycleTip } from "./cycle";
 
 export type WeekIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -163,6 +183,57 @@ export const PREGNANCY_TRIMESTER_ARCHETYPE: Record<1 | 2 | 3, { archetype: strin
   2: { archetype: "Žiariaca", keywords: "spojenie • pohyb • energia • dôvera" },
   3: { archetype: "Plná mesiaca", keywords: "pripravenosť • sila • dôvera • telo" },
 };
+
+/** Soft background fill + dot color for the pregnancy tip grid. */
+export const PREGNANCY_TIP_COLOR: { fill: string; dot: string } = {
+  fill: "hsl(140, 18%, 42%, 0.12)",
+  dot: "hsl(140, 18%, 42%)",
+};
+
+/** Food, movement and rituals for pregnancy in general — safe across all three trimesters. */
+export const PREGNANCY_TIPS: CycleTip[] = [
+  { label: "Kyselina listová a železo", category: "eat", icon: Pill },
+  { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
+  { label: "Bielkoviny na rast bábätka", category: "eat", icon: Egg },
+  { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
+  { label: "Omega-3 pre vývoj mozgu", category: "eat", icon: Fish },
+  { label: "Veľa vody", category: "eat", icon: GlassWater },
+  { label: "Menšie porcie častejšie", category: "eat", icon: UtensilsCrossed },
+  { label: "Prechádzky na čerstvom vzduchu", category: "move", icon: Footprints },
+  { label: "Tehotenská joga", category: "move", icon: PersonStanding },
+  { label: "Plávanie", category: "move", icon: Waves },
+  { label: "Cvičenia na panvové dno", category: "move", icon: HeartPulse },
+  { label: "Rozprávaj sa s bábätkom", category: "do", icon: MessageCircle },
+  { label: "Píš si tehotenský denník", category: "do", icon: NotebookPen },
+  { label: "Zapoj partnera do príprav", category: "do", icon: HeartHandshake },
+  { label: "Dopraj si oddych", category: "do", icon: Bed },
+  { label: "Priprav detskú izbičku", category: "do", icon: Home },
+];
+
+/**
+ * From roughly 34.-36. týždňa — birth-prep rituals distinct from the rest of
+ * pregnancy. Raspberry leaf tea has some (modest, low-to-moderate quality)
+ * evidence for shortening the second stage of labor when started gradually
+ * from ~32-34 weeks; lady's mantle (alchemilka) is a traditional pairing but
+ * currently lacks pregnancy safety data, so it's named only as a caution,
+ * never recommended outright. Perineal massage from ~34-35 weeks has
+ * Cochrane-level support for reducing perineal trauma.
+ */
+export const PREGNANCY_LATE_TIPS: CycleTip[] = [
+  { label: "Malinové listy (čaj)", category: "eat", icon: Droplets },
+  { label: "Masírovanie hrádze, ak sa cítiš pripravená", category: "do", icon: Hand },
+  { label: "Príprava pôrodnej tašky", category: "do", icon: Backpack },
+  { label: "Nacvič si dýchanie na pôrod", category: "move", icon: Wind },
+  { label: "Spíš si pôrodný plán", category: "do", icon: NotebookPen },
+  { label: "Šetri si silu, oddychuj", category: "do", icon: Bed },
+];
+
+export const PREGNANCY_LATE_NOTE =
+  "Malinové listy sa v niektorých štúdiách spájajú s kratšou druhou dobou pôrodnou, ak sa pijú postupne od cca 32.-34. týždňa (začni jednou šálkou denne, postupne pridávaj) — dôkazy sú zatiaľ mierne, nie isté, tak to vždy najprv preber so svojou pôrodnou asistentkou alebo gynekologičkou. Alchemilka sa k nim v ľudovej tradícii často pridáva, no pre tehotenstvo pre ňu chýbajú bezpečnostné údaje — radšej ju vynechaj, kým ti ju vyslovene neodporučí tvoja lekárka. Masírovanie hrádze zase má za sebou solídne dôkazy, že od cca 34.-35. týždňa znižuje riziko poranenia pri pôrode — rob ho len vtedy, keď sa na to naozaj cítiš, pokojne aj s partnerom.";
+
+/** Shown in the pregnancy section — the same teamwork framing repeats (adapted) in postpartum. */
+export const PARTNER_SUPPORT_NOTE_PREGNANCY =
+  "Toto obdobie nie je len tvoje — je aj partnerova cesta. Nech je pri tom s tebou: na prehliadkach, pri príprave pôrodnej tašky, pri masírovaní hrádze, v rozhovoroch o tom, čo cítiš aj čoho sa bojíš. Nie je to skúška, ktorú máš zvládnuť sama — ste nová rodina, ktorá sa to učí spolu, od prvého dňa.";
 
 /** Playful size comparison per pregnancy week, the way most pregnancy calendar apps show it. */
 const WEEK_SIZE: Record<number, string> = {

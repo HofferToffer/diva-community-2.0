@@ -16,8 +16,18 @@ import {
   pregnancyWeekSize,
   TRIMESTER_LABEL,
   PREGNANCY_TRIMESTER_ARCHETYPE,
+  PREGNANCY_TIPS,
+  PREGNANCY_TIP_COLOR,
+  PREGNANCY_LATE_TIPS,
+  PREGNANCY_LATE_NOTE,
+  PARTNER_SUPPORT_NOTE_PREGNANCY,
 } from "@/community/lib/pregnancy";
-import { getPostpartumInfo, POSTPARTUM_TIPS, POSTPARTUM_TIP_COLOR } from "@/community/lib/postpartum";
+import {
+  getPostpartumInfo,
+  POSTPARTUM_TIPS,
+  POSTPARTUM_TIP_COLOR,
+  PARTNER_SUPPORT_NOTE_POSTPARTUM,
+} from "@/community/lib/postpartum";
 import { PREGNANCY_BOOKS, POSTPARTUM_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
 import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
@@ -507,6 +517,28 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
+              <div className="rounded-xl border border-border/50 bg-background/60 p-4">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Strava, pohyb a rituály tehotenstva
+                </p>
+                <div className="mt-4">
+                  <TipGrid tips={PREGNANCY_TIPS} color={PREGNANCY_TIP_COLOR} />
+                </div>
+              </div>
+              {pregnancy.week >= 34 && (
+                <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Príprava na pôrod — posledné týždne
+                  </p>
+                  <div className="mt-4">
+                    <TipGrid tips={PREGNANCY_LATE_TIPS} color={PREGNANCY_TIP_COLOR} />
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_LATE_NOTE}</p>
+                </div>
+              )}
+              <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
+                {PARTNER_SUPPORT_NOTE_PREGNANCY}
+              </p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">
@@ -624,6 +656,9 @@ export default function CommunityCycle() {
                   v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.
                 </p>
               </div>
+              <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
+                {PARTNER_SUPPORT_NOTE_POSTPARTUM}
+              </p>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>

@@ -168,6 +168,10 @@ export const POSTPARTUM_TIPS: CycleTip[] = [
   { label: "Prehliadka po šestonedelí", category: "do", icon: ShieldCheck },
 ];
 
+/** Same teamwork framing as PARTNER_SUPPORT_NOTE_PREGNANCY, adapted for šestonedelie. */
+export const PARTNER_SUPPORT_NOTE_POSTPARTUM =
+  "Šestonedelie nie je skúška, ktorú máš vydržať sama — je to aj čas, keď sa učí byť rodičom aj partner. Nech prevezme, čo sa dá — domácnosť, nočné budenie, návštevy — aby si sa ty mohla hojiť a spoznávať bábätko. Ste nová rodina a toto je spoločná práca od prvého dňa, nie niečo, čo musí zvládnuť len jedna z vás.";
+
 export function getPostpartumInfo(sinceDate: string, today = new Date()): PostpartumInfo {
   const since = new Date(sinceDate);
   const days = Math.max(daysBetween(since, today), 0);
