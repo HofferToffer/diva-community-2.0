@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,6 +27,7 @@ function readRemembered(): { email: string; password: string } | null {
 }
 
 export default function CommunityAuth() {
+  const { t } = useTranslation();
   const remembered = readRemembered();
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState(remembered?.email ?? "");
@@ -44,7 +46,7 @@ export default function CommunityAuth() {
     try {
       if (mode === "signup") {
         if (password !== passwordConfirm) {
-          toast.error("Heslá sa nezhodujú. Skús to prosím znova.");
+          toast.error(t("auth.passwordMismatch"));
           return;
         }
         const { data, error } = await supabase.auth.signUp({
@@ -70,12 +72,12 @@ export default function CommunityAuth() {
         setSentEmail("reset");
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Skús to prosím znova.";
+      const message = error instanceof Error ? error.message : t("auth.tryAgain");
       toast.error(
         message.includes("Invalid login credentials")
-          ? "Nesprávny e-mail alebo heslo."
+          ? t("auth.invalidCredentials")
           : message.includes("already registered")
-            ? "Tento e-mail už je zaregistrovaný. Prihlás sa."
+            ? t("auth.emailAlreadyRegistered")
             : message,
       );
     } finally {
@@ -100,28 +102,28 @@ export default function CommunityAuth() {
       setLoading(false);
       setOauthPending(false);
       if (result.error) {
-        toast.error("Prihlásenie Googlom sa nepodarilo.");
+        toast.error(t("auth.googleSignInFailed"));
         return;
       }
     } catch {
       window.clearTimeout(fallback);
       setLoading(false);
       setOauthPending(false);
-      toast.error("Prihlásenie Googlom sa nepodarilo.");
+      toast.error(t("auth.googleSignInFailed"));
     }
   };
 
   if (sentEmail) {
     return (
       <Wrapper>
-        <h1 className="font-display text-3xl">Skontroluj si e-mail</h1>
+        <h1 className="font-display text-3xl">{t("auth.checkEmailTitle")}</h1>
         <p className="mt-4 text-sm text-muted-foreground">
           {sentEmail === "confirm"
-            ? `Poslali sme potvrdzovací odkaz na ${email}. Po kliknutí sa dostaneš do komunity.`
-            : `Poslali sme odkaz na obnovu hesla na ${email}.`}
+            ? t("auth.confirmEmailSent", { email })
+            : t("auth.resetEmailSent", { email })}
         </p>
         <Button variant="outline" className="mt-6 w-full" onClick={() => setSentEmail(null)}>
-          Späť
+          {t("auth.backButton")}
         </Button>
       </Wrapper>
     );
@@ -131,15 +133,15 @@ export default function CommunityAuth() {
     <Wrapper>
       <p className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">Diva Community</p>
       <h1 className="mt-3 font-display text-4xl leading-tight">
-        {mode === "signup" ? "Vitaj medzi divami" : mode === "forgot" ? "Zabudnuté heslo" : "Vitaj späť, DIVA"}
+        {mode === "signup" ? t("auth.welcomeSignup") : mode === "forgot" ? t("auth.forgotPasswordTitle") : t("auth.welcomeBack")}
       </h1>
       <p className="mt-3 text-sm text-muted-foreground">
-        Miesto, kde ženy zapisujú svoj pohyb, podporujú sa a rastú spolu.
+        {t("auth.subtitle")}
       </p>
       {mode !== "forgot" && (
         <div className="mt-4 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3 text-center">
           <p className="font-display text-lg leading-snug">
-            Prvých <span className="text-2xl font-light">100</span> registrovaných <span className="uppercase">DIV</span> zadarmo
+            {t("auth.promoPrefix")} <span className="text-2xl font-light">100</span> {t("auth.promoMiddle")} <span className="uppercase">{t("auth.promoDivaWord")}</span> {t("auth.promoSuffix")}
           </p>
         </div>
       )}
@@ -148,12 +150,12 @@ export default function CommunityAuth() {
       <form onSubmit={submit} className="mt-8 space-y-4">
         {mode === "signup" && (
           <div className="space-y-2">
-            <Label htmlFor="name">Meno</Label>
+            <Label htmlFor="name">{t("auth.nameLabel")}</Label>
             <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="name" />
           </div>
         )}
         <div className="space-y-2">
-          <Label htmlFor="email">E-mail</Label>
+          <Label htmlFor="email">{t("auth.emailLabel")}</Label>
           <Input
             id="email"
             type="email"
@@ -165,7 +167,7 @@ export default function CommunityAuth() {
         </div>
         {mode !== "forgot" && (
           <div className="space-y-2">
-            <Label htmlFor="password">Heslo</Label>
+            <Label htmlFor="password">{t("auth.passwordLabel")}</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -180,7 +182,7 @@ export default function CommunityAuth() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Skryť heslo" : "Zobraziť heslo"}
+                aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
                 className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -190,7 +192,7 @@ export default function CommunityAuth() {
         )}
         {mode === "signup" && (
           <div className="space-y-2">
-            <Label htmlFor="password-confirm">Heslo znova</Label>
+            <Label htmlFor="password-confirm">{t("auth.passwordConfirmLabel")}</Label>
             <div className="relative">
               <Input
                 id="password-confirm"
@@ -205,7 +207,7 @@ export default function CommunityAuth() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Skryť heslo" : "Zobraziť heslo"}
+                aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
                 className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -225,26 +227,26 @@ export default function CommunityAuth() {
               }}
             />
             <Label htmlFor="remember" className="text-sm font-normal text-muted-foreground">
-              Zapamätať si e-mail a heslo
+              {t("auth.rememberLabel")}
             </Label>
           </div>
         )}
         <Button type="submit" className="w-full" disabled={loading}>
-          {mode === "signup" ? "Vytvoriť účet" : mode === "forgot" ? "Poslať odkaz" : "Prihlásiť sa"}
+          {mode === "signup" ? t("auth.createAccountButton") : mode === "forgot" ? t("auth.sendLinkButton") : t("auth.signInButton")}
         </Button>
       </form>
 
       {mode !== "forgot" && (
         <>
           <div className="my-6 flex items-center gap-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            <span className="h-px flex-1 bg-border" /> alebo <span className="h-px flex-1 bg-border" />
+            <span className="h-px flex-1 bg-border" /> {t("auth.orDivider")} <span className="h-px flex-1 bg-border" />
           </div>
           <Button variant="outline" className="w-full" onClick={googleSignIn} disabled={loading}>
-            Pokračovať s Google
+            {t("auth.continueWithGoogle")}
           </Button>
           {oauthPending && (
             <div className="mt-3 text-center">
-              <p className="text-xs text-muted-foreground">Prebieha prihlásenie cez Google…</p>
+              <p className="text-xs text-muted-foreground">{t("auth.googleSignInPending")}</p>
               <button
                 type="button"
                 className="mt-1 text-sm underline"
@@ -253,7 +255,7 @@ export default function CommunityAuth() {
                   setLoading(false);
                 }}
               >
-                Späť
+                {t("auth.backButton")}
               </button>
             </div>
           )}
@@ -264,24 +266,24 @@ export default function CommunityAuth() {
         {mode === "signin" && (
           <>
             <button type="button" className="underline" onClick={() => setMode("signup")}>
-              Nemáš účet? Zaregistruj sa
+              {t("auth.noAccountSignUp")}
             </button>
             <br />
             <button type="button" className="underline" onClick={() => setMode("forgot")}>
-              Zabudnuté heslo
+              {t("auth.forgotPasswordTitle")}
             </button>
           </>
         )}
         {mode !== "signin" && (
           <button type="button" className="underline" onClick={() => setMode("signin")}>
-            Späť na prihlásenie
+            {t("auth.backToSignIn")}
           </button>
         )}
       </div>
 
       <p className="mt-8 text-center text-xs text-muted-foreground">
         <Link to="/" className="underline">
-          Späť na divacommunity.sk
+          {t("auth.backToWebsite")}
         </Link>
       </p>
     </Wrapper>
