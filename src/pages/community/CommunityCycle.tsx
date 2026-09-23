@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -59,6 +59,7 @@ export default function CommunityCycle() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
+  const birthStoryRef = useRef<HTMLDivElement>(null);
   const [birthStory, setBirthStory] = useState(profile?.birth_story ?? "");
   const [editingBirthStory, setEditingBirthStory] = useState(false);
   const [savingBirthStory, setSavingBirthStory] = useState(false);
@@ -129,7 +130,10 @@ export default function CommunityCycle() {
       if (error) throw error;
       refreshProfile();
       setJustGaveBirth(true);
-      setTimeout(() => setJustGaveBirth(false), 4500);
+      setTimeout(() => {
+        setJustGaveBirth(false);
+        birthStoryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 4500);
     } catch {
       toast.error("Nepodarilo sa uložiť.");
     }
@@ -402,7 +406,7 @@ export default function CommunityCycle() {
             </ul>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-border/50 bg-background/60 p-4">
+          <div ref={birthStoryRef} className="space-y-2 rounded-xl border border-border/50 bg-background/60 p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tvoj pôrodný príbeh</p>
             {editingBirthStory ? (
               <div className="space-y-2">
