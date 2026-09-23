@@ -35,9 +35,9 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2 } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
-import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
+import { validateImage, normalizeImage, uploadImage, uploadAudio, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
 
@@ -71,6 +71,11 @@ export default function CommunityCycle() {
   const endPostpartumAnswerRef = useRef<HTMLDivElement>(null);
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
+  const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
+  const [recordingStory, setRecordingStory] = useState(false);
+  const [savingStoryAudio, setSavingStoryAudio] = useState(false);
+  const storyRecorderRef = useRef<MediaRecorder | null>(null);
+  const storyChunksRef = useRef<Blob[]>([]);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
