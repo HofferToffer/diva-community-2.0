@@ -121,33 +121,45 @@ export default function CommunityHome() {
             {pregnancy ? (
               <>
                 <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                  {TRIMESTER_LABEL[pregnancy.trimester]}
+                  {isEnglish ? t(`pregnancy.trimesterLabels.${pregnancy.trimester}`) : TRIMESTER_LABEL[pregnancy.trimester]}
                 </p>
-                <h2 className="mt-1 font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</h2>
+                <h2 className="mt-1 font-display text-2xl text-primary">
+                  {t("pregnancyCard.weekCounter", { count: pregnancy.week })}
+                </h2>
                 {pregnancyWeekSize(pregnancy.week) && (
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Tvoje bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
+                    {t("pregnancyCard.babySizeNote", {
+                      size: isEnglish ? t(`pregnancy.weekSize.${pregnancy.week}`) : pregnancyWeekSize(pregnancy.week),
+                    })}
                   </p>
                 )}
                 <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
-                  „{pregnancy.soulNote}" — {PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].archetype}
+                  „{isEnglish ? t(`pregnancy.soulNotes.${pregnancy.trimester}`) : pregnancy.soulNote}" —{" "}
+                  {isEnglish
+                    ? t(`pregnancy.archetypes.${pregnancy.trimester}.archetype`)
+                    : PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].archetype}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].keywords}
+                  {isEnglish
+                    ? t(`pregnancy.archetypes.${pregnancy.trimester}.keywords`)
+                    : PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].keywords}
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {pregnancy.daysUntilDue > 0
-                    ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
-                    : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
+                    ? t("pregnancyCard.daysUntilDue", { count: pregnancy.daysUntilDue })
+                    : t("pregnancyCard.dueDatePassed")}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Typické tento týždeň: {pregnancy.symptoms.join(" · ")}
+                  {t("pregnancyCard.typicalThisWeek", {
+                    list: (isEnglish
+                      ? (t(`pregnancy.weekBands.${pregnancy.bandKey}.symptoms`, { returnObjects: true }) as string[])
+                      : pregnancy.symptoms
+                    ).join(" · "),
+                  })}
                 </p>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">
-                Zadaj prvý deň poslednej menštruácie v profile, aby sme ti tu vedeli ukázať týždeň tehotenstva.
-              </p>
+              <p className="text-sm text-muted-foreground">{t("pregnancyCard.enterLastPeriod")}</p>
             )}
           </Link>
         </motion.div>

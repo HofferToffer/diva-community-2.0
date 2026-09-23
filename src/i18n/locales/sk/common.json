@@ -1,4 +1,20 @@
 {
+  "pregnancyCard": {
+    "weekCounter": "{{count}}. týždeň tehotenstva",
+    "babySizeNote": "Tvoje bábätko má teraz veľkosť ako {{size}}.",
+    "daysUntilDue": "Do predpokladaného termínu pôrodu zostáva {{count}} dní.",
+    "dueDatePassed": "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase.",
+    "typicalThisWeekTitle": "Typické tento týždeň",
+    "typicalThisWeek": "Typické tento týždeň: {{list}}",
+    "showMoreButton": "Strava, pohyb, rituály a zdroje",
+    "showLessButton": "Skryť tipy a zdroje",
+    "tipsTitle": "Strava, pohyb a rituály tehotenstva",
+    "latePrepTitle": "Príprava na pôrod — posledné týždne",
+    "prepareMindTitle": "Príprav sa aj v hlave",
+    "prepareMindHint": "Všetko je aj o hlave — afirmácie a spojenie s bábätkom ťa vedia na pôrod pripraviť rovnako ako telo.",
+    "booksTitle": "Knihy, ktoré ti môžu pomôcť",
+    "enterLastPeriod": "Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva."
+  },
   "postpartumCard": {
     "title": "Šestonedelie",
     "weekCounter": "{{count}}. týždeň po pôrode",

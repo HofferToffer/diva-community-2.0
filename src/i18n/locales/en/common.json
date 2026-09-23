@@ -1,4 +1,104 @@
 {
+  "pregnancyCard": {
+    "weekCounter": "Week {{count}} of pregnancy",
+    "babySizeNote": "Your baby is now about the size of {{size}}.",
+    "daysUntilDue": "{{count}} days remain until your estimated due date.",
+    "dueDatePassed": "Your estimated due date has already passed — let it be in your own time.",
+    "typicalThisWeekTitle": "Typical this week",
+    "typicalThisWeek": "Typical this week: {{list}}",
+    "showMoreButton": "Food, movement, rituals and resources",
+    "showLessButton": "Hide tips and resources",
+    "tipsTitle": "Food, movement and rituals in pregnancy",
+    "latePrepTitle": "Preparing for birth — the final weeks",
+    "prepareMindTitle": "Prepare your mind too",
+    "prepareMindHint": "It's all in the mind too — affirmations and connecting with your baby can prepare you for birth just as much as your body.",
+    "booksTitle": "Books that might help",
+    "enterLastPeriod": "Enter the first day of your last period in your profile so we can show you your pregnancy week."
+  },
+  "pregnancy": {
+    "trimesterLabels": { "1": "1st trimester", "2": "2nd trimester", "3": "3rd trimester" },
+    "soulNotes": {
+      "1": "New life is quietly growing within — trust what you can't see yet.",
+      "2": "You feel the first movements and the connection deepens — body and soul are learning together to be two.",
+      "3": "You're approaching the big meeting. Your body knows what to do — trust its wisdom."
+    },
+    "archetypes": {
+      "1": { "archetype": "Guardian of the Secret", "keywords": "secrecy • trust • fragility • new beginning" },
+      "2": { "archetype": "The Radiant One", "keywords": "connection • movement • energy • trust" },
+      "3": { "archetype": "Woman at the Full Moon", "keywords": "readiness • strength • trust • body" }
+    },
+    "tipsIntro": "Body, mind and ritual go hand in hand in pregnancy — food, movement and what you pay attention to are all part of the same journey. Every one of us experiences it differently and in our own way, so take this as inspiration, not a strict prescription.",
+    "partnerNote": "This time isn't just yours — it's your partner's journey too. Let them be there with you: at check-ups, packing the hospital bag, during perineal massage, in conversations about what you feel and what you're afraid of. It's not a test you have to pass alone — you're a new family learning this together, from day one.",
+    "lateNote": "Raspberry leaf is linked in some studies to a shorter second stage of labor when drunk gradually from around week 32-34 (start with one cup a day, then add more) — the evidence is still modest, not certain, so always run it by your midwife or gynecologist first. Lemon balm is calming and helps with insomnia or restlessness, and is generally considered safe — but herbal teas in pregnancy are recommended to be kept to around 1-2 cups a day. We deliberately don't mention chamomile — in the third trimester its effect on the uterus is assessed inconsistently. Lady's mantle is often paired with these in folk tradition, but safety data for pregnancy is lacking — better to skip it unless your doctor specifically recommends it. Perineal massage, on the other hand, has solid evidence that from around week 34-35 it reduces the risk of injury during birth — only do it when you genuinely feel ready, with your partner if you like.",
+    "weekSize": {
+      "4": "a poppy seed", "5": "a sesame seed", "6": "a lentil", "7": "a blueberry", "8": "a raspberry",
+      "9": "a cherry", "10": "a strawberry", "11": "a fig", "12": "a plum", "13": "a pea pod",
+      "14": "a lemon", "15": "an apple", "16": "an avocado", "17": "an onion", "18": "a bell pepper",
+      "19": "a tomato", "20": "a banana", "21": "a carrot", "22": "a small coconut", "23": "a large mango",
+      "24": "an ear of corn", "25": "a zucchini", "26": "an eggplant", "27": "a cauliflower", "28": "a small pineapple",
+      "29": "a spaghetti squash", "30": "a head of cabbage", "31": "a large coconut", "32": "a butternut squash",
+      "33": "a cantaloupe melon", "34": "a honeydew melon", "35": "a small pumpkin", "36": "a head of romaine lettuce",
+      "37": "a leek", "38": "a small watermelon", "39": "a large watermelon", "40": "a small autumn pumpkin"
+    },
+    "weekBands": {
+      "5": {
+        "message": "The cells have just settled into the uterus and are dividing into layers that will form all the organs. The neural tube — the foundation of the brain and spinal cord — is beginning to close, and the heart, still just a tiny tube, will beat for the first time by the end of this period.",
+        "symptoms": ["tender, tight breasts", "fatigue", "mild cramping or spotting (implantation)", "heightened sense of smell", "mood swings"]
+      },
+      "7": {
+        "message": "The heart is now beating regularly. The basics of the limbs and face are forming. This period often brings the first visit to the gynecologist.",
+        "symptoms": ["morning sickness (any time of day)", "stronger fatigue", "frequent urination", "food aversions"]
+      },
+      "9": {
+        "message": "Around this time the embryo officially becomes a fetus. All the major organs — heart, brain, kidneys, liver — have already begun forming, and the arms and legs are growing.",
+        "symptoms": ["nausea and fatigue usually peak", "bloating", "mild cramping as the uterus enlarges"]
+      },
+      "11": {
+        "message": "Fingers and toes are separating and nails are starting to grow. Bones are beginning to harden, and the baby can already make a fist, although you can't feel it yet.",
+        "symptoms": ["nausea starts easing for many women", "mild headaches", "increased discharge", "a bump may already be showing"]
+      },
+      "13": {
+        "message": "The baby is learning to swallow and suck, vocal cords are forming, and the kidneys are producing urine. The risk of miscarriage drops significantly after this point, which brings relief to many women — and first-trimester screening is usually done now too.",
+        "symptoms": ["nausea eases for most women", "energy is gradually returning"]
+      },
+      "16": {
+        "message": "The baby can make facial expressions, hair and eyebrows are growing, and it's moving more (you still can't feel it). Many women get their energy back now — it's called the second-trimester glow.",
+        "symptoms": ["groin pain with sudden movements", "less nausea, more energy", "stuffy nose, sensitive gums"]
+      },
+      "20": {
+        "message": "Around this time (often toward the end of it, with a first baby) you'll feel movement for the first time. The baby is developing a protective coating and weighs about half a kilo by week 20. The big anatomy ultrasound is also done now.",
+        "symptoms": ["first baby movements", "groin pain continues", "a darker linea nigra on the belly", "first Braxton Hicks contractions (painless tightening)"]
+      },
+      "24": {
+        "message": "The brain is growing rapidly, and the lungs are starting to produce the substance needed for breathing, though it's not mature yet. Around this point the theoretical threshold of viability outside the womb is reached — distant, but from now on it's worth paying attention to how regularly your baby moves.",
+        "symptoms": ["more noticeable Braxton Hicks contractions", "back pain", "nighttime calf cramps", "mild leg swelling"]
+      },
+      "27": {
+        "message": "After months of being shut, the eyes are opening again, and the baby responds to light and sound. Weight is increasing quickly. The gestational diabetes test is usually due around now.",
+        "symptoms": ["heartburn", "back pain", "possible hemorrhoids", "fatigue may return"]
+      },
+      "31": {
+        "message": "You're entering the third trimester. The baby now has regular sleep-wake cycles, the brain is forming visible folds, and it's practicing breathing. Check-ups are usually every two weeks now.",
+        "symptoms": ["shortness of breath (the uterus is pressing on the lungs)", "swelling in ankles and legs", "possible tingling in the hands", "trouble sleeping"]
+      },
+      "35": {
+        "message": "The baby is gaining fat, bones are formed but still soft — the skull stays soft for birth. Most babies turn head-down around now. The Group B strep test is approaching.",
+        "symptoms": ["more noticeable back and pelvic pain (loosened ligaments)", "heartburn may peak", "harder to sleep", "stronger Braxton Hicks contractions"]
+      },
+      "38": {
+        "message": "The baby is approaching full term, losing its fine body hair, and getting its reflexes ready for birth. The head often settles deeper into the pelvis, which can ease breathing but adds pressure lower down.",
+        "symptoms": ["easier breathing, but more pelvic pressure", "a waddling walk", "increased discharge", "stronger, more frequent Braxton Hicks contractions", "possible nesting instinct"]
+      },
+      "41": {
+        "message": "This last stretch before birth can be incredibly tough — you're tracking the days around your due date almost constantly, and the waiting itself is exhausting, maybe more than anything before it. If you've already passed your due date, it doesn't mean anything's wrong — it's just an estimate, and if your cycle wasn't regular before conceiving, your actual gestational age could be different from what the date shows. Check-ups are a bit more frequent now, but that's just care, not a reason to worry. Hang in there — meeting your baby really is close now.",
+        "symptoms": ["more frequent check-ups", "strong Braxton Hicks contractions", "impatience and anticipation"]
+      },
+      "fallback": {
+        "message": "You're at the very edge of what this app can show week by week — the baby has long been ready, organs are mature. Monitoring from your gynecologist continues even more closely now. Trust your body and the team around you — the end really is close.",
+        "symptoms": ["strong Braxton Hicks contractions", "pelvic pressure", "possible loss of the mucus plug", "waves of energy alternating with fatigue"]
+      }
+    }
+  },
   "postpartumCard": {
     "title": "Šestonedelie",
     "weekCounter": "Week {{count}} postpartum",

@@ -54,6 +54,8 @@ export type PregnancyInfo = {
   soulNote: string;
   message: string;
   symptoms: string[];
+  /** Which week band matched — lets translated UI look up the same band's English copy. */
+  bandKey: string;
 };
 
 type WeekBand = { maxWeek: number; message: string; symptoms: string[] };
@@ -169,6 +171,7 @@ export function getPregnancyInfo(lastPeriodDate: string, today = new Date()): Pr
     soulNote: TRIMESTER_SOUL_NOTE[trimester],
     message: band.message,
     symptoms: band.symptoms,
+    bandKey: band === PREGNANCY_FALLBACK ? "fallback" : String(band.maxWeek),
   };
 }
 

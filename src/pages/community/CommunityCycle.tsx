@@ -494,29 +494,47 @@ export default function CommunityCycle() {
           })()}
           {pregnancy ? (
             <>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">{TRIMESTER_LABEL[pregnancy.trimester]}</p>
-              <p className="font-display text-2xl text-primary">{pregnancy.week}. týždeň tehotenstva</p>
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {isEnglish ? t(`pregnancy.trimesterLabels.${pregnancy.trimester}`) : TRIMESTER_LABEL[pregnancy.trimester]}
+              </p>
+              <p className="font-display text-2xl text-primary">
+                {t("pregnancyCard.weekCounter", { count: pregnancy.week })}
+              </p>
               {pregnancyWeekSize(pregnancy.week) && (
                 <p className="text-sm text-muted-foreground">
-                  Tvoje bábätko má teraz veľkosť ako {pregnancyWeekSize(pregnancy.week)}.
+                  {t("pregnancyCard.babySizeNote", {
+                    size: isEnglish ? t(`pregnancy.weekSize.${pregnancy.week}`) : pregnancyWeekSize(pregnancy.week),
+                  })}
                 </p>
               )}
               <p className="text-sm italic leading-relaxed text-foreground/85">
-                „{pregnancy.soulNote}" — {PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].archetype}
+                „{isEnglish ? t(`pregnancy.soulNotes.${pregnancy.trimester}`) : pregnancy.soulNote}" —{" "}
+                {isEnglish
+                  ? t(`pregnancy.archetypes.${pregnancy.trimester}.archetype`)
+                  : PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].archetype}
               </p>
-              <p className="text-xs text-muted-foreground">{PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].keywords}</p>
+              <p className="text-xs text-muted-foreground">
+                {isEnglish
+                  ? t(`pregnancy.archetypes.${pregnancy.trimester}.keywords`)
+                  : PREGNANCY_TRIMESTER_ARCHETYPE[pregnancy.trimester].keywords}
+              </p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {pregnancy.daysUntilDue > 0
-                  ? `Do predpokladaného termínu pôrodu zostáva ${pregnancy.daysUntilDue} dní.`
-                  : "Tvoj predpokladaný termín pôrodu už prešiel — nech je to v tvojom čase."}
+                  ? t("pregnancyCard.daysUntilDue", { count: pregnancy.daysUntilDue })
+                  : t("pregnancyCard.dueDatePassed")}
               </p>
-              <p className="text-sm leading-relaxed text-foreground/85">{pregnancy.message}</p>
+              <p className="text-sm leading-relaxed text-foreground/85">
+                {isEnglish ? t(`pregnancy.weekBands.${pregnancy.bandKey}.message`) : pregnancy.message}
+              </p>
               <div className="rounded-xl border border-border/50 bg-background/60 p-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Typické tento týždeň
+                  {t("pregnancyCard.typicalThisWeekTitle")}
                 </p>
                 <ul className="mt-2 space-y-1 text-sm text-foreground/85">
-                  {pregnancy.symptoms.map((symptom) => (
+                  {(isEnglish
+                    ? (t(`pregnancy.weekBands.${pregnancy.bandKey}.symptoms`, { returnObjects: true }) as string[])
+                    : pregnancy.symptoms
+                  ).map((symptom) => (
                     <li key={symptom} className="flex items-start gap-2">
                       <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
                       {symptom}
@@ -530,16 +548,18 @@ export default function CommunityCycle() {
                 className="w-full justify-between px-2 text-muted-foreground"
                 onClick={() => setShowMorePregnancy((v) => !v)}
               >
-                {showMorePregnancy ? "Skryť tipy a zdroje" : "Strava, pohyb, rituály a zdroje"}
+                {showMorePregnancy ? t("pregnancyCard.showLessButton") : t("pregnancyCard.showMoreButton")}
                 {showMorePregnancy ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
               {showMorePregnancy && (
                 <>
                   <div className="rounded-xl border border-border/50 bg-background/60 p-4">
                     <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Strava, pohyb a rituály tehotenstva
+                      {t("pregnancyCard.tipsTitle")}
                     </p>
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_TIPS_INTRO}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                      {isEnglish ? t("pregnancy.tipsIntro") : PREGNANCY_TIPS_INTRO}
+                    </p>
                     <div className="mt-4">
                       <TipGrid tips={PREGNANCY_TIPS[pregnancy.trimester]} color={PREGNANCY_TIP_COLOR} />
                     </div>
@@ -547,31 +567,33 @@ export default function CommunityCycle() {
                   {pregnancy.week >= 34 && (
                     <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
                       <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                        Príprava na pôrod — posledné týždne
+                        {t("pregnancyCard.latePrepTitle")}
                       </p>
                       <div className="mt-4">
                         <TipGrid tips={PREGNANCY_LATE_TIPS} color={PREGNANCY_TIP_COLOR} />
                       </div>
-                      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{PREGNANCY_LATE_NOTE}</p>
+                      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                        {isEnglish ? t("pregnancy.lateNote") : PREGNANCY_LATE_NOTE}
+                      </p>
                     </div>
                   )}
                   <p className="rounded-xl border border-border/50 bg-background/60 p-4 text-sm leading-relaxed text-foreground/85">
-                    {PARTNER_SUPPORT_NOTE_PREGNANCY}
+                    {isEnglish ? t("pregnancy.partnerNote") : PARTNER_SUPPORT_NOTE_PREGNANCY}
                   </p>
                 </>
               )}
             </>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("pregnancyCard.enterLastPeriod")}</p>
           )}
           {showMorePregnancy && (
             <div className="space-y-3 rounded-xl border border-border/50 bg-background/60 p-4">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Príprav sa aj v hlave</p>
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  {t("pregnancyCard.prepareMindTitle")}
+                </p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Všetko je aj o hlave — afirmácie a spojenie s bábätkom ťa vedia na pôrod pripraviť rovnako ako telo.
+                  {t("pregnancyCard.prepareMindHint")}
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {AFFIRMATION_LINKS.map((link) => (
@@ -589,7 +611,7 @@ export default function CommunityCycle() {
               </div>
               <div className="border-t border-border/50 pt-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Knihy, ktoré ti môžu pomôcť
+                  {t("pregnancyCard.booksTitle")}
                 </p>
                 <ul className="mt-2 space-y-2">
                   {PREGNANCY_BOOKS.map((book) => (
