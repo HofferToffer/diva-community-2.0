@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Area,
   CartesianGrid,
@@ -17,10 +18,10 @@ import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCycleDayForDate, getCyclePhaseForD
 import { activityTypeLabel } from "@/community/lib/constants";
 
 const RANGES = [
-  { key: "week", label: "Týždeň", days: 7 },
-  { key: "month", label: "Mesiac", days: 30 },
-  { key: "quarter", label: "3 mesiace", days: 90 },
-  { key: "year", label: "Rok", days: 365 },
+  { key: "week", label: "Týždeň", labelKey: "rangeWeek", days: 7 },
+  { key: "month", label: "Mesiac", labelKey: "rangeMonth", days: 30 },
+  { key: "quarter", label: "3 mesiace", labelKey: "rangeQuarter", days: 90 },
+  { key: "year", label: "Rok", labelKey: "rangeYear", days: 365 },
 ] as const;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -51,6 +52,14 @@ export default function FeelingScaleChart({
   cycle?: FeelingChartCycle | null;
   activities?: FeelingChartActivity[];
 }) {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
+  const phaseNameTranslations = t("cycle.phaseNames", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translatePhaseName = (phase: CyclePhaseKey) => (isEnglish ? phaseNameTranslations[phase] ?? CYCLE_PHASES[phase].name : CYCLE_PHASES[phase].name);
+  const scaleTranslations = t("consciousnessScale", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translateScale = (label: string) => (isEnglish ? scaleTranslations[label] ?? label : label);
+  const activityTypeTranslations = t("activityTypeLabel", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translateActivityType = (label: string) => (isEnglish ? activityTypeTranslations[label] ?? label : label);
   const [range, setRange] = useState<(typeof RANGES)[number]["key"]>("month");
   const days = RANGES.find((item) => item.key === range)?.days ?? 30;
 
@@ -59,7 +68,7 @@ export default function FeelingScaleChart({
     const activitiesByDate = new Map<string, { labels: Set<string>; km: number }>();
     for (const activity of activities ?? []) {
       const entry = activitiesByDate.get(activity.activity_date) ?? { labels: new Set<string>(), km: 0 };
-      entry.labels.add(activityTypeLabel(activity.kind, activity.activity_type));
+      entry.labels.add(translateActivityType(activityTypeLabel(activity.kind, activity.activity_type)));
       if (activity.distance_km) entry.km += activity.distance_km;
       activitiesByDate.set(activity.activity_date, entry);
     }
@@ -87,7 +96,7 @@ export default function FeelingScaleChart({
         ts: date.getTime(),
         date: key,
         level,
-        name: level !== null ? scaleLabel(level) : null,
+        name: level !== null ? translateScale(scaleLabel(level)) : null,
         phase: cycle ? getCyclePhaseForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
         dayOfCycle: cycle ? getCycleDayForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
         activityLabel: dayActivities ? Array.from(dayActivities.labels).join(", ") : null,
@@ -114,7 +123,7 @@ export default function FeelingScaleChart({
       hasFeelings: points.some((point) => point.level !== null),
       hasActivities: points.some((point) => point.activityLabel !== null),
     };
-  }, [feelings, days, cycle, activities]);
+  }, [feelings, days, cycle, activities, isEnglish]);
 
   const levels = data.filter((point) => point.level !== null);
   const average = levels.length
@@ -122,7 +131,7 @@ export default function FeelingScaleChart({
     : null;
 
   const formatDay = (ts: number) =>
-    new Intl.DateTimeFormat("sk-SK", {
+    new Intl.DateTimeFormat(isEnglish ? "en-US" : "sk-SK", {
       day: "numeric",
       month: "numeric",
       ...(days > 90 ? { year: "2-digit" } : {}),
@@ -134,10 +143,10 @@ export default function FeelingScaleChart({
     <section className="border-t border-border pt-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-2xl">Moja škála vedomia</h2>
+          <h2 className="font-display text-2xl">{t("feelingChart.title")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Každý pocit má svoju energetickú hodnotu. Tu vidíš, ako sa menila v čase
-            {cycle ? " — spolu s fázami tvojho cyklu" : ""}.
+            {t("feelingChart.subtitle")}
+            {cycle ? t("feelingChart.subtitleWithCycle") : ""}.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -150,7 +159,7 @@ export default function FeelingScaleChart({
               aria-pressed={range === item.key}
               onClick={() => setRange(item.key)}
             >
-              {item.label}
+              {t(`feelingChart.${item.labelKey}`)}
             </Button>
           ))}
         </div>
@@ -160,7 +169,7 @@ export default function FeelingScaleChart({
         <>
           {average !== null && (
             <p className="mt-4 text-sm text-muted-foreground">
-              Priemerná úroveň za toto obdobie: <span className="font-medium text-foreground">{average} · {scaleLabel(average)}</span>
+              {t("feelingChart.averageLabel")} <span className="font-medium text-foreground">{average} · {translateScale(scaleLabel(average))}</span>
             </p>
           )}
           <div className="mt-4 h-72 w-full">
@@ -199,7 +208,7 @@ export default function FeelingScaleChart({
                     borderRadius: 8,
                     fontSize: 12,
                   }}
-                  labelFormatter={(value) => `Dátum: ${formatDay(Number(value))}`}
+                  labelFormatter={(value) => t("feelingChart.dateLabel", { date: formatDay(Number(value)) })}
                   formatter={(value: number | null, _name, item) => {
                     const payload = item?.payload as {
                       name?: string | null;
@@ -210,22 +219,25 @@ export default function FeelingScaleChart({
                     } | undefined;
                     if (item?.dataKey === "activityY") {
                       const kmText = payload?.activityKm ? ` · ${payload.activityKm} km` : "";
-                      return [`${payload?.activityLabel}${kmText}`, "Aktivita"];
+                      return [`${payload?.activityLabel}${kmText}`, t("feelingChart.activityTooltipLabel")];
                     }
                     const lines = [
-                      value !== null && value !== undefined ? `${value} · ${payload?.name}` : "Bez záznamu",
+                      value !== null && value !== undefined ? `${value} · ${payload?.name}` : t("feelingChart.noRecordTooltip"),
                     ];
                     if (payload?.activityLabel) {
                       const kmText = payload.activityKm ? ` · ${payload.activityKm} km` : "";
                       lines.push(`${payload.activityLabel}${kmText}`);
                     }
                     if (payload?.phase) {
+                      const phaseName = translatePhaseName(payload.phase);
                       const cycleLine = payload.dayOfCycle
-                        ? `${CYCLE_PHASES[payload.phase].name} · deň ${payload.dayOfCycle}.`
-                        : CYCLE_PHASES[payload.phase].name;
+                        ? isEnglish
+                          ? `${phaseName} · day ${payload.dayOfCycle}`
+                          : `${phaseName} · deň ${payload.dayOfCycle}.`
+                        : phaseName;
                       lines.push(cycleLine);
                     }
-                    return [lines.filter(Boolean).join(" · "), "Úroveň"];
+                    return [lines.filter(Boolean).join(" · "), t("feelingChart.levelTooltipLabel")];
                   }}
                 />
                 {phaseBands.map((band) => (
@@ -289,7 +301,7 @@ export default function FeelingScaleChart({
             </ResponsiveContainer>
           </div>
           {cycle && (
-            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda fáz cyklu">
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={t("feelingChart.cyclePhaseLegendAriaLabel")}>
               {(Object.keys(CYCLE_PHASES) as CyclePhaseKey[]).map((phase) => (
                 <li key={phase} className="flex items-center gap-1.5">
                   <span
@@ -297,28 +309,28 @@ export default function FeelingScaleChart({
                     className="inline-block h-3 w-3 rounded-sm border border-border"
                     style={{ background: PHASE_STYLES[phase].fill.replace(/0\.\d+\)/, "0.5)") }}
                   />
-                  {CYCLE_PHASES[phase].name}
+                  {translatePhaseName(phase)}
                 </li>
               ))}
             </ul>
           )}
           {hasActivities && (
-            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Legenda aktivít">
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={t("feelingChart.activityLegendAriaLabel")}>
               <li className="flex items-center gap-1.5">
                 <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full" style={{ background: ACTIVITY_COLOR }} />
-                Aktivita (deň, kedy si niečo urobila — v detaile aj typ a kilometre)
+                {t("feelingChart.activityLegendText")}
               </li>
             </ul>
           )}
           <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             {SCALE_LEVELS.filter((level) => level.value >= 20).slice(0, 8).map((level) => (
-              <li key={level.value}>{level.value} {level.label}</li>
+              <li key={level.value}>{level.value} {translateScale(level.label)}</li>
             ))}
           </ul>
         </>
       ) : (
         <p className="mt-6 text-sm text-muted-foreground">
-          Za toto obdobie ešte nemáš zaznamenaný žiadny pocit.
+          {t("feelingChart.emptyText")}
         </p>
       )}
     </section>

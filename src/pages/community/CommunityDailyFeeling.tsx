@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowLeft, Check, History, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
@@ -22,6 +23,10 @@ function localDateKey(date = new Date()) {
 }
 
 export default function CommunityDailyFeeling() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
+  const feelingTranslations = t("feelingWheel", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translateFeeling = (label: string) => (isEnglish ? feelingTranslations[label] ?? label : label);
   const navigate = useNavigate();
   const { profile } = useCommunityAuth();
   const { data: feelings, isLoading } = useDailyFeelings(profile?.id);
@@ -53,19 +58,19 @@ export default function CommunityDailyFeeling() {
 
   const save = async () => {
     if (!mood) {
-      toast.error("Vyber, ako sa dnes cítiš.");
+      toast.error(t("dailyFeeling.moodRequired"));
       return;
     }
     if (!detail || !specific) {
-      toast.error("Vyber všetky tri úrovne svojho pocitu.");
+      toast.error(t("dailyFeeling.levelsRequired"));
       return;
     }
     try {
       await saveFeeling.mutateAsync({ mood, detail: `${detail}${DETAIL_SEPARATOR}${specific}`, note, date: today });
-      toast.success(todayFeeling ? "Dnešný pocit je upravený." : "Tvoj dnešný pocit je uložený.");
+      toast.success(todayFeeling ? t("dailyFeeling.editSuccess") : t("dailyFeeling.createSuccess"));
       navigate("/community/pocit/historia");
     } catch {
-      toast.error("Pocit sa nepodarilo uložiť. Skús to ešte raz.");
+      toast.error(t("dailyFeeling.saveFailed"));
     }
   };
 
@@ -73,14 +78,14 @@ export default function CommunityDailyFeeling() {
     <div className="space-y-10">
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Domov
+        {t("nav.home")}
       </Link>
 
       <motion.section {...fadeUp(0)} className="text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Chvíľka pre seba</p>
-        <h1 className="mt-2 font-display text-4xl leading-tight">Ako sa dnes cítiš?</h1>
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t("dailyFeeling.kicker")}</p>
+        <h1 className="mt-2 font-display text-4xl leading-tight">{t("dailyFeeling.title")}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Nemusíš nič vysvetľovať. Len sa na chvíľu zastav a vnímaj seba.
+          {t("dailyFeeling.subtitle")}
         </p>
       </motion.section>
 
@@ -89,7 +94,7 @@ export default function CommunityDailyFeeling() {
       ) : (
         <motion.section {...fadeUp(1)} className="space-y-7" aria-labelledby="feeling-picker-title">
           <div>
-            <h2 id="feeling-picker-title" className="sr-only">Vyber svoj dnešný pocit</h2>
+            <h2 id="feeling-picker-title" className="sr-only">{t("dailyFeeling.pickerSrTitle")}</h2>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {MOODS.map((item) => {
                 const selected = mood === item.value;
@@ -100,7 +105,7 @@ export default function CommunityDailyFeeling() {
                     type="button"
                     variant={selected ? "default" : "outline"}
                     aria-pressed={selected}
-                    aria-label={item.label}
+                    aria-label={translateFeeling(item.label)}
                     onClick={() => {
                       setMood(item.value);
                       setDetail(null);
@@ -113,7 +118,7 @@ export default function CommunityDailyFeeling() {
                     )}
                   >
                     <MoodIcon aria-hidden="true" className="h-6 w-6" />
-                    <span className="text-[0.65rem] leading-tight sm:text-xs">{item.label}</span>
+                    <span className="text-[0.65rem] leading-tight sm:text-xs">{translateFeeling(item.label)}</span>
                     {selected && <Check className="absolute right-1 top-1 h-3.5 w-3.5" aria-hidden="true" />}
                   </Button>
                 );
@@ -123,7 +128,7 @@ export default function CommunityDailyFeeling() {
 
           {mood && MOODS.some((item) => item.value === mood) && (
             <div ref={detailRef} className="space-y-3 scroll-mt-4">
-              <h2 className="font-display text-2xl">Ktorý pocit je ti najbližší?</h2>
+              <h2 className="font-display text-2xl">{t("dailyFeeling.whichFeelingTitle")}</h2>
               <div className="flex flex-wrap gap-2">
                 {(MOODS.find((item) => item.value === mood)?.feelings ?? []).map((feeling) => (
                   <Button
@@ -142,7 +147,7 @@ export default function CommunityDailyFeeling() {
                       detail !== feeling.label && "border-border/50",
                     )}
                   >
-                    {feeling.label}
+                    {translateFeeling(feeling.label)}
                   </Button>
                 ))}
               </div>
@@ -151,7 +156,7 @@ export default function CommunityDailyFeeling() {
 
           {mood && detail && (
             <div ref={specificRef} className="space-y-3 scroll-mt-4">
-              <h2 className="font-display text-2xl">Ako presne sa tento pocit prejavuje?</h2>
+              <h2 className="font-display text-2xl">{t("dailyFeeling.howExactlyTitle")}</h2>
               <div className="flex flex-wrap gap-2">
                 {(MOODS.find((item) => item.value === mood)?.feelings.find((feeling) => feeling.label === detail)?.specifics ?? []).map((item) => (
                   <Button
@@ -169,7 +174,7 @@ export default function CommunityDailyFeeling() {
                       specific !== item && "border-border/50",
                     )}
                   >
-                    {item}
+                    {translateFeeling(item)}
                   </Button>
                 ))}
               </div>
@@ -177,24 +182,24 @@ export default function CommunityDailyFeeling() {
           )}
 
           <div ref={noteRef} className="space-y-2 scroll-mt-4">
-            <Label htmlFor="feeling-note">Čo dnes potrebuješ?</Label>
+            <Label htmlFor="feeling-note">{t("dailyFeeling.noteLabel")}</Label>
             <Textarea
               id="feeling-note"
               rows={4}
               maxLength={500}
               value={note}
               onChange={(event) => setNote(event.target.value)}
-              placeholder="Môžeš si sem napísať čokoľvek..."
+              placeholder={t("dailyFeeling.notePlaceholder")}
               className="rounded-2xl border-border/50 shadow-sm"
             />
             <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5" /> Len pre teba</span>
+              <span className="flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5" /> {t("dailyFeeling.privateOnly")}</span>
               <span>{note.length}/500</span>
             </div>
           </div>
 
           <Button className="w-full" size="lg" onClick={save} disabled={saveFeeling.isPending || !mood || !detail || !specific}>
-            {saveFeeling.isPending ? "Ukladám..." : todayFeeling ? "Upraviť dnešný pocit" : "Uložiť dnešný pocit"}
+            {saveFeeling.isPending ? t("dailyFeeling.saving") : todayFeeling ? t("dailyFeeling.editButton") : t("dailyFeeling.saveButton")}
           </Button>
 
           {!!feelings?.length && (
@@ -202,12 +207,12 @@ export default function CommunityDailyFeeling() {
               <Button variant="link" asChild>
                 <Link to="/community/pocit/historia">
                   <History className="mr-1.5 h-4 w-4" aria-hidden="true" />
-                  Pozrieť históriu môjho prežívania
+                  {t("dailyFeeling.viewHistoryButton")}
                 </Link>
               </Button>
             </div>
           )}
-          <MedicalNote extra="Tvoje pocity sem patria — a ak je ti dlhšie ťažko, nezostávaj s tým sama." />
+          <MedicalNote extra={t("dailyFeeling.medicalNoteExtra")} />
         </motion.section>
       )}
     </div>

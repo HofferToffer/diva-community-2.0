@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -7,7 +8,7 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { type DailyFeeling, useDailyFeelings, useProfileActivities } from "@/community/hooks/queries";
 import FeelingScaleChart from "@/community/components/FeelingScaleChart";
 import { levelForFeeling, scaleLabel } from "@/community/lib/consciousnessScale";
-import { moodDetails } from "@/community/lib/feelings";
+import { DETAIL_SEPARATOR, moodDetails } from "@/community/lib/feelings";
 import { cn } from "@/lib/utils";
 
 function localDateKey(date = new Date()) {
@@ -18,6 +19,13 @@ function localDateKey(date = new Date()) {
 }
 
 export default function CommunityFeelingHistory() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
+  const feelingTranslations = t("feelingWheel", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translateFeeling = (label: string) => (isEnglish ? feelingTranslations[label] ?? label : label);
+  const scaleTranslations = t("consciousnessScale", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const translateScale = (label: string) => (isEnglish ? scaleTranslations[label] ?? label : label);
+  const translateDetail = (detail: string) => detail.split(DETAIL_SEPARATOR).map(translateFeeling).join(DETAIL_SEPARATOR);
   const { profile } = useCommunityAuth();
   const { data: feelings, isLoading } = useDailyFeelings(profile?.id);
   const { data: allActivities } = useProfileActivities(profile?.id);
@@ -44,14 +52,14 @@ export default function CommunityFeelingHistory() {
     <div className="space-y-10">
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Domov
+        {t("nav.home")}
       </Link>
 
       <section className="text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Moja cesta</p>
-        <h1 className="mt-2 font-display text-4xl leading-tight">História môjho prežívania</h1>
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t("feelingHistory.kicker")}</p>
+        <h1 className="mt-2 font-display text-4xl leading-tight">{t("feelingHistory.title")}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Graf tvojich pocitov v čase a prehľad všetkých záznamov podľa dátumov.
+          {t("feelingHistory.subtitle")}
         </p>
       </section>
 
@@ -60,12 +68,12 @@ export default function CommunityFeelingHistory() {
       ) : !feelings?.length ? (
         <section className="rounded-lg border border-dashed border-border px-6 py-12 text-center">
           <p className="text-sm text-muted-foreground">
-            Zatiaľ nemáš zapísaný žiadny pocit. Keď si zapíšeš prvý, uvidíš tu svoj graf aj históriu.
+            {t("feelingHistory.emptyText")}
           </p>
           <Button className="mt-6" asChild>
             <Link to="/community/pocit">
               <PenLine className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              Zapísať dnešný pocit
+              {t("feelingHistory.logTodayButton")}
             </Link>
           </Button>
         </section>
@@ -79,14 +87,16 @@ export default function CommunityFeelingHistory() {
             const level = levelForFeeling(todayFeeling.mood, todayFeeling.feeling_detail);
             return (
               <section className="rounded-lg border border-primary/30 bg-card p-5">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tvoj dnešný pocit</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t("feelingHistory.todayFeelingLabel")}</p>
                 <div className="mt-2 flex items-center justify-between gap-3">
                   <p className="font-display text-2xl">
                     <MoodIcon className="-mt-1 mr-2 inline h-5 w-5 text-primary" aria-hidden="true" />
-                    {todayFeeling.feeling_detail ? `${details.label} · ${todayFeeling.feeling_detail}` : details.label}
+                    {todayFeeling.feeling_detail
+                      ? `${translateFeeling(details.label)} · ${translateDetail(todayFeeling.feeling_detail)}`
+                      : translateFeeling(details.label)}
                   </p>
                   <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs text-secondary-foreground">
-                    {level} · {scaleLabel(level)}
+                    {level} · {translateScale(scaleLabel(level))}
                   </span>
                 </div>
                 {todayFeeling.note && (
@@ -98,9 +108,9 @@ export default function CommunityFeelingHistory() {
 
           {!cycleData && (
             <p className="text-sm text-muted-foreground">
-              Graf zatiaľ nezobrazuje fázy cyklu — doplň si dátum poslednej menštruácie v{" "}
+              {t("feelingHistory.chartMissingText")}{" "}
               <Link to="/community/cyklus" className="underline hover:text-foreground">
-                Môj cyklus
+                {t("feelingHistory.chartMissingLink")}
               </Link>
               .
             </p>
@@ -108,12 +118,12 @@ export default function CommunityFeelingHistory() {
           <FeelingScaleChart feelings={feelings} cycle={cycleData} activities={chartActivities} />
 
           <div className="border-t border-border pt-8">
-            <h2 className="font-display text-2xl">Moja história pocitov</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Prehľad všetkých zaznamenaných pocitov podľa dátumov.</p>
+            <h2 className="font-display text-2xl">{t("feelingHistory.historyTitle")}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t("feelingHistory.historySubtitle")}</p>
             <div className="mt-6 space-y-8">
               {Object.entries(
                 feelings.reduce<Record<string, DailyFeeling[]>>((groups, item) => {
-                  const key = new Intl.DateTimeFormat("sk-SK", { year: "numeric", month: "long" }).format(
+                  const key = new Intl.DateTimeFormat(isEnglish ? "en-US" : "sk-SK", { year: "numeric", month: "long" }).format(
                     new Date(`${item.feeling_date}T12:00:00`),
                   );
                   (groups[key] ??= []).push(item);
@@ -122,7 +132,7 @@ export default function CommunityFeelingHistory() {
               ).map(([month, items]) => (
                 <div key={month}>
                   <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">{month}</h3>
-                  <ul className="mt-3 divide-y divide-border rounded-2xl border border-border/50 bg-card/40 shadow-sm" aria-label={`História pocitov ${month}`}>
+                  <ul className="mt-3 divide-y divide-border rounded-2xl border border-border/50 bg-card/40 shadow-sm" aria-label={t("feelingHistory.historyAriaLabel", { month })}>
                     {items.map((item) => {
                       const details = moodDetails(item.mood);
                       const MoodIcon = details.icon;
@@ -131,20 +141,24 @@ export default function CommunityFeelingHistory() {
                       return (
                         <li key={item.id} className="flex items-start gap-4 px-4 py-4">
                           <div className="flex w-14 flex-col items-center justify-center rounded-md bg-secondary py-2 text-secondary-foreground">
-                            <span className="text-[0.65rem] font-semibold uppercase leading-none">{new Intl.DateTimeFormat("sk-SK", { weekday: "short" }).format(itemDate)}</span>
+                            <span className="text-[0.65rem] font-semibold uppercase leading-none">{new Intl.DateTimeFormat(isEnglish ? "en-US" : "sk-SK", { weekday: "short" }).format(itemDate)}</span>
                             <span className="mt-0.5 font-display text-xl leading-none">{itemDate.getDate()}</span>
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center justify-between gap-2">
                               <p className="font-medium">
                                 <MoodIcon className="-mt-0.5 mr-1.5 inline h-4 w-4 text-primary" aria-hidden="true" />
-                                {item.feeling_detail ? `${details.label} · ${item.feeling_detail}` : details.label}
+                                {item.feeling_detail
+                                  ? `${translateFeeling(details.label)} · ${translateDetail(item.feeling_detail)}`
+                                  : translateFeeling(details.label)}
                               </p>
                               <span className="rounded-full bg-secondary px-2 py-0.5 text-[0.65rem] text-secondary-foreground">
-                                {levelForFeeling(item.mood, item.feeling_detail)} · {scaleLabel(levelForFeeling(item.mood, item.feeling_detail))}
+                                {levelForFeeling(item.mood, item.feeling_detail)} · {translateScale(scaleLabel(levelForFeeling(item.mood, item.feeling_detail)))}
                               </span>
                               <time className="text-xs text-muted-foreground" dateTime={item.feeling_date}>
-                                {isToday ? "Dnes" : new Intl.DateTimeFormat("sk-SK", { day: "numeric", month: "long", year: itemDate.getFullYear() === new Date().getFullYear() ? undefined : "numeric" }).format(itemDate)}
+                                {isToday
+                                  ? t("feelingHistory.today")
+                                  : new Intl.DateTimeFormat(isEnglish ? "en-US" : "sk-SK", { day: "numeric", month: "long", year: itemDate.getFullYear() === new Date().getFullYear() ? undefined : "numeric" }).format(itemDate)}
                               </time>
                             </div>
                             {item.note && <p className={cn("mt-1.5 text-sm leading-relaxed text-muted-foreground", "break-words")}>{item.note}</p>}
