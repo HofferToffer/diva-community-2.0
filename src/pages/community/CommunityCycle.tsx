@@ -75,6 +75,8 @@ export default function CommunityCycle() {
   const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
   const [savingStoryAudio, setSavingStoryAudio] = useState(false);
   const [transcribingStory, setTranscribingStory] = useState(false);
+  const [fallbackRecording, setFallbackRecording] = useState(false);
+  const fallbackRecorderRef = useRef<MediaRecorder | null>(null);
   const dictation = useLiveDictation((chunk) =>
     setBirthStory((prev) => {
       const base = prev.replace(/\s+$/, "");
@@ -184,14 +186,87 @@ export default function CommunityCycle() {
     }
   };
 
+  const appendStoryText = (text: string) => {
+    const clean = text.trim();
+    if (!clean) return;
+    setBirthStory((prev) => (prev.trim() ? `${prev.trim()} ${clean}` : clean));
+  };
+
+  const transcribeBlob = async (blob: Blob, ext: string) => {
+    setTranscribingStory(true);
+    try {
+      if (!blob.size) throw new Error("empty audio");
+      const file = new File([blob], `porodny-pribeh.${ext}`, { type: blob.type || `audio/${ext}` });
+      const form = new FormData();
+      form.append("file", file);
+      const { data, error } = await supabase.functions.invoke("transcribe-birth-story", { body: form });
+      if (error) throw error;
+      const text = String(data?.text ?? "").trim();
+      if (!text) throw new Error("empty transcript");
+      appendStoryText(text);
+      toast.success("Hotovo — prečítaj si text a ulož ho.");
+    } catch (e) {
+      console.error("dictation fallback failed", e);
+      toast.error("Nahrávku sa nepodarilo prepísať. Skús to prosím znova.");
+    } finally {
+      setTranscribingStory(false);
+    }
+  };
+
+  /** Safari/iOS nepodporuje živý prepis — nahráme zvuk a prepíšeme ho po skončení. */
+  const startFallbackRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const preferred = ["audio/webm", "audio/mp4", "audio/aac"].find(
+        (t) => typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported?.(t),
+      );
+      const recorder = new MediaRecorder(stream, preferred ? { mimeType: preferred } : undefined);
+      const chunks: BlobPart[] = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data?.size) chunks.push(e.data);
+      };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        fallbackRecorderRef.current = null;
+        setFallbackRecording(false);
+        const type = recorder.mimeType || "audio/webm";
+        const ext = type.includes("mp4") || type.includes("aac") ? "mp4" : "webm";
+        await transcribeBlob(new Blob(chunks, { type }), ext);
+      };
+      recorder.start();
+      fallbackRecorderRef.current = recorder;
+      setFallbackRecording(true);
+      toast.success("Počúvam — keď skončíš, ťukni na štvorček a text sa doplní.");
+    } catch (e) {
+      console.error("microphone unavailable", e);
+      toast.error("Nepodarilo sa spustiť mikrofón. Skontroluj povolenie mikrofónu v prehliadači.");
+    }
+  };
+
+  const micActive = dictation.listening || fallbackRecording;
+
   const startDictation = () => {
     setEditingBirthStory(true);
-    const ok = dictation.start();
-    if (!ok) {
-      toast.error("Tento prehliadač nevie písať naživo. Skús to v prehliadači Chrome, alebo príbeh pokojne napíš.");
+    if (dictation.supported) {
+      const ok = dictation.start();
+      if (ok) {
+        toast.success("Počúvam — hovor a text sa bude písať sám.");
+        return;
+      }
+    }
+    void startFallbackRecording();
+  };
+
+  const stopMic = () => {
+    if (dictation.listening) {
+      dictation.stop();
       return;
     }
-    toast.success("Počúvam — hovor a text sa bude písať sám.");
+    try {
+      fallbackRecorderRef.current?.stop();
+    } catch {
+      setFallbackRecording(false);
+    }
   };
 
   const transcribeStoryAudio = async () => {
@@ -593,27 +668,33 @@ export default function CommunityCycle() {
                   />
                   <button
                     type="button"
-                    aria-label={dictation.listening ? "Skončiť diktovanie" : "Diktovať mikrofónom"}
-                    onClick={() => (dictation.listening ? dictation.stop() : startDictation())}
+                    disabled={transcribingStory}
+                    aria-label={micActive ? "Skončiť nahrávanie" : "Diktovať mikrofónom"}
+                    onClick={() => (micActive ? stopMic() : startDictation())}
                     className={cn(
-                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
-                      dictation.listening
+                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] disabled:opacity-60",
+                      micActive
                         ? "bg-primary text-primary-foreground"
                         : "bg-secondary/60 text-primary hover:bg-secondary",
                     )}
                   >
-                    {dictation.listening ? (
+                    {micActive ? (
                       <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
                     ) : (
                       <Mic className="h-4 w-4" aria-hidden="true" />
                     )}
                   </button>
                 </div>
-                {dictation.listening && (
+                {micActive && (
                   <p className="flex items-center gap-2 text-xs text-primary">
                     <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
-                    Počúvam ťa — hovor pokojne, text sa píše sám.
+                    {dictation.listening
+                      ? "Počúvam ťa — hovor pokojne, text sa píše sám."
+                      : "Počúvam ťa — keď skončíš, ťukni znova a text sa doplní."}
                   </p>
+                )}
+                {transcribingStory && !micActive && (
+                  <p className="text-xs text-muted-foreground">Prepisujem, čo si povedala…</p>
                 )}
                 <div className="flex flex-wrap gap-2 pt-1">
                   <Button
