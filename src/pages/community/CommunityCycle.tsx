@@ -35,9 +35,9 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2 } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
-import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
+import { validateImage, normalizeImage, uploadImage, uploadAudio, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
 
@@ -71,6 +71,11 @@ export default function CommunityCycle() {
   const endPostpartumAnswerRef = useRef<HTMLDivElement>(null);
   const [uploadingStoryPhoto, setUploadingStoryPhoto] = useState(false);
   const birthStoryPhoto = useSignedImage(profile?.birth_story_photo);
+  const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
+  const [recordingStory, setRecordingStory] = useState(false);
+  const [savingStoryAudio, setSavingStoryAudio] = useState(false);
+  const storyRecorderRef = useRef<MediaRecorder | null>(null);
+  const storyChunksRef = useRef<Blob[]>([]);
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -170,6 +175,74 @@ export default function CommunityCycle() {
       toast.error("Fotku sa nepodarilo odstrániť.");
     } finally {
       setUploadingStoryPhoto(false);
+    }
+  };
+
+  const startStoryRecording = async () => {
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+      toast.error("Toto zariadenie nepodporuje nahrávanie zvuku.");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = ["audio/webm", "audio/mp4", "audio/ogg"].find((t) => MediaRecorder.isTypeSupported(t)) ?? "";
+      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      storyChunksRef.current = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) storyChunksRef.current.push(e.data);
+      };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const type = recorder.mimeType || "audio/webm";
+        const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
+        const blob = new Blob(storyChunksRef.current, { type });
+        setSavingStoryAudio(true);
+        try {
+          const stored = await uploadAudio("birth-stories", profile.id, blob, ext);
+          if (profile.birth_story_audio) await deleteStoredImage(profile.birth_story_audio);
+          const { error } = await supabase
+            .from("profiles")
+            .update({ birth_story_audio: stored } as never)
+            .eq("id", profile.id);
+          if (error) throw error;
+          refreshProfile();
+          toast.success("Tvoj príbeh je nahratý.");
+        } catch {
+          toast.error("Nahrávku sa nepodarilo uložiť.");
+        } finally {
+          setSavingStoryAudio(false);
+        }
+      };
+      storyRecorderRef.current = recorder;
+      recorder.start();
+      setRecordingStory(true);
+    } catch {
+      toast.error("Bez povolenia mikrofónu nahrávku neuložím. Skús to znova a povoliť mikrofón.");
+    }
+  };
+
+  const stopStoryRecording = () => {
+    storyRecorderRef.current?.stop();
+    storyRecorderRef.current = null;
+    setRecordingStory(false);
+  };
+
+  const removeStoryAudio = async () => {
+    if (!profile?.birth_story_audio) return;
+    setSavingStoryAudio(true);
+    try {
+      await deleteStoredImage(profile.birth_story_audio);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ birth_story_audio: null } as never)
+        .eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+      toast.success("Nahrávka je odstránená.");
+    } catch {
+      toast.error("Nahrávku sa nepodarilo odstrániť.");
+    } finally {
+      setSavingStoryAudio(false);
     }
   };
 
@@ -472,7 +545,7 @@ export default function CommunityCycle() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="relative space-y-2 overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-sm"
           >
-            {!profile.birth_story && !editingBirthStory && (
+            {!profile.birth_story && !profile.birth_story_audio && !editingBirthStory && (
               <motion.span
                 aria-hidden="true"
                 animate={{ y: [0, 6, 0] }}
@@ -495,11 +568,17 @@ export default function CommunityCycle() {
                 />
               </div>
             )}
+            {birthStoryAudio && (
+              <audio controls src={birthStoryAudio} className="w-full" preload="metadata">
+                Tvoje zariadenie nepodporuje prehrávanie zvuku.
+              </audio>
+            )}
             {editingBirthStory ? (
               <div className="space-y-2">
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   Píš presne tak, ako si to prežila — nežne aj drsne, krehko aj silno. Nemusí to znieť pekne ani mať
-                  zmysel pre nikoho iného. Toto je len tvoje. K príbehu môžeš pridať aj fotku.
+                  zmysel pre nikoho iného. Toto je len tvoje. Ak sa ti nepíše, príbeh môžeš jednoducho nahrať
+                  hlasom — alebo pridať fotku.
                 </p>
                 <Textarea
                   rows={6}
@@ -536,8 +615,8 @@ export default function CommunityCycle() {
                   Tvoj príbeh si zaslúži miesto. Napíš ho teraz, kým je čerstvý — aj len pár vetami.
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš ho len ty. Príbeh môžeš aj
-                  nahrať — stačí fotka.
+                   Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
+                   nepíše, nahraj si ho hlasom — alebo pridaj fotku.
                 </p>
                 <Button size="sm" className="mt-1 gap-2" onClick={() => setEditingBirthStory(true)}>
                   <Feather className="h-4 w-4" aria-hidden="true" />
@@ -553,6 +632,44 @@ export default function CommunityCycle() {
               onChange={(e) => handleStoryPhoto(e.target.files?.[0])}
             />
             <div className="flex flex-wrap items-center gap-3 pt-1">
+              {recordingStory ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-primary"
+                  onClick={stopStoryRecording}
+                >
+                  <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                  Zastaviť a uložiť nahrávku
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-primary"
+                  disabled={savingStoryAudio}
+                  onClick={startStoryRecording}
+                >
+                  <Mic className="h-4 w-4" aria-hidden="true" />
+                  {savingStoryAudio
+                    ? "Ukladám…"
+                    : profile.birth_story_audio
+                      ? "Nahrať znova"
+                      : "Nahrať hlasom"}
+                </Button>
+              )}
+              {profile.birth_story_audio && !recordingStory && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-0 text-muted-foreground"
+                  disabled={savingStoryAudio}
+                  onClick={removeStoryAudio}
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  Odstrániť nahrávku
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
