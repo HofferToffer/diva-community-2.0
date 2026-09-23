@@ -808,6 +808,7 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           birth_story: string | null
+          birth_story_audio: string | null
           birth_story_photo: string | null
           children_count: number | null
           city: string | null
@@ -847,6 +848,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           birth_story?: string | null
+          birth_story_audio?: string | null
           birth_story_photo?: string | null
           children_count?: number | null
           city?: string | null
@@ -886,6 +888,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           birth_story?: string | null
+          birth_story_audio?: string | null
           birth_story_photo?: string | null
           children_count?: number | null
           city?: string | null
