@@ -37,6 +37,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
+import { useLiveDictation } from "@/community/hooks/useLiveDictation";
 import { validateImage, normalizeImage, uploadImage, uploadAudio, deleteStoredImage } from "@/community/lib/storage";
 import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
@@ -77,6 +78,13 @@ export default function CommunityCycle() {
   const [transcribingStory, setTranscribingStory] = useState(false);
   const storyRecorderRef = useRef<MediaRecorder | null>(null);
   const storyChunksRef = useRef<Blob[]>([]);
+  const dictation = useLiveDictation((chunk) =>
+    setBirthStory((prev) => {
+      const base = prev.replace(/\s+$/, "");
+      if (!base) return chunk.charAt(0).toUpperCase() + chunk.slice(1);
+      return /[.!?]$/.test(base) ? `${base} ${chunk.charAt(0).toUpperCase()}${chunk.slice(1)}` : `${base} ${chunk}`;
+    }),
+  );
   const [endingPostpartum, setEndingPostpartum] = useState(false);
   const [periodReturnedChoice, setPeriodReturnedChoice] = useState<"yes" | "no" | null>(null);
   const [newLastPeriod, setNewLastPeriod] = useState("");
@@ -227,6 +235,18 @@ export default function CommunityCycle() {
     storyRecorderRef.current?.stop();
     storyRecorderRef.current = null;
     setRecordingStory(false);
+  };
+
+  const startDictation = () => {
+    setEditingBirthStory(true);
+    const ok = dictation.start();
+    if (!ok) {
+      toast.error(
+        "Tento prehliadač nevie písať naživo. Nahraj príbeh hlasom a potom ťukni na „Prepísať na text“.",
+      );
+      return;
+    }
+    toast.success("Počúvam — hovor a text sa bude písať sám.");
   };
 
   const transcribeStoryAudio = async () => {
@@ -612,18 +632,52 @@ export default function CommunityCycle() {
                 </p>
                 <Textarea
                   rows={6}
-                  value={birthStory}
-                  onChange={(e) => setBirthStory(e.target.value)}
+                  value={
+                    dictation.interim
+                      ? `${birthStory}${birthStory && !birthStory.endsWith(" ") ? " " : ""}${dictation.interim}`
+                      : birthStory
+                  }
+                  onChange={(e) => {
+                    if (dictation.listening) return;
+                    setBirthStory(e.target.value);
+                  }}
+                  readOnly={dictation.listening}
                   placeholder="Môj pôrodný príbeh…"
                 />
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1" disabled={savingBirthStory} onClick={saveBirthStory}>
+                {dictation.listening && (
+                  <p className="flex items-center gap-2 text-xs text-primary">
+                    <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
+                    Počúvam ťa — hovor pokojne, text sa píše sám.
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {dictation.listening ? (
+                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={dictation.stop}>
+                      <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                      Skončiť diktovanie
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="outline" className="flex-1 gap-1.5" onClick={startDictation}>
+                      <Mic className="h-4 w-4" aria-hidden="true" />
+                      Diktovať naživo
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    disabled={savingBirthStory}
+                    onClick={() => {
+                      dictation.stop();
+                      saveBirthStory();
+                    }}
+                  >
                     {savingBirthStory ? "Ukladám…" : "Uložiť"}
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => {
+                      dictation.stop();
                       setBirthStory(profile.birth_story ?? "");
                       setEditingBirthStory(false);
                     }}
@@ -646,12 +700,18 @@ export default function CommunityCycle() {
                 </p>
                 <p className="text-xs leading-relaxed text-muted-foreground">
                    Nežný aj drsný, krehký aj silný — každý pôrod má svoj príbeh. Vidíš a počuješ ho len ty. Ak sa ti
-                   nepíše, nahraj si ho hlasom — alebo pridaj fotku.
+                   nepíše, jednoducho hovor a text sa bude písať sám — alebo pridaj fotku.
                 </p>
-                <Button size="sm" className="mt-1 gap-2" onClick={() => setEditingBirthStory(true)}>
-                  <Feather className="h-4 w-4" aria-hidden="true" />
-                  Napísať svoj príbeh
-                </Button>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  <Button size="sm" className="gap-2" onClick={() => setEditingBirthStory(true)}>
+                    <Feather className="h-4 w-4" aria-hidden="true" />
+                    Napísať svoj príbeh
+                  </Button>
+                  <Button size="sm" variant="outline" className="gap-2" onClick={startDictation}>
+                    <Mic className="h-4 w-4" aria-hidden="true" />
+                    Diktovať naživo
+                  </Button>
+                </div>
               </>
             )}
             <input
