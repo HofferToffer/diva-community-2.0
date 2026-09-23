@@ -472,14 +472,6 @@ export default function CommunityCycle() {
         <p className="text-sm text-muted-foreground">{t("cycleCard.pageIntro")}</p>
       </motion.header>
 
-      <motion.p
-        {...fadeUp(0.5)}
-        className="rounded-xl bg-secondary/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground"
-      >
-        Bez ohľadu na fázu, v ktorej práve si — pravidelná ročná kontrola u gynekológa/gynekologičky patrí k
-        starostlivosti o seba. Nie je to niečo, na čo treba čakať, kým sa niečo pokazí.
-      </motion.p>
-
       {profile.is_pregnant && (
         <motion.section {...fadeUp(1)} className="relative space-y-2 overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           {pregnancy && (() => {
@@ -542,9 +534,9 @@ export default function CommunityCycle() {
                 </ul>
               </div>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="w-full justify-between px-2 text-muted-foreground"
+                className="w-full justify-between border-primary/30 bg-primary/5 px-4 font-medium text-primary hover:bg-primary/10 hover:text-primary"
                 onClick={() => setShowMorePregnancy((v) => !v)}
               >
                 {showMorePregnancy ? t("pregnancyCard.showLessButton") : t("pregnancyCard.showMoreButton")}
@@ -698,9 +690,9 @@ export default function CommunityCycle() {
                 </p>
               </div>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="w-full justify-between px-2 text-muted-foreground"
+                className="w-full justify-between border-primary/30 bg-primary/5 px-4 font-medium text-primary hover:bg-primary/10 hover:text-primary"
                 onClick={() => setShowMorePostpartum((v) => !v)}
               >
                 {showMorePostpartum ? t("postpartumCard.showLessButton") : t("postpartumCard.showMoreButton")}
@@ -1275,9 +1267,9 @@ export default function CommunityCycle() {
                   </p>
 
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
-                    className="w-full justify-between px-2 text-muted-foreground"
+                    className="w-full justify-between border-primary/30 bg-primary/5 px-4 font-medium text-primary hover:bg-primary/10 hover:text-primary"
                     onClick={() => setShowMoreTTC((v) => !v)}
                   >
                     {showMoreTTC ? t("ttc.showLessButton") : t("ttc.showMoreButton")}
@@ -1399,6 +1391,10 @@ export default function CommunityCycle() {
           <MedicalNote className="mt-5 text-left" />
         </motion.section>
       ))}
+
+      <p className="rounded-xl bg-secondary/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+        {t("cycleCard.gynecologistNote")}
+      </p>
     </div>
   );
 }

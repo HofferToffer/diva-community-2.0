@@ -16,6 +16,7 @@ import { normalizeUsername } from "@/community/lib/format";
 import { uploadImage, validateImage } from "@/community/lib/storage";
 import { ProfileAvatar } from "@/community/components/StoredImage";
 import { ImageCropDialog } from "@/community/components/ImageCropDialog";
+import { CityAutocomplete } from "@/community/components/CityAutocomplete";
 import { cn } from "@/lib/utils";
 
 export default function CommunityOnboarding() {
@@ -27,6 +28,8 @@ export default function CommunityOnboarding() {
   const [bio, setBio] = useState(profile?.bio ?? "");
   const [gifts, setGifts] = useState(profile?.gifts ?? "");
   const [city, setCity] = useState(profile?.city ?? "");
+  const [cityLat, setCityLat] = useState<number | null>(profile?.city_lat ?? null);
+  const [cityLng, setCityLng] = useState<number | null>(profile?.city_lng ?? null);
   const [interests, setInterests] = useState<string[]>(profile?.interests ?? []);
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
@@ -82,6 +85,15 @@ export default function CommunityOnboarding() {
         setSaving(false);
         return toast.error(t("onboarding.usernameTaken"));
       }
+      const trimmedCity = city.trim();
+      let finalCityLat = trimmedCity ? cityLat : null;
+      let finalCityLng = trimmedCity ? cityLng : null;
+      if (trimmedCity && (finalCityLat == null || finalCityLng == null)) {
+        // Typed by hand without picking a suggestion — geocode the plain text as a fallback.
+        const { data: geo } = await supabase.functions.invoke("geocode-city", { body: { city: trimmedCity } });
+        finalCityLat = geo?.lat ?? null;
+        finalCityLng = geo?.lng ?? null;
+      }
       const { error } = await supabase
         .from("profiles")
         .update({
@@ -89,7 +101,9 @@ export default function CommunityOnboarding() {
           username: cleanUsername,
           bio: bio.trim() || null,
           gifts: gifts.trim() || null,
-          city: city.trim() || null,
+          city: trimmedCity || null,
+          city_lat: finalCityLat,
+          city_lng: finalCityLng,
           interests,
           is_public: isPublic,
           avatar_url: avatarPath,
@@ -169,7 +183,15 @@ export default function CommunityOnboarding() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="onb-city">{t("onboarding.cityLabel")}</Label>
-            <Input id="onb-city" value={city} onChange={(e) => setCity(e.target.value)} />
+            <CityAutocomplete
+              id="onb-city"
+              value={city}
+              onChange={(value, lat, lng) => {
+                setCity(value);
+                setCityLat(lat);
+                setCityLng(lng);
+              }}
+            />
           </div>
           <Button className="w-full" onClick={() => setStep(1)} disabled={!name.trim() || username.length < 3}>
             {t("onboarding.continueButton")}

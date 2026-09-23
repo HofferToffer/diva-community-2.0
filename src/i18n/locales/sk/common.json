@@ -499,7 +499,8 @@
     "nextPeriod": "Ďalšia menštruácia",
     "nextOvulation": "Predpokladaná ovulácia",
     "inDays": "(o {{count}} dní)",
-    "tipsForThisPhase": "Tipy pre túto fázu"
+    "tipsForThisPhase": "Tipy pre túto fázu",
+    "gynecologistNote": "Pravidelná ročná prehliadka u gynekológa/gynekologičky patrí k starostlivosti o seba — bez ohľadu na fázu, v ktorej si."
   },
   "home": {
     "tagline": "V jemnosti je naša sila.",

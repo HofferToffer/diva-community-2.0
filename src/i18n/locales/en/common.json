@@ -1076,7 +1076,8 @@
     "nextPeriod": "Next period",
     "nextOvulation": "Estimated ovulation",
     "inDays": "(in {{count}} days)",
-    "tipsForThisPhase": "Tips for this phase"
+    "tipsForThisPhase": "Tips for this phase",
+    "gynecologistNote": "A regular yearly check-up with your gynecologist is part of taking care of yourself — whatever phase you're in."
   },
   "home": {
     "tagline": "Our strength is in our gentleness.",
