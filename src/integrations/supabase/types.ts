@@ -827,6 +827,7 @@ export type Database = {
           is_public: boolean
           is_trying_to_conceive: boolean
           last_period_date: string | null
+          menopause_stage: string | null
           name: string
           notify_challenges: boolean
           notify_comments: boolean
@@ -862,6 +863,7 @@ export type Database = {
           is_public?: boolean
           is_trying_to_conceive?: boolean
           last_period_date?: string | null
+          menopause_stage?: string | null
           name?: string
           notify_challenges?: boolean
           notify_comments?: boolean
@@ -897,6 +899,7 @@ export type Database = {
           is_public?: boolean
           is_trying_to_conceive?: boolean
           last_period_date?: string | null
+          menopause_stage?: string | null
           name?: string
           notify_challenges?: boolean
           notify_comments?: boolean

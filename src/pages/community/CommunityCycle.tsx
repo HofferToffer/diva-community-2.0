@@ -26,7 +26,8 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function CommunityCycle() {
   const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
@@ -37,6 +38,7 @@ export default function CommunityCycle() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
+  const [menopauseStage, setMenopauseStage] = useState<string | null>(profile?.menopause_stage ?? null);
   const { data: intimacyDates } = useIntimacyLogs(profile?.id);
   const toggleIntimacy = useToggleIntimacyLog(profile?.id);
 
@@ -55,6 +57,20 @@ export default function CommunityCycle() {
       : null;
   const pregnancy = profile.is_pregnant && profile.last_period_date ? getPregnancyInfo(profile.last_period_date) : null;
   const postpartum = profile.is_postpartum && profile.postpartum_since ? getPostpartumInfo(profile.postpartum_since) : null;
+
+  const selectMenopauseStage = async (key: string) => {
+    const next = menopauseStage === key ? null : key;
+    const previous = menopauseStage;
+    setMenopauseStage(next);
+    try {
+      const { error } = await supabase.from("profiles").update({ menopause_stage: next } as never).eq("id", profile.id);
+      if (error) throw error;
+      refreshProfile();
+    } catch {
+      setMenopauseStage(previous);
+      toast.error("Nepodarilo sa uložiť fázu.");
+    }
+  };
 
   const markBirth = async () => {
     if (!window.confirm("Narodilo sa ti bábätko? Toto ukončí sledovanie tehotenstva.")) return;
@@ -282,24 +298,47 @@ export default function CommunityCycle() {
           </div>
 
           <div className="space-y-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Fázy menopauzy — kde sa možno spoznáš
-            </p>
-            {MENOPAUSE_STAGES.map((stage) => (
-              <div key={stage.key} className="rounded-xl border border-border/50 bg-background/60 p-4">
-                <p className="font-display text-lg text-primary">{stage.name}</p>
-                <p className="text-xs text-muted-foreground">{stage.ageRange}</p>
-                <p className="mt-2 text-sm leading-relaxed text-foreground/85">{stage.message}</p>
-                <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                  {stage.symptoms.map((symptom) => (
-                    <li key={symptom} className="flex items-start gap-2">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                      {symptom}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Fázy menopauzy — kde sa možno spoznáš
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Ťuknutím si označ fázu, v ktorej si práve teraz — kedykoľvek to môžeš zmeniť. Ak si nie si istá, pokojne to nechaj nevybrané.
+              </p>
+            </div>
+            {MENOPAUSE_STAGES.map((stage) => {
+              const selected = menopauseStage === stage.key;
+              return (
+                <button
+                  key={stage.key}
+                  type="button"
+                  onClick={() => selectMenopauseStage(stage.key)}
+                  className={cn(
+                    "w-full rounded-xl border p-4 text-left transition-colors",
+                    selected ? "border-primary bg-primary/10" : "border-border/50 bg-background/60 hover:border-primary/40",
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-display text-lg text-primary">{stage.name}</p>
+                    {selected && (
+                      <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <Check className="h-3 w-3" aria-hidden="true" />
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">{stage.ageRange}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-foreground/85">{stage.message}</p>
+                  <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                    {stage.symptoms.map((symptom) => (
+                      <li key={symptom} className="flex items-start gap-2">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                        {symptom}
+                      </li>
+                    ))}
+                  </ul>
+                </button>
+              );
+            })}
           </div>
         </motion.section>
       )}
