@@ -105,7 +105,7 @@ export default function CommunityHome() {
   return (
     <div className="space-y-8">
       <motion.section {...fadeUp(0)} className="relative px-1 py-2">
-        <h1 className="font-display text-3xl leading-tight">{greeting(profile?.name?.split(" ")[0])}</h1>
+        <h1 className="font-display text-3xl leading-tight">{isEnglish ? t("home.greeting") : greeting(profile?.name?.split(" ")[0])}</h1>
         <p className="mt-1 font-display text-lg font-light tracking-wide text-muted-foreground">{t("home.tagline")}</p>
       </motion.section>
 

@@ -512,7 +512,8 @@
     "challengeProgressLabel": "Progres výzvy",
     "feed": "Feed",
     "feedEmptyTitle": "Feed je zatiaľ tichý",
-    "feedEmptyDescription": "Zapíš svoju prvú aktivitu a inšpiruj ostatné divy."
+    "feedEmptyDescription": "Zapíš svoju prvú aktivitu a inšpiruj ostatné divy.",
+    "greeting": "Ahoj milá Diva."
   },
   "profile": {
     "title": "Upraviť profil",
