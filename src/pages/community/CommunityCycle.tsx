@@ -230,6 +230,18 @@ export default function CommunityCycle() {
     setRecordingStory(false);
   };
 
+  const startDictation = () => {
+    setEditingBirthStory(true);
+    const ok = dictation.start();
+    if (!ok) {
+      toast.error(
+        "Tento prehliadač nevie písať naživo. Nahraj príbeh hlasom a potom ťukni na „Prepísať na text“.",
+      );
+      return;
+    }
+    toast.success("Počúvam — hovor a text sa bude písať sám.");
+  };
+
   const transcribeStoryAudio = async () => {
     if (!profile?.birth_story_audio || !birthStoryAudio) return;
     setTranscribingStory(true);
