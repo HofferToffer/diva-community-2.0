@@ -8,9 +8,20 @@ export type PostpartumInfo = {
   week: number;
   message: string;
   symptoms: string[];
+  archetype: string;
+  keywords: string;
+  mantra: string;
 };
 
-type WeekBand = { maxWeek: number; message: string; symptoms: string[] };
+type WeekBand = {
+  maxWeek: number;
+  message: string;
+  symptoms: string[];
+  /** The energetic/inner layer alongside the physical facts above — not medical, not religious, just the deeper meaning of this week. */
+  archetype: string;
+  keywords: string;
+  mantra: string;
+};
 
 /**
  * Week-by-week postpartum content, grounded in Cleveland Clinic / ACOG / Merck
@@ -32,42 +43,63 @@ const WEEK_BANDS: WeekBand[] = [
       "citlivosť hrádze alebo jazvy po cisárskom reze",
       "možný baby blues (plač, precitlivenosť)",
     ],
+    archetype: "Novorodená matka",
+    keywords: "prežitie • spoznávanie • krehkosť • nový začiatok",
+    mantra: "Aj ja sa práve rodím.",
   },
   {
     maxWeek: 2,
     message:
       "Krvácanie sa mení na svetlejšie, ružovkasté až hnedasté. Kŕče aj napätie v prsiach by mali postupne slabnúť. Baby blues by mal do konca tohto týždňa doznievať — ak smútok alebo úzkosť naopak silnejú, je čas povedať si o pomoc, nie to len vydržať.",
     symptoms: ["svetlejšie, ružovkasté krvácanie", "slabnúce kŕče", "pretrvávajúca únava", "možné nočné potenie"],
+    archetype: "Krehká",
+    keywords: "dôvera • jemnosť • citlivosť • starostlivosť",
+    mantra: "Učím sa dôverovať svojmu telu aj sebe.",
   },
   {
     maxWeek: 3,
     message:
       "Krvácanie je už len slabé, žltkasté až biele, a môže sa objavovať už len občas. Toto obdobie je aj najčastejším začiatkom popôrodnej depresie — nie preto, že by si niečo robila zle, ale preto, že telo aj hormóny prechádzajú veľkou zmenou. Ak smútok, úzkosť alebo pocit odpojenia od bábätka trvajú dlhšie než pár dní, ozvi sa gynekológovi alebo pediatrovi — pomoc funguje a nemusíš na ňu čakať do šestotýždňovej prehliadky.",
     symptoms: ["slabé, svetlé krvácanie", "pretrvávajúca únava", "citlivejšia nálada — sleduj, ako sa cítiš"],
+    archetype: "Tá vo hmle",
+    keywords: "tma • podpora • pravda • nie si sama",
+    mantra: "Nie som sama, aj keď sa tak cítim.",
   },
   {
     maxWeek: 4,
     message:
       "Maternica sa blíži k pôvodnej veľkosti a jazva — po pôrode aj po cisárskom reze — by mala byť citeľne pokojnejšia. Niektorým ženám okolo tohto obdobia začnú viac vypadávať vlasy. Je to normálna reakcia tela na pokles hormónov, nie niečo, čo si spravila zle.",
     symptoms: ["vypadávanie vlasov (môže začať)", "ustupujúca citlivosť jazvy", "stále prítomná únava"],
+    archetype: "Hojaca sa",
+    keywords: "hojenie • trpezlivosť • telo • obnova",
+    mantra: "Moje telo si pamätá, ako sa uzdraviť.",
   },
   {
     maxWeek: 6,
     message:
-      "Krvácanie by malo v tomto období ustať. Blíži sa (alebo už bola) šestotýždňová prehliadka — dobrá príležitosť prebrať s lekárom všetko, čo cítiš, aj fyzicky, aj psychicky. Svaly panvového dna sú stále citeľne slabšie než pred tehotenstvom — cvičenia na ich posilnenie majú teraz naozaj zmysel, nie je to len formalita.",
+      "Krvácanie by malo v tomto období ustať. Blíži sa (alebo už bola) šestotýždňová prehliadka — dobrá príležitosť prebrať s lekárom všetko, čo cítiš, aj fyzicky, aj psychicky. Svaly panvového dna sú stále citeľne slabšie než pred tehotenstvom — cvičenia na ich posilnenie majú teraz naozaj zmysel, nie je to len formalita. Na prehliadke zvyčajne dostaneš aj lekárske povolenie na intímny život — ale to je len povolenie, nie povinnosť. Je úplne v poriadku, ak sa naň ešte necítiš pripravená, či už teraz, o mesiac, alebo až neskôr. Telo aj hlava si na to berú svoj čas, nie kalendár.",
     symptoms: ["krvácanie by malo končiť", "slabšie panvové dno", "pri cisárskom reze: väčšinou povolenie na bežné aktivity"],
+    archetype: "Tá, čo sa vracia k sebe",
+    keywords: "návrat • sila • hranice • základ",
+    mantra: "Pomaly sa vraciam domov — do seba.",
   },
   {
     maxWeek: 8,
     message:
       "Väčšina žien je už bez krvácania a kŕče sú preč. Ak nedojčíš, môže sa vrátiť menštruácia; ak dojčíš výlučne, môže vynechávať aj mesiace. Pozor — plodnosť sa vie vrátiť ešte predtým, než príde prvá menštruácia.",
     symptoms: ["možný návrat menštruácie (ak nedojčíš)", "citeľnejší nárast energie", "únava zo spánkového deficitu pretrváva"],
+    archetype: "Prebúdzajúca sa sila",
+    keywords: "energia • prebúdzanie • telo • sila",
+    mantra: "Cítim, ako sa mi vracia sila.",
   },
   {
     maxWeek: 12,
     message:
       "Fyzické hojenie je u väčšiny žien už hotové. Vypadávanie vlasov môže byť teraz na vrchole — vydrž, do roka sa to upraví. Sila jadra a panvového dna sa stále postupne vracia, najmä ak sa im venuješ pravidelne.",
     symptoms: ["vypadávanie vlasov môže vrcholiť", "postupne sa vracajúca sila brucha a panvového dna"],
+    archetype: "Tá, čo integruje",
+    keywords: "integrácia • celistvosť • rast • premena",
+    mantra: "Spájam, kým som bola, s tým, kým som teraz.",
   },
 ];
 
@@ -76,6 +108,9 @@ const FALLBACK: WeekBand = {
   message:
     "Si už niekoľko mesiacov na tejto novej ceste. Vlasy sa do roka upravia, jazva dozrieva mesiace, panvové dno aj jadro sa posilňujú ďalej pri pravidelnom cvičení. Hojenie, hormóny aj puto s dieťaťom si idú vlastným tempom — dôveruj mu, nie je to preteky.",
   symptoms: ["vlasy sa postupne upravujú", "energia a libido sa vracajú individuálnym tempom"],
+  archetype: "Matka a žena zároveň",
+  keywords: "rovnováha • celistvosť • matka aj žena • vlastné tempo",
+  mantra: "Môžem byť matka aj sama sebou naraz.",
 };
 
 export function getPostpartumInfo(sinceDate: string, today = new Date()): PostpartumInfo {
@@ -84,5 +119,12 @@ export function getPostpartumInfo(sinceDate: string, today = new Date()): Postpa
   const week = Math.floor(days / 7) + 1;
 
   const band = WEEK_BANDS.find((b) => week <= b.maxWeek) ?? FALLBACK;
-  return { week, message: band.message, symptoms: band.symptoms };
+  return {
+    week,
+    message: band.message,
+    symptoms: band.symptoms,
+    archetype: band.archetype,
+    keywords: band.keywords,
+    mantra: band.mantra,
+  };
 }

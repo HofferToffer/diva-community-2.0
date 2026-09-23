@@ -149,6 +149,9 @@ export default function CommunityHome() {
               <>
                 <h2 className="mt-1 font-display text-2xl text-primary">{postpartum.week}. týždeň po pôrode</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{postpartum.message}</p>
+                <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
+                  „{postpartum.mantra}" — {postpartum.archetype}
+                </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   Typické tento týždeň: {postpartum.symptoms.join(" · ")}
                 </p>

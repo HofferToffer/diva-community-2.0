@@ -261,6 +261,12 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
+              <div className="border-t border-border/50 pt-3">
+                <p className="text-sm italic leading-relaxed text-foreground/85">
+                  „{postpartum.mantra}" — {postpartum.archetype}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">{postpartum.keywords}</p>
+              </div>
             </>
           ) : (
             <p className="text-sm text-muted-foreground">Zadaj dátum pôrodu v profile.</p>
