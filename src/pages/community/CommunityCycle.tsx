@@ -75,6 +75,8 @@ export default function CommunityCycle() {
   const birthStoryAudio = useSignedImage(profile?.birth_story_audio);
   const [savingStoryAudio, setSavingStoryAudio] = useState(false);
   const [transcribingStory, setTranscribingStory] = useState(false);
+  const [fallbackRecording, setFallbackRecording] = useState(false);
+  const fallbackRecorderRef = useRef<MediaRecorder | null>(null);
   const dictation = useLiveDictation((chunk) =>
     setBirthStory((prev) => {
       const base = prev.replace(/\s+$/, "");
