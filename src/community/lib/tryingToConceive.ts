@@ -9,6 +9,18 @@ import type { CycleTip } from "@/community/lib/cycle";
  * (ASRM: no proven causal link between stress and infertility).
  */
 
+/**
+ * The energetic/inner layer for this journey — in the same shape as
+ * CYCLE_PHASE_ARCHETYPE, but a single one rather than per-stage, since trying
+ * to conceive has no fixed stages to move through, just an open stretch of
+ * time to hold with patience.
+ */
+export const TTC_ARCHETYPE = {
+  archetype: "Trpezlivá nádejná",
+  keywords: "nádej • trpezlivosť • dôvera • vytrvalosť",
+  mantra: "Dôverujem svojmu telu aj jeho vlastnému času.",
+};
+
 /** Realistic, encouraging framing of how long conception typically takes. */
 export const TTC_TIMELINE_NOTE =
   "Asi 30 % žien otehotnie hneď v prvom cykle, 66–80 % do 6 mesiacov a približne 85 % do roka pravidelných pokusov. Ak skúšaš už 9 mesiacov, si stále úplne v bežnom rozmedzí — to, že to ešte neprišlo, neznamená, že niečo nie je v poriadku.";

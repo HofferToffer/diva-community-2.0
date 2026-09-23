@@ -22,6 +22,7 @@ import { CycleCalendar } from "@/community/components/CycleCalendar";
 import { CyclePhaseTips, TipGrid } from "@/community/components/CyclePhaseTips";
 import { MENOPAUSE_TIPS, MENOPAUSE_STAGES } from "@/community/lib/menopause";
 import {
+  TTC_ARCHETYPE,
   TTC_TIMELINE_NOTE,
   TTC_DOCTOR_GUIDANCE,
   TTC_TIPS,
@@ -690,6 +691,12 @@ export default function CommunityCycle() {
                     Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na
                     deň si vieš súkromne zapísať, kedy ste boli spolu.
                   </p>
+                  <div className="border-t border-border/50 pt-3">
+                    <p className="text-sm italic leading-relaxed text-foreground/85">
+                      „{TTC_ARCHETYPE.mantra}" — {TTC_ARCHETYPE.archetype}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">{TTC_ARCHETYPE.keywords}</p>
+                  </div>
                   <p className="text-sm leading-relaxed text-foreground/85">{TTC_TIMELINE_NOTE}</p>
 
                   <div className="rounded-xl border border-border/50 bg-card p-3">

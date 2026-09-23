@@ -59,7 +59,7 @@ const WEEK_BANDS: WeekBand[] = [
   {
     maxWeek: 3,
     message:
-      "Krvácanie je už len slabé, žltkasté až biele, a môže sa objavovať už len občas. Toto obdobie je aj najčastejším začiatkom popôrodnej depresie — nie preto, že by si niečo robila zle, ale preto, že telo aj hormóny prechádzajú veľkou zmenou. Ak smútok, úzkosť alebo pocit odpojenia od bábätka trvajú dlhšie než pár dní, ozvi sa gynekológovi alebo pediatrovi — pomoc funguje a nemusíš na ňu čakať do šestotýždňovej prehliadky.",
+      "Krvácanie je už len slabé, žltkasté až biele, a môže sa objavovať už len občas. Toto obdobie je aj najčastejším začiatkom popôrodnej depresie — nie preto, že by si niečo robila zle, ale preto, že telo aj hormóny prechádzajú veľkou zmenou. Ak smútok, úzkosť alebo pocit odpojenia od bábätka trvajú dlhšie než pár dní, neuzatváraj sa do seba — ozvi sa niekomu, komu dôveruješ (kamarátke, DIVA KRUHU) aj gynekológovi alebo pediatrovi. Pomoc funguje a nemusíš na ňu čakať do šestotýždňovej prehliadky, ani ju zvládať sama.",
     symptoms: ["slabé, svetlé krvácanie", "pretrvávajúca únava", "citlivejšia nálada — sleduj, ako sa cítiš"],
     archetype: "Tá vo hmle",
     keywords: "tma • podpora • pravda • nie si sama",
