@@ -668,27 +668,33 @@ export default function CommunityCycle() {
                   />
                   <button
                     type="button"
-                    aria-label={dictation.listening ? "Skončiť diktovanie" : "Diktovať mikrofónom"}
-                    onClick={() => (dictation.listening ? dictation.stop() : startDictation())}
+                    disabled={transcribingStory}
+                    aria-label={micActive ? "Skončiť nahrávanie" : "Diktovať mikrofónom"}
+                    onClick={() => (micActive ? stopMic() : startDictation())}
                     className={cn(
-                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
-                      dictation.listening
+                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] disabled:opacity-60",
+                      micActive
                         ? "bg-primary text-primary-foreground"
                         : "bg-secondary/60 text-primary hover:bg-secondary",
                     )}
                   >
-                    {dictation.listening ? (
+                    {micActive ? (
                       <Square className="h-4 w-4 animate-pulse" aria-hidden="true" />
                     ) : (
                       <Mic className="h-4 w-4" aria-hidden="true" />
                     )}
                   </button>
                 </div>
-                {dictation.listening && (
+                {micActive && (
                   <p className="flex items-center gap-2 text-xs text-primary">
                     <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-primary" aria-hidden="true" />
-                    Počúvam ťa — hovor pokojne, text sa píše sám.
+                    {dictation.listening
+                      ? "Počúvam ťa — hovor pokojne, text sa píše sám."
+                      : "Počúvam ťa — keď skončíš, ťukni znova a text sa doplní."}
                   </p>
+                )}
+                {transcribingStory && !micActive && (
+                  <p className="text-xs text-muted-foreground">Prepisujem, čo si povedala…</p>
                 )}
                 <div className="flex flex-wrap gap-2 pt-1">
                   <Button
