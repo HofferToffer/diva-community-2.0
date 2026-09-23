@@ -184,14 +184,87 @@ export default function CommunityCycle() {
     }
   };
 
+  const appendStoryText = (text: string) => {
+    const clean = text.trim();
+    if (!clean) return;
+    setBirthStory((prev) => (prev.trim() ? `${prev.trim()} ${clean}` : clean));
+  };
+
+  const transcribeBlob = async (blob: Blob, ext: string) => {
+    setTranscribingStory(true);
+    try {
+      if (!blob.size) throw new Error("empty audio");
+      const file = new File([blob], `porodny-pribeh.${ext}`, { type: blob.type || `audio/${ext}` });
+      const form = new FormData();
+      form.append("file", file);
+      const { data, error } = await supabase.functions.invoke("transcribe-birth-story", { body: form });
+      if (error) throw error;
+      const text = String(data?.text ?? "").trim();
+      if (!text) throw new Error("empty transcript");
+      appendStoryText(text);
+      toast.success("Hotovo — prečítaj si text a ulož ho.");
+    } catch (e) {
+      console.error("dictation fallback failed", e);
+      toast.error("Nahrávku sa nepodarilo prepísať. Skús to prosím znova.");
+    } finally {
+      setTranscribingStory(false);
+    }
+  };
+
+  /** Safari/iOS nepodporuje živý prepis — nahráme zvuk a prepíšeme ho po skončení. */
+  const startFallbackRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const preferred = ["audio/webm", "audio/mp4", "audio/aac"].find(
+        (t) => typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported?.(t),
+      );
+      const recorder = new MediaRecorder(stream, preferred ? { mimeType: preferred } : undefined);
+      const chunks: BlobPart[] = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data?.size) chunks.push(e.data);
+      };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        fallbackRecorderRef.current = null;
+        setFallbackRecording(false);
+        const type = recorder.mimeType || "audio/webm";
+        const ext = type.includes("mp4") || type.includes("aac") ? "mp4" : "webm";
+        await transcribeBlob(new Blob(chunks, { type }), ext);
+      };
+      recorder.start();
+      fallbackRecorderRef.current = recorder;
+      setFallbackRecording(true);
+      toast.success("Počúvam — keď skončíš, ťukni na štvorček a text sa doplní.");
+    } catch (e) {
+      console.error("microphone unavailable", e);
+      toast.error("Nepodarilo sa spustiť mikrofón. Skontroluj povolenie mikrofónu v prehliadači.");
+    }
+  };
+
+  const micActive = dictation.listening || fallbackRecording;
+
   const startDictation = () => {
     setEditingBirthStory(true);
-    const ok = dictation.start();
-    if (!ok) {
-      toast.error("Tento prehliadač nevie písať naživo. Skús to v prehliadači Chrome, alebo príbeh pokojne napíš.");
+    if (dictation.supported) {
+      const ok = dictation.start();
+      if (ok) {
+        toast.success("Počúvam — hovor a text sa bude písať sám.");
+        return;
+      }
+    }
+    void startFallbackRecording();
+  };
+
+  const stopMic = () => {
+    if (dictation.listening) {
+      dictation.stop();
       return;
     }
-    toast.success("Počúvam — hovor a text sa bude písať sám.");
+    try {
+      fallbackRecorderRef.current?.stop();
+    } catch {
+      setFallbackRecording(false);
+    }
   };
 
   const transcribeStoryAudio = async () => {
