@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -32,6 +33,7 @@ import { validateImage, uploadImage, deleteStoredImage, normalizeImage } from "@
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 
 function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
+  const { t } = useTranslation();
   const { data: feelings } = useDailyFeelings(profileId);
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -43,10 +45,12 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
     return y === currentYear && m - 1 === currentMonth;
   }).length;
 
-  return <StatTile label="Zapísané pocity tento mesiac" value={`${monthDays} / ${daysElapsed}`} />;
+  return <StatTile label={t("profilePage.feelingsThisMonth")} value={`${monthDays} / ${daysElapsed}`} />;
 }
 
 export default function CommunityProfile() {
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const navigate = useNavigate();
   const location = useLocation();
   const { username } = useParams<{ username: string }>();
@@ -114,10 +118,10 @@ export default function CommunityProfile() {
         const { error } = await supabase.from("profiles").update({ avatar_url: newPath } as never).eq("id", profile.id);
         if (error) throw error;
         refreshProfile();
-        toast.success("Profilová fotka je uložená.");
+        toast.success(t("profilePage.avatarSaved"));
       }
     } catch {
-      toast.error("Fotku sa nepodarilo nahrať.");
+      toast.error(t("profilePage.photoUploadFailed"));
     } finally {
       closeCrop();
     }
@@ -145,10 +149,10 @@ export default function CommunityProfile() {
           .eq("id", profile.id);
         if (error) throw error;
         refreshProfile();
-        toast.success("Titulná fotka je uložená.");
+        toast.success(t("profilePage.coverSaved"));
       }
     } catch {
-      toast.error("Fotku sa nepodarilo nahrať.");
+      toast.error(t("profilePage.photoUploadFailed"));
     } finally {
       closeCoverCrop();
     }
@@ -181,8 +185,8 @@ export default function CommunityProfile() {
       }
       if (newPaths.length === 0) {
         if (failures.length > 0) {
-          toast.error("Fotky sa nepodarilo nahrať.");
-          setGalleryError(`Nahrávanie zlyhalo: ${failures.join(" / ")}`);
+          toast.error(t("profilePage.galleryUploadFailed"));
+          setGalleryError(t("profilePage.uploadFailedPrefix", { details: failures.join(" / ") }));
         }
         return;
       }
@@ -191,12 +195,12 @@ export default function CommunityProfile() {
       if (error) throw error;
       setGalleryPhotos(updated);
       refreshProfile();
-      toast.success("Fotky sú pridané.");
+      toast.success(t("profilePage.gallerySaved"));
     } catch (err) {
       console.error("Nepodarilo sa uložiť album:", err);
       const message = err instanceof Error ? err.message : String(err);
-      toast.error("Fotky sa nepodarilo nahrať.");
-      setGalleryError(`Uloženie zlyhalo: ${message}`);
+      toast.error(t("profilePage.galleryUploadFailed"));
+      setGalleryError(t("profilePage.saveFailedPrefix", { details: message }));
     } finally {
       setGalleryUploading(false);
     }
@@ -214,7 +218,7 @@ export default function CommunityProfile() {
       void deleteStoredImage(removed);
     } catch {
       setGalleryPhotos(galleryPhotos);
-      toast.error("Fotku sa nepodarilo odstrániť.");
+      toast.error(t("profilePage.removePhotoFailed"));
     }
   };
 
@@ -238,10 +242,10 @@ export default function CommunityProfile() {
         .eq("id", profile.id);
       if (error) throw error;
       refreshProfile();
-      toast.success("Cyklus je upravený.");
+      toast.success(t("profilePage.cycleSaved"));
       setEditingCycle(false);
     } catch {
-      toast.error("Cyklus sa nepodarilo upraviť.");
+      toast.error(t("profilePage.cycleSaveFailed"));
     } finally {
       setSavingCycle(false);
     }
@@ -249,7 +253,7 @@ export default function CommunityProfile() {
 
   if (username && other.isLoading) return <Skeleton className="h-64 w-full" />;
   if (!profile)
-    return <EmptyState title="Profil sa nenašiel" description="Možno bola prezývka zmenená alebo profil je súkromný." />;
+    return <EmptyState title={t("profilePage.notFoundTitle")} description={t("profilePage.notFoundDescription")} />;
 
   const earned = (achievements ?? []).filter((a) => {
     const value =
@@ -284,7 +288,7 @@ export default function CommunityProfile() {
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
-          Späť k Divám
+          {t("profilePage.backToDivas")}
         </Link>
       )}
       <header className="overflow-hidden rounded-2xl border border-border/50 shadow-sm">
@@ -299,7 +303,7 @@ export default function CommunityProfile() {
                 onClick={() => coverInputRef.current?.click()}
                 className="absolute right-3 top-3 rounded-full bg-foreground/45 px-3 py-1.5 text-xs text-background backdrop-blur-sm transition-colors hover:bg-foreground/60"
               >
-                Zmeniť titulnú fotku
+                {t("profilePage.changeCoverPhoto")}
               </button>
               <input
                 ref={coverInputRef}
@@ -315,7 +319,7 @@ export default function CommunityProfile() {
               <ImageCropDialog
                 image={coverCropImage}
                 aspect={2.5}
-                title="Uprav si titulnú fotku"
+                title={t("profilePage.editCoverPhotoTitle")}
                 onCancel={closeCoverCrop}
                 onConfirm={handleCover}
               />
@@ -339,7 +343,7 @@ export default function CommunityProfile() {
                   className="cursor-pointer text-xs underline text-muted-foreground"
                   onClick={() => avatarInputRef.current?.click()}
                 >
-                  Zmeniť fotku
+                  {t("profilePage.changeAvatarPhoto")}
                 </button>
                 <input
                   ref={avatarInputRef}
@@ -357,7 +361,7 @@ export default function CommunityProfile() {
                   image={cropImage}
                   aspect={1}
                   round
-                  title="Uprav si profilovú fotku"
+                  title={t("profilePage.editAvatarPhotoTitle")}
                   onCancel={closeCrop}
                   onConfirm={handleAvatar}
                 />
@@ -383,17 +387,17 @@ export default function CommunityProfile() {
                 { targetId: profile.id, isFriend },
                 {
                   onSuccess: () =>
-                    toast.success(isFriend ? "Odobrala si kamošku." : `${profile.name} je tvoja kamoška.`),
-                  onError: () => toast.error("Nepodarilo sa uložiť."),
+                    toast.success(isFriend ? t("profilePage.friendRemoved") : t("profilePage.friendAdded", { name: profile.name })),
+                  onError: () => toast.error(t("profilePage.saveFailed")),
                 },
               )
             }
           >
-            {isFriend ? "Kamoška – odobrať" : "Pridať kamošku"}
+            {isFriend ? t("profilePage.friendRemoveButton") : t("profilePage.friendAddButton")}
           </Button>
           <Button variant="outline" className="flex-1" onClick={() => navigate(`/community/spravy/${profile.id}`)}>
             <MessageCircle className="mr-1.5 h-4 w-4" aria-hidden="true" />
-            Napísať správu
+            {t("profilePage.sendMessageButton")}
           </Button>
         </div>
       )}
@@ -402,38 +406,49 @@ export default function CommunityProfile() {
 
       {profile.gifts && (
         <div className="space-y-1">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Moje dary</p>
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("profilePage.giftsLabel")}</p>
           <p className="text-sm leading-relaxed text-foreground/85">{profile.gifts}</p>
         </div>
       )}
 
       {!!profile.children_count && profile.children_count > 0 && (
         <div className="space-y-1">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Materstvo</p>
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("profilePage.motherhoodLabel")}</p>
           <p className="text-sm leading-relaxed text-foreground/85">
-            Mama {profile.children_count} {pluralChildren(profile.children_count)}. Si skvelá — a ide ti to krásne.
+            {isEnglish
+              ? t("profilePage.motherhoodText", { count: profile.children_count })
+              : `Mama ${profile.children_count} ${pluralChildren(profile.children_count)}. Si skvelá — a ide ti to krásne.`}
           </p>
         </div>
       )}
 
       {archetype && (
         <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">Tvoj životný archetyp</p>
-          <h2 className="mt-1 font-display text-2xl text-primary">{archetype.name}</h2>
-          <p className="mt-1 text-xs text-muted-foreground">{archetype.keywords}</p>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{archetype.description}</p>
-          <p className="mt-2 text-sm leading-relaxed text-foreground/85">{archetype.energyNote}</p>
+          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("profilePage.lifeArchetypeLabel")}</p>
+          <h2 className="mt-1 font-display text-2xl text-primary">
+            {isEnglish ? t(`lifeArchetype.${archetype.name}.name`) : archetype.name}
+          </h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {isEnglish ? t(`lifeArchetype.${archetype.name}.keywords`) : archetype.keywords}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {isEnglish ? t(`lifeArchetype.${archetype.name}.description`) : archetype.description}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-foreground/85">
+            {isEnglish ? t(`lifeArchetype.${archetype.name}.energyNote`) : archetype.energyNote}
+          </p>
 
           {cycle && (
             <div className="mt-4 border-t border-border/50 pt-4">
               <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                A dnes v cykle · {CYCLE_PHASE_SEASON[cycle.phaseKey].season}
+                {t("profilePage.todayInCyclePrefix")}{" "}
+                {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.season`) : CYCLE_PHASE_SEASON[cycle.phaseKey].season}
               </p>
               <p className="mt-1 font-display text-lg text-primary">
-                {CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
+                {isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.archetype`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
               </p>
               <p className="mt-1 text-sm italic text-foreground/85">
-                „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
+                „{isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.mantra`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
               </p>
             </div>
           )}
@@ -466,12 +481,12 @@ export default function CommunityProfile() {
       {cycle && (
         <section className="space-y-3 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-baseline justify-between gap-3">
-            <h2 className="font-display text-2xl">Môj cyklus</h2>
+            <h2 className="font-display text-2xl">{t("nav.cycle")}</h2>
             {!editingCycle && (
               <div className="flex items-center gap-2">
-                <p className="text-xs text-muted-foreground">{cycle.dayOfCycle}. deň cyklu</p>
+                <p className="text-xs text-muted-foreground">{t("profilePage.dayOfCycle", { day: cycle.dayOfCycle })}</p>
                 <Button variant="ghost" size="sm" onClick={startEditingCycle}>
-                  Upraviť
+                  {t("profilePage.editButton")}
                 </Button>
               </div>
             )}
@@ -480,7 +495,7 @@ export default function CommunityProfile() {
           {editingCycle ? (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="cycle-last-period">Prvý deň poslednej menštruácie</Label>
+                <Label htmlFor="cycle-last-period">{t("profilePage.lastPeriodLabel")}</Label>
                 <Input
                   id="cycle-last-period"
                   type="date"
@@ -490,7 +505,7 @@ export default function CommunityProfile() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="cycle-length">Dĺžka cyklu v dňoch</Label>
+                <Label htmlFor="cycle-length">{t("profile.cycleLengthLabel")}</Label>
                 <Input
                   id="cycle-length"
                   type="number"
@@ -503,31 +518,38 @@ export default function CommunityProfile() {
               </div>
               <div className="flex gap-2">
                 <Button className="flex-1" onClick={saveCycle} disabled={savingCycle}>
-                  Uložiť
+                  {t("profile.saveButton")}
                 </Button>
                 <Button variant="outline" className="flex-1" onClick={() => setEditingCycle(false)} disabled={savingCycle}>
-                  Zrušiť
+                  {t("profile.cancelButton")}
                 </Button>
               </div>
             </div>
           ) : (
             <>
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {cycle.phase.name} · {CYCLE_PHASE_SEASON[cycle.phaseKey].season}
+                {isEnglish ? t(`cycle.phases.${cycle.phaseKey}.name`) : cycle.phase.name} ·{" "}
+                {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.season`) : CYCLE_PHASE_SEASON[cycle.phaseKey].season}
               </p>
-              <p className="font-display text-xl text-primary">{cycle.subPhase.name}</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+              <p className="font-display text-xl text-primary">
+                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.name`) : cycle.subPhase.name}
+              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.description`) : cycle.subPhase.description}
+              </p>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="rounded-xl border border-border/50 p-3">
-                  <p className="text-xs text-muted-foreground">Ďalšia menštruácia</p>
+                  <p className="text-xs text-muted-foreground">{t("profilePage.nextPeriodLabel")}</p>
                   <p className="mt-1 font-medium">
-                    {formatCycleDate(cycle.nextPeriodDate)}
-                    <span className="ml-1 text-xs text-muted-foreground">(o {cycle.daysUntilNextPeriod} dní)</span>
+                    {formatCycleDate(cycle.nextPeriodDate, isEnglish ? "en-US" : "sk-SK")}
+                    <span className="ml-1 text-xs text-muted-foreground">
+                      {t("profilePage.daysUntil", { days: cycle.daysUntilNextPeriod })}
+                    </span>
                   </p>
                 </div>
                 <div className="rounded-xl border border-border/50 p-3">
-                  <p className="text-xs text-muted-foreground">Predpokladaná ovulácia</p>
-                  <p className="mt-1 font-medium">{formatCycleDate(cycle.nextOvulationDate)}</p>
+                  <p className="text-xs text-muted-foreground">{t("profilePage.nextOvulationLabel")}</p>
+                  <p className="mt-1 font-medium">{formatCycleDate(cycle.nextOvulationDate, isEnglish ? "en-US" : "sk-SK")}</p>
                 </div>
               </div>
             </>
@@ -536,9 +558,13 @@ export default function CommunityProfile() {
       )}
 
       <section className="grid grid-cols-3 gap-3">
-        <StatTile label="Tento mesiac" value={formatKm(stats?.month_km ?? 0)} />
+        <StatTile label={t("profilePage.statMonthKm")} value={formatKm(stats?.month_km ?? 0)} />
         <StatTile
-          label={`${pluralActivities((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))} tento mesiac`}
+          label={
+            isEnglish
+              ? t("profilePage.statActivitiesLabel", { count: (stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0) })
+              : `${pluralActivities((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))} tento mesiac`
+          }
           value={String((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))}
         />
         <MonthFeelingsTile profileId={profile?.id} />
@@ -566,17 +592,17 @@ export default function CommunityProfile() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="font-display text-2xl">{isMe ? "Moja história" : "Aktivity"}</h2>
+        <h2 className="font-display text-2xl">{isMe ? t("profilePage.myHistoryTitle") : t("profilePage.activitiesTitle")}</h2>
         <Tabs value={kind} onValueChange={(v) => setKind(v as typeof kind)}>
           <TabsList>
-            <TabsTrigger value="all">Všetko</TabsTrigger>
+            <TabsTrigger value="all">{t("profilePage.allTab")}</TabsTrigger>
             <TabsTrigger value="run">Run</TabsTrigger>
             <TabsTrigger value="move">Move</TabsTrigger>
           </TabsList>
           <TabsContent value={kind} className="mt-4 space-y-4">
             {activities.isLoading && <Skeleton className="h-40 w-full" />}
             {activities.data?.length === 0 && (
-              <EmptyState title="Zatiaľ žiadne aktivity" description="Prvý zápis je vždy najkrajší." />
+              <EmptyState title={t("profilePage.noActivitiesTitle")} description={t("profilePage.noActivitiesDescription")} />
             )}
             {activities.data?.map((a) => (
               <ActivityCard key={a.id} activity={a} interactive />
@@ -591,7 +617,7 @@ export default function CommunityProfile() {
             <>
               <div className="flex items-center justify-end">
                 <Button variant="outline" size="sm" onClick={() => setEditingProfile(false)}>
-                  Zrušiť
+                  {t("profile.cancelButton")}
                 </Button>
               </div>
               <ProfileSettings
@@ -604,7 +630,7 @@ export default function CommunityProfile() {
             </>
           ) : (
             <Button className="w-full" onClick={() => { setEditingProfile(true); setFocusChapter(false); }}>
-              Upraviť profil
+              {t("profilePage.editProfileButton")}
             </Button>
           )}
         </section>
