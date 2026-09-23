@@ -56,6 +56,36 @@
     "emptyTitle": "Nothing new",
     "emptyDescription": "When someone supports or replies to you, you'll find it here."
   },
+  "addActivity": {
+    "editTitle": "Edit your activity",
+    "createTitle": "Log your activity",
+    "subtitle": "Today, just do what you can.",
+    "activityLabel": "Activity",
+    "dateLabel": "Date",
+    "distanceLabel": "Distance (km)",
+    "distancePlaceholder": "e.g. 5.2",
+    "durationLabel": "Time (minutes)",
+    "durationPlaceholder": "e.g. 45",
+    "noteLabel": "How did you feel?",
+    "photoUploading": "Uploading...",
+    "photoAdd": "Add photo",
+    "photoPreviewAlt": "Photo preview",
+    "shareTitle": "Share with the community",
+    "shareDescription": "If you turn this off, the activity stays only yours.",
+    "shareAriaLabel": "Share with the community",
+    "saveChanges": "Save changes",
+    "saveNew": "Save activity",
+    "photoUploadFailed": "Couldn't upload the photo.",
+    "distanceRequired": "Please enter a distance.",
+    "durationRequired": "Please enter a time in minutes.",
+    "editSuccess": "Activity updated.",
+    "createSuccess": "Activity saved.",
+    "saveFailed": "Couldn't save the activity."
+  },
+  "activityDetail": {
+    "notFoundTitle": "Activity not found",
+    "notFoundDescription": "It may have been deleted."
+  },
   "challenges": {
     "subtitle": "Shared challenges, where every step from every one of us counts.",
     "emptyTitle": "No challenge yet",

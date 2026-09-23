@@ -56,6 +56,36 @@
     "emptyTitle": "Nič nové",
     "emptyDescription": "Keď ťa niekto podporí alebo odpovie, nájdeš to tu."
   },
+  "addActivity": {
+    "editTitle": "Uprav svoju aktivitu",
+    "createTitle": "Zapíš svoju aktivitu",
+    "subtitle": "Dnes stačí urobiť to, čo môžeš.",
+    "activityLabel": "Aktivita",
+    "dateLabel": "Dátum",
+    "distanceLabel": "Vzdialenosť (km)",
+    "distancePlaceholder": "napr. 5,2",
+    "durationLabel": "Čas (minúty)",
+    "durationPlaceholder": "napr. 45",
+    "noteLabel": "Ako si sa cítila?",
+    "photoUploading": "Nahrávam...",
+    "photoAdd": "Pridať fotku",
+    "photoPreviewAlt": "Náhľad fotky",
+    "shareTitle": "Zdieľať s komunitou",
+    "shareDescription": "Ak vypneš, aktivita zostane len tvoja.",
+    "shareAriaLabel": "Zdieľať s komunitou",
+    "saveChanges": "Uložiť zmeny",
+    "saveNew": "Uložiť aktivitu",
+    "photoUploadFailed": "Fotku sa nepodarilo nahrať.",
+    "distanceRequired": "Zadaj prosím vzdialenosť.",
+    "durationRequired": "Zadaj prosím čas v minútach.",
+    "editSuccess": "Aktivita je upravená.",
+    "createSuccess": "Aktivita je uložená.",
+    "saveFailed": "Aktivitu sa nepodarilo uložiť."
+  },
+  "activityDetail": {
+    "notFoundTitle": "Aktivita sa nenašla",
+    "notFoundDescription": "Možno bola zmazaná."
+  },
   "challenges": {
     "subtitle": "Spoločné výzvy, kde sa počíta každý krok každej z nás.",
     "emptyTitle": "Zatiaľ žiadna výzva",
