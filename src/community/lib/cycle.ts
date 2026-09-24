@@ -37,6 +37,7 @@ import {
   Wine,
   HandHeart,
   Citrus,
+  Apple,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -256,7 +257,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
     { label: "Vitamín C", category: "eat", icon: Citrus, detail: "Môže podporiť vstrebávanie železa z rastlinných zdrojov — citrusy, paprika, paradajky, listová zelenina." },
     { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
-    { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť PMS a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
+    { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť kŕče a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
     { label: "Protizápalové potraviny", category: "eat", icon: Salad, detail: "Môžu podporiť telo počas tejto fázy — bobuľové ovocie, listová zelenina, mastné ryby, avokádo, olivový olej, orechy a semienka." },
     { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
     { label: "Kofeín, alkohol a ťažké jedlá", category: "eat", icon: Wine, detail: "Niektorým ženám pomáha obmedziť aj mastné, korenené či sladké jedlá — môže to podporiť tráviaci komfort počas menštruácie." },
@@ -271,10 +272,11 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   ],
   folikularna: [
     { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Môžu podporiť rast folikulov a svalov — vajcia, hydina, strukoviny." },
-    { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Vitamín E z orechov, semienok, olivového oleja a listovej zeleniny." },
+    { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Orechy, semienka, olivový olej a avokádo — pre hormonálnu rovnováhu." },
     { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Vláknina a stabilná energia z celozrnných obilnín a strukovín." },
     { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
     { label: "Čerstvá zelenina", category: "eat", icon: Salad, detail: "Vitamíny a antioxidanty z farebnej, sezónnej zeleniny." },
+    { label: "Sezónne čerstvé ovocie", category: "eat", icon: Apple, detail: "Vitamíny a antioxidanty zo sezónneho čerstvého ovocia." },
     { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Môžu podporiť črevný mikrobióm — kimchi, jogurt, kefir." },
     { label: "Silový tréning", category: "move", icon: Dumbbell },
     { label: "Zabehni si naplno", category: "move", icon: Zap },
@@ -287,7 +289,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   ],
   ovulacia: [
     { label: "Farebné ovocie a zelenina", category: "eat", icon: Salad, detail: "Vláknina, voda a antioxidanty z pestrého ovocia a zeleniny." },
-    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Môžu podporiť energiu a nervy — mäso, vajcia, mliečne výrobky, obilniny." },
+    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Môžu podporiť energiu a nervovú sústavu — mäso, vajcia, mliečne výrobky, obilniny." },
     { label: "Orechy a semienka", category: "eat", icon: Nut, detail: "Zdravé tuky a horčík pre energiu a hormonálnu rovnováhu." },
     { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Môžu podporiť črevný mikrobióm — kimchi, jogurt, kefir." },
     { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Môže znížiť nadúvanie a podporiť energiu aj jasnú pleť." },
