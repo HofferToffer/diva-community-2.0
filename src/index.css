@@ -30,7 +30,7 @@
     --shop: 350 55% 70%;
     --shop-foreground: 30 15% 20%;
 
-    --destructive: 8 45% 42%;
+    --destructive: 350 55% 40%;
 
     --destructive-foreground: 40 33% 96%;
 
@@ -72,7 +72,7 @@
     --shop: 350 60% 75%;
     --shop-foreground: 30 15% 10%;
 
-    --destructive: 8 40% 38%;
+    --destructive: 350 55% 45%;
 
     --destructive-foreground: 40 30% 90%;
     --border: 30 10% 22%;
