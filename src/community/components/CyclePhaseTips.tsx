@@ -102,6 +102,11 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
                 <span className="text-xs leading-tight text-foreground/85">
                   {tipTranslations[tip.label] ?? tip.label}
                 </span>
+                {tip.category === "eat" && (
+                  <span className="max-w-[9rem] text-[0.6rem] leading-relaxed text-muted-foreground">
+                    Lucia Loderer — sprievodkyňa harmonizáciou menštruačného cyklu pomocou výživy a rituálov.
+                  </span>
+                )}
               </button>
               <AnimatePresence initial={false}>
                 {isOpen && detailText && (
