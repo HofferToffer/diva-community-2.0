@@ -46,11 +46,11 @@ export const TTC_DOCTOR_GUIDANCE: TtcDoctorGuidance = {
 /** Evidence-based things that genuinely help — same {label, category, icon} shape as the cycle/menopause tips. */
 export const TTC_TIPS: CycleTip[] = [
   { label: "Sex každý 1.–2. deň okolo ovulácie", category: "do", icon: Timer },
-  { label: "Vyvážená strava", category: "eat", icon: Salad, detail: "Základ plodnosti — pestrá strava s dostatkom bielkovín, zdravých tukov a zeleniny." },
+  { label: "Vyvážená strava", category: "eat", icon: Salad, detail: "Môže podporiť plodnosť — pestrá strava s dostatkom bielkovín, zdravých tukov a zeleniny." },
   { label: "Kyselina listová", category: "eat", icon: Pill, detail: "400 mcg denne — od snahy o počatie až do 12. týždňa tehotenstva." },
-  { label: "Vitamín D", category: "eat", icon: Sun, detail: "10 mcg denne — podporuje hormonálnu rovnováhu a plodnosť." },
+  { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
   { label: "Jód", category: "eat", icon: Fish, detail: "Mliečne výrobky, ryby a vajcia pre zdravú funkciu štítnej žľazy." },
-  { label: "Železo", category: "eat", icon: Beef, detail: "Dopĺňa zásoby po menštruácii — červené mäso, špenát, šošovica." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
   { label: "Potraviny, ktorým sa vyhýbaj", category: "eat", icon: Ban, detail: "Pečeň, ryby s vysokým obsahom ortuti, alkohol a viac než 1–2 kávy denne." },
   { label: "Zdravá váha a mierny pohyb", category: "move", icon: Scale },
   { label: "Nefajčiť", category: "do", icon: Cigarette },

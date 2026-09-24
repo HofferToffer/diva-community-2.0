@@ -1,9 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  Coffee,
-  Leaf,
-  Candy,
-  Droplets,
   PersonStanding,
   Footprints,
   Feather,
@@ -38,6 +34,8 @@ import {
   Cookie,
   Shell,
   Wine,
+  HandHeart,
+  Citrus,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -241,13 +239,13 @@ export const CYCLE_TIP_CATEGORIES: Record<CycleTipCategory, string> = {
 /** Detailed, icon-tagged tips per phase — food, movement and rituals to browse like a tip grid. */
 export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   menstruacna: [
-    { label: "Horúci čaj", category: "eat", icon: Coffee, detail: "Zohreje a zmierni kŕče — skús zázvorový alebo harmančekový čaj." },
-    { label: "Špenát a strukoviny", category: "eat", icon: Leaf, detail: "Dopĺňajú železo, ktoré telo stráca počas menštruácie." },
-    { label: "Horká čokoláda", category: "eat", icon: Candy, detail: "Horčík v čokoláde nad 70 % zmierňuje kŕče aj chute na sladké." },
-    { label: "Pi dosť vody", category: "eat", icon: Droplets, detail: "Znižuje nadúvanie a podporuje energiu aj jasnú pleť." },
-    { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Omega-3 z lososa, makrely či sardiniek tlmí zápal a bolesť." },
-    { label: "Chia a ľanové semienka", category: "eat", icon: Nut, detail: "Omega-3 a vláknina pre hormonálnu rovnováhu." },
-    { label: "Jogurt a kyslá kapusta", category: "eat", icon: Milk, detail: "Probiotiká podporujú trávenie a zdravé črevo." },
+    { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+    { label: "Vitamín C", category: "eat", icon: Citrus, detail: "Môže podporiť vstrebávanie železa z rastlinných zdrojov — citrusy, paprika, paradajky, listová zelenina." },
+    { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
+    { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť PMS a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
+    { label: "Protizápalové potraviny", category: "eat", icon: Salad, detail: "Môžu podporiť telo počas tejto fázy — bobuľové ovocie, listová zelenina, mastné ryby, avokádo, olivový olej, orechy a semienka." },
+    { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
+    { label: "Kofeín, alkohol a ťažké jedlá", category: "eat", icon: Wine, detail: "Niektorým ženám pomáha obmedziť aj mastné, korenené či sladké jedlá — môže to podporiť tráviaci komfort počas menštruácie." },
     { label: "Jemná joga", category: "move", icon: PersonStanding },
     { label: "Choď sa prejsť", category: "move", icon: Footprints },
     { label: "Pretiahni sa", category: "move", icon: Feather },
@@ -255,14 +253,15 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Choď skôr spať", category: "do", icon: Bed },
     { label: "Píš si vďačnosť", category: "do", icon: BookOpen },
     { label: "Počúvaj svoje telo", category: "do", icon: Ear },
+    { label: "Kakao ceremoniálne", category: "do", icon: HandHeart },
   ],
   folikularna: [
-    { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Podporujú rast folikulov a svalov — vajcia, hydina, strukoviny." },
+    { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Môžu podporiť rast folikulov a svalov — vajcia, hydina, strukoviny." },
     { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Vitamín E z orechov, semienok, olivového oleja a listovej zeleniny." },
     { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Vláknina a stabilná energia z celozrnných obilnín a strukovín." },
-    { label: "Železo", category: "eat", icon: Beef, detail: "Dopĺňa zásoby po menštruácii — červené mäso, špenát, šošovica." },
+    { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
     { label: "Čerstvá zelenina", category: "eat", icon: Salad, detail: "Vitamíny a antioxidanty z farebnej, sezónnej zeleniny." },
-    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Podporujú črevný mikrobióm — kimchi, jogurt, kefir." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Môžu podporiť črevný mikrobióm — kimchi, jogurt, kefir." },
     { label: "Silový tréning", category: "move", icon: Dumbbell },
     { label: "Zabehni si naplno", category: "move", icon: Zap },
     { label: "Vyraz na bicykel", category: "move", icon: Bike },
@@ -274,10 +273,10 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   ],
   ovulacia: [
     { label: "Farebné ovocie a zelenina", category: "eat", icon: Salad, detail: "Vláknina, voda a antioxidanty z pestrého ovocia a zeleniny." },
-    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Podporujú energiu a nervy — mäso, vajcia, mliečne výrobky, obilniny." },
+    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Môžu podporiť energiu a nervy — mäso, vajcia, mliečne výrobky, obilniny." },
     { label: "Orechy a semienka", category: "eat", icon: Nut, detail: "Zdravé tuky a horčík pre energiu a hormonálnu rovnováhu." },
-    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Podporujú črevný mikrobióm — kimchi, jogurt, kefir." },
-    { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Znižuje nadúvanie a podporuje energiu aj jasnú pleť." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Môžu podporiť črevný mikrobióm — kimchi, jogurt, kefir." },
+    { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Môže znížiť nadúvanie a podporiť energiu aj jasnú pleť." },
     { label: "Skús osobný rekord", category: "move", icon: Zap },
     { label: "Cvič s kamoškami", category: "move", icon: Users },
     { label: "Zatancuj si", category: "move", icon: Music },
@@ -288,12 +287,12 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Vyskúšaj niečo nové", category: "do", icon: Sparkle },
   ],
   lutealna: [
-    { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Vyživí ťa a upokojí náladu — vajcia, hydina, ryby, strukoviny." },
-    { label: "Zdravé tuky a omega-3", category: "eat", icon: Fish, detail: "Jemne vyvažujú hormóny — mastné ryby, vlašské orechy, ľanové a chia semienka, olivový olej." },
+    { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
+    { label: "Zdravé tuky a omega-3", category: "eat", icon: Fish, detail: "Môžu jemne vyvažovať hormóny — mastné ryby, vlašské orechy, ľanové a chia semienka, olivový olej." },
     { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Vláknina a stabilná energia z celozrnných obilnín a strukovín." },
-    { label: "Vitamín B6", category: "eat", icon: Banana, detail: "Upokojuje výkyvy nálady — banány, vajcia, hydina, losos, cícer." },
-    { label: "Horčík", category: "eat", icon: Cookie, detail: "Zmierni PMS a dopraje pokoj — horká čokoláda, tmavá listová zelenina, mandle, losos." },
-    { label: "Zinok", category: "eat", icon: Shell, detail: "Podporí ťa v tomto citlivom období — tekvicové semienka, cícer, hovädzie mäso, ustrice." },
+    { label: "Vitamín B6", category: "eat", icon: Banana, detail: "Môže upokojiť výkyvy nálady — banány, vajcia, hydina, losos, cícer." },
+    { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť PMS a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
+    { label: "Zinok", category: "eat", icon: Shell, detail: "Môže ťa podporiť v tomto citlivom období — tekvicové semienka, cícer, hovädzie mäso, ustrice." },
     { label: "Menej kofeínu a alkoholu", category: "eat", icon: Wine, detail: "Dopraj si jemnosť — menej podráždenosti a napätia v tele." },
     { label: "Jemná joga", category: "move", icon: PersonStanding },
     { label: "Pokojné plávanie", category: "move", icon: Waves },
@@ -302,6 +301,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Spi o niečo dlhšie", category: "do", icon: Moon },
     { label: "Dopraj si rituál pokoja", category: "do", icon: Bath },
     { label: "Odľahči si program", category: "do", icon: Feather },
+    { label: "Kakao ceremoniálne", category: "do", icon: HandHeart },
   ],
 };
 

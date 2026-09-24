@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -28,6 +28,7 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
   const { t } = useTranslation();
   const [filter, setFilter] = useState<CycleTipCategory | "all">("all");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const visible = filter === "all" ? tips : tips.filter((tip) => tip.category === filter);
   const softFill = color.fill.replace(/0\.\d+\)/, "0.6)");
   // Looked up as a plain object (not a dotted t() key) because several Slovak
@@ -35,6 +36,17 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
   // otherwise try to parse as nested paths.
   const tipTranslations = t("tips", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
   const tipDetailTranslations = t("tipDetails", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+
+  useEffect(() => {
+    if (!expanded) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setExpanded(null);
+      }
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [expanded]);
 
   const filters: Array<{ key: CycleTipCategory | "all"; label: string }> = [
     { key: "all", label: t("tipCategories.all", { defaultValue: "Všetko" }) },
@@ -44,7 +56,7 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" ref={containerRef}>
       <div className="flex flex-wrap gap-2" role="tablist" aria-label={t("tipCategories.filterAriaLabel", { defaultValue: "Filter tipov" })}>
         {filters.map((item) => (
           <motion.button

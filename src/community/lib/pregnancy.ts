@@ -11,9 +11,7 @@ import {
   Wheat,
   Pill,
   Milk,
-  Egg,
   Fish,
-  GlassWater,
   UtensilsCrossed,
   Footprints,
   PersonStanding,
@@ -28,11 +26,13 @@ import {
   Hand,
   Backpack,
   Wind,
-  Cookie,
   Leaf,
   GraduationCap,
   Users,
   Heart,
+  Ban,
+  Sun,
+  Beef,
 } from "lucide-react";
 import { Avocado, Mango, Pineapple, Pumpkin, Strawberry, Tomato, WatermelonSlice } from "@/community/components/FruitIcons";
 import type { CycleTip } from "./cycle";
@@ -211,26 +211,33 @@ export const PREGNANCY_TIP_COLOR: { fill: string; dot: string } = {
  * The prenatal-vitamin reminder deliberately repeats in all three so it's
  * always visible whenever she opens this page, not just once.
  */
+/** The 10 safety/nutrition points that apply throughout pregnancy, repeated identically in every trimester's eat list below. */
+const PREGNANCY_THROUGHOUT_TIPS: CycleTip[] = [
+  { label: "Nepasterizované výrobky", category: "eat", icon: Ban, detail: "Vyhýbaj sa nepasterizovaným mliečnym výrobkom a paštétam." },
+  { label: "Surové mäso a vajcia", category: "eat", icon: Ban, detail: "Vyhýbaj sa surovému alebo nedovarenému mäsu a vajciam." },
+  { label: "Pečeň", category: "eat", icon: Ban, detail: "Vyhýbaj sa pečeni a výrobkom z nej." },
+  { label: "Ryby s vysokým obsahom ortuti", category: "eat", icon: Ban, detail: "Obmedz žraloka, mečiara a marlína." },
+  { label: "Mastné ryby a tuniak", category: "eat", icon: Fish, detail: "Max. 2 porcie mastných rýb týždenne, prípadne 4 konzervy alebo 2 steaky z tuniaka." },
+  { label: "Kofeín", category: "eat", icon: Ban, detail: "Obmedz na menej než 200 mg denne (asi 2 kávy)." },
+  { label: "Alkohol", category: "eat", icon: Ban, detail: "Vyhýbaj sa alkoholu počas celého tehotenstva." },
+  { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+];
+
 export const PREGNANCY_TIPS: Record<1 | 2 | 3, CycleTip[]> = {
   1: [
-    { label: "Prenatálne vitamíny podľa lekárky", category: "eat", icon: Pill },
-    { label: "Kyselina listová", category: "eat", icon: Pill },
-    { label: "Malé porcie, aj 6x denne", category: "eat", icon: UtensilsCrossed },
-    { label: "Suché sušienky hneď ráno", category: "eat", icon: Cookie },
-    { label: "Zázvorový čaj proti nevoľnosti", category: "eat", icon: Leaf },
-    { label: "Pi, aj keď nemáš chuť jesť", category: "eat", icon: GlassWater },
+    ...PREGNANCY_THROUGHOUT_TIPS,
+    { label: "Kyselina listová", category: "eat", icon: Pill, detail: "400 mcg denne — od snahy o počatie až do 12. týždňa tehotenstva." },
+    { label: "Malé porcie, aj 6x denne", category: "eat", icon: UtensilsCrossed, detail: "Môžu pomôcť zvládať nevoľnosť." },
+    { label: "Zázvorový čaj proti nevoľnosti", category: "eat", icon: Leaf, detail: "Zázvor môže zmierniť nevoľnosť." },
     { label: "Ľahká chôdza, ak vládzeš", category: "move", icon: Footprints },
     { label: "Odpočívaj, keď si unavená", category: "do", icon: Bed },
     { label: "Nemusíš jesť za dvoch", category: "do", icon: Heart },
     { label: "Rozprávaj sa s bábätkom", category: "do", icon: MessageCircle },
   ],
   2: [
-    { label: "Prenatálne vitamíny podľa lekárky", category: "eat", icon: Pill },
-    { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
-    { label: "Bielkoviny na rast bábätka", category: "eat", icon: Egg },
-    { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
-    { label: "Omega-3 pre vývoj mozgu", category: "eat", icon: Fish },
-    { label: "Veľa vody", category: "eat", icon: GlassWater },
+    ...PREGNANCY_THROUGHOUT_TIPS,
+    { label: "Vápnik", category: "eat", icon: Milk, detail: "Dôležitý pre kosti a zuby bábätka aj teba." },
     { label: "Prechádzky na čerstvom vzduchu", category: "move", icon: Footprints },
     { label: "Tehotenská joga", category: "move", icon: PersonStanding },
     { label: "Plávanie", category: "move", icon: Waves },
@@ -239,14 +246,12 @@ export const PREGNANCY_TIPS: Record<1 | 2 | 3, CycleTip[]> = {
     { label: "Píš si tehotenský denník", category: "do", icon: NotebookPen },
     { label: "Zapoj partnera do príprav", category: "do", icon: HeartHandshake },
     { label: "Priprav detskú izbičku", category: "do", icon: Home },
+    { label: "Nemusíš jesť za dvoch", category: "do", icon: Heart },
   ],
   3: [
-    { label: "Prenatálne vitamíny podľa lekárky", category: "eat", icon: Pill },
-    { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
-    { label: "Bielkoviny na rast bábätka", category: "eat", icon: Egg },
-    { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
-    { label: "Menšie porcie častejšie (menej pálenia záhy)", category: "eat", icon: UtensilsCrossed },
-    { label: "Veľa vody", category: "eat", icon: GlassWater },
+    ...PREGNANCY_THROUGHOUT_TIPS,
+    { label: "Vápnik", category: "eat", icon: Milk, detail: "Dôležitý pre kosti a zuby bábätka aj teba." },
+    { label: "Menšie porcie častejšie (menej pálenia záhy)", category: "eat", icon: UtensilsCrossed, detail: "Môžu pomôcť zmierniť pálenie záhy." },
     { label: "Prechádzky na čerstvom vzduchu", category: "move", icon: Footprints },
     { label: "Tehotenská joga", category: "move", icon: PersonStanding },
     { label: "Cvičenia na panvové dno", category: "move", icon: HeartPulse },
@@ -255,6 +260,7 @@ export const PREGNANCY_TIPS: Record<1 | 2 | 3, CycleTip[]> = {
     { label: "Píš si tehotenský denník", category: "do", icon: NotebookPen },
     { label: "Dopraj si oddych", category: "do", icon: Bed },
     { label: "Priprav detskú izbičku", category: "do", icon: Home },
+    { label: "Nemusíš jesť za dvoch", category: "do", icon: Heart },
   ],
 };
 
