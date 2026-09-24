@@ -29,6 +29,8 @@ import {
   getPostpartumInfo,
   POSTPARTUM_TIPS,
   POSTPARTUM_TIP_COLOR,
+  POSTPARTUM_BREASTFEEDING_TIPS,
+  POSTPARTUM_NOT_BREASTFEEDING_TIPS,
   PARTNER_SUPPORT_NOTE_POSTPARTUM,
 } from "@/community/lib/postpartum";
 import { PREGNANCY_BOOKS, POSTPARTUM_BOOKS, AFFIRMATION_LINKS } from "@/community/lib/pregnancyResources";
@@ -81,6 +83,7 @@ export default function CommunityCycle() {
 
   const [showMorePregnancy, setShowMorePregnancy] = useState(false);
   const [showMorePostpartum, setShowMorePostpartum] = useState(false);
+  const [breastfeeding, setBreastfeeding] = useState<"yes" | "no">("yes");
   const [showMoreTTC, setShowMoreTTC] = useState(false);
   const [editingCycle, setEditingCycle] = useState(false);
   const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
@@ -726,6 +729,37 @@ export default function CommunityCycle() {
                     <div className="mt-4">
                       <TipGrid tips={POSTPARTUM_TIPS} color={POSTPARTUM_TIP_COLOR} />
                     </div>
+
+                    <div className="mt-5 border-t border-primary/15 pt-4">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("postpartumCard.breastfeedingQuestion")}
+                      </p>
+                      <div className="mt-2 flex gap-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={breastfeeding === "yes" ? "default" : "outline"}
+                          onClick={() => setBreastfeeding("yes")}
+                        >
+                          {t("postpartumCard.breastfeedingYes")}
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={breastfeeding === "no" ? "default" : "outline"}
+                          onClick={() => setBreastfeeding("no")}
+                        >
+                          {t("postpartumCard.breastfeedingNo")}
+                        </Button>
+                      </div>
+                      <div className="mt-4">
+                        <TipGrid
+                          tips={breastfeeding === "yes" ? POSTPARTUM_BREASTFEEDING_TIPS : POSTPARTUM_NOT_BREASTFEEDING_TIPS}
+                          color={POSTPARTUM_TIP_COLOR}
+                        />
+                      </div>
+                    </div>
+
                     <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                       {t("postpartumCard.hydrationNote")}
                     </p>

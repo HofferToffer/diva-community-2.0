@@ -2,9 +2,13 @@ import {
   Soup,
   Egg,
   Beef,
-  Wheat,
+  Sun,
   Fish,
   Milk,
+  Pill,
+  Salad,
+  UtensilsCrossed,
+  Heart,
   GlassWater,
   Footprints,
   Wind,
@@ -151,13 +155,11 @@ export const POSTPARTUM_TIP_COLOR: { fill: string; dot: string } = {
  * never instead of, guidance from your own gynecologist/pediatrician.
  */
 export const POSTPARTUM_TIPS: CycleTip[] = [
-  { label: "Teplá, výživná polievka", category: "eat", icon: Soup },
-  { label: "Bielkoviny na hojenie", category: "eat", icon: Egg },
-  { label: "Železo — červené mäso, špenát", category: "eat", icon: Beef },
-  { label: "Vláknina proti zápche", category: "eat", icon: Wheat },
-  { label: "Mastné ryby (omega-3)", category: "eat", icon: Fish },
-  { label: "Vápnik pri dojčení", category: "eat", icon: Milk },
-  { label: "Veľa vody, najmä pri dojčení", category: "eat", icon: GlassWater },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+  { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
+  { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
+  { label: "Zostaň hydratovaná", category: "eat", icon: GlassWater, detail: "Môže podporiť hojenie a tvorbu mlieka, ak dojčíš." },
+  { label: "Dopraj si výživu, koľko vládzeš", category: "eat", icon: Heart, detail: "Nemusíš jesť dokonale — stačí sa o seba postarať, ako sa dnes dá." },
   { label: "Krátke, pomalé prechádzky", category: "move", icon: Footprints },
   { label: "Dychové cvičenia s bránicou", category: "move", icon: Wind },
   { label: "Jemné cvičenia na panvové dno", category: "move", icon: HeartPulse },
@@ -168,6 +170,22 @@ export const POSTPARTUM_TIPS: CycleTip[] = [
   { label: "Spávaj, keď spí bábätko", category: "do", icon: Moon },
   { label: "Zapíš si pôrodný príbeh", category: "do", icon: NotebookPen },
   { label: "Prehliadka po šestonedelí", category: "do", icon: ShieldCheck },
+];
+
+/** Shown only when she says she's breastfeeding — extra needs on top of POSTPARTUM_TIPS' general recovery set. */
+export const POSTPARTUM_BREASTFEEDING_TIPS: CycleTip[] = [
+  { label: "Extra výživa", category: "eat", icon: Soup, detail: "Dojčenie zvyšuje energetickú potrebu — jedz pravidelne a dostatočne." },
+  { label: "Omega-3", category: "eat", icon: Fish, detail: "Mastné ryby, vlašské orechy, ľanové semienka — môžu podporiť vývoj mozgu bábätka." },
+  { label: "Vápnik", category: "eat", icon: Milk, detail: "Dôležitý pre kosti a zuby bábätka aj teba." },
+  { label: "Pokračuj v prenatálnych vitamínoch", category: "eat", icon: Pill, detail: "Alebo aspoň vo vitamíne D a kyseline listovej, kým dojčíš." },
+  { label: "Žiadne prísne obmedzenia", category: "eat", icon: Salad, detail: "Počas dojčenia už nemusíš dodržiavať obmedzenia z tehotenstva tak prísne." },
+];
+
+/** Shown only when she says she's not breastfeeding — replaces the breastfeeding-specific set above. */
+export const POSTPARTUM_NOT_BREASTFEEDING_TIPS: CycleTip[] = [
+  { label: "Netreba navyše kalórie", category: "eat", icon: UtensilsCrossed, detail: "Tvoje energetické potreby sú teraz bližšie k bežným." },
+  { label: "Kvalita pred množstvom", category: "eat", icon: Salad, detail: "Sústreď sa skôr na výživnú stravu než na väčšie porcie." },
+  { label: "Železo po pôrode", category: "eat", icon: Beef, detail: "Najmä po väčšej strate krvi alebo náročnom pôrode — môže pomôcť obnove." },
 ];
 
 /** Same teamwork framing as PARTNER_SUPPORT_NOTE_PREGNANCY, adapted for šestonedelie. */
