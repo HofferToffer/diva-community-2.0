@@ -43,9 +43,13 @@ export default function CommunityFeelingHistory() {
   const cycleData = useMemo(
     () =>
       profile?.last_period_date && profile?.cycle_length_days
-        ? { lastPeriodDate: profile.last_period_date, cycleLengthDays: profile.cycle_length_days }
+        ? {
+            lastPeriodDate: profile.last_period_date,
+            cycleLengthDays: profile.cycle_length_days,
+            periodLengthDays: profile.period_length_days ?? 5,
+          }
         : null,
-    [profile?.last_period_date, profile?.cycle_length_days],
+    [profile?.last_period_date, profile?.cycle_length_days, profile?.period_length_days],
   );
 
   return (

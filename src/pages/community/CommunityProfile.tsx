@@ -273,7 +273,7 @@ export default function CommunityProfile() {
 
   const cycle =
     isMe && !profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && profile.last_period_date
-      ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
+      ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28, profile.period_length_days ?? 5)
       : null;
 
   const archetype = isMe ? getArchetype(profile) : null;

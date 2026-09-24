@@ -23,12 +23,14 @@ function toDateKey(date: Date) {
 export function CycleCalendar({
   lastPeriodDate,
   cycleLengthDays,
+  periodLengthDays = 5,
   onSelectPeriodStart,
   intimacyDates,
   onToggleIntimacy,
 }: {
   lastPeriodDate: string;
   cycleLengthDays: number;
+  periodLengthDays?: number;
   /** Called when the woman taps a day to correct/log the actual start of her period. */
   onSelectPeriodStart?: (dateKey: string) => void;
   /** Dates (YYYY-MM-DD) she's logged, for women trying to conceive. */
@@ -83,14 +85,14 @@ export function CycleCalendar({
     const cells: (Cell | null)[] = Array.from({ length: leadingBlanks }, () => null);
     for (let day = 1; day <= daysInMonth; day += 1) {
       const date = new Date(first.getFullYear(), first.getMonth(), day);
-      cells.push({ date, phase: getCyclePhaseForDate(lastPeriodDate, cycleLengthDays, date) });
+      cells.push({ date, phase: getCyclePhaseForDate(lastPeriodDate, cycleLengthDays, date, periodLengthDays) });
     }
     while (cells.length % 7 !== 0) cells.push(null);
 
     const rows: (Cell | null)[][] = [];
     for (let i = 0; i < cells.length; i += 7) rows.push(cells.slice(i, i + 7));
     return rows;
-  }, [monthCursor, lastPeriodDate, cycleLengthDays]);
+  }, [monthCursor, lastPeriodDate, cycleLengthDays, periodLengthDays]);
 
   const monthLabel = new Intl.DateTimeFormat(dateLocale, { month: "long", year: "numeric" }).format(monthCursor);
 

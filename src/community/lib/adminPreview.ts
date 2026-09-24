@@ -5,6 +5,7 @@ export interface AdminPreview {
   mode: PreviewMode;
   cycleDay: number; // 1..cycleLength
   cycleLength: number;
+  periodLength: number; // 1..14
   pregnancyWeek: number; // 1..42
   postpartumWeek: number; // 1..12
   menopauseStage: string | null;
@@ -16,6 +17,7 @@ export const DEFAULT_PREVIEW: AdminPreview = {
   mode: "off",
   cycleDay: 1,
   cycleLength: 28,
+  periodLength: 5,
   pregnancyWeek: 12,
   postpartumWeek: 2,
   menopauseStage: null,
@@ -74,6 +76,7 @@ export function applyPreview<T extends Record<string, unknown>>(profile: T, p: A
         ...base,
         is_trying_to_conceive: p.mode === "ttc",
         cycle_length_days: p.cycleLength,
+        period_length_days: p.periodLength,
         last_period_date: daysAgo(p.cycleDay - 1),
       };
     case "pregnant":

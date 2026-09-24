@@ -28,6 +28,7 @@ export type Profile = {
   notify_comments: boolean;
   notify_challenges: boolean;
   cycle_length_days: number | null;
+  period_length_days: number | null;
   last_period_date: string | null;
   is_pregnant: boolean;
   is_menopause: boolean;

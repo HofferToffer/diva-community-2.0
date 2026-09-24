@@ -26,11 +26,11 @@ const QUICK_DAYS = [
 
 export default function AdminCyclePreview() {
   const [p, setP] = useAdminPreview();
-  const info = getCycleInfo(new Date().toISOString().slice(0, 10), p.cycleLength);
+  const info = getCycleInfo(new Date().toISOString().slice(0, 10), p.cycleLength, p.periodLength);
   const dayInfo = (() => {
     const d = new Date();
     d.setDate(d.getDate() - (p.cycleDay - 1));
-    return getCycleInfo(d.toISOString().slice(0, 10), p.cycleLength);
+    return getCycleInfo(d.toISOString().slice(0, 10), p.cycleLength, p.periodLength);
   })();
   void info;
 
@@ -105,6 +105,16 @@ export default function AdminCyclePreview() {
                 step={1}
                 value={[p.cycleLength]}
                 onValueChange={([v]) => setP({ ...p, cycleLength: v, cycleDay: Math.min(p.cycleDay, v) })}
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm">Dĺžka menštruácie: <strong>{p.periodLength}</strong> dní</p>
+              <Slider
+                min={1}
+                max={14}
+                step={1}
+                value={[p.periodLength]}
+                onValueChange={([v]) => setP({ ...p, periodLength: v })}
               />
             </div>
           </div>

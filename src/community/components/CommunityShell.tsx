@@ -97,7 +97,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       !profile.is_menopause &&
       !profile.is_postpartum &&
       profile.last_period_date;
-    const info = eligible ? getCycleInfo(profile.last_period_date!, profile.cycle_length_days ?? 28) : null;
+    const info = eligible ? getCycleInfo(profile.last_period_date!, profile.cycle_length_days ?? 28, profile.period_length_days ?? 5) : null;
     if (info) {
       root.dataset.phase = info.phaseKey;
     } else {

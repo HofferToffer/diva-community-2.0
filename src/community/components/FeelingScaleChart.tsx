@@ -31,6 +31,7 @@ const PHASE_STYLES = CYCLE_PHASE_COLORS;
 export type FeelingChartCycle = {
   lastPeriodDate: string;
   cycleLengthDays: number;
+  periodLengthDays?: number;
 };
 
 export type FeelingChartActivity = {
@@ -97,7 +98,7 @@ export default function FeelingScaleChart({
         date: key,
         level,
         name: level !== null ? translateScale(scaleLabel(level)) : null,
-        phase: cycle ? getCyclePhaseForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
+        phase: cycle ? getCyclePhaseForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date, cycle.periodLengthDays ?? 5) : null,
         dayOfCycle: cycle ? getCycleDayForDate(cycle.lastPeriodDate, cycle.cycleLengthDays, date) : null,
         activityLabel: dayActivities ? Array.from(dayActivities.labels).join(", ") : null,
         activityKm: dayActivities?.km ? Math.round(dayActivities.km * 100) / 100 : null,

@@ -87,6 +87,7 @@ export default function CommunityCycle() {
   const [showMoreTTC, setShowMoreTTC] = useState(false);
   const [editingCycle, setEditingCycle] = useState(false);
   const [cycleLengthEdit, setCycleLengthEdit] = useState(String(profile?.cycle_length_days ?? 28));
+  const [periodLengthEdit, setPeriodLengthEdit] = useState(String(profile?.period_length_days ?? 5));
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
   const [justGaveBirth, setJustGaveBirth] = useState(false);
@@ -130,7 +131,7 @@ export default function CommunityCycle() {
 
   const cycle =
     !profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && profile.last_period_date
-      ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28)
+      ? getCycleInfo(profile.last_period_date, profile.cycle_length_days ?? 28, profile.period_length_days ?? 5)
       : null;
   const pregnancy = profile.is_pregnant && profile.last_period_date ? getPregnancyInfo(profile.last_period_date) : null;
   const postpartum = profile.is_postpartum && profile.postpartum_since ? getPostpartumInfo(profile.postpartum_since) : null;
@@ -449,10 +450,12 @@ export default function CommunityCycle() {
     setSavingCycle(true);
     try {
       const length = Math.min(Math.max(parseInt(cycleLengthEdit, 10) || 28, 21), 40);
+      const periodLength = Math.min(Math.max(parseInt(periodLengthEdit, 10) || 5, 1), 14);
       const { error } = await supabase
         .from("profiles")
         .update({
           cycle_length_days: length,
+          period_length_days: periodLength,
           last_period_date: lastPeriodEdit || null,
         } as never)
         .eq("id", profile.id);
@@ -1243,6 +1246,18 @@ export default function CommunityCycle() {
                   onChange={(e) => setCycleLengthEdit(e.target.value)}
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="period-length">{t("cycleCard.periodLengthLabel")}</Label>
+                <Input
+                  id="period-length"
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  max={14}
+                  value={periodLengthEdit}
+                  onChange={(e) => setPeriodLengthEdit(e.target.value)}
+                />
+              </div>
               <div className="flex gap-2">
                 <Button className="flex-1" onClick={saveCycle} disabled={savingCycle}>
                   {t("cycleCard.saveButton")}
@@ -1404,6 +1419,7 @@ export default function CommunityCycle() {
               <CycleCalendar
                 lastPeriodDate={profile.last_period_date!}
                 cycleLengthDays={profile.cycle_length_days ?? 28}
+                periodLengthDays={profile.period_length_days ?? 5}
                 onSelectPeriodStart={setPeriodStart}
                 intimacyDates={profile.is_trying_to_conceive ? intimacyDates : undefined}
                 onToggleIntimacy={profile.is_trying_to_conceive ? handleToggleIntimacy : undefined}
@@ -1441,6 +1457,18 @@ export default function CommunityCycle() {
                 max={40}
                 value={cycleLengthEdit}
                 onChange={(e) => setCycleLengthEdit(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2 text-left">
+              <Label htmlFor="period-length">{t("cycleCard.periodLengthLabel")}</Label>
+              <Input
+                id="period-length"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={14}
+                value={periodLengthEdit}
+                onChange={(e) => setPeriodLengthEdit(e.target.value)}
               />
             </div>
             <Button className="w-full" onClick={saveCycle} disabled={savingCycle || !lastPeriodEdit}>

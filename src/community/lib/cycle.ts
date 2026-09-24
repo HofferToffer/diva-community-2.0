@@ -60,8 +60,19 @@ function toDateOnly(value: Date) {
  * different (PMS is concentrated at the end), so the summary card shouldn't lump them together.
  * The luteal range is split proportionally to the person's actual cycle length.
  */
-function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key: string; name: string; description: string } {
-  if (dayOfCycle <= 2) {
+function getDetailedSubPhase(
+  dayOfCycle: number,
+  cycleLengthDays: number,
+  periodLengthDays: number,
+): { key: string; name: string; description: string } {
+  const period = Math.min(Math.max(Math.round(periodLengthDays), 1), 14);
+  // Everything after the period is shifted by the same amount the period differs
+  // from the 5-day baseline the original phase lengths were tuned for, so a
+  // longer or shorter period doesn't compress or stretch the phases after it.
+  const shift = period - 5;
+  const heavyDays = Math.max(1, Math.min(2, period - 1));
+
+  if (dayOfCycle <= heavyDays) {
     return {
       key: "menstruacna_tazke_dni",
       name: "Zima — najhlbšia tma",
@@ -69,7 +80,7 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
         "Prvé dni bývajú najťažšie, presne ako najkratšie dni roka. Energia je na dne, tak si dovoľ zastaviť sa — teplo, pokoj a nič si nemusíš dokazovať.",
     };
   }
-  if (dayOfCycle <= 5) {
+  if (dayOfCycle <= period) {
     return {
       key: "menstruacna_doznievanie",
       name: "Zima — svetlo sa vracia",
@@ -77,7 +88,7 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
         "Krvácanie slabne, sila sa pomaly vracia, akoby dni boli zas o čosi dlhšie. Ak máš chuť na pohyb, vyber si krátku prechádzku, no netlač na seba.",
     };
   }
-  if (dayOfCycle <= 9) {
+  if (dayOfCycle <= 9 + shift) {
     return {
       key: "folikularna_rozbeh",
       name: "Jar — prvé puky",
@@ -85,7 +96,7 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
         "Hormóny idú hore a hlava sa čistí, akoby zo zeme vyklíčili prvé puky. Skvelý čas naštartovať nové nápady a plány.",
     };
   }
-  if (dayOfCycle <= 12) {
+  if (dayOfCycle <= 12 + shift) {
     return {
       key: "folikularna_vrchol",
       name: "Jar — plný rozkvet",
@@ -93,7 +104,7 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
         "Si vo forme — energia, sebadôvera aj výkon rastú tak rýchlo ako jarná zeleň. Telo teraz unesie aj náročnejší tréning.",
     };
   }
-  if (dayOfCycle <= 16) {
+  if (dayOfCycle <= 16 + shift) {
     return {
       key: "ovulacia",
       name: "Leto — plné slnko",
@@ -103,7 +114,7 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
   }
 
   const length = Math.min(Math.max(Math.round(cycleLengthDays), 21), 40);
-  const lutealStart = 17;
+  const lutealStart = 17 + shift;
   const lutealLength = Math.max(length - lutealStart + 1, 3);
   const third = Math.ceil(lutealLength / 3);
 
@@ -131,10 +142,12 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
   };
 }
 
-export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number): CycleInfo | null {
+export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number, periodLengthDays = 5): CycleInfo | null {
   const last = toDateOnly(new Date(`${lastPeriodDate}T12:00:00`));
   if (Number.isNaN(last.getTime())) return null;
   const length = Math.min(Math.max(Math.round(cycleLengthDays), 21), 40);
+  const period = Math.min(Math.max(Math.round(periodLengthDays), 1), 14);
+  const shift = period - 5;
   const today = toDateOnly(new Date());
 
   const daysSince = Math.floor((today.getTime() - last.getTime()) / DAY_MS);
@@ -146,19 +159,19 @@ export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number): C
   const daysUntilNextPeriod = Math.round((nextPeriodDate.getTime() - today.getTime()) / DAY_MS);
 
   const phase =
-    dayOfCycle <= 5
+    dayOfCycle <= period
       ? {
           name: "Menštruačná fáza",
           description:
             "Si vo svojej vnútornej zime. Telo stíchne a pýta si pokoj — ako príroda v januári. Nie je to slabosť, je to múdrosť tela: choď do toho len toľko, koľko cítiš.",
         }
-      : dayOfCycle <= 12
+      : dayOfCycle <= 12 + shift
         ? {
             name: "Folikulárna fáza",
             description:
               "Vchádzaš do svojej jari. Hormóny sa prebúdzajú, hlava sa čistí a chuť tvoriť rastie s každým dňom — skvelý čas na nové výzvy, silové tréningy a dlhšie behy.",
           }
-        : dayOfCycle <= 16
+        : dayOfCycle <= 16 + shift
           ? {
               name: "Ovulácia",
               description:
@@ -171,9 +184,9 @@ export function getCycleInfo(lastPeriodDate: string, cycleLengthDays: number): C
             };
 
   const phaseKey: CyclePhaseKey =
-    dayOfCycle <= 5 ? "menstruacna" : dayOfCycle <= 12 ? "folikularna" : dayOfCycle <= 16 ? "ovulacia" : "lutealna";
+    dayOfCycle <= period ? "menstruacna" : dayOfCycle <= 12 + shift ? "folikularna" : dayOfCycle <= 16 + shift ? "ovulacia" : "lutealna";
 
-  const subPhase = getDetailedSubPhase(dayOfCycle, length);
+  const subPhase = getDetailedSubPhase(dayOfCycle, length, period);
 
   return { dayOfCycle, phaseKey, phase, subPhase, nextPeriodDate, nextOvulationDate, daysUntilNextPeriod };
 }
@@ -311,16 +324,19 @@ export function getCyclePhaseForDate(
   lastPeriodDate: string,
   cycleLengthDays: number,
   date: Date,
+  periodLengthDays = 5,
 ): CyclePhaseKey | null {
   const last = toDateOnly(new Date(`${lastPeriodDate}T12:00:00`));
   if (Number.isNaN(last.getTime())) return null;
   const length = Math.min(Math.max(Math.round(cycleLengthDays), 21), 40);
+  const period = Math.min(Math.max(Math.round(periodLengthDays), 1), 14);
+  const shift = period - 5;
   const target = toDateOnly(date);
   const daysSince = Math.floor((target.getTime() - last.getTime()) / DAY_MS);
   const dayOfCycle = ((daysSince % length) + length) % length + 1;
-  if (dayOfCycle <= 5) return "menstruacna";
-  if (dayOfCycle <= 12) return "folikularna";
-  if (dayOfCycle <= 16) return "ovulacia";
+  if (dayOfCycle <= period) return "menstruacna";
+  if (dayOfCycle <= 12 + shift) return "folikularna";
+  if (dayOfCycle <= 16 + shift) return "ovulacia";
   return "lutealna";
 }
 

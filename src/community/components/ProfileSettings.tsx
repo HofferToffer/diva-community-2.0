@@ -68,6 +68,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   const [interests, setInterests] = useState<string[]>(profile?.interests ?? []);
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true);
   const [cycleLength, setCycleLength] = useState(profile?.cycle_length_days ? String(profile.cycle_length_days) : "");
+  const [periodLength, setPeriodLength] = useState(profile?.period_length_days ? String(profile.period_length_days) : "");
   const [lastPeriod, setLastPeriod] = useState(profile?.last_period_date ?? "");
   const [isPregnant, setIsPregnant] = useState(profile?.is_pregnant ?? false);
   const [isMenopause, setIsMenopause] = useState(profile?.is_menopause ?? false);
@@ -134,7 +135,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
   };
 
   const hasHealthData = Boolean(
-    isPregnant || isMenopause || isPostpartum || isTryingToConceive || cycleLength.trim() || lastPeriod,
+    isPregnant || isMenopause || isPostpartum || isTryingToConceive || cycleLength.trim() || periodLength.trim() || lastPeriod,
   );
 
   const save = async () => {
@@ -184,6 +185,7 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
           dynamic_theme: dynamicTheme,
           share_chapter: shareChapter,
           cycle_length_days: cycleLength ? Math.min(Math.max(parseInt(cycleLength, 10) || 28, 21), 40) : null,
+          period_length_days: periodLength ? Math.min(Math.max(parseInt(periodLength, 10) || 5, 1), 14) : null,
           last_period_date: lastPeriod || null,
           is_pregnant: isPregnant,
           is_menopause: isMenopause,
@@ -445,6 +447,21 @@ export function ProfileSettings({ onSaved, focusChapter }: { onSaved?: () => voi
                   placeholder={t("profile.cycleLengthPlaceholder")}
                   value={cycleLength}
                   onChange={(e) => setCycleLength(e.target.value)}
+                />
+              </div>
+            )}
+            {!isPregnant && (
+              <div className="space-y-2">
+                <Label htmlFor="s-period-length">{t("profile.periodLengthLabel")}</Label>
+                <Input
+                  id="s-period-length"
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  max={14}
+                  placeholder={t("profile.periodLengthPlaceholder")}
+                  value={periodLength}
+                  onChange={(e) => setPeriodLength(e.target.value)}
                 />
               </div>
             )}
