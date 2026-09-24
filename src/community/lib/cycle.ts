@@ -28,13 +28,13 @@ import {
   Waves,
   Milk,
   Sprout,
-  Cherry,
   Timer,
   Sparkle,
   Ear,
   NotebookPen,
   Flower,
   Beef,
+  Drumstick,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -270,11 +270,11 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Nauč sa niečo nové", category: "do", icon: NotebookPen },
   ],
   ovulacia: [
-    { label: "Farebná zelenina", category: "eat", icon: Salad, detail: "Antioxidanty a vitamíny na podporu plodnosti a energie." },
+    { label: "Farebné ovocie a zelenina", category: "eat", icon: Salad, detail: "Vláknina, voda a antioxidanty z pestrého ovocia a zeleniny." },
+    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Podporujú energiu a nervy — mäso, vajcia, mliečne výrobky, obilniny." },
+    { label: "Orechy a semienka", category: "eat", icon: Nut, detail: "Zdravé tuky a horčík pre energiu a hormonálnu rovnováhu." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Podporujú črevný mikrobióm — kimchi, jogurt, kefir." },
     { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Znižuje nadúvanie a podporuje energiu aj jasnú pleť." },
-    { label: "Ľahké bielkoviny", category: "eat", icon: Fish, detail: "Ryby, hydina či vajcia udržia energiu bez ťažoby." },
-    { label: "Sladké zemiaky a strukoviny", category: "eat", icon: Wheat, detail: "Komplexné sacharidy pre stabilnú energiu." },
-    { label: "Bobuľové ovocie", category: "eat", icon: Cherry, detail: "Antioxidanty a vitamín C pre imunitu." },
     { label: "Skús osobný rekord", category: "move", icon: Zap },
     { label: "Cvič s kamoškami", category: "move", icon: Users },
     { label: "Zatancuj si", category: "move", icon: Music },
