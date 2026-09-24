@@ -78,7 +78,7 @@ export default function CommunityChallengeDetail() {
         )}
       </header>
 
-      <section className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+      <section className="rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
         <Progress value={percent} aria-label={t("challenges.detailProgressAriaLabel")} />
         <p className="mt-3 text-sm text-muted-foreground">
           {t("challenges.detailProgressText", {
@@ -109,7 +109,7 @@ export default function CommunityChallengeDetail() {
 
       <section className="space-y-4">
         <h2 className="font-display text-2xl">{t("challenges.leaderboardTitle")}</h2>
-        <ol className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
+        <ol className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-elevated-sm">
           {leaderboard?.map((row, index) => (
             <li key={row.profile_id} className="flex items-center gap-3 px-4 py-3">
               <span className="w-6 font-display text-lg text-muted-foreground">{index + 1}</span>

@@ -76,7 +76,7 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
 
   return (
     <div className={className}>
-      <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-border shadow-sm">
+      <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-border shadow-elevated-sm">
         <canvas
           ref={canvasRef}
           width={CARD_W}

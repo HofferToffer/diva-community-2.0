@@ -132,7 +132,7 @@ export default function CommunityFeelingHistory() {
               ).map(([month, items]) => (
                 <div key={month}>
                   <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">{month}</h3>
-                  <ul className="mt-3 divide-y divide-border rounded-2xl border border-border/50 bg-card/40 shadow-sm" aria-label={t("feelingHistory.historyAriaLabel", { month })}>
+                  <ul className="mt-3 divide-y divide-border rounded-2xl border border-border/50 bg-card/40 shadow-elevated-sm" aria-label={t("feelingHistory.historyAriaLabel", { month })}>
                     {items.map((item) => {
                       const details = moodDetails(item.mood);
                       const MoodIcon = details.icon;

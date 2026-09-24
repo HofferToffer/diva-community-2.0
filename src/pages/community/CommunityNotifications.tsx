@@ -38,7 +38,7 @@ export default function CommunityNotifications() {
       {data?.length === 0 && (
         <EmptyState title={t("notifications.emptyTitle")} description={t("notifications.emptyDescription")} />
       )}
-      <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-sm">
+      <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-elevated-sm">
         {data?.map((n) => (
           <li key={n.id} className="px-4 py-4">
             {n.link ? (

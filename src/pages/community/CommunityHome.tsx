@@ -114,7 +114,7 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm transition-colors hover:border-primary/40"
           >
             {pregnancy && (
               <PregnancyWeekIconBg week={pregnancy.week} />
@@ -170,7 +170,7 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm transition-colors hover:border-primary/40"
           >
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("postpartumCard.title")}</p>
             {postpartum ? (
@@ -205,7 +205,7 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="block rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm transition-colors hover:border-primary/40"
           >
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("menopauseCard.chapterLabel")}</p>
             {menopauseStage ? (
@@ -245,7 +245,7 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm transition-colors hover:border-primary/40"
           >
             {profile?.dynamic_theme !== false && (
               <div
@@ -323,7 +323,7 @@ export default function CommunityHome() {
       </motion.section>
 
       {challenge && (
-        <motion.section {...fadeUp(5)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.section {...fadeUp(5)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("home.currentChallenge")}</p>
           <h2 className="mt-1 font-display text-2xl">{challenge.title}</h2>
           <Progress value={percent} className="mt-4" aria-label={t("home.challengeProgressLabel")} />

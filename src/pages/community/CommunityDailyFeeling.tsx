@@ -113,7 +113,7 @@ export default function CommunityDailyFeeling() {
                       scrollToNext(detailRef);
                     }}
                     className={cn(
-                      "relative h-auto min-h-24 flex-col gap-2 whitespace-normal rounded-2xl px-1 py-3 shadow-sm transition-all",
+                      "relative h-auto min-h-24 flex-col gap-2 whitespace-normal rounded-2xl px-1 py-3 shadow-elevated-sm transition-all",
                       !selected && "border-border/50",
                     )}
                   >
@@ -190,7 +190,7 @@ export default function CommunityDailyFeeling() {
               value={note}
               onChange={(event) => setNote(event.target.value)}
               placeholder={t("dailyFeeling.notePlaceholder")}
-              className="rounded-2xl border-border/50 shadow-sm"
+              className="rounded-2xl border-border/50 shadow-elevated-sm"
             />
             <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5" /> {t("dailyFeeling.privateOnly")}</span>

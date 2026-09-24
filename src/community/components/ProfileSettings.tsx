@@ -633,7 +633,7 @@ function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <section className="space-y-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+    <section className="space-y-4 rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm">
       <div className="flex items-start gap-2">
         <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
         <div>

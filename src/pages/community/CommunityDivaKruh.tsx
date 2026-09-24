@@ -15,7 +15,7 @@ export default function CommunityDivaKruh() {
         {t("nav.home")}
       </Link>
 
-      <motion.section {...fadeUp(0)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card px-6 py-10 text-center shadow-sm">
+      <motion.section {...fadeUp(0)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card px-6 py-10 text-center shadow-elevated-sm">
         <div className="pointer-events-none absolute -right-10 -top-10 opacity-10">
           <Circle className="h-56 w-56 stroke-1" />
         </div>

@@ -288,7 +288,7 @@ export default function CommunityOnboarding() {
             {t("onboarding.privateDataHint")}
           </p>
           {(cycleLength.trim() || lastPeriod) && (
-            <div className="flex items-start gap-3 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3 rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm">
               <Checkbox
                 id="onb-health-consent"
                 checked={healthConsent}
@@ -322,7 +322,7 @@ export default function CommunityOnboarding() {
       {step === 3 && (
         <section className="mt-4 space-y-6">
           <h1 className="font-display text-3xl">{t("onboarding.step3Title")}</h1>
-          <div className="flex items-start justify-between gap-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+          <div className="flex items-start justify-between gap-4 rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm">
             <div>
               <p className="font-medium">{t("onboarding.publicProfileLabel")}</p>
               <p className="mt-1 text-sm text-muted-foreground">

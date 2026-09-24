@@ -41,7 +41,7 @@ export default function AdminStravaWebhook() {
   };
 
   return (
-    <div className="rounded-2xl bg-secondary/30 p-5 shadow-sm">
+    <div className="rounded-2xl bg-secondary/30 p-5 shadow-elevated-sm">
       <h3 className="font-display text-xl">Automatický import zo Stravy</h3>
       <p className="mt-2 font-body text-sm text-muted-foreground">
         {loading

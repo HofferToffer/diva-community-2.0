@@ -293,7 +293,7 @@ export default function CommunityProfile() {
           {t("profilePage.backToDivas")}
         </Link>
       )}
-      <header className="overflow-hidden rounded-2xl border border-border/50 shadow-sm">
+      <header className="overflow-hidden rounded-2xl border border-border/50 shadow-elevated-sm">
         <div className="relative h-44 w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/30 to-accent/25 sm:h-56">
           {coverUrl && (
             <button
@@ -337,7 +337,7 @@ export default function CommunityProfile() {
             </>
           )}
           <div className="absolute inset-x-4 bottom-16">
-            <h1 className="font-display text-2xl leading-tight text-white drop-shadow-sm sm:text-3xl">
+            <h1 className="font-display text-2xl leading-tight text-white drop-shadow-elevated-sm sm:text-3xl">
               {profile.name || "Diva"}
             </h1>
             {profile.username && <p className="text-sm text-white/85">@{profile.username}</p>}
@@ -468,7 +468,7 @@ export default function CommunityProfile() {
       )}
 
       {archetype && (
-        <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("profilePage.lifeArchetypeLabel")}</p>
           <h2 className="mt-1 font-display text-2xl text-primary">
             {isEnglish ? t(`lifeArchetype.${archetype.name}.name`) : archetype.name}
@@ -524,7 +524,7 @@ export default function CommunityProfile() {
       )}
 
       {cycle && (
-        <section className="space-y-3 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <section className="space-y-3 rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           <div className="flex items-baseline justify-between gap-3">
             <h2 className="font-display text-2xl">{t("nav.cycle")}</h2>
             {!editingCycle && (

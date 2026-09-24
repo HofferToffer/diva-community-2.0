@@ -474,7 +474,7 @@ export default function CommunityCycle() {
       </motion.header>
 
       {profile.is_pregnant && (
-        <motion.section {...fadeUp(1)} className="relative space-y-2 overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.section {...fadeUp(1)} className="relative space-y-2 overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           {pregnancy && (() => {
             const Icon = pregnancyWeekIcon(pregnancy.week);
             return (
@@ -537,7 +537,7 @@ export default function CommunityCycle() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
+                className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-elevated-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
                 onClick={() => setShowMorePregnancy((v) => !v)}
               >
                 {showMorePregnancy ? t("pregnancyCard.showLessButton") : t("pregnancyCard.showMoreButton")}
@@ -545,7 +545,7 @@ export default function CommunityCycle() {
               </Button>
               {showMorePregnancy && (
                 <>
-                  <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                  <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-elevated-sm">
                     <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                       {t("pregnancyCard.tipsTitle")}
                     </p>
@@ -557,7 +557,7 @@ export default function CommunityCycle() {
                     </div>
                   </div>
                   {pregnancy.week >= 34 && (
-                    <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                    <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-elevated-sm">
                       <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                         {t("pregnancyCard.latePrepTitle")}
                       </p>
@@ -655,7 +655,7 @@ export default function CommunityCycle() {
         )}
 
       {profile.is_postpartum && (
-        <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.section {...fadeUp(1)} className="space-y-2 rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("postpartumCard.title")}</p>
           {postpartum ? (
             <>
@@ -693,7 +693,7 @@ export default function CommunityCycle() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
+                className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-elevated-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
                 onClick={() => setShowMorePostpartum((v) => !v)}
               >
                 {showMorePostpartum ? t("postpartumCard.showLessButton") : t("postpartumCard.showMoreButton")}
@@ -701,7 +701,7 @@ export default function CommunityCycle() {
               </Button>
               {showMorePostpartum && (
                 <>
-                  <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                  <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-elevated-sm">
                     <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                       {t("postpartumCard.tipsTitle")}
                     </p>
@@ -740,7 +740,7 @@ export default function CommunityCycle() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="relative space-y-2 overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-sm"
+            className="relative space-y-2 overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-elevated-sm"
           >
             {!profile.birth_story && !profile.birth_story_audio && !editingBirthStory && (
               <motion.span
@@ -757,7 +757,7 @@ export default function CommunityCycle() {
               {t("postpartumCard.storyTitle")}
             </p>
             {birthStoryPhoto && (
-              <div className="overflow-hidden rounded-xl shadow-sm">
+              <div className="overflow-hidden rounded-xl shadow-elevated-sm">
                 <img
                   src={birthStoryPhoto}
                   alt={t("postpartumCard.storyPhotoAlt")}
@@ -797,7 +797,7 @@ export default function CommunityCycle() {
                     aria-label={micActive ? t("postpartumCard.stopDictationAriaLabel") : t("postpartumCard.startDictationAriaLabel")}
                     onClick={() => (micActive ? stopMic() : startDictation())}
                     className={cn(
-                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] disabled:opacity-60",
+                      "absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full shadow-elevated-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] disabled:opacity-60",
                       micActive
                         ? "bg-primary text-primary-foreground"
                         : "bg-secondary/60 text-primary hover:bg-secondary",
@@ -871,7 +871,7 @@ export default function CommunityCycle() {
                     type="button"
                     aria-label={t("postpartumCard.startDictationAriaLabel")}
                     onClick={startDictation}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/50 text-primary shadow-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:bg-secondary"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/50 text-primary shadow-elevated-sm transition-colors duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:bg-secondary"
                   >
                     <Mic className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -1038,7 +1038,7 @@ export default function CommunityCycle() {
       )}
 
       {profile.is_menopause && (
-        <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.section {...fadeUp(1)} className="space-y-4 rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("menopauseCard.chapterLabel")}</p>
             <p className="font-display text-2xl text-primary">{t("menopauseCard.title")}</p>
@@ -1048,7 +1048,7 @@ export default function CommunityCycle() {
             </Button>
           </div>
 
-          <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+          <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-elevated-sm">
             <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               {t("menopauseCard.tipsForYouTitle")}
             </p>
@@ -1136,7 +1136,7 @@ export default function CommunityCycle() {
       )}
 
       {!profile.is_pregnant && !profile.is_menopause && !profile.is_postpartum && (cycle ? (
-        <motion.section {...fadeUp(1)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-sm">
+        <motion.section {...fadeUp(1)} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
           {profile.dynamic_theme !== false && (
             <div
               className="pointer-events-none absolute inset-0"
@@ -1263,7 +1263,7 @@ export default function CommunityCycle() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
+                    className="w-full justify-between rounded-xl border-2 border-primary/40 bg-primary/10 px-4 py-5 font-semibold text-primary shadow-elevated-sm hover:border-primary/60 hover:bg-primary/15 hover:text-primary"
                     onClick={() => setShowMoreTTC((v) => !v)}
                   >
                     {showMoreTTC ? t("ttc.showLessButton") : t("ttc.showMoreButton")}
@@ -1295,7 +1295,7 @@ export default function CommunityCycle() {
                         </ul>
                       </div>
 
-                      <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-sm">
+                      <div className="rounded-2xl border-2 border-primary/25 bg-primary/5 p-4 shadow-elevated-sm">
                         <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                           {t("ttc.tipsTitle")}
                         </p>
@@ -1349,7 +1349,7 @@ export default function CommunityCycle() {
           <MedicalNote />
         </motion.section>
       ) : (
-        <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
+        <motion.section {...fadeUp(1)} className="rounded-2xl border border-border/50 bg-card p-6 text-center shadow-elevated-sm">
           <h2 className="font-display text-xl">{t("cycleCard.noCycleTitle")}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             {t("cycleCard.noCycleDescription")}

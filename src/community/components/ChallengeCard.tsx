@@ -73,7 +73,7 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
   const description = useTranslatedText(challenge.description ?? "", isEnglish);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm transition-colors hover:border-primary/40">
+    <div className="overflow-hidden rounded-2xl border border-border/50 bg-card shadow-elevated-sm transition-colors hover:border-primary/40">
       <Link to={`/community/challenges/${challenge.id}`} className="block">
         {challenge.image_url && (
           <StoredImage path={challenge.image_url} alt={title} className="h-40 w-full object-cover" />

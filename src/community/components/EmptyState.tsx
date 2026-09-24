@@ -32,7 +32,7 @@ export function EmptyState({
 
 export function StatTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-border/50 bg-card px-4 py-4 text-center shadow-sm">
+    <div className="rounded-2xl border border-border/50 bg-card px-4 py-4 text-center shadow-elevated-sm">
       <p className="font-body text-2xl font-light leading-none text-foreground/90">{value}</p>
       <p className="mt-2 text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
     </div>

@@ -136,7 +136,7 @@ export default function CommunityAddActivity() {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => setActivityType(type.value)}
-                className="rounded-full border px-4 py-2 text-sm font-medium shadow-sm transition-all"
+                className="rounded-full border px-4 py-2 text-sm font-medium shadow-elevated-sm transition-all"
                 style={{
                   borderColor: selected ? color.dot : color.fill.replace(/0\.\d+\)/, "0.4)"),
                   background: selected ? color.dot : color.fill,
@@ -150,7 +150,7 @@ export default function CommunityAddActivity() {
         </div>
       </div>
 
-      <div className="space-y-5 rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+      <div className="space-y-5 rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm">
         <div className="space-y-2">
           <Label htmlFor="date">{t("addActivity.dateLabel")}</Label>
           <Input
@@ -226,7 +226,7 @@ export default function CommunityAddActivity() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+      <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm">
         <div>
           <p className="font-medium">{t("addActivity.shareTitle")}</p>
           <p className="text-sm text-muted-foreground">{t("addActivity.shareDescription")}</p>

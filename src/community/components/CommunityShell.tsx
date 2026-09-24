@@ -562,7 +562,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
 
       {(pull > 0 || refreshing) && (
         <div
-          className="pointer-events-none fixed left-1/2 top-20 z-30 flex -translate-x-1/2 items-center justify-center rounded-full border border-border bg-card p-2 shadow-sm transition-opacity"
+          className="pointer-events-none fixed left-1/2 top-20 z-30 flex -translate-x-1/2 items-center justify-center rounded-full border border-border bg-card p-2 shadow-elevated-sm transition-opacity"
           style={{ opacity: refreshing ? 1 : Math.min(pull / 70, 1) }}
           aria-hidden="true"
         >

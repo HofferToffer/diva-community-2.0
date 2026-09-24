@@ -95,7 +95,7 @@ export function CycleCalendar({
   const monthLabel = new Intl.DateTimeFormat(dateLocale, { month: "long", year: "numeric" }).format(monthCursor);
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+    <div className="rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm">
       <div className="flex items-center justify-between">
         <Button type="button" variant="ghost" size="icon" aria-label={t("calendar.prevMonth")} onClick={goToPrevMonth}>
           <ChevronLeft className="h-4 w-4" />
@@ -144,7 +144,7 @@ export function CycleCalendar({
                     "relative flex aspect-square w-full items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
                     isSameDay(cell.date, today) && "font-semibold ring-2 ring-primary ring-offset-1 ring-offset-card",
                     isPeriodStart && "ring-2 ring-foreground ring-offset-1 ring-offset-card",
-                    canOpen && "cursor-pointer hover:scale-110 hover:shadow-sm active:scale-95",
+                    canOpen && "cursor-pointer hover:scale-110 hover:shadow-elevated-sm active:scale-95",
                   )}
                   style={{
                     background: cell.phase ? CYCLE_PHASE_COLORS[cell.phase].fill.replace(/0\.\d+\)/, "0.6)") : undefined,
