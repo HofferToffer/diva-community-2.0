@@ -84,22 +84,6 @@ export const MOODS: Array<{
   },
 ];
 
-/**
- * Jemné, tlmené farby pre jednotlivé nálady — rovnaký {fill, dot} tvar ako
- * ACTIVITY_TYPE_COLORS, v tom istom úzkom teplom rozsahu (nie rozhádzané po
- * celom farebnom kolese), aby si žena vedela na prvý pohľad rozlíšiť nálady
- * pri zápise pocitu, no zároveň to stále pôsobilo ako jedna ladená rodina.
- */
-export const MOOD_COLORS: Record<string, { fill: string; dot: string }> = {
-  radostna: { fill: "hsl(38, 45%, 48%, 0.14)", dot: "hsl(38, 45%, 42%)" },
-  smutna: { fill: "hsl(330, 22%, 42%, 0.12)", dot: "hsl(330, 22%, 38%)" },
-  prekvapena: { fill: "hsl(15, 40%, 50%, 0.14)", dot: "hsl(15, 40%, 44%)" },
-  hrozne: { fill: "hsl(20, 15%, 38%, 0.12)", dot: "hsl(20, 15%, 32%)" },
-  bojazliva: { fill: "hsl(300, 18%, 40%, 0.12)", dot: "hsl(300, 18%, 36%)" },
-  nahnevana: { fill: "hsl(356, 40%, 42%, 0.14)", dot: "hsl(356, 40%, 38%)" },
-  znechutena: { fill: "hsl(40, 20%, 34%, 0.12)", dot: "hsl(40, 20%, 28%)" },
-};
-
 export const DETAIL_SEPARATOR = " · ";
 
 export const LEGACY_MOODS: Record<string, { label: string; icon: LucideIcon }> = {
