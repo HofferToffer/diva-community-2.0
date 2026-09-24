@@ -135,7 +135,10 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
 
       {visible.some((tip) => tip.category === "eat") && (
         <div className="pt-2 text-center">
-          <p className="font-display text-lg leading-snug text-foreground/90">
+          <p className="text-[0.65rem] uppercase tracking-[0.12em] text-muted-foreground/70">
+            {t("tips.luciaCredit", { defaultValue: "Odborne podložené" })}
+          </p>
+          <p className="mt-1 font-display text-lg leading-snug text-foreground/90">
             Lucia Loderer
           </p>
           <p className="text-[0.7rem] leading-snug text-muted-foreground/90">
