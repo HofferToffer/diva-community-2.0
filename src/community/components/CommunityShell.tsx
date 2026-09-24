@@ -211,7 +211,10 @@ export function CommunityShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     const SWIPE_COMPLETE_THRESHOLD = 90;
     const SWIPE_LIVE_CAP = 220; // how far the page visually travels under the finger
-    const EDGE_ZONE = 32; // px from the left edge a back-swipe must start in
+    // px from the left edge a back-swipe must start in — generous (about half
+    // the screen) rather than a tight iOS-style sliver, so it's easy to
+    // trigger without hunting for the exact edge.
+    const edgeZone = () => Math.min(window.innerWidth * 0.5, 260);
     let startY: number | null = null;
     let startX: number | null = null;
     let axis: "x" | "y" | "ignore" | null = null;
@@ -254,7 +257,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       const atTop = window.scrollY <= 0 && (!scrollable || scrollable.scrollTop <= 0);
       startY = atTop ? e.touches[0].clientY : null;
       startX = e.touches[0].clientX;
-      startedNearEdge = e.touches[0].clientX <= EDGE_ZONE;
+      startedNearEdge = e.touches[0].clientX <= edgeZone();
       axis = null;
       lastDx = 0;
     };
