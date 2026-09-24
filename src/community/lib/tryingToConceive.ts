@@ -1,4 +1,4 @@
-import { Cigarette, Coffee, Dumbbell, HeartHandshake, MessageCircle, Pill, Scale, Timer } from "lucide-react";
+import { Ban, Beef, Cigarette, Dumbbell, Fish, HeartHandshake, MessageCircle, Pill, Salad, Scale, Sun, Timer } from "lucide-react";
 import type { CycleTip } from "@/community/lib/cycle";
 
 /**
@@ -46,10 +46,14 @@ export const TTC_DOCTOR_GUIDANCE: TtcDoctorGuidance = {
 /** Evidence-based things that genuinely help — same {label, category, icon} shape as the cycle/menopause tips. */
 export const TTC_TIPS: CycleTip[] = [
   { label: "Sex každý 1.–2. deň okolo ovulácie", category: "do", icon: Timer },
-  { label: "Kyselina listová / prenatálne vitamíny", category: "eat", icon: Pill },
+  { label: "Vyvážená strava", category: "eat", icon: Salad, detail: "Základ plodnosti — pestrá strava s dostatkom bielkovín, zdravých tukov a zeleniny." },
+  { label: "Kyselina listová", category: "eat", icon: Pill, detail: "400 mcg denne — od snahy o počatie až do 12. týždňa tehotenstva." },
+  { label: "Vitamín D", category: "eat", icon: Sun, detail: "10 mcg denne — podporuje hormonálnu rovnováhu a plodnosť." },
+  { label: "Jód", category: "eat", icon: Fish, detail: "Mliečne výrobky, ryby a vajcia pre zdravú funkciu štítnej žľazy." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Dopĺňa zásoby po menštruácii — červené mäso, špenát, šošovica." },
+  { label: "Potraviny, ktorým sa vyhýbaj", category: "eat", icon: Ban, detail: "Pečeň, ryby s vysokým obsahom ortuti, alkohol a viac než 1–2 kávy denne." },
   { label: "Zdravá váha a mierny pohyb", category: "move", icon: Scale },
   { label: "Nefajčiť", category: "do", icon: Cigarette },
-  { label: "Menej alkoholu, kofeín do 1–2 káv denne", category: "eat", icon: Coffee },
   { label: "Mierne, nie extrémne cvičenie", category: "move", icon: Dumbbell },
   { label: "Podpora — partner, kamošky, poradňa", category: "do", icon: HeartHandshake },
   { label: "Hovor o tom nahlas, keď je to ťažké", category: "do", icon: MessageCircle },
