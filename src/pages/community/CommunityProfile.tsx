@@ -411,7 +411,6 @@ export default function CommunityProfile() {
 
       {isMe && !editingProfile && (
         <Button
-          variant="outline"
           className="w-full"
           onClick={() => {
             setEditingProfile(true);
@@ -657,28 +656,20 @@ export default function CommunityProfile() {
         </Tabs>
       </section>
 
-      {isMe && (
+      {isMe && editingProfile && (
         <section ref={editRef} className="space-y-4 border-t border-border pt-8">
-          {editingProfile ? (
-            <>
-              <div className="flex items-center justify-end">
-                <Button variant="outline" size="sm" onClick={() => setEditingProfile(false)}>
-                  {t("profile.cancelButton")}
-                </Button>
-              </div>
-              <ProfileSettings
-                focusChapter={focusChapter}
-                onSaved={() => {
-                  setEditingProfile(false);
-                  navigate("/community");
-                }}
-              />
-            </>
-          ) : (
-            <Button className="w-full" onClick={() => { setEditingProfile(true); setFocusChapter(false); }}>
-              {t("profilePage.editProfileButton")}
+          <div className="flex items-center justify-end">
+            <Button variant="outline" size="sm" onClick={() => setEditingProfile(false)}>
+              {t("profile.cancelButton")}
             </Button>
-          )}
+          </div>
+          <ProfileSettings
+            focusChapter={focusChapter}
+            onSaved={() => {
+              setEditingProfile(false);
+              navigate("/community");
+            }}
+          />
         </section>
       )}
     </div>
