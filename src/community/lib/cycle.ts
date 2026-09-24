@@ -10,10 +10,8 @@ import {
   Bath,
   Bed,
   BookOpen,
-  Apple,
   Egg,
   Nut,
-  Citrus,
   Dumbbell,
   Zap,
   Bike,
@@ -36,6 +34,7 @@ import {
   Ear,
   NotebookPen,
   Flower,
+  Beef,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -255,12 +254,12 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Počúvaj svoje telo", category: "do", icon: Ear },
   ],
   folikularna: [
-    { label: "Čerstvé ovocie", category: "eat", icon: Apple },
     { label: "Bielkoviny", category: "eat", icon: Egg },
-    { label: "Orechy", category: "eat", icon: Nut },
-    { label: "Citrusy", category: "eat", icon: Citrus },
-    { label: "Brokolica a kel", category: "eat", icon: Sprout },
-    { label: "Celozrnné obilniny", category: "eat", icon: Wheat },
+    { label: "Zdravé tuky", category: "eat", icon: Nut },
+    { label: "Komplexné sacharidy", category: "eat", icon: Wheat },
+    { label: "Železo", category: "eat", icon: Beef },
+    { label: "Čerstvá zelenina", category: "eat", icon: Salad },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk },
     { label: "Zacvič si posilku", category: "move", icon: Dumbbell },
     { label: "Zabehni si naplno", category: "move", icon: Zap },
     { label: "Vyraz na bicykli", category: "move", icon: Bike },
