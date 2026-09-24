@@ -1268,6 +1268,8 @@
     "nextOvulation": "Estimated ovulation",
     "inDays": "(in {{count}} days)",
     "tipsForThisPhase": "Tips for this phase",
+    "earlyLuteal": "Early luteal phase",
+    "lateLuteal": "Late luteal phase",
     "gynecologistNote": "A regular yearly check-up with your gynecologist is part of taking care of yourself — whatever phase you're in.",
     "noCycleTitle": "You haven't set up your cycle yet",
     "noCycleDescription": "Enter the date of your last period and your cycle length so we can show you phases and recommendations.",

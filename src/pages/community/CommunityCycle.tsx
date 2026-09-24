@@ -1330,6 +1330,13 @@ export default function CommunityCycle() {
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("cycleCard.tipsForThisPhase")}
                 </p>
+                {cycle.phaseKey === "lutealna" && (
+                  <p className="mt-1 text-xs font-medium text-primary">
+                    {cycle.subPhase.key === "lutealna_neskora"
+                      ? t("cycleCard.lateLuteal")
+                      : t("cycleCard.earlyLuteal")}
+                  </p>
+                )}
                 <div className="mt-4">
                   <CyclePhaseTips phase={cycle.phaseKey} />
                 </div>

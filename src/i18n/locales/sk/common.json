@@ -580,6 +580,8 @@
     "nextOvulation": "Predpokladaná ovulácia",
     "inDays": "(o {{count}} dní)",
     "tipsForThisPhase": "Tipy pre túto fázu",
+    "earlyLuteal": "Skorá luteálna fáza",
+    "lateLuteal": "Neskorá luteálna fáza",
     "gynecologistNote": "Pravidelná ročná prehliadka u gynekológa/gynekologičky patrí k starostlivosti o seba — bez ohľadu na fázu, v ktorej si.",
     "noCycleTitle": "Zatiaľ nemáš nastavený cyklus",
     "noCycleDescription": "Zadaj dátum poslednej menštruácie a dĺžku cyklu, aby sme ti mohli ukázať fázy a odporúčania.",
