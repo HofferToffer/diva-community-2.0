@@ -76,13 +76,20 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
               transition={{ duration: 0.5, delay: Math.min(i, 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center gap-2 text-center"
             >
-              <span
+              <motion.span
+                animate={{ y: [0, -5, 0] }}
+                transition={{
+                  duration: 3.2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: (i % 8) * 0.2,
+                }}
                 className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
                 style={{ background: softFill }}
                 aria-hidden="true"
               >
                 <Icon className="h-6 w-6" style={{ color: color.dot }} />
-              </span>
+              </motion.span>
               <p className="text-xs leading-tight text-foreground/85">
                 {tipTranslations[tip.label] ?? tip.label}
               </p>
