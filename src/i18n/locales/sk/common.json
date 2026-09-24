@@ -305,7 +305,9 @@
     "allTab": "Všetko",
     "noActivitiesTitle": "Zatiaľ žiadne aktivity",
     "noActivitiesDescription": "Prvý zápis je vždy najkrajší.",
-    "editProfileButton": "Upraviť profil"
+    "editProfileButton": "Upraviť profil",
+    "viewCoverPhoto": "Zobraziť titulnú fotku",
+    "viewProfilePhoto": "Zobraziť profilovú fotku"
   },
   "challenges": {
     "subtitle": "Spoločné výzvy, kde sa počíta každý krok každej z nás.",

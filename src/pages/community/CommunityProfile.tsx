@@ -3,8 +3,9 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ProfileAvatar } from "@/community/components/StoredImage";
+import { ProfileAvatar, StoredImage } from "@/community/components/StoredImage";
 import { ActivityCard } from "@/community/components/ActivityCard";
 import { EmptyState, StatTile } from "@/community/components/EmptyState";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
@@ -90,6 +91,7 @@ export default function CommunityProfile() {
   const [lastPeriodEdit, setLastPeriodEdit] = useState(profile?.last_period_date ?? "");
   const [savingCycle, setSavingCycle] = useState(false);
 
+  const [photoLightbox, setPhotoLightbox] = useState<"avatar" | "cover" | null>(null);
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<string | null>(profile?.avatar_url ?? null);
   const [coverCropImage, setCoverCropImage] = useState<string | null>(null);
@@ -293,7 +295,16 @@ export default function CommunityProfile() {
       )}
       <header className="overflow-hidden rounded-2xl border border-border/50 shadow-sm">
         <div className="relative h-44 w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/30 to-accent/25 sm:h-56">
-          {coverUrl && <img src={coverUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />}
+          {coverUrl && (
+            <button
+              type="button"
+              aria-label={t("profilePage.viewCoverPhoto")}
+              onClick={() => setPhotoLightbox("cover")}
+              className="absolute inset-0 h-full w-full cursor-zoom-in"
+            >
+              <img src={coverUrl} alt="" className="h-full w-full object-cover" />
+            </button>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/15 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
           {isMe && (
@@ -335,7 +346,18 @@ export default function CommunityProfile() {
 
         <div className="flex items-end justify-between gap-3 bg-card px-4 pb-4">
           <div className="relative -mt-9 flex flex-col items-start gap-2">
-            <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
+            {displayAvatar ? (
+              <button
+                type="button"
+                aria-label={t("profilePage.viewProfilePhoto")}
+                onClick={() => setPhotoLightbox("avatar")}
+                className="cursor-zoom-in rounded-full"
+              >
+                <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
+              </button>
+            ) : (
+              <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
+            )}
             {isMe && (
               <>
                 <button
@@ -375,6 +397,30 @@ export default function CommunityProfile() {
           )}
         </div>
       </header>
+
+      <Dialog open={photoLightbox !== null} onOpenChange={(open) => !open && setPhotoLightbox(null)}>
+        <DialogContent className="max-w-2xl border-none bg-transparent p-0 shadow-none [&>button]:text-white">
+          {photoLightbox === "cover" && coverUrl && (
+            <img src={coverUrl} alt="" className="max-h-[85vh] w-full rounded-xl object-contain" />
+          )}
+          {photoLightbox === "avatar" && displayAvatar && (
+            <StoredImage path={displayAvatar} alt="" className="mx-auto max-h-[85vh] rounded-xl object-contain" />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {isMe && !editingProfile && (
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            setEditingProfile(true);
+            setFocusChapter(false);
+          }}
+        >
+          {t("profilePage.editProfileButton")}
+        </Button>
+      )}
 
       {!isMe && me && (
         <div className="flex gap-2">

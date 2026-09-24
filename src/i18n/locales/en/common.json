@@ -565,7 +565,9 @@
     "allTab": "All",
     "noActivitiesTitle": "No activities yet",
     "noActivitiesDescription": "The first entry is always the sweetest.",
-    "editProfileButton": "Edit profile"
+    "editProfileButton": "Edit profile",
+    "viewCoverPhoto": "View cover photo",
+    "viewProfilePhoto": "View profile photo"
   },
   "challenges": {
     "subtitle": "Shared challenges, where every step from every one of us counts.",
