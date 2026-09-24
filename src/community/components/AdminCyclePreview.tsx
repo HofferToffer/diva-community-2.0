@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,14 @@ export default function AdminCyclePreview() {
   })();
   void info;
 
+  const detailRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (p.mode === "off") return;
+    requestAnimationFrame(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }, [p.mode]);
+
   return (
     <section className="space-y-5 rounded-2xl bg-card p-6 shadow-sm">
       <div className="flex items-start gap-3">
@@ -59,66 +68,68 @@ export default function AdminCyclePreview() {
         ))}
       </div>
 
-      {(p.mode === "cycle" || p.mode === "ttc") && (
-        <div className="space-y-4 rounded-2xl bg-secondary/30 p-4">
-          <div className="flex flex-wrap gap-2">
-            {QUICK_DAYS.map((q) => (
-              <Button
-                key={q.day}
-                size="sm"
-                variant={p.cycleDay === q.day ? "default" : "ghost"}
-                className="rounded-full"
-                onClick={() => setP({ ...p, cycleDay: Math.min(q.day, p.cycleLength) })}
-              >
-                {q.label}
-              </Button>
-            ))}
+      <div ref={detailRef} className="scroll-mt-4 space-y-5">
+        {(p.mode === "cycle" || p.mode === "ttc") && (
+          <div className="space-y-4 rounded-2xl bg-secondary/30 p-4">
+            <div className="flex flex-wrap gap-2">
+              {QUICK_DAYS.map((q) => (
+                <Button
+                  key={q.day}
+                  size="sm"
+                  variant={p.cycleDay === q.day ? "default" : "ghost"}
+                  className="rounded-full"
+                  onClick={() => setP({ ...p, cycleDay: Math.min(q.day, p.cycleLength) })}
+                >
+                  {q.label}
+                </Button>
+              ))}
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm">
+                Deň cyklu: <strong>{p.cycleDay}</strong> z {p.cycleLength}
+                {dayInfo && <span className="text-muted-foreground"> · {dayInfo.subPhase.name}</span>}
+              </p>
+              <Slider
+                min={1}
+                max={p.cycleLength}
+                step={1}
+                value={[p.cycleDay]}
+                onValueChange={([v]) => setP({ ...p, cycleDay: v })}
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm">Dĺžka cyklu: <strong>{p.cycleLength}</strong> dní</p>
+              <Slider
+                min={21}
+                max={40}
+                step={1}
+                value={[p.cycleLength]}
+                onValueChange={([v]) => setP({ ...p, cycleLength: v, cycleDay: Math.min(p.cycleDay, v) })}
+              />
+            </div>
           </div>
-          <div className="space-y-2">
-            <p className="text-sm">
-              Deň cyklu: <strong>{p.cycleDay}</strong> z {p.cycleLength}
-              {dayInfo && <span className="text-muted-foreground"> · {dayInfo.subPhase.name}</span>}
-            </p>
-            <Slider
-              min={1}
-              max={p.cycleLength}
-              step={1}
-              value={[p.cycleDay]}
-              onValueChange={([v]) => setP({ ...p, cycleDay: v })}
-            />
+        )}
+
+        {p.mode === "pregnant" && (
+          <div className="space-y-2 rounded-2xl bg-secondary/30 p-4">
+            <p className="text-sm">Týždeň tehotenstva: <strong>{p.pregnancyWeek}</strong></p>
+            <Slider min={1} max={42} step={1} value={[p.pregnancyWeek]} onValueChange={([v]) => setP({ ...p, pregnancyWeek: v })} />
           </div>
-          <div className="space-y-2">
-            <p className="text-sm">Dĺžka cyklu: <strong>{p.cycleLength}</strong> dní</p>
-            <Slider
-              min={21}
-              max={40}
-              step={1}
-              value={[p.cycleLength]}
-              onValueChange={([v]) => setP({ ...p, cycleLength: v, cycleDay: Math.min(p.cycleDay, v) })}
-            />
+        )}
+
+        {p.mode === "postpartum" && (
+          <div className="space-y-2 rounded-2xl bg-secondary/30 p-4">
+            <p className="text-sm">Týždeň po pôrode: <strong>{p.postpartumWeek}</strong></p>
+            <Slider min={1} max={12} step={1} value={[p.postpartumWeek]} onValueChange={([v]) => setP({ ...p, postpartumWeek: v })} />
           </div>
-        </div>
-      )}
+        )}
 
-      {p.mode === "pregnant" && (
-        <div className="space-y-2 rounded-2xl bg-secondary/30 p-4">
-          <p className="text-sm">Týždeň tehotenstva: <strong>{p.pregnancyWeek}</strong></p>
-          <Slider min={1} max={42} step={1} value={[p.pregnancyWeek]} onValueChange={([v]) => setP({ ...p, pregnancyWeek: v })} />
-        </div>
-      )}
-
-      {p.mode === "postpartum" && (
-        <div className="space-y-2 rounded-2xl bg-secondary/30 p-4">
-          <p className="text-sm">Týždeň po pôrode: <strong>{p.postpartumWeek}</strong></p>
-          <Slider min={1} max={12} step={1} value={[p.postpartumWeek]} onValueChange={([v]) => setP({ ...p, postpartumWeek: v })} />
-        </div>
-      )}
-
-      {p.mode !== "off" && (
-        <Button asChild className="rounded-full">
-          <Link to="/community/cyklus">Otvoriť stránku Cyklus</Link>
-        </Button>
-      )}
+        {p.mode !== "off" && (
+          <Button asChild className="rounded-full">
+            <Link to="/community/cyklus">Otvoriť stránku Cyklus</Link>
+          </Button>
+        )}
+      </div>
     </section>
   );
 }

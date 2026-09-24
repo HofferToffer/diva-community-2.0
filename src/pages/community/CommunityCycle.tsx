@@ -476,7 +476,14 @@ export default function CommunityCycle() {
             <Button asChild size="sm" variant="ghost" className="rounded-full">
               <Link to="/community/admin">Zmeniť fázu</Link>
             </Button>
-            <Button size="sm" className="rounded-full" onClick={() => setAdminPreview({ ...adminPreview, mode: "off" })}>
+            <Button
+              size="sm"
+              className="rounded-full"
+              onClick={() => {
+                setAdminPreview({ ...adminPreview, mode: "off" });
+                navigate("/community");
+              }}
+            >
               Vypnúť náhľad
             </Button>
           </div>
