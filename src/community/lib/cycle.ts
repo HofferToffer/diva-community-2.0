@@ -254,7 +254,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Choď skôr spať", category: "do", icon: Bed },
     { label: "Píš si vďačnosť", category: "do", icon: BookOpen },
     { label: "Počúvaj svoje telo", category: "do", icon: Ear },
-    { label: "Kakao ceremoniálne", category: "do", icon: HandHeart },
+    { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
   ],
   folikularna: [
     { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Môžu podporiť rast folikulov a svalov — vajcia, hydina, strukoviny." },
@@ -302,7 +302,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Spi o niečo dlhšie", category: "do", icon: Moon },
     { label: "Dopraj si rituál pokoja", category: "do", icon: Bath },
     { label: "Odľahči si program", category: "do", icon: Feather },
-    { label: "Kakao ceremoniálne", category: "do", icon: HandHeart },
+    { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
   ],
 };
 
