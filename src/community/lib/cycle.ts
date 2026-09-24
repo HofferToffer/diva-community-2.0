@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   PersonStanding,
+  Sun,
   Footprints,
   Feather,
   Bath,
