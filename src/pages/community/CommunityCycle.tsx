@@ -466,6 +466,19 @@ export default function CommunityCycle() {
 
   return (
     <div className="space-y-8">
+      {previewActive && (
+        <div className="sticky top-2 z-30 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-primary/10 px-4 py-3 text-sm shadow-sm backdrop-blur">
+          <span>Admin náhľad — vidíš simulovanú fázu, tvoj profil sa nemení.</span>
+          <div className="flex gap-2">
+            <Button asChild size="sm" variant="ghost" className="rounded-full">
+              <Link to="/community/admin">Zmeniť fázu</Link>
+            </Button>
+            <Button size="sm" className="rounded-full" onClick={() => setAdminPreview({ ...adminPreview, mode: "off" })}>
+              Vypnúť náhľad
+            </Button>
+          </div>
+        </div>
+      )}
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         {t("nav.home")}
