@@ -46,7 +46,7 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
     return y === currentYear && m - 1 === currentMonth;
   }).length;
 
-  return <StatTile label={t("profilePage.feelingsThisMonth")} value={`${monthDays} / ${daysElapsed}`} />;
+  return <StatTile label={t("profilePage.feelingsThisMonth")} value={`${monthDays} / ${daysElapsed}`} tone="primary" />;
 }
 
 export default function CommunityProfile() {
@@ -337,7 +337,7 @@ export default function CommunityProfile() {
             </>
           )}
           <div className="absolute inset-x-4 bottom-16">
-            <h1 className="font-display text-2xl leading-tight text-white drop-shadow-elevated-sm sm:text-3xl">
+            <h1 className="font-display text-2xl leading-tight text-white drop-shadow-sm sm:text-3xl">
               {profile.name || "Diva"}
             </h1>
             {profile.username && <p className="text-sm text-white/85">@{profile.username}</p>}
@@ -351,12 +351,12 @@ export default function CommunityProfile() {
                 type="button"
                 aria-label={t("profilePage.viewProfilePhoto")}
                 onClick={() => setPhotoLightbox("avatar")}
-                className="cursor-zoom-in rounded-full"
+                className="glow-primary cursor-zoom-in rounded-full"
               >
                 <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
               </button>
             ) : (
-              <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
+              <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="glow-primary ring-4 ring-card" />
             )}
             {isMe && (
               <>
@@ -468,7 +468,7 @@ export default function CommunityProfile() {
       )}
 
       {archetype && (
-        <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm">
+        <div className="glow-primary rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 via-card to-accent/10 p-5">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("profilePage.lifeArchetypeLabel")}</p>
           <h2 className="mt-1 font-display text-2xl text-primary">
             {isEnglish ? t(`lifeArchetype.${archetype.name}.name`) : archetype.name}
@@ -603,7 +603,7 @@ export default function CommunityProfile() {
       )}
 
       <section className="grid grid-cols-3 gap-3">
-        <StatTile label={t("profilePage.statMonthKm")} value={formatKm(stats?.month_km ?? 0)} />
+        <StatTile label={t("profilePage.statMonthKm")} value={formatKm(stats?.month_km ?? 0)} tone="primary" />
         <StatTile
           label={
             isEnglish
@@ -611,6 +611,7 @@ export default function CommunityProfile() {
               : `${pluralActivities((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))} tento mesiac`
           }
           value={String((stats?.month_runs ?? 0) + (stats?.month_workouts ?? 0))}
+          tone="accent"
         />
         <MonthFeelingsTile profileId={profile?.id} />
       </section>
@@ -625,7 +626,9 @@ export default function CommunityProfile() {
                 key={a.id}
                 className={cn(
                   "rounded-lg border p-4 text-center",
-                  unlocked ? "border-primary/60 bg-card" : "border-dashed border-border bg-card/50 opacity-60",
+                  unlocked
+                    ? "glow-accent border-accent/50 bg-gradient-to-br from-accent/15 via-card to-primary/10"
+                    : "border-dashed border-border bg-card/50 opacity-60",
                 )}
               >
                 <p className="font-display text-lg leading-tight">{a.title}</p>

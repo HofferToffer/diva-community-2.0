@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import illBranch from "@/assets/ill-branch.png";
+import { cn } from "@/lib/utils";
 
 export function EmptyState({
   title,
@@ -30,9 +31,27 @@ export function EmptyState({
   );
 }
 
-export function StatTile({ label, value }: { label: string; value: string }) {
+const TONE_STYLES = {
+  primary: "border-primary/30 bg-gradient-to-br from-primary/15 via-card to-card glow-primary",
+  accent: "border-accent/30 bg-gradient-to-br from-accent/15 via-card to-card glow-accent",
+} as const;
+
+export function StatTile({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone?: keyof typeof TONE_STYLES;
+}) {
   return (
-    <div className="rounded-2xl border border-border/50 bg-card px-4 py-4 text-center shadow-elevated-sm">
+    <div
+      className={cn(
+        "rounded-2xl border border-border/50 bg-card px-4 py-4 text-center shadow-elevated-sm",
+        tone && TONE_STYLES[tone],
+      )}
+    >
       <p className="font-body text-2xl font-light leading-none text-foreground/90">{value}</p>
       <p className="mt-2 text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
     </div>

@@ -216,6 +216,28 @@
       0 5px 12px -6px hsl(30 25% 15% / 0.18),
       inset 0 1px 0 hsl(40 40% 100% / 0.35);
   }
+
+  /*
+   * A warm, luminous accent for the profile page's standout surfaces
+   * (life-archetype card, avatar ring, unlocked achievements) — the same
+   * soft "glow" language as the Diva Map's pins (hsl(var(--primary) / 0.5)
+   * halo), so it reads as the app's own signature rather than a generic
+   * effect. Uses --primary/--accent CSS vars, so it re-tints automatically
+   * under the per-cycle-phase themes above.
+   */
+  .glow-primary {
+    box-shadow:
+      0 0 0 1px hsl(var(--primary) / 0.35),
+      0 0 28px 2px hsl(var(--primary) / 0.28),
+      0 10px 22px -10px hsl(30 25% 15% / 0.25);
+  }
+
+  .glow-accent {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent) / 0.35),
+      0 0 22px 2px hsl(var(--accent) / 0.28),
+      0 8px 18px -9px hsl(30 25% 15% / 0.22);
+  }
 }
 
 /* Mapa Divy — vlastné markery a klastre v brand farbe, mimo React stromu (Leaflet ich vykresľuje priamo do DOM). */
