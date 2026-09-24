@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { QuoteCard } from "@/community/components/QuoteCard";
@@ -12,6 +13,18 @@ export default function CommunityDailyQuote() {
   const { profile } = useCommunityAuth();
   const rawQuote = quoteForDate(getLifePhase(profile));
   const quote = isEnglish ? quoteTranslations[rawQuote] ?? rawQuote : rawQuote;
+  const navigate = useNavigate();
+
+  // Sharing a quote (e.g. to Instagram) backgrounds the app; when she
+  // switches back to it, land on Home rather than leaving her stuck on
+  // this one-off share screen.
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") navigate("/community");
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
+  }, [navigate]);
 
   return (
     <div className="space-y-6">
