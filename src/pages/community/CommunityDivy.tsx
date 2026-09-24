@@ -39,7 +39,7 @@ function DivaRow({
   const isEnglish = i18n.language === "en";
   const inner = (
     <>
-      <ProfileAvatar path={diva.avatar_url} name={diva.name} size={44} />
+      <ProfileAvatar path={diva.avatar_url} name={diva.name} size={44} className="ring-2 ring-primary/25" />
       <div className="min-w-0 flex-1">
         <p className="truncate font-display text-lg leading-tight">{diva.name || "Diva"}</p>
         <p className="truncate text-xs text-muted-foreground">
@@ -130,7 +130,7 @@ export default function CommunityDivy() {
         </div>
         <Link
           to="/community/mapa"
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/50 bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-elevated-sm hover:text-foreground"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs text-primary shadow-elevated-sm transition-colors hover:bg-primary/15"
         >
           <Map className="h-3.5 w-3.5" aria-hidden="true" />
           {t("divy.mapLink")}
@@ -199,7 +199,7 @@ export default function CommunityDivy() {
           />
         )}
         {list.length > 0 && (
-          <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-elevated-sm">
+          <ul className="divide-y divide-border rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card shadow-elevated-sm">
             {list.map((d) => (
               <DivaRow
                 key={d.id}
@@ -216,7 +216,7 @@ export default function CommunityDivy() {
       {myFriends.length > 0 && (
         <motion.section {...fadeUp(3)} className="space-y-3">
           <h2 className="font-display text-2xl">{t("divy.myFriendsTitle")}</h2>
-          <ul className="divide-y divide-border rounded-2xl border border-border/50 bg-card shadow-elevated-sm">
+          <ul className="divide-y divide-border rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/5 via-card to-card shadow-elevated-sm">
             {myFriends.map((d) => (
               <DivaRow
                 key={d.id}
