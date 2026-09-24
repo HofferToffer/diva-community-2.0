@@ -137,15 +137,18 @@ export default function CommunityDivy() {
         </Link>
       </motion.header>
 
-      <motion.div {...fadeUp(1)} className="space-y-3">
+      <motion.div
+        {...fadeUp(1)}
+        className="space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/8 via-accent/5 to-card p-4 shadow-elevated-sm"
+      >
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-primary" />
           <Input
             value={term}
             onChange={(e) => setTerm(e.target.value)}
             placeholder={t("divy.searchPlaceholder")}
             aria-label={t("divy.searchAriaLabel")}
-            className="pl-9"
+            className="border-primary/30 bg-card/80 pl-9 focus-visible:ring-primary"
           />
         </div>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
@@ -154,9 +157,10 @@ export default function CommunityDivy() {
             onChange={(e) => setCity(e.target.value)}
             placeholder={t("divy.cityPlaceholder")}
             aria-label={t("divy.cityAriaLabel")}
+            className="border-primary/30 bg-card/80 focus-visible:ring-primary"
           />
           <Select value={interest || "all"} onValueChange={(v) => setInterest(v === "all" ? "" : v)}>
-            <SelectTrigger aria-label={t("divy.movementAriaLabel")}>
+            <SelectTrigger aria-label={t("divy.movementAriaLabel")} className="border-primary/30 bg-card/80">
               <SelectValue placeholder={t("divy.movementPlaceholder")} />
             </SelectTrigger>
             <SelectContent>
@@ -169,7 +173,7 @@ export default function CommunityDivy() {
             </SelectContent>
           </Select>
           <Select value={chapter || "all"} onValueChange={(v) => setChapter(v === "all" ? "" : v)}>
-            <SelectTrigger aria-label={t("divy.chapterAriaLabel")}>
+            <SelectTrigger aria-label={t("divy.chapterAriaLabel")} className="border-primary/30 bg-card/80">
               <SelectValue placeholder={t("divy.chapterPlaceholder")} />
             </SelectTrigger>
             <SelectContent>
