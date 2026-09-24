@@ -127,7 +127,7 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
             Lucia Loderer
           </p>
           <p className="text-[0.7rem] leading-snug text-muted-foreground/90">
-            sprievodkyňa harmonizáciou menštruačného cyklu pomocou výživy a rituálov
+            Guide to harmonising the menstrual cycle through nutrition and rituals
           </p>
         </div>
       )}
