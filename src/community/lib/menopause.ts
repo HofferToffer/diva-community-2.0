@@ -3,14 +3,17 @@ import {
   Dumbbell,
   Egg,
   Footprints,
-  GlassWater,
-  Leaf,
   MessageCircle,
   Milk,
   PersonStanding,
   Snowflake,
   Sprout,
   Waves,
+  Sun,
+  Fish,
+  Wheat,
+  Beef,
+  Ban,
 } from "lucide-react";
 import type { CycleTip } from "@/community/lib/cycle";
 
@@ -103,11 +106,14 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
 ];
 
 export const MENOPAUSE_TIPS: CycleTip[] = [
-  { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg },
-  { label: "Vápnik a vitamín D", category: "eat", icon: Milk },
-  { label: "Potraviny bohaté na železo", category: "eat", icon: Leaf },
-  { label: "Sójové a strukovinové jedlá", category: "eat", icon: Sprout },
-  { label: "Dostatok vody", category: "eat", icon: GlassWater },
+  { label: "Vápnik", category: "eat", icon: Milk, detail: "Dôležitý pre zdravie kostí — mliečne výrobky, obohatené rastlinné mlieka, listová zelenina, tofu." },
+  { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
+  { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
+  { label: "Fytoestrogény", category: "eat", icon: Sprout, detail: "Môžu zmierniť príznaky a podporiť zdravie kostí — sója, ľanové semienka, cícer, šošovica." },
+  { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
+  { label: "Celozrnné obilniny, ovocie a zelenina", category: "eat", icon: Wheat, detail: "Stredomorský štýl stravovania — môže podporiť srdce a metabolizmus." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+  { label: "Menej alkoholu a fajčenia", category: "eat", icon: Ban, detail: "Obe môžu urýchliť úbytok kostnej hmoty a zhoršiť návaly tepla." },
   { label: "Silový tréning", category: "move", icon: Dumbbell },
   { label: "Rezká chôdza", category: "move", icon: Footprints },
   { label: "Joga a strečing", category: "move", icon: PersonStanding },
