@@ -20,6 +20,16 @@
     "connectionFailed": "Prepojenie so Stravou sa nepodarilo. Skús to znova.",
     "connecting": "Prepájam so Stravou…"
   },
+  "quoteCard": {
+    "ariaLabel": "Citát dňa: {{quote}}",
+    "otherPhotoButton": "Iná fotka",
+    "customPhotoButton": "Vlastná fotka",
+    "preparing": "Pripravujem...",
+    "shareButton": "Zdieľať",
+    "downloadImageButton": "Stiahnuť obrázok",
+    "downloadedManualUpload": "Obrázok je stiahnutý — nahraj si ho do Instagram Stories ručne.",
+    "shareFailed": "Zdieľanie sa nepodarilo. Skús to znova."
+  },
   "medicalNote": {
     "text": "Obsah v DIVA COMMUNITY má podporný a informačný charakter — nenahrádza vyšetrenie, diagnózu ani liečbu. Pri akýchkoľvek ťažkostiach, pochybnostiach alebo zmenách, ktoré ťa znepokojujú, sa vždy obráť na svojho lekára či lekárku."
   },
@@ -400,6 +410,10 @@
     "typicalNow": "Typické teraz: {{list}}"
   },
   "pregnancyCard": {
+    "editInProfileButton": "Upraviť v profile",
+    "babyBornButton": "Narodilo sa bábätko 🎉",
+    "congratsTitle": "Gratulujeme, Diva! 🎉",
+    "congratsSubtitle": "Vitaj v novej kapitole.",
     "weekCounter": "{{count}}. týždeň tehotenstva",
     "babySizeNote": "Tvoje bábätko má teraz veľkosť ako {{size}}.",
     "daysUntilDue": "Do predpokladaného termínu pôrodu zostáva {{count}} dní.",

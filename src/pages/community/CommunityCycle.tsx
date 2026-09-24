@@ -619,10 +619,10 @@ export default function CommunityCycle() {
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" className="px-0" onClick={() => navigate("/community/profil", { state: { openEdit: true } })}>
-              Upraviť v profile
+              {t("pregnancyCard.editInProfileButton")}
             </Button>
             <Button size="sm" onClick={markBirth}>
-              Narodilo sa bábätko 🎉
+              {t("pregnancyCard.babyBornButton")}
             </Button>
           </div>
           <NotAloneNote />
@@ -645,8 +645,8 @@ export default function CommunityCycle() {
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="max-w-xs rounded-2xl border border-border/50 bg-card p-8 text-center shadow-lg"
               >
-                <p className="font-display text-3xl text-primary">Gratulujeme, Diva! 🎉</p>
-                <p className="mt-2 text-sm text-muted-foreground">Vitaj v novej kapitole.</p>
+                <p className="font-display text-3xl text-primary">{t("pregnancyCard.congratsTitle")}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{t("pregnancyCard.congratsSubtitle")}</p>
               </motion.div>
             </div>
             <ConfettiBurst className="z-[101]" />

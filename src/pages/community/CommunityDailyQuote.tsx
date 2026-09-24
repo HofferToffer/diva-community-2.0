@@ -6,9 +6,12 @@ import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { getLifePhase, quoteForDate } from "@/community/lib/quotes";
 
 export default function CommunityDailyQuote() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
+  const quoteTranslations = t("quotes", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
   const { profile } = useCommunityAuth();
-  const quote = quoteForDate(getLifePhase(profile));
+  const rawQuote = quoteForDate(getLifePhase(profile));
+  const quote = isEnglish ? quoteTranslations[rawQuote] ?? rawQuote : rawQuote;
 
   return (
     <div className="space-y-6">

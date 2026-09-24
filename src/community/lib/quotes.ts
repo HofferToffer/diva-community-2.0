@@ -143,6 +143,6 @@ export const PHASE_LABEL: Record<LifePhase, string> = {
   cycle: "Môj cyklus",
   trying: "Cesta k bábätku",
   pregnant: "Moje tehotenstvo",
-  postpartum: "Šestonedelie / Obnova",
+  postpartum: "600 nedieľ / Obnova",
   menopause: "Moja menopauza",
 };

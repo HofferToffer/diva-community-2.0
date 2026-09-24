@@ -68,6 +68,7 @@ function MonthFeelingsTile({ profileId }: { profileId: string | undefined }) {
 export default function CommunityHome() {
   const { t, i18n } = useTranslation();
   const isEnglish = i18n.language === "en";
+  const quoteTranslations = t("quotes", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
   const { profile } = useCommunityAuth();
   const { data: stats } = useProfileStats(profile?.id);
   const feed = useFeed();
@@ -255,12 +256,19 @@ export default function CommunityHome() {
             )}
             <div className="relative">
               <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                {cycle.dayOfCycle}. deň cyklu · {cycle.phase.name}
+                {isEnglish
+                  ? t("profilePage.dayOfCycle", { day: cycle.dayOfCycle })
+                  : `${cycle.dayOfCycle}. deň cyklu`}{" "}
+                · {isEnglish ? t(`cycle.phases.${cycle.phaseKey}.name`) : cycle.phase.name}
               </p>
-              <h2 className="mt-1 font-display text-2xl text-primary">{cycle.subPhase.name}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{cycle.subPhase.description}</p>
+              <h2 className="mt-1 font-display text-2xl text-primary">
+                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.name`) : cycle.subPhase.name}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.description`) : cycle.subPhase.description}
+              </p>
               <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
-                „{CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
+                „{isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.mantra`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
               </p>
               <div className="mt-4">
                 <CyclePhaseWave
@@ -298,7 +306,13 @@ export default function CommunityHome() {
       <motion.section {...fadeUp(3)}>
         <p className="text-center text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">{t("home.quoteOfTheDay")}</p>
         <div className="mt-3">
-          <QuoteCard quote={quoteForDate(getLifePhase(profile))} variant="compact" />
+          <QuoteCard
+            quote={(() => {
+              const rawQuote = quoteForDate(getLifePhase(profile));
+              return isEnglish ? quoteTranslations[rawQuote] ?? rawQuote : rawQuote;
+            })()}
+            variant="compact"
+          />
         </div>
         <Link
           to="/community/citat"

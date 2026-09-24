@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Download, ImagePlus, RefreshCw, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ interface QuoteCardProps {
 }
 
 export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps) {
+  const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [bgIndex, setBgIndex] = useState(defaultBgIndex);
@@ -45,10 +47,10 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
         a.download = "diva-citat.png";
         a.click();
         URL.revokeObjectURL(url);
-        toast.info("Obrázok je stiahnutý — nahraj si ho do Instagram Stories ručne.");
+        toast.info(t("quoteCard.downloadedManualUpload"));
       }
     } catch {
-      toast.error("Zdieľanie sa nepodarilo. Skús to znova.");
+      toast.error(t("quoteCard.shareFailed"));
     } finally {
       setSharing(false);
     }
@@ -80,7 +82,7 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
           width={CARD_W}
           height={CARD_H}
           className="block w-full"
-          aria-label={`Citát dňa: ${quote}`}
+          aria-label={t("quoteCard.ariaLabel", { quote })}
         />
       </div>
 
@@ -96,11 +98,11 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
             }}
           >
             <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-            Iná fotka
+            {t("quoteCard.otherPhotoButton")}
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
             <ImagePlus className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-            Vlastná fotka
+            {t("quoteCard.customPhotoButton")}
           </Button>
           <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={pickOwnPhoto} />
         </div>
@@ -109,12 +111,12 @@ export function QuoteCard({ quote, variant = "full", className }: QuoteCardProps
       <div className="mx-auto mt-4 max-w-xs space-y-2">
         <Button className="w-full" size="lg" onClick={share} disabled={sharing}>
           <Share2 className="mr-1.5 h-4 w-4" aria-hidden="true" />
-          {sharing ? "Pripravujem..." : "Zdieľať"}
+          {sharing ? t("quoteCard.preparing") : t("quoteCard.shareButton")}
         </Button>
         {variant === "full" && (
           <Button variant="ghost" className="w-full" onClick={download}>
             <Download className="mr-1.5 h-4 w-4" aria-hidden="true" />
-            Stiahnuť obrázok
+            {t("quoteCard.downloadImageButton")}
           </Button>
         )}
       </div>
