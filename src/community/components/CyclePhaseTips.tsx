@@ -132,6 +132,20 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
           );
         })}
       </div>
+
+      {visible.some((tip) => tip.category === "eat") && (
+        <div className="pt-2 text-center">
+          <p className="font-display text-lg leading-snug text-foreground/90">
+            Lucia Loderer
+          </p>
+          <p className="text-[0.7rem] leading-snug text-muted-foreground/90">
+            {t("tips.luciaRole", {
+              defaultValue:
+                "Sprievodkyňa harmonizácie menštruačného cyklu pomocou výživy a rituálov",
+            })}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
