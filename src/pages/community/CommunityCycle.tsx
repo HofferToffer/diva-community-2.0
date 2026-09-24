@@ -481,7 +481,7 @@ export default function CommunityCycle() {
               className="rounded-full"
               onClick={() => {
                 setAdminPreview({ ...adminPreview, mode: "off" });
-                navigate("/community");
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
               Vypnúť náhľad
