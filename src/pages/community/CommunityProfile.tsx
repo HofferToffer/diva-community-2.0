@@ -411,8 +411,7 @@ export default function CommunityProfile() {
 
       {isMe && !editingProfile && (
         <Button
-          size="sm"
-          className="mx-auto block"
+          className="w-full"
           onClick={() => {
             setEditingProfile(true);
             setFocusChapter(false);
