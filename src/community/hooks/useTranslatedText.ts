@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 // Module-level cache: the same admin-entered text (e.g. a challenge title)
 // is requested by every viewer and every re-render, so translate it once
@@ -14,9 +13,15 @@ async function translateOne(text: string): Promise<string> {
 
   const promise = (async () => {
     try {
-      const { data, error } = await supabase.functions.invoke("translate-text", { body: { texts: [text] } });
-      if (error) throw error;
-      const translated: string = data?.translations?.[0] ?? text;
+      // Called directly from the browser (MyMemory allows cross-origin
+      // requests) rather than through a Supabase edge function — no backend
+      // deploy step needed, so it works the moment this code ships.
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=sk|en`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`MyMemory responded ${res.status}`);
+      const data = (await res.json()) as { responseData?: { translatedText?: string } };
+      const translated = data.responseData?.translatedText;
+      if (!translated) throw new Error("MyMemory returned no translation");
       cache.set(text, translated);
       return translated;
     } catch (err) {
@@ -34,10 +39,10 @@ async function translateOne(text: string): Promise<string> {
 /**
  * Live-translates admin-entered content (a challenge title/description —
  * free text, not static UI copy) to English when `enabled` is true, via a
- * free translation API called through the translate-text edge function.
- * Shows the original text immediately and swaps in the translation once it
- * arrives; falls back to the original on any failure. Nothing is stored —
- * admins never have to type an English version themselves.
+ * free translation API called directly from the browser. Shows the
+ * original text immediately and swaps in the translation once it arrives;
+ * falls back to the original on any failure. Nothing is stored — admins
+ * never have to type an English version themselves.
  */
 export function useTranslatedText(text: string, enabled: boolean): string {
   const [translated, setTranslated] = useState(() => (enabled && text && cache.has(text) ? cache.get(text)! : text));
