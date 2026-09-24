@@ -120,6 +120,12 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
           );
         })}
       </div>
+
+      {visible.some((tip) => tip.category === "eat") && (
+        <p className="pt-1 text-center text-[0.65rem] text-muted-foreground/80">
+          Lucia Loderer — sprievodkyňa harmonizáciou menštruačného cyklu pomocou výživy a rituálov.
+        </p>
+      )}
     </div>
   );
 }
