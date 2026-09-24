@@ -351,12 +351,12 @@ export default function CommunityProfile() {
                 type="button"
                 aria-label={t("profilePage.viewProfilePhoto")}
                 onClick={() => setPhotoLightbox("avatar")}
-                className="glow-primary cursor-zoom-in rounded-full"
+                className="cursor-zoom-in rounded-full"
               >
                 <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
               </button>
             ) : (
-              <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="glow-primary ring-4 ring-card" />
+              <ProfileAvatar path={displayAvatar} name={profile.name} size={80} className="ring-4 ring-card" />
             )}
             {isMe && (
               <>

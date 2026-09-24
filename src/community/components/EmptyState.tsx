@@ -32,8 +32,8 @@ export function EmptyState({
 }
 
 const TONE_STYLES = {
-  primary: "border-primary/30 bg-gradient-to-br from-primary/15 via-card to-card glow-primary",
-  accent: "border-accent/30 bg-gradient-to-br from-accent/15 via-card to-card glow-accent",
+  primary: "border-primary/30 bg-gradient-to-br from-primary/15 via-card to-card",
+  accent: "border-accent/30 bg-gradient-to-br from-accent/15 via-card to-card",
 } as const;
 
 export function StatTile({
