@@ -138,7 +138,7 @@ export default function CommunityAuth() {
       <p className="mt-3 text-sm text-muted-foreground">
         {t("auth.subtitle")}
       </p>
-      {mode !== "forgot" && (
+      {mode === "signup" && (
         <div className="mt-4 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3 text-center">
           <p className="font-display text-lg leading-snug">
             {t("auth.promoPrefix")} <span className="text-2xl font-light">100</span> {t("auth.promoMiddle")} <span className="uppercase">{t("auth.promoDivaWord")}</span> {t("auth.promoSuffix")}
