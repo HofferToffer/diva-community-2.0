@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
-import { useIntimacyLogs, useToggleIntimacyLog } from "@/community/hooks/queries";
+import { useIntimacyLogs, useToggleIntimacyLog, useIsAdmin } from "@/community/hooks/queries";
+import { useAdminPreview, applyPreview } from "@/community/lib/adminPreview";
 import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
 import {
   getPregnancyInfo,
@@ -71,7 +72,11 @@ function NotAloneNote() {
 export default function CommunityCycle() {
   const { t, i18n } = useTranslation();
   const isEnglish = i18n.language === "en";
-  const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
+  const { profile: realProfile, refreshProfile, loadingProfile } = useCommunityAuth();
+  const { data: isAdmin } = useIsAdmin();
+  const [adminPreview, setAdminPreview] = useAdminPreview();
+  const previewActive = Boolean(isAdmin) && adminPreview.mode !== "off";
+  const profile = realProfile && previewActive ? applyPreview(realProfile, adminPreview) : realProfile;
   const navigate = useNavigate();
 
   const [showMorePregnancy, setShowMorePregnancy] = useState(false);
@@ -461,6 +466,19 @@ export default function CommunityCycle() {
 
   return (
     <div className="space-y-8">
+      {previewActive && (
+        <div className="sticky top-2 z-30 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-primary/10 px-4 py-3 text-sm shadow-sm backdrop-blur">
+          <span>Admin náhľad — vidíš simulovanú fázu, tvoj profil sa nemení.</span>
+          <div className="flex gap-2">
+            <Button asChild size="sm" variant="ghost" className="rounded-full">
+              <Link to="/community/admin">Zmeniť fázu</Link>
+            </Button>
+            <Button size="sm" className="rounded-full" onClick={() => setAdminPreview({ ...adminPreview, mode: "off" })}>
+              Vypnúť náhľad
+            </Button>
+          </div>
+        </div>
+      )}
       <Link to="/community" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         {t("nav.home")}
