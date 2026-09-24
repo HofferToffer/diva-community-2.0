@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Circle, Heart, MessageCircle, Users } from "lucide-react";
-import { fadeUp } from "@/community/lib/motion";
+import { fadeUp, floatIcon } from "@/community/lib/motion";
 
 export default function CommunityDivaKruh() {
   const { t } = useTranslation();
@@ -24,9 +24,12 @@ export default function CommunityDivaKruh() {
         </div>
 
         <div className="relative z-10 mx-auto">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border-2 border-accent/40">
+          <motion.div
+            {...floatIcon(0)}
+            className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border-2 border-accent/40"
+          >
             <Circle className="h-8 w-8 text-accent" />
-          </div>
+          </motion.div>
           <h1 className="font-display text-3xl md:text-4xl tracking-wide">{t("divaKruh.title")}</h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("divaKruh.heroText")}</p>
         </div>
@@ -35,21 +38,27 @@ export default function CommunityDivaKruh() {
       <motion.section {...fadeUp(1)} className="grid gap-4 sm:grid-cols-3">
         <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
-            <Users className="h-6 w-6 text-accent" />
+            <motion.div {...floatIcon(0)}>
+              <Users className="h-6 w-6 text-accent" />
+            </motion.div>
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">{t("divaKruh.forWhomTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("divaKruh.forWhomText")}</p>
           </CardContent>
         </Card>
         <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
-            <MessageCircle className="h-6 w-6 text-accent" />
+            <motion.div {...floatIcon(1)}>
+              <MessageCircle className="h-6 w-6 text-accent" />
+            </motion.div>
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">{t("divaKruh.howTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("divaKruh.howText")}</p>
           </CardContent>
         </Card>
         <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
-            <Heart className="h-6 w-6 text-accent" />
+            <motion.div {...floatIcon(2)}>
+              <Heart className="h-6 w-6 text-accent" />
+            </motion.div>
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">{t("divaKruh.whatTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("divaKruh.whatText")}</p>
           </CardContent>

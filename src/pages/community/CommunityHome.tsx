@@ -24,7 +24,7 @@ import {
 import { getPostpartumInfo } from "@/community/lib/postpartum";
 import { MENOPAUSE_STAGES } from "@/community/lib/menopause";
 import { getLifePhase, quoteForDate } from "@/community/lib/quotes";
-import { fadeUp } from "@/community/lib/motion";
+import { fadeUp, floatIcon } from "@/community/lib/motion";
 import { CyclePhaseWave } from "@/community/components/CyclePhaseWave";
 
 function PregnancyWeekIconBg({ week }: { week: number }) {
@@ -40,9 +40,12 @@ function PregnancyWeekIconBg({ week }: { week: number }) {
 function HomeStatTile({ icon: Icon, label, value, i }: { icon: LucideIcon; label: string; value: string; i: number }) {
   return (
     <motion.div {...fadeUp(i)} className="rounded-2xl bg-secondary/30 px-3 py-4 text-center">
-      <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <motion.span
+        {...floatIcon(i)}
+        className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary"
+      >
         <Icon className="h-4 w-4" aria-hidden="true" />
-      </span>
+      </motion.span>
       <p className="mt-2 font-display text-2xl leading-none text-foreground">{value}</p>
       <p className="mt-1.5 text-[0.6rem] uppercase leading-tight tracking-[0.14em] text-muted-foreground">{label}</p>
     </motion.div>

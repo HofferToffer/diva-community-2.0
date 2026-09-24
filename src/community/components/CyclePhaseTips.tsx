@@ -10,6 +10,7 @@ import {
   type CyclePhaseKey,
   type CycleTipCategory,
 } from "@/community/lib/cycle";
+import { floatIcon } from "@/community/lib/motion";
 
 export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
   return <TipGrid tips={CYCLE_PHASE_TIPS[phase]} color={CYCLE_PHASE_COLORS[phase]} />;
@@ -77,13 +78,7 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
               className="flex flex-col items-center gap-2 text-center"
             >
               <motion.span
-                animate={{ y: [0, -10, 0], scale: [1, 1.08, 1] }}
-                transition={{
-                  duration: 1.8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: (i % 8) * 0.15,
-                }}
+                {...floatIcon(i)}
                 className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
                 style={{ background: softFill }}
                 aria-hidden="true"
