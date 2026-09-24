@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { StoredImage } from "./StoredImage";
 import { useChallengeProgress, useLeaderboard, type Challenge } from "../hooks/queries";
 import { formatDate, pluralDivy } from "../lib/format";
+import { useTranslatedText } from "../hooks/useTranslatedText";
 
 export function goalUnit(goalType: string) {
   switch (goalType) {
@@ -68,20 +69,22 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
   const goalUnitValue = goalUnit(challenge.goal_type);
   const translatedGoalUnit = isEnglish ? goalUnitTranslations[goalUnitValue] ?? goalUnitValue : goalUnitValue;
   const participants = data?.participants ?? 0;
+  const title = useTranslatedText(challenge.title, isEnglish);
+  const description = useTranslatedText(challenge.description ?? "", isEnglish);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm transition-colors hover:border-primary/40">
       <Link to={`/community/challenges/${challenge.id}`} className="block">
         {challenge.image_url && (
-          <StoredImage path={challenge.image_url} alt={challenge.title} className="h-40 w-full object-cover" />
+          <StoredImage path={challenge.image_url} alt={title} className="h-40 w-full object-cover" />
         )}
         <div className="p-5">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
             {formatDate(challenge.start_date, isEnglish ? "en" : "sk")} – {formatDate(challenge.end_date, isEnglish ? "en" : "sk")}
           </p>
-          <h3 className="mt-1 font-display text-2xl text-foreground">{challenge.title}</h3>
+          <h3 className="mt-1 font-display text-2xl text-foreground">{title}</h3>
           {challenge.description && (
-            <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{challenge.description}</p>
+            <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{description}</p>
           )}
           <div className="mt-4">
             <Progress value={percent} aria-label={t("challenges.progressAriaLabel")} />

@@ -17,6 +17,7 @@ import {
   useLeaderboard,
 } from "@/community/hooks/queries";
 import { formatDate, pluralDivy } from "@/community/lib/format";
+import { useTranslatedText } from "@/community/hooks/useTranslatedText";
 
 export default function CommunityChallengeDetail() {
   const { t, i18n } = useTranslation();
@@ -32,6 +33,8 @@ export default function CommunityChallengeDetail() {
     challenge?.start_date,
     challenge?.end_date,
   );
+  const title = useTranslatedText(challenge?.title ?? "", isEnglish);
+  const description = useTranslatedText(challenge?.description ?? "", isEnglish);
 
   if (isLoading) return <Skeleton className="h-72 w-full" />;
   if (!challenge)
@@ -52,7 +55,7 @@ export default function CommunityChallengeDetail() {
       {challenge.image_url && (
         <StoredImage
           path={challenge.image_url}
-          alt={challenge.title}
+          alt={title}
           loading="eager"
           className="h-56 w-full rounded-lg object-cover"
         />
@@ -69,9 +72,9 @@ export default function CommunityChallengeDetail() {
           {t("challenges.challengeLabel")} · {formatDate(challenge.start_date, isEnglish ? "en" : "sk")} –{" "}
           {formatDate(challenge.end_date, isEnglish ? "en" : "sk")}
         </p>
-        <h1 className="mt-2 font-display text-3xl">{challenge.title}</h1>
+        <h1 className="mt-2 font-display text-3xl">{title}</h1>
         {challenge.description && (
-          <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-foreground/85">{challenge.description}</p>
+          <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-foreground/85">{description}</p>
         )}
       </header>
 
