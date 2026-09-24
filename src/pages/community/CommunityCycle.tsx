@@ -470,7 +470,7 @@ export default function CommunityCycle() {
   return (
     <div className="space-y-8">
       {previewActive && (
-        <div className="sticky top-2 z-30 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-primary/10 px-4 py-3 text-sm shadow-sm backdrop-blur">
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-primary/10 px-4 py-3 text-sm shadow-sm backdrop-blur">
           <span>Admin náhľad — vidíš simulovanú fázu, tvoj profil sa nemení.</span>
           <div className="flex gap-2">
             <Button asChild size="sm" variant="ghost" className="rounded-full">
