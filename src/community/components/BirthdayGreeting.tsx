@@ -10,7 +10,8 @@ function isTodayBirthday(dateOfBirth: string | null, today = new Date()): boolea
   return dob.getMonth() === today.getMonth() && dob.getDate() === today.getDate();
 }
 
-function firstName(name: string): string {
+function firstName(name: string | null | undefined): string {
+  if (!name) return "";
   return name.trim().split(/\s+/)[0] ?? "";
 }
 
