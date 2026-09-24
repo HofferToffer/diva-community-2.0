@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { type DailyFeeling, useDailyFeelings, useSaveDailyFeeling } from "@/community/hooks/queries";
-import { DETAIL_SEPARATOR, MOODS } from "@/community/lib/feelings";
+import { DETAIL_SEPARATOR, MOODS, MOOD_COLORS } from "@/community/lib/feelings";
 import { fadeUp } from "@/community/lib/motion";
 import { cn } from "@/lib/utils";
 import MedicalNote from "@/community/components/MedicalNote";
@@ -99,11 +99,12 @@ export default function CommunityDailyFeeling() {
               {MOODS.map((item) => {
                 const selected = mood === item.value;
                 const MoodIcon = item.icon;
+                const color = MOOD_COLORS[item.value];
                 return (
                   <Button
                     key={item.value}
                     type="button"
-                    variant={selected ? "default" : "outline"}
+                    variant="outline"
                     aria-pressed={selected}
                     aria-label={translateFeeling(item.label)}
                     onClick={() => {
@@ -112,10 +113,14 @@ export default function CommunityDailyFeeling() {
                       setSpecific(null);
                       scrollToNext(detailRef);
                     }}
-                    className={cn(
-                      "relative h-auto min-h-24 flex-col gap-2 whitespace-normal rounded-2xl px-1 py-3 shadow-elevated-sm transition-all",
-                      !selected && "border-border/50",
-                    )}
+                    style={
+                      color
+                        ? selected
+                          ? { backgroundColor: color.dot, borderColor: color.dot, color: "hsl(40, 33%, 96%)" }
+                          : { backgroundColor: color.fill, borderColor: color.dot, color: color.dot }
+                        : undefined
+                    }
+                    className="relative h-auto min-h-24 flex-col gap-2 whitespace-normal rounded-2xl px-1 py-3 shadow-elevated-sm transition-all hover:opacity-90"
                   >
                     <MoodIcon aria-hidden="true" className="h-6 w-6" />
                     <span className="text-[0.65rem] leading-tight sm:text-xs">{translateFeeling(item.label)}</span>
