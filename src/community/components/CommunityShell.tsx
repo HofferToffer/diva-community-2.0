@@ -25,6 +25,7 @@ import { useConversations, useIsAdmin, useNotifications } from "../hooks/queries
 import { ProfileAvatar } from "./StoredImage";
 import { getLifePhase, PHASE_LABEL } from "../lib/quotes";
 import { getCycleInfo } from "../lib/cycle";
+import { BirthdayGreeting } from "./BirthdayGreeting";
 
 
 const NAV = [
@@ -360,6 +361,7 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       onPointerCancel={onPointerEnd}
       onWheel={onWheel}
     >
+      <BirthdayGreeting />
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
         <div className="relative mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
           <div className="flex items-center">

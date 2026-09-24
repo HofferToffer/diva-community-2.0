@@ -98,6 +98,14 @@
     "downloadedManualUpload": "Image downloaded — upload it to Instagram Stories manually.",
     "shareFailed": "Sharing failed. Try again."
   },
+  "birthday": {
+    "ariaLabel": "Birthday greeting",
+    "kicker": "Today is your day",
+    "titleWithName": "Happy birthday, {{name}} 🎉",
+    "title": "Happy birthday! 🎉",
+    "subtitle": "May this year be full of strength, softness and moments just for you. You're a diva.",
+    "continueButton": "Continue to the app"
+  },
   "gate": {
     "title": "Invited Divas only, for now",
     "subtitle": "This section is still being prepared. Enter the access code to come in.",
