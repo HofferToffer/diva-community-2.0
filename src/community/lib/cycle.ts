@@ -111,7 +111,7 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
       key: "lutealna_stabilna",
       name: "Jeseň — zber úrody",
       description:
-        "Energia je ešte dobrá, len sa pomaly stišuje, ako teplé septembrové dni. Dobehni rozbehnuté veci, kým na to máš silu.",
+        "Progesterón po ovulácii stúpa a telo sa pripravuje na možné tehotenstvo. Energia môže byť ešte celkom dobrá, no postupne sa môže spomaľovať — toto obdobie môže byť vhodné na dokončenie rozbehnutých vecí, kým na to máš silu.",
     };
   }
   if (dayOfCycle <= lutealStart + 2 * third - 1) {
@@ -119,14 +119,14 @@ function getDetailedSubPhase(dayOfCycle: number, cycleLengthDays: number): { key
       key: "lutealna_premenliva",
       name: "Jeseň — vietor sa mení",
       description:
-        "Nálady môžu kolísať a si citlivejšia, podobne ako sa mení jesenné počasie. Buď k sebe trpezlivá a na tieto dni si neplánuj nič náročné.",
+        "Hladiny hormónov sa začínajú meniť, čo môže priniesť výkyvy nálad aj väčšiu citlivosť. Môžeš sa cítiť inak zo dňa na deň — to je bežné. Buď k sebe trpezlivá a na tieto dni si možno neplánuj nič príliš náročné.",
     };
   }
   return {
     key: "lutealna_neskora",
     name: "Jeseň — posledné lístie padá",
     description:
-      "Energia je najnižšia a PMS sa hlási najviac, presne pred príchodom pokojnej zimy. Dopraj si pokoj, jemnosť a čo najmenej povinností.",
+      "Progesterón aj estrogén tesne pred menštruáciou prudko klesajú, čo môže priniesť najnižšiu energiu a najvýraznejšie PMS príznaky tohto cyklu. Môže pomôcť dopriať si pokoj, jemnosť a čo najmenej povinností.",
   };
 }
 
