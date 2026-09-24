@@ -131,7 +131,7 @@
     "text": "Content on DIVA COMMUNITY is for support and information only — it doesn't replace a medical exam, diagnosis, or treatment. If you have any concerns, doubts, or changes that worry you, always talk to your doctor."
   },
   "notAloneNote": {
-    "text": "You don't have to do this alone — sharing with other women, friends and those with more experience, can help more than you think.",
+    "text": "Other women, friends, people who've been where you are — talking to them can help more than you'd expect. You're not in this alone.",
     "linkText": "Try DIVA CIRCLE"
   },
   "goalUnit": {
@@ -766,7 +766,7 @@
       "3": { "archetype": "Woman at the Full Moon", "keywords": "readiness • strength • trust • body" }
     },
     "tipsIntro": "Body, mind and ritual go hand in hand in pregnancy — food, movement and what you pay attention to are all part of the same journey. Every one of us experiences it differently and in our own way, so take this as inspiration, not a strict prescription.",
-    "partnerNote": "This time isn't just yours — it's your partner's journey too. Let them be there with you: at check-ups, packing the hospital bag, during perineal massage, in conversations about what you feel and what you're afraid of. It's not a test you have to pass alone — you're a new family learning this together, from day one.",
+    "partnerNote": "Your partner is on this journey with you, not just watching from the side. Let them be there with you: at check-ups, packing the hospital bag, during perineal massage, in conversations about what you feel and what you're afraid of. You don't have to get this right alone — you're a new family learning it together, from day one.",
     "lateNote": "Raspberry leaf is linked in some studies to a shorter second stage of labor when drunk gradually from around week 32-34 (start with one cup a day, then add more) — the evidence is still modest, not certain, so always run it by your midwife or gynecologist first. Lemon balm is calming and helps with insomnia or restlessness, and is generally considered safe — but herbal teas in pregnancy are recommended to be kept to around 1-2 cups a day. We deliberately don't mention chamomile — in the third trimester its effect on the uterus is assessed inconsistently. Lady's mantle is often paired with these in folk tradition, but safety data for pregnancy is lacking — better to skip it unless your doctor specifically recommends it. Perineal massage, on the other hand, has solid evidence that from around week 34-35 it reduces the risk of injury during birth — only do it when you genuinely feel ready, with your partner if you like.",
     "weekSize": {
       "4": "a poppy seed", "5": "a sesame seed", "6": "a lentil", "7": "a blueberry", "8": "a raspberry",
@@ -850,7 +850,7 @@
     "storyTitle": "Your birth story",
     "storyPhotoAlt": "Photo for your birth story",
     "audioNotSupported": "Your device doesn't support audio playback.",
-    "writingPrompt": "Write it exactly as you experienced it — tender or harsh, fragile or strong. It doesn't have to sound good or make sense to anyone else. This is just yours. If writing isn't flowing, tap the microphone and talk — the text will write itself.",
+    "writingPrompt": "Write it just as you lived it — there's no need for it to sound polished or make sense to anyone but you. This is yours alone. Prefer talking? Tap the microphone and speak instead — we'll turn it into text.",
     "storyPlaceholder": "My birth story…",
     "stopDictationAriaLabel": "Stop recording",
     "startDictationAriaLabel": "Dictate with microphone",
@@ -862,7 +862,7 @@
     "cancelButton": "Cancel",
     "editButton": "Edit",
     "storyDeservesPlace": "Your story deserves a place. Write it now, while it's still fresh — even just a few sentences.",
-    "storyIntro": "Tender or harsh, fragile or strong — every birth has its own story. Only you see and hear it. If writing isn't flowing, tap the microphone and talk — the text will write itself.",
+    "storyIntro": "Every birth is its own story — soft or rough, fragile or fierce. Only you see and hear it. Talking is easier than typing sometimes — tap the microphone and let the words come.",
     "writeStoryButton": "Write your story",
     "transcribeButton": "Transcribe to text",
     "transcribingButton": "Transcribing…",
@@ -889,7 +889,7 @@
     "enterBirthDate": "Enter your baby's birth date in your profile."
   },
   "postpartum": {
-    "partnerNote": "Šestonedelie isn't a test you have to endure alone — it's also a time when your partner is learning to be a parent too. Let them take on what they can — housework, night wakings, visitors — so you can heal and get to know your baby. You're a new family, and this is shared work from day one, not something only one of you has to carry.",
+    "partnerNote": "Your partner is learning to be a parent too during šestonedelie, not just watching you get through it. Let them take on what they can — housework, night wakings, visitors — so you can heal and get to know your baby. You're a new family, and this work is shared from day one.",
     "weekBands": {
       "1": {
         "message": "The first week is about survival and getting to know each other. Bleeding is now at its heaviest and dark red, uterine contractions (felt most during breastfeeding) are at their strongest — this is how the uterus returns to its size. Around days 3–5, many women get a wave of crying or heightened sensitivity — it's called the baby blues and usually resolves on its own within two weeks. You and your baby are, above all, a new family right now — you have the right to set your own boundaries from the very start: who to let visit and when, what you need right now, when you want it to be just the two of you. Nothing else takes priority over this relationship.",
