@@ -71,7 +71,11 @@ function NotAloneNote() {
 export default function CommunityCycle() {
   const { t, i18n } = useTranslation();
   const isEnglish = i18n.language === "en";
-  const { profile, refreshProfile, loadingProfile } = useCommunityAuth();
+  const { profile: realProfile, refreshProfile, loadingProfile } = useCommunityAuth();
+  const { data: isAdmin } = useIsAdmin();
+  const [adminPreview, setAdminPreview] = useAdminPreview();
+  const previewActive = Boolean(isAdmin) && adminPreview.mode !== "off";
+  const profile = realProfile && previewActive ? applyPreview(realProfile, adminPreview) : realProfile;
   const navigate = useNavigate();
 
   const [showMorePregnancy, setShowMorePregnancy] = useState(false);
