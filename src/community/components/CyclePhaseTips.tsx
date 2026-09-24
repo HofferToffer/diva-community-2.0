@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import {
@@ -27,12 +27,14 @@ export function CyclePhaseTips({ phase }: { phase: CyclePhaseKey }) {
 export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: string; dot: string } }) {
   const { t } = useTranslation();
   const [filter, setFilter] = useState<CycleTipCategory | "all">("all");
+  const [expanded, setExpanded] = useState<string | null>(null);
   const visible = filter === "all" ? tips : tips.filter((tip) => tip.category === filter);
   const softFill = color.fill.replace(/0\.\d+\)/, "0.6)");
   // Looked up as a plain object (not a dotted t() key) because several Slovak
   // labels contain periods, which i18next's default key separator would
   // otherwise try to parse as nested paths.
   const tipTranslations = t("tips", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
+  const tipDetailTranslations = t("tipDetails", { returnObjects: true, defaultValue: {} }) as Record<string, string>;
 
   const filters: Array<{ key: CycleTipCategory | "all"; label: string }> = [
     { key: "all", label: t("tipCategories.all", { defaultValue: "Všetko" }) },
@@ -69,6 +71,8 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
       <div key={filter} className="grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4">
         {visible.map((tip, i) => {
           const Icon = tip.icon;
+          const detailText = tip.detail ? tipDetailTranslations[tip.label] ?? tip.detail : null;
+          const isOpen = expanded === tip.label;
           return (
             <motion.div
               key={tip.label}
@@ -77,17 +81,41 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
               transition={{ duration: 0.5, delay: Math.min(i, 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center gap-2 text-center"
             >
-              <motion.span
-                {...floatIcon(i)}
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
-                style={{ background: softFill }}
-                aria-hidden="true"
+              <button
+                type="button"
+                disabled={!detailText}
+                aria-expanded={detailText ? isOpen : undefined}
+                onClick={() => setExpanded((prev) => (prev === tip.label ? null : tip.label))}
+                className={cn(
+                  "flex flex-col items-center gap-2 rounded-2xl p-1 transition-colors",
+                  detailText ? "cursor-pointer active:bg-foreground/5" : "cursor-default",
+                )}
               >
-                <Icon className="h-6 w-6" style={{ color: color.dot }} />
-              </motion.span>
-              <p className="text-xs leading-tight text-foreground/85">
-                {tipTranslations[tip.label] ?? tip.label}
-              </p>
+                <motion.span
+                  {...floatIcon(i)}
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: softFill }}
+                  aria-hidden="true"
+                >
+                  <Icon className="h-6 w-6" style={{ color: color.dot }} />
+                </motion.span>
+                <span className="text-xs leading-tight text-foreground/85">
+                  {tipTranslations[tip.label] ?? tip.label}
+                </span>
+              </button>
+              <AnimatePresence initial={false}>
+                {isOpen && detailText && (
+                  <motion.p
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="overflow-hidden text-[0.65rem] leading-snug text-muted-foreground"
+                  >
+                    {detailText}
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </motion.div>
           );
         })}

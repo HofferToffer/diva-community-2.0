@@ -227,7 +227,7 @@ export const CYCLE_PHASE_SEASON: Record<CyclePhaseKey, { season: string; tagline
 
 export type CycleTipCategory = "do" | "eat" | "move";
 
-export type CycleTip = { label: string; category: CycleTipCategory; icon: LucideIcon };
+export type CycleTip = { label: string; category: CycleTipCategory; icon: LucideIcon; detail?: string };
 
 export const CYCLE_TIP_CATEGORIES: Record<CycleTipCategory, string> = {
   do: "Rituály",
@@ -238,13 +238,13 @@ export const CYCLE_TIP_CATEGORIES: Record<CycleTipCategory, string> = {
 /** Detailed, icon-tagged tips per phase — food, movement and rituals to browse like a tip grid. */
 export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   menstruacna: [
-    { label: "Horúci čaj", category: "eat", icon: Coffee },
-    { label: "Špenát a strukoviny", category: "eat", icon: Leaf },
-    { label: "Horká čokoláda", category: "eat", icon: Candy },
-    { label: "Pi dosť vody", category: "eat", icon: Droplets },
-    { label: "Mastné ryby", category: "eat", icon: Fish },
-    { label: "Chia a ľanové semienka", category: "eat", icon: Nut },
-    { label: "Jogurt a kyslá kapusta", category: "eat", icon: Milk },
+    { label: "Horúci čaj", category: "eat", icon: Coffee, detail: "Zohreje a zmierni kŕče — skús zázvorový alebo harmančekový čaj." },
+    { label: "Špenát a strukoviny", category: "eat", icon: Leaf, detail: "Dopĺňajú železo, ktoré telo stráca počas menštruácie." },
+    { label: "Horká čokoláda", category: "eat", icon: Candy, detail: "Horčík v čokoláde nad 70 % zmierňuje kŕče aj chute na sladké." },
+    { label: "Pi dosť vody", category: "eat", icon: Droplets, detail: "Znižuje nadúvanie a podporuje energiu aj jasnú pleť." },
+    { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Omega-3 z lososa, makrely či sardiniek tlmí zápal a bolesť." },
+    { label: "Chia a ľanové semienka", category: "eat", icon: Nut, detail: "Omega-3 a vláknina pre hormonálnu rovnováhu." },
+    { label: "Jogurt a kyslá kapusta", category: "eat", icon: Milk, detail: "Probiotiká podporujú trávenie a zdravé črevo." },
     { label: "Jemná joga", category: "move", icon: PersonStanding },
     { label: "Choď sa prejsť", category: "move", icon: Footprints },
     { label: "Pretiahni sa", category: "move", icon: Feather },
@@ -254,12 +254,12 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Počúvaj svoje telo", category: "do", icon: Ear },
   ],
   folikularna: [
-    { label: "Bielkoviny", category: "eat", icon: Egg },
-    { label: "Zdravé tuky", category: "eat", icon: Nut },
-    { label: "Komplexné sacharidy", category: "eat", icon: Wheat },
-    { label: "Železo", category: "eat", icon: Beef },
-    { label: "Čerstvá zelenina", category: "eat", icon: Salad },
-    { label: "Fermentované potraviny", category: "eat", icon: Milk },
+    { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Podporujú rast folikulov a svalov — vajcia, hydina, strukoviny." },
+    { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Vitamín E z orechov, semienok, olivového oleja a listovej zeleniny." },
+    { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Vláknina a stabilná energia z celozrnných obilnín a strukovín." },
+    { label: "Železo", category: "eat", icon: Beef, detail: "Dopĺňa zásoby po menštruácii — červené mäso, špenát, šošovica." },
+    { label: "Čerstvá zelenina", category: "eat", icon: Salad, detail: "Vitamíny a antioxidanty z farebnej, sezónnej zeleniny." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Podporujú črevný mikrobióm — kimchi, jogurt, kefir." },
     { label: "Zacvič si posilku", category: "move", icon: Dumbbell },
     { label: "Zabehni si naplno", category: "move", icon: Zap },
     { label: "Vyraz na bicykli", category: "move", icon: Bike },
@@ -270,11 +270,11 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Nauč sa niečo nové", category: "do", icon: NotebookPen },
   ],
   ovulacia: [
-    { label: "Farebná zelenina", category: "eat", icon: Salad },
-    { label: "Pi dosť vody", category: "eat", icon: GlassWater },
-    { label: "Ľahké bielkoviny", category: "eat", icon: Fish },
-    { label: "Sladké zemiaky a strukoviny", category: "eat", icon: Wheat },
-    { label: "Bobuľové ovocie", category: "eat", icon: Cherry },
+    { label: "Farebná zelenina", category: "eat", icon: Salad, detail: "Antioxidanty a vitamíny na podporu plodnosti a energie." },
+    { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Znižuje nadúvanie a podporuje energiu aj jasnú pleť." },
+    { label: "Ľahké bielkoviny", category: "eat", icon: Fish, detail: "Ryby, hydina či vajcia udržia energiu bez ťažoby." },
+    { label: "Sladké zemiaky a strukoviny", category: "eat", icon: Wheat, detail: "Komplexné sacharidy pre stabilnú energiu." },
+    { label: "Bobuľové ovocie", category: "eat", icon: Cherry, detail: "Antioxidanty a vitamín C pre imunitu." },
     { label: "Skús osobný rekord", category: "move", icon: Zap },
     { label: "Cvič s kamoškami", category: "move", icon: Users },
     { label: "Zatancuj si", category: "move", icon: Music },
@@ -285,13 +285,13 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Vyskúšaj niečo nové", category: "do", icon: Sparkle },
   ],
   lutealna: [
-    { label: "Horčík a orechy", category: "eat", icon: Nut },
-    { label: "Celozrnné jedlo", category: "eat", icon: Wheat },
-    { label: "Obmedz kofeín", category: "eat", icon: Coffee },
-    { label: "Upokojujúci čaj", category: "eat", icon: Droplets },
-    { label: "Tekvicové semienka", category: "eat", icon: Nut },
-    { label: "Listová zelenina a sladké zemiaky", category: "eat", icon: Sprout },
-    { label: "Pi viac vody", category: "eat", icon: GlassWater },
+    { label: "Horčík a orechy", category: "eat", icon: Nut, detail: "Horčík zmierňuje PMS, kŕče aj chute na sladké." },
+    { label: "Celozrnné jedlo", category: "eat", icon: Wheat, detail: "Stabilizuje hladinu cukru v krvi aj náladu." },
+    { label: "Obmedz kofeín", category: "eat", icon: Coffee, detail: "Znižuje podráždenosť a citlivosť prsníkov." },
+    { label: "Upokojujúci čaj", category: "eat", icon: Droplets, detail: "Harmanček alebo medovka pre pokoj a lepší spánok." },
+    { label: "Tekvicové semienka", category: "eat", icon: Nut, detail: "Zinok a horčík pre hormonálnu rovnováhu." },
+    { label: "Listová zelenina a sladké zemiaky", category: "eat", icon: Sprout, detail: "Vitamín B6 zmierňuje výkyvy nálady pred menštruáciou." },
+    { label: "Pi viac vody", category: "eat", icon: GlassWater, detail: "Pomáha proti nadúvaniu pred menštruáciou." },
     { label: "Jemná joga", category: "move", icon: PersonStanding },
     { label: "Zajdi si zaplávať", category: "move", icon: Waves },
     { label: "Prechádzka v prírode", category: "move", icon: Footprints },
