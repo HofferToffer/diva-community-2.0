@@ -263,7 +263,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Kofeín a alkohol", category: "eat", icon: Wine, detail: "Ich obmedzenie môže podporiť tráviaci komfort počas menštruácie." },
     { label: "Jemná joga", category: "move", icon: PersonStanding },
     { label: "Choď sa prejsť", category: "move", icon: Footprints },
-    { label: "Pretiahni sa", category: "move", icon: Feather },
+    { label: "Strečing", category: "move", icon: Feather },
     { label: "Daj si teplý kúpeľ", category: "do", icon: Bath },
     { label: "Choď skôr spať", category: "do", icon: Bed },
     { label: "Píš si vďačnosť", category: "do", icon: BookOpen },
