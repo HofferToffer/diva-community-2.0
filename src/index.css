@@ -194,6 +194,28 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /*
+   * A softer, layered alternative to shadow-sm/shadow-md for surfaces that
+   * should read as gently raised off the page rather than flat — cards,
+   * chat bubbles, the chat input bar. Stays theme-neutral (no primary-color
+   * math) so it works unchanged under the per-cycle-phase color themes
+   * above. A close, tight shadow plus a softer, wider one underneath give
+   * the depth; the inset top highlight suggests a subtle convex surface.
+   */
+  .shadow-elevated {
+    box-shadow:
+      0 1px 2px hsl(30 20% 20% / 0.07),
+      0 10px 22px -10px hsl(30 25% 15% / 0.22),
+      inset 0 1px 0 hsl(40 40% 100% / 0.4);
+  }
+
+  .shadow-elevated-sm {
+    box-shadow:
+      0 1px 1px hsl(30 20% 20% / 0.06),
+      0 5px 12px -6px hsl(30 25% 15% / 0.18),
+      inset 0 1px 0 hsl(40 40% 100% / 0.35);
+  }
 }
 
 /* Mapa Divy — vlastné markery a klastre v brand farbe, mimo React stromu (Leaflet ich vykresľuje priamo do DOM). */

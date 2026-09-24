@@ -84,7 +84,7 @@ export default function CommunityChat() {
       ) : other ? (
         <button
           type="button"
-          className="flex items-center gap-3 text-left"
+          className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3 text-left shadow-elevated-sm"
           onClick={() => other.username && navigate(`/community/divy/${other.username}`)}
         >
           <ProfileAvatar path={other.avatar_url} name={other.name ?? "Diva"} size={40} />
@@ -94,7 +94,7 @@ export default function CommunityChat() {
         <p className="text-sm text-muted-foreground">{t("chat.profileNotFound")}</p>
       )}
 
-      <div className="flex-1 space-y-3 overflow-y-auto rounded-2xl border border-border/50 bg-card p-4 shadow-sm">
+      <div className="flex-1 space-y-3 overflow-y-auto rounded-2xl border border-border/50 bg-card p-4 shadow-elevated">
         {loadingMessages && <Skeleton className="h-24 w-full" />}
         {!loadingMessages && messages?.length === 0 && (
           <p className="py-8 text-center text-sm text-muted-foreground">
@@ -107,7 +107,7 @@ export default function CommunityChat() {
             <motion.div key={m.id} {...fadeUp(Math.min(i, 3))} className={cn("flex", mine ? "justify-end" : "justify-start")}>
               <div
                 className={cn(
-                  "max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-sm",
+                  "max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-elevated-sm",
                   mine ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground",
                 )}
               >
@@ -127,7 +127,7 @@ export default function CommunityChat() {
           placeholder={t("chat.placeholder")}
           rows={1}
           maxLength={1000}
-          className="min-h-11 flex-1 resize-none rounded-2xl border-border/50 text-base shadow-sm lg:text-sm"
+          className="min-h-11 flex-1 resize-none rounded-2xl border-border/50 text-base shadow-elevated-sm lg:text-sm"
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
@@ -135,7 +135,7 @@ export default function CommunityChat() {
             }
           }}
         />
-        <Button size="lg" onClick={submit} disabled={!draft.trim() || sendMessage.isPending}>
+        <Button size="lg" className="shadow-elevated-sm" onClick={submit} disabled={!draft.trim() || sendMessage.isPending}>
           {t("chat.sendButton")}
         </Button>
       </div>

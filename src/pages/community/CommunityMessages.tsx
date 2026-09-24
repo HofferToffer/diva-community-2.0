@@ -47,7 +47,7 @@ export default function CommunityMessages() {
           <motion.div key={c.otherId} {...fadeUp(Math.min(i, 3))}>
             <Link
               to={`/community/spravy/${c.otherId}`}
-              className="flex items-center gap-3 rounded-2xl border border-border/50 bg-card p-4 shadow-sm transition-colors hover:border-primary/40"
+              className="flex items-center gap-3 rounded-2xl border border-border/50 bg-card p-4 shadow-elevated-sm transition-colors hover:border-primary/40"
             >
               <ProfileAvatar path={c.otherAvatar} name={c.otherName ?? "Diva"} size={44} />
               <div className="min-w-0 flex-1">
