@@ -122,5 +122,5 @@ export const MENOPAUSE_TIPS: CycleTip[] = [
   { label: "Chladenie pri návaloch", category: "do", icon: Snowflake },
   { label: "Pravidelný spánkový režim", category: "do", icon: Bed },
   { label: "Hovor o tom nahlas", category: "do", icon: MessageCircle },
-  { label: "Stretni sa s divami", category: "do", icon: Users, detail: "V tomto období nie si sama — zdieľanie skúseností s inými ženami dokáže naozaj pomôcť." },
+  { label: "Stretni sa s Divami", category: "do", icon: Users, detail: "V tomto období nie si sama — zdieľanie skúseností s inými ženami dokáže naozaj pomôcť." },
 ];

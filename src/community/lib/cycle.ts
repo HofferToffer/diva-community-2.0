@@ -298,7 +298,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Rozbehni nový nápad", category: "do", icon: Sparkle },
     { label: "Odmeň sa", category: "do", icon: Gift },
     { label: "Zatancuj si a poteš telo", category: "do", icon: PartyPopper },
-    { label: "Stretni sa s divami", category: "do", icon: Users },
+    { label: "Stretni sa s Divami", category: "do", icon: Users },
     { label: "Nauč sa niečo nové", category: "do", icon: NotebookPen },
   ],
   ovulacia: [

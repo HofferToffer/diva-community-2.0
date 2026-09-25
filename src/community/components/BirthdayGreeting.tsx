@@ -111,7 +111,7 @@ export function BirthdayGreeting() {
 
             <p className="mt-4 max-w-[270px] text-sm leading-relaxed text-[hsl(40_30%_88%/0.85)]">
               {t("birthday.subtitle", {
-                defaultValue: "Nech je tento rok plný sily, nežnosti a chvíľ len pre teba. Si diva.",
+                defaultValue: "Nech je tento rok plný sily, nežnosti a chvíľ len pre teba. Si Diva.",
               })}{" "}
               💕
             </p>

@@ -11,7 +11,7 @@ const CYCLE_QUOTES: string[] = [
   "Počúvaj svoje telo, vie viac, než si myslíš.",
   "Robíš to hlavne pre seba.",
   "Každý cyklus ťa niečo naučí, ak mu dáš priestor.",
-  "Nie si sama — divy sú s tebou.",
+  "Nie si sama — Divy sú s tebou.",
   "Tvoj pokrok sa nemeria porovnávaním s inými.",
   "Dovoľ si cítiť to, čo cítiš.",
   "Sila nie je vždy hlasná, niekedy je tichá a vytrvalá.",

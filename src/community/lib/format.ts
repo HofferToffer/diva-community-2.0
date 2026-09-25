@@ -73,9 +73,9 @@ export function formatRelative(value: string, locale: "sk" | "en" = "sk"): strin
 }
 
 export function pluralDivy(count: number): string {
-  if (count === 1) return "diva";
-  if (count >= 2 && count <= 4) return "divy";
-  return "div";
+  if (count === 1) return "Diva";
+  if (count >= 2 && count <= 4) return "Divy";
+  return "Div";
 }
 
 export function pluralRuns(count: number): string {
