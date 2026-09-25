@@ -1311,6 +1311,7 @@
     "Fytoestrogény": "Soy, flaxseed, chickpeas, lentils — may ease symptoms and help keep bones strong.",
     "Celozrnné obilniny, ovocie a zelenina": "A Mediterranean-style way of eating — can be good for heart and metabolic health.",
     "Menej alkoholu a fajčenia": "Both can speed up bone loss and worsen hot flushes.",
+    "Stretni sa s divami": "You're not alone in this — sharing experiences with other women can genuinely help.",
     "Zostaň hydratovaná": "Can help with healing, and with milk production if you're breastfeeding.",
     "Dopraj si výživu, koľko vládzeš": "You don't have to eat perfectly — just take care of yourself as best you can today.",
     "Extra výživa": "Breastfeeding increases your energy needs — eat regularly and enough.",
@@ -1353,6 +1354,7 @@
   },
   "cycleCard": {
     "pageIntro": "Track your cycle phases and tips to help you feel better. Every one of us experiences it differently and in our own way, so take this as inspiration, not a strict prescription.",
+    "pageIntroMenopause": "This stage of life looks different for every woman — here you'll find tips that can help you feel better through it. Take it as inspiration, not a strict prescription.",
     "title": "Cycle overview",
     "dayOfCycle": "Day {{count}} of cycle",
     "editButton": "Edit",

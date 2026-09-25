@@ -504,7 +504,9 @@ export default function CommunityCycle() {
         <h1 className="font-display text-3xl">
           {isEnglish ? t(`phaseLabel.${getLifePhase(profile)}`) : PHASE_LABEL[getLifePhase(profile)]}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("cycleCard.pageIntro")}</p>
+        <p className="text-sm text-muted-foreground">
+          {t(getLifePhase(profile) === "menopause" ? "cycleCard.pageIntroMenopause" : "cycleCard.pageIntro")}
+        </p>
       </motion.header>
 
       {profile.is_pregnant && (

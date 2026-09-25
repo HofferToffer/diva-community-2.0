@@ -596,6 +596,7 @@
   },
   "cycleCard": {
     "pageIntro": "Sleduj fázy cyklu a odporúčania, ktoré ti vedia pomôcť cítiť sa lepšie. Každá to prežívame inak a po svojom, ber to ako inšpiráciu, nie presný predpis.",
+    "pageIntroMenopause": "Toto obdobie je iné pre každú z nás — tu nájdeš tipy, ktoré ti môžu pomôcť cítiť sa v ňom lepšie. Ber to ako inšpiráciu, nie presný predpis.",
     "title": "Prehľad cyklu",
     "dayOfCycle": "{{count}}. deň cyklu",
     "editButton": "Upraviť",
