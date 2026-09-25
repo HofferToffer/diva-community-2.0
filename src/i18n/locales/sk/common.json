@@ -431,7 +431,7 @@
     "booksTitle": "Knihy, ktoré ti môžu pomôcť",
     "enterLastPeriod": "Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva.",
     "redFlagsTitle": "Kedy volať lekára okamžite",
-    "redFlagsIntro": "Toto nie je bežná súčasť tehotenstva. Ak sa objaví čokoľvek z tohto, zavolaj svojej gynekologičke alebo pôrodnej asistentke hneď, kedykoľvek vo dne v noci. Pri silných príznakoch, alebo ak sa nevieš dovolať, choď rovno na pohotovosť alebo volaj 155.",
+    "redFlagsIntro": "Väčšina tehotenstiev prebehne bez čo i len jedného z týchto príznakov — tento zoznam tu je len pre istotu, nech presne vieš, kedy treba konať. Ak sa predsa niečo z tohto objaví, zavolaj svojej gynekologičke alebo pôrodnej asistentke hneď, kedykoľvek vo dne v noci. Pri silných príznakoch, alebo ak sa nevieš dovolať, choď rovno na pohotovosť alebo volaj 155.",
     "redFlags": [
       "Znížené alebo zmenené pohyby bábätka — nečakaj do ďalšej kontroly, zavolaj hneď, v ktoromkoľvek týždni tehotenstva",
       "Akékoľvek krvácanie z pošvy",
@@ -496,7 +496,7 @@
     "typicalThisWeek": "Typické tento týždeň: {{list}}",
     "enterBirthDate": "Zadaj dátum pôrodu v profile.",
     "redFlagsTitle": "Kedy volať lekára okamžite",
-    "redFlagsIntro": "Aj po pôrode sa môžu objaviť vážne komplikácie. Tieto príznaky neignoruj — zavolaj gynekologičke alebo choď rovno na pohotovosť.",
+    "redFlagsIntro": "Väčšina šestonedelí prebehne bez týchto komplikácií — tento zoznam tu je len pre istotu. Ak sa predsa niečo z tohto objaví, neignoruj to — zavolaj gynekologičke alebo choď rovno na pohotovosť.",
     "redFlags": [
       "Silné krvácanie — premočíš vložku za menej ako hodinu, veľké zrazeniny, alebo krvácanie sa namiesto zoslabovania zosilňuje",
       "Príznaky infekcie — horúčka, zimnica, zapáchajúci výtok, alebo sčervenaná, opuchnutá či bolestivá jazva",
