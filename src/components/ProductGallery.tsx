@@ -16,21 +16,24 @@ const ProductGallery = ({
 }) => {
 
   const [current, setCurrent] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
 
   const goTo = (index: number) => {
     setCurrent((index + images.length) % images.length);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.touches[0].clientX);
+    setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStart === null) return;
-    const diff = touchStart - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      goTo(current + (diff > 0 ? 1 : -1));
+    const diffX = touchStart.x - e.changedTouches[0].clientX;
+    const diffY = touchStart.y - e.changedTouches[0].clientY;
+    // Require a clearly horizontal swipe so scrolling past the gallery
+    // doesn't accidentally flip the photo.
+    if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+      goTo(current + (diffX > 0 ? 1 : -1));
     }
     setTouchStart(null);
   };

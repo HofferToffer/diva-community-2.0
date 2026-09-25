@@ -284,13 +284,22 @@ export function CommunityShell({ children }: { children: ReactNode }) {
       // back gesture — not "from anywhere", which made ordinary taps and
       // drags elsewhere on the page (e.g. opening a photo) misfire as "back"
       // whenever a tap had a little incidental sideways drift.
-      if (axis === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-        if (Math.abs(dx) > Math.abs(dy)) {
+      //
+      // The x-axis lock requires dx to clearly dominate dy (not just edge it
+      // out) before committing to "back swipe" — a bare majority let normal
+      // one-handed scrolling, where the thumb drifts a little sideways as it
+      // moves down, occasionally get mistaken for a swipe. Pull-to-refresh
+      // (axis "y") stays lenient since a false trigger there just costs an
+      // unwanted refresh, not a navigation away from the page.
+      if (axis === null && (Math.abs(dx) > 14 || Math.abs(dy) > 14)) {
+        if (Math.abs(dx) > Math.abs(dy) * 1.6) {
           axis = startedNearEdge ? "x" : "ignore";
           if (axis === "x") setSwipeSettling(false); // live 1:1 tracking, no CSS transition lag
-        } else {
+        } else if (Math.abs(dy) >= Math.abs(dx)) {
           axis = "y";
         }
+        // else: dx and dy are still close enough to be ambiguous — wait for
+        // a clearer move on the next touchmove before locking an axis.
       }
 
       if (axis === "x") {
