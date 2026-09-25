@@ -59,7 +59,7 @@ export const TTC_TIPS: CycleTip[] = [
   { label: "Potraviny, ktorým sa vyhýbaj", category: "eat", icon: Ban, detail: "Pečeň, ryby s vysokým obsahom ortuti, alkohol a viac než 1–2 kávy denne." },
   { label: "Zdravá kompozícia tela", category: "move", icon: Activity, detail: "Ide o silu, zdravie a rovnováhu tela — nie o číslo na váhe." },
   { label: "Mierne, nie extrémne cvičenie", category: "move", icon: Dumbbell },
-  { label: "Pokojný nervový systém", category: "move", icon: Wind, detail: "Hormonálna rovnováha sa najlepšie darí telu, ktoré má priestor na pokoj a oddych — nie ako dôvod, prečo to ešte neprišlo, ale ako súčasť celkovej starostlivosti o seba." },
+  { label: "Pokojný nervový systém", category: "move", icon: Wind, detail: "Hormonálna rovnováha sa najlepšie darí v tele, ktoré má priestor na pokoj a oddych — nie ako dôvod, prečo to ešte neprišlo, ale ako súčasť celkovej starostlivosti o seba." },
   { label: "Podpora — partner, kamošky, poradňa", category: "do", icon: HeartHandshake },
   { label: "Hovor o tom nahlas, keď je to ťažké", category: "do", icon: MessageCircle },
 ];
