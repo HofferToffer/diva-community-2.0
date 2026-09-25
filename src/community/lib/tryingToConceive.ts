@@ -1,4 +1,4 @@
-import { Ban, Beef, Cigarette, Dumbbell, Fish, HeartHandshake, MessageCircle, Pill, Salad, Scale, Sun, Timer } from "lucide-react";
+import { Activity, Ban, Beef, Dumbbell, Fish, Heart, HeartHandshake, MessageCircle, Pill, Salad, Sun, Wheat, Wind } from "lucide-react";
 import type { CycleTip } from "@/community/lib/cycle";
 
 /**
@@ -45,16 +45,17 @@ export const TTC_DOCTOR_GUIDANCE: TtcDoctorGuidance = {
 
 /** Evidence-based things that genuinely help — same {label, category, icon} shape as the cycle/menopause tips. */
 export const TTC_TIPS: CycleTip[] = [
-  { label: "Sex každý 1.–2. deň okolo ovulácie", category: "do", icon: Timer },
+  { label: "Prihováraj sa svojmu bábätku", category: "do", icon: Heart, detail: "Aj keď ešte nie je v tvojom brušku, jeho duša môže byť už pripravená — nahlas alebo v duchu mu daj vedieť, že ho čakáš a že ste už spojené." },
   { label: "Vyvážená strava", category: "eat", icon: Salad, detail: "Pestrá strava s dostatkom bielkovín, zdravých tukov a zeleniny — dobrý základ pre plodnosť." },
+  { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Celozrnné pečivo, ovos, strukoviny a zelenina — pomáhajú udržať stabilnú hladinu cukru v krvi, čo môže podporiť hormonálnu rovnováhu." },
   { label: "Kyselina listová", category: "eat", icon: Pill, detail: "400 mcg denne — od snahy o počatie až do 12. týždňa tehotenstva." },
   { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — dobrý základ ešte pred tehotenstvom." },
   { label: "Jód", category: "eat", icon: Fish, detail: "Mliečne výrobky, ryby a vajcia pre zdravú funkciu štítnej žľazy." },
   { label: "Železo", category: "eat", icon: Beef, detail: "Dostatok železa je dôležitý aj pri snahe o bábätko — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
   { label: "Potraviny, ktorým sa vyhýbaj", category: "eat", icon: Ban, detail: "Pečeň, ryby s vysokým obsahom ortuti, alkohol a viac než 1–2 kávy denne." },
-  { label: "Zdravá váha a mierny pohyb", category: "move", icon: Scale },
-  { label: "Nefajčiť", category: "do", icon: Cigarette },
+  { label: "Zdravá kompozícia tela", category: "move", icon: Activity, detail: "Ide o silu, zdravie a rovnováhu tela — nie o číslo na váhe." },
   { label: "Mierne, nie extrémne cvičenie", category: "move", icon: Dumbbell },
+  { label: "Pokojný nervový systém", category: "move", icon: Wind, detail: "Hormonálna rovnováha sa najlepšie darí telu, ktoré má priestor na pokoj a oddych — nie ako dôvod, prečo to ešte neprišlo, ale ako súčasť celkovej starostlivosti o seba." },
   { label: "Podpora — partner, kamošky, poradňa", category: "do", icon: HeartHandshake },
   { label: "Hovor o tom nahlas, keď je to ťažké", category: "do", icon: MessageCircle },
 ];
