@@ -43,6 +43,8 @@ import {
   Heart,
   Anchor,
   Wind,
+  Palette,
+  Leaf,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -274,6 +276,9 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Píš si vďačnosť", category: "do", icon: BookOpen },
     { label: "Počúvaj svoje telo", category: "do", icon: Ear },
     { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
+    { label: "Maľovanie", category: "do", icon: Palette },
+    { label: "Prechádzka v prírode", category: "do", icon: Leaf },
+    { label: "Vedená meditácia", category: "do", icon: Wind },
   ],
   folikularna: [
     { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Vajcia, hydina, strukoviny — bielkoviny pre rast folikulov a svalov." },
