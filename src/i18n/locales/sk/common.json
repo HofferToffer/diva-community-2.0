@@ -429,7 +429,21 @@
     "prepareMindTitle": "Príprav sa aj v hlave",
     "prepareMindHint": "Všetko je aj o hlave — afirmácie a spojenie s bábätkom ťa vedia na pôrod pripraviť rovnako ako telo.",
     "booksTitle": "Knihy, ktoré ti môžu pomôcť",
-    "enterLastPeriod": "Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva."
+    "enterLastPeriod": "Zadaj prvý deň poslednej menštruácie v profile, aby sme ti vedeli ukázať týždeň tehotenstva.",
+    "redFlagsTitle": "Kedy volať lekára okamžite",
+    "redFlagsIntro": "Toto nie je bežná súčasť tehotenstva. Ak sa objaví čokoľvek z tohto, zavolaj svojej gynekologičke alebo pôrodnej asistentke hneď, kedykoľvek vo dne v noci. Pri silných príznakoch, alebo ak sa nevieš dovolať, choď rovno na pohotovosť alebo volaj 155.",
+    "redFlags": [
+      "Znížené alebo zmenené pohyby bábätka — nečakaj do ďalšej kontroly, zavolaj hneď, v ktoromkoľvek týždni tehotenstva",
+      "Akékoľvek krvácanie z pošvy",
+      "Silná alebo pretrvávajúca bolesť hlavy, najmä spolu s poruchami videnia (záblesky, rozmazané videnie)",
+      "Náhly opuch tváre, rúk alebo nôh, najmä spolu s bolesťou hlavy",
+      "Silná bolesť pod rebrami",
+      "Horúčka, zimnica alebo pocit, že je ti veľmi zle",
+      "Silná alebo pretrvávajúca bolesť brucha",
+      "Odtok plodovej vody, čo i len po kvapkách, v ktoromkoľvek týždni",
+      "Silné svrbenie, najmä dlaní a chodidiel, horšie v noci",
+      "Opuch, bolesť, začervenanie alebo teplo v jednej nohe, alebo náhla dýchavičnosť či bolesť na hrudi"
+    ]
   },
   "postpartumCard": {
     "title": "Šestonedelie",
@@ -480,7 +494,17 @@
     "hydrationNote": "Nezabúdaj piť — najmä pri dojčení na to ľahko zabudneš, hoci telo teraz vodu potrebuje ešte viac než predtým. Ak ťa hojenie brzdí dlhšie, než čakáš, alebo cítiš, že s panvovým dnom niečo nie je v poriadku, fyzioterapeut/ka na panvové dno dokáže pomôcť oveľa rýchlejšie, než by si čakala.",
     "booksTitle": "Knihy, ktoré ti môžu pomôcť",
     "typicalThisWeek": "Typické tento týždeň: {{list}}",
-    "enterBirthDate": "Zadaj dátum pôrodu v profile."
+    "enterBirthDate": "Zadaj dátum pôrodu v profile.",
+    "redFlagsTitle": "Kedy volať lekára okamžite",
+    "redFlagsIntro": "Aj po pôrode sa môžu objaviť vážne komplikácie. Tieto príznaky neignoruj — zavolaj gynekologičke alebo choď rovno na pohotovosť.",
+    "redFlags": [
+      "Silné krvácanie — premočíš vložku za menej ako hodinu, veľké zrazeniny, alebo krvácanie sa namiesto zoslabovania zosilňuje",
+      "Príznaky infekcie — horúčka, zimnica, zapáchajúci výtok, alebo sčervenaná, opuchnutá či bolestivá jazva",
+      "Silná bolesť hlavy, poruchy videnia alebo náhly opuch — preeklampsia sa môže objaviť aj po pôrode",
+      "Opuch, bolesť, začervenanie alebo teplo v jednej nohe, alebo náhla dýchavičnosť či bolesť na hrudi",
+      "Myšlienky ublížiť sebe alebo bábätku, alebo pocit, že to nezvládaš — ozvi sa okamžite, toto je zdravotná núdza, nie zlyhanie",
+      "Silná bolesť brucha, ktorá sa zhoršuje namiesto zlepšovania"
+    ]
   },
   "ttc": {
     "intro": "Snažíš sa o bábätko — dni okolo ovulácie sú v kalendári nižšie zvýraznené farebne. Ťuknutím na deň si vieš súkromne zapísať, kedy ste boli spolu.",

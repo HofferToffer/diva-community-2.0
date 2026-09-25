@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog, useIsAdmin } from "@/community/hooks/queries";
 import { useAdminPreview, applyPreview } from "@/community/lib/adminPreview";
@@ -51,7 +52,7 @@ import { getLifePhase, PHASE_LABEL } from "@/community/lib/quotes";
 import { fadeUp } from "@/community/lib/motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, RefreshCcw, Check, Feather, ArrowDown, ImagePlus, Trash2, Mic, Square, FileText, ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
 import { useSignedImage } from "@/community/hooks/useSignedImage";
 import { useLiveDictation } from "@/community/hooks/useLiveDictation";
 import { validateImage, normalizeImage, uploadImage, deleteStoredImage } from "@/community/lib/storage";
@@ -565,6 +566,21 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
+              <Alert variant="destructive" className="bg-destructive/5">
+                <TriangleAlert className="h-4 w-4" />
+                <AlertTitle>{t("pregnancyCard.redFlagsTitle")}</AlertTitle>
+                <AlertDescription>
+                  <p>{t("pregnancyCard.redFlagsIntro")}</p>
+                  <ul className="mt-2 space-y-1.5">
+                    {(t("pregnancyCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
+                      <li key={flag} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-destructive" aria-hidden="true" />
+                        {flag}
+                      </li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
               <Button
                 variant="outline"
                 size="sm"
@@ -712,6 +728,21 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
+              <Alert variant="destructive" className="bg-destructive/5">
+                <TriangleAlert className="h-4 w-4" />
+                <AlertTitle>{t("postpartumCard.redFlagsTitle")}</AlertTitle>
+                <AlertDescription>
+                  <p>{t("postpartumCard.redFlagsIntro")}</p>
+                  <ul className="mt-2 space-y-1.5">
+                    {(t("postpartumCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
+                      <li key={flag} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-destructive" aria-hidden="true" />
+                        {flag}
+                      </li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
               <div className="border-t border-border/50 pt-3">
                 <p className="text-sm italic leading-relaxed text-foreground/85">
                   „{isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.mantra`) : postpartum.mantra}" —{" "}

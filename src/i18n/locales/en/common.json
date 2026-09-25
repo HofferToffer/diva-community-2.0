@@ -751,7 +751,21 @@
     "prepareMindTitle": "Prepare your mind too",
     "prepareMindHint": "It's all in the mind too — affirmations and connecting with your baby can prepare you for birth just as much as your body.",
     "booksTitle": "Books that might help",
-    "enterLastPeriod": "Enter the first day of your last period in your profile so we can show you your pregnancy week."
+    "enterLastPeriod": "Enter the first day of your last period in your profile so we can show you your pregnancy week.",
+    "redFlagsTitle": "When to call your doctor right away",
+    "redFlagsIntro": "These aren't a normal part of pregnancy. If any of them show up, call your gynecologist or midwife right away, day or night. For severe symptoms, or if you can't reach anyone, go straight to the emergency room or call 155.",
+    "redFlags": [
+      "Reduced or changed baby movements — don't wait for your next appointment, call right away, at any week of pregnancy",
+      "Any vaginal bleeding",
+      "A severe or persistent headache, especially with visual disturbances (flashing lights, blurred vision)",
+      "Sudden swelling of the face, hands or feet, especially with a headache",
+      "Severe pain just under your ribs",
+      "Fever, chills, or feeling very unwell",
+      "Severe or persistent abdominal pain",
+      "Any leaking of fluid, even just drops, at any week",
+      "Severe itching, especially on your palms and soles, worse at night",
+      "Swelling, pain, redness or warmth in one leg, or sudden breathlessness or chest pain"
+    ]
   },
   "pregnancy": {
     "trimesterLabels": { "1": "1st trimester", "2": "2nd trimester", "3": "3rd trimester" },
@@ -886,7 +900,17 @@
     "hydrationNote": "Don't forget to drink — especially while breastfeeding it's easy to forget, even though your body needs even more water now than before. If healing is taking longer than you expect, or something feels off with your pelvic floor, a pelvic floor physiotherapist can help much faster than you'd think.",
     "booksTitle": "Books that might help",
     "typicalThisWeek": "Typical this week: {{list}}",
-    "enterBirthDate": "Enter your baby's birth date in your profile."
+    "enterBirthDate": "Enter your baby's birth date in your profile.",
+    "redFlagsTitle": "When to call your doctor right away",
+    "redFlagsIntro": "Serious complications can still happen after birth. Don't ignore these — call your gynecologist or go straight to the emergency room.",
+    "redFlags": [
+      "Heavy bleeding — soaking a pad in under an hour, large clots, or bleeding that gets heavier instead of lighter",
+      "Signs of infection — fever, chills, foul-smelling discharge, or a red, swollen or painful wound",
+      "Severe headache, visual disturbances, or sudden swelling — pre-eclampsia can still happen after birth",
+      "Swelling, pain, redness or warmth in one leg, or sudden breathlessness or chest pain",
+      "Thoughts of harming yourself or your baby, or feeling unable to cope — reach out right away, this is a medical emergency, not a failure",
+      "Severe abdominal pain that's getting worse instead of better"
+    ]
   },
   "postpartum": {
     "partnerNote": "Your partner is learning to be a parent too during this postpartum period, not just watching you get through it. Let them take on what they can — housework, night wakings, visitors — so you can heal and get to know your baby. You're a new family, and this work is shared from day one.",
