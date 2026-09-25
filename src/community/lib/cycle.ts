@@ -42,6 +42,7 @@ import {
   Flame,
   Heart,
   Anchor,
+  Wind,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -328,6 +329,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Odľahči si program", category: "do", icon: Feather },
     { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
     { label: "Sprítomniť sa", category: "do", icon: Anchor },
+    { label: "Vedená meditácia", category: "do", icon: Wind },
   ],
 };
 
