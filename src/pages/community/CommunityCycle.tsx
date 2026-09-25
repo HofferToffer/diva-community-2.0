@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog, useIsAdmin } from "@/community/hooks/queries";
 import { useAdminPreview, applyPreview } from "@/community/lib/adminPreview";
@@ -84,6 +83,8 @@ export default function CommunityCycle() {
 
   const [showMorePregnancy, setShowMorePregnancy] = useState(false);
   const [showMorePostpartum, setShowMorePostpartum] = useState(false);
+  const [showPregnancyRedFlags, setShowPregnancyRedFlags] = useState(false);
+  const [showPostpartumRedFlags, setShowPostpartumRedFlags] = useState(false);
   const [breastfeeding, setBreastfeeding] = useState<"yes" | "no">("yes");
   const [showMoreTTC, setShowMoreTTC] = useState(false);
   const [editingCycle, setEditingCycle] = useState(false);
@@ -566,21 +567,36 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <Alert variant="destructive" className="bg-destructive/5">
-                <TriangleAlert className="h-4 w-4" />
-                <AlertTitle>{t("pregnancyCard.redFlagsTitle")}</AlertTitle>
-                <AlertDescription>
-                  <p>{t("pregnancyCard.redFlagsIntro")}</p>
-                  <ul className="mt-2 space-y-1.5">
-                    {(t("pregnancyCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
-                      <li key={flag} className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-destructive" aria-hidden="true" />
-                        {flag}
-                      </li>
-                    ))}
-                  </ul>
-                </AlertDescription>
-              </Alert>
+              <div className="rounded-xl border border-amber-300/50 bg-amber-50/70 dark:border-amber-500/30 dark:bg-amber-500/10">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left"
+                  onClick={() => setShowPregnancyRedFlags((v) => !v)}
+                >
+                  <span className="flex items-center gap-2 text-sm font-medium text-amber-900 dark:text-amber-200">
+                    <TriangleAlert className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    {t("pregnancyCard.redFlagsTitle")}
+                  </span>
+                  {showPregnancyRedFlags ? (
+                    <ChevronUp className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                  )}
+                </button>
+                {showPregnancyRedFlags && (
+                  <div className="space-y-2 px-3 pb-3 text-sm text-amber-900/90 dark:text-amber-100/90">
+                    <p>{t("pregnancyCard.redFlagsIntro")}</p>
+                    <ul className="space-y-1.5">
+                      {(t("pregnancyCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
+                        <li key={flag} className="flex items-start gap-2">
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-600 dark:bg-amber-400" aria-hidden="true" />
+                          {flag}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
               <Button
                 variant="outline"
                 size="sm"
@@ -728,21 +744,36 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <Alert variant="destructive" className="bg-destructive/5">
-                <TriangleAlert className="h-4 w-4" />
-                <AlertTitle>{t("postpartumCard.redFlagsTitle")}</AlertTitle>
-                <AlertDescription>
-                  <p>{t("postpartumCard.redFlagsIntro")}</p>
-                  <ul className="mt-2 space-y-1.5">
-                    {(t("postpartumCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
-                      <li key={flag} className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-destructive" aria-hidden="true" />
-                        {flag}
-                      </li>
-                    ))}
-                  </ul>
-                </AlertDescription>
-              </Alert>
+              <div className="rounded-xl border border-amber-300/50 bg-amber-50/70 dark:border-amber-500/30 dark:bg-amber-500/10">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left"
+                  onClick={() => setShowPostpartumRedFlags((v) => !v)}
+                >
+                  <span className="flex items-center gap-2 text-sm font-medium text-amber-900 dark:text-amber-200">
+                    <TriangleAlert className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    {t("postpartumCard.redFlagsTitle")}
+                  </span>
+                  {showPostpartumRedFlags ? (
+                    <ChevronUp className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                  )}
+                </button>
+                {showPostpartumRedFlags && (
+                  <div className="space-y-2 px-3 pb-3 text-sm text-amber-900/90 dark:text-amber-100/90">
+                    <p>{t("postpartumCard.redFlagsIntro")}</p>
+                    <ul className="space-y-1.5">
+                      {(t("postpartumCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
+                        <li key={flag} className="flex items-start gap-2">
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-600 dark:bg-amber-400" aria-hidden="true" />
+                          {flag}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
               <div className="border-t border-border/50 pt-3">
                 <p className="text-sm italic leading-relaxed text-foreground/85">
                   „{isEnglish ? t(`postpartum.weekBands.${postpartum.bandKey}.mantra`) : postpartum.mantra}" —{" "}
