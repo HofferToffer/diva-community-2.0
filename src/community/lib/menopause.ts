@@ -13,7 +13,6 @@ import {
   Fish,
   Wheat,
   Beef,
-  Ban,
   Users,
 } from "lucide-react";
 import type { CycleTip } from "@/community/lib/cycle";
@@ -114,7 +113,6 @@ export const MENOPAUSE_TIPS: CycleTip[] = [
   { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
   { label: "Celozrnné obilniny, ovocie a zelenina", category: "eat", icon: Wheat, detail: "Stredomorský štýl stravovania — môže podporiť srdce a metabolizmus." },
   { label: "Železo", category: "eat", icon: Beef, detail: "Tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka — pomáhajú doplniť železo." },
-  { label: "Žiadny alkohol", category: "eat", icon: Ban, detail: "Urýchľuje úbytok kostnej hmoty a zhoršuje návaly tepla — v tomto období sa mu radšej úplne vyhni." },
   { label: "Silový tréning", category: "move", icon: Dumbbell },
   { label: "Rezká chôdza", category: "move", icon: Footprints },
   { label: "Joga a strečing", category: "move", icon: PersonStanding },

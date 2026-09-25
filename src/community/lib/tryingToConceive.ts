@@ -56,7 +56,7 @@ export const TTC_TIPS: CycleTip[] = [
   { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — dobrý základ ešte pred tehotenstvom." },
   { label: "Jód", category: "eat", icon: Fish, detail: "Mliečne výrobky, ryby a vajcia pre zdravú funkciu štítnej žľazy." },
   { label: "Železo", category: "eat", icon: Beef, detail: "Dostatok železa je dôležitý aj pri snahe o bábätko — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
-  { label: "Potraviny, ktorým sa vyhýbaj", category: "eat", icon: Ban, detail: "Pečeň, ryby s vysokým obsahom ortuti, alkohol a viac než 1–2 kávy denne." },
+  { label: "Potraviny, ktorým sa vyhýbaj", category: "eat", icon: Ban, detail: "Pečeň, ryby s vysokým obsahom ortuti a viac než 1–2 kávy denne." },
   { label: "Zdravá kompozícia tela", category: "move", icon: Activity, detail: "Ide o silu, zdravie a rovnováhu tela — nie o číslo na váhe." },
   { label: "Mierne, nie extrémne cvičenie", category: "move", icon: Dumbbell },
   { label: "Pokojný nervový systém", category: "move", icon: Wind, detail: "Hormonálna rovnováha sa najlepšie darí v tele, ktoré má priestor na pokoj a oddych — nie ako dôvod, prečo to ešte neprišlo, ale ako súčasť celkovej starostlivosti o seba." },
