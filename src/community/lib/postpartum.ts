@@ -190,7 +190,7 @@ export const POSTPARTUM_NOT_BREASTFEEDING_TIPS: CycleTip[] = [
 
 /** Same teamwork framing as PARTNER_SUPPORT_NOTE_PREGNANCY, adapted for šestonedelie. */
 export const PARTNER_SUPPORT_NOTE_POSTPARTUM =
-  "Šestonedelie nie je skúška, ktorú máš vydržať sama — je to aj čas, keď sa učí byť rodičom aj partner. Nech prevezme, čo sa dá — domácnosť, nočné budenie, návštevy — aby si sa ty mohla hojiť a spoznávať bábätko. Ste nová rodina a toto je spoločná práca od prvého dňa, nie niečo, čo musí zvládnuť len jedna z vás.";
+  "Aj partner sa počas šestonedelia učí byť rodičom, nielen prizerá, ako to zvládaš ty. Nech prevezme, čo sa dá — domácnosť, nočné budenie, návštevy — aby si sa ty mohla hojiť a spoznávať bábätko. Ste nová rodina a táto práca je od prvého dňa spoločná.";
 
 export function getPostpartumInfo(sinceDate: string, today = new Date()): PostpartumInfo {
   const since = new Date(sinceDate);

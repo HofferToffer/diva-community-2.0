@@ -284,7 +284,7 @@ export const PREGNANCY_LATE_TIPS: CycleTip[] = [
 ];
 
 export const PREGNANCY_LATE_NOTE =
-  "Malinové listy sa v niektorých štúdiách spájajú s kratšou druhou dobou pôrodnou, ak sa pijú postupne od cca 32.-34. týždňa (začni jednou šálkou denne, postupne pridávaj) — dôkazy sú zatiaľ mierne, nie isté, tak to vždy najprv preber so svojou pôrodnou asistentkou alebo gynekologičkou. Medovka je upokojujúca a pomáha pri nespavosti či nepokoji, vo všeobecnosti sa považuje za bezpečnú — bylinkové čaje v tehotenstve sa ale odporúča držať okolo 1-2 šálok denne. Harmanček zámerne nespomíname — v treťom trimestri sa jeho vplyv na maternicu hodnotí nejednotne. Alchemilka sa k nim v ľudovej tradícii často pridáva, no pre tehotenstvo pre ňu chýbajú bezpečnostné údaje — radšej ju vynechaj, kým ti ju vyslovene neodporučí tvoja lekárka. Masírovanie hrádze zase má za sebou solídne dôkazy, že od cca 34.-35. týždňa znižuje riziko poranenia pri pôrode — rob ho len vtedy, keď sa na to naozaj cítiš, pokojne aj s partnerom.";
+  "Niektoré štúdie spájajú malinové listy s kratšou druhou dobou pôrodnou, ak sa pijú postupne od cca 32.–34. týždňa (začni jednou šálkou denne, postupne pridávaj) — dôkazy sú však zatiaľ mierne, nie isté, tak to najprv preber so svojou pôrodnou asistentkou alebo gynekologičkou. Medovka upokojuje a pomáha pri nespavosti či nepokoji a vo všeobecnosti sa považuje za bezpečnú, no bylinkové čaje v tehotenstve sa odporúča držať okolo 1–2 šálok denne. Harmanček tu zámerne chýba: v treťom trimestri sa jeho vplyv na maternicu hodnotí nejednotne. Alchemilka sa k nim v ľudovej tradícii často pridáva, lenže pre tehotenstvo pre ňu chýbajú bezpečnostné údaje, takže ju radšej vynechaj, kým ti ju vyslovene neodporučí tvoja lekárka. Masírovanie hrádze je iný prípad — má za sebou solídne dôkazy, že od cca 34.–35. týždňa znižuje riziko poranenia pri pôrode. Skús ho len vtedy, keď sa na to naozaj cítiš, pokojne aj s partnerom.";
 
 /**
  * A short holistic framing line above the pregnancy tip grid — telo, myseľ
@@ -296,7 +296,7 @@ export const PREGNANCY_TIPS_INTRO =
 
 /** Shown in the pregnancy section — the same teamwork framing repeats (adapted) in postpartum. */
 export const PARTNER_SUPPORT_NOTE_PREGNANCY =
-  "Toto obdobie nie je len tvoje — je aj partnerova cesta. Nech je pri tom s tebou: na prehliadkach, pri príprave pôrodnej tašky, pri masírovaní hrádze, v rozhovoroch o tom, čo cítiš aj čoho sa bojíš. Nie je to skúška, ktorú máš zvládnuť sama — ste nová rodina, ktorá sa to učí spolu, od prvého dňa.";
+  "Partner prežíva túto cestu spolu s tebou, nielen ako divák z boku. Nech je pri tom s tebou: na prehliadkach, pri príprave pôrodnej tašky, pri masírovaní hrádze, v rozhovoroch o tom, čo cítiš aj čoho sa bojíš. Nemusíš to zvládnuť sama — ste nová rodina, ktorá sa to učí spolu, od prvého dňa.";
 
 /** Playful size comparison per pregnancy week, the way most pregnancy calendar apps show it. */
 const WEEK_SIZE: Record<number, string> = {
