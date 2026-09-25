@@ -260,7 +260,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť kŕče a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
     { label: "Čerstvé ovocie a zelenina", category: "eat", icon: Salad, detail: "Veľa vitamínov, minerálov a antioxidantov — bobuľové ovocie, listová zelenina a ďalšie farebné druhy." },
     { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Avokádo, olivový olej, orechy, semienka a mastné ryby (losos, makrela) — zdroj zdravých tukov a omega-3." },
-    { label: "Kofeín a alkohol", category: "eat", icon: Wine, detail: "Kofeínu je dobré uberať, alkoholu sa najlepšie úplne vyhnúť — ak si ho predsa dáš, drž sa mierneho množstva. Môže to podporiť tráviaci komfort počas menštruácie." },
+    { label: "Kofeín a alkohol", category: "eat", icon: Wine, detail: "Kofeínu je dobré uberať, alkoholu sa najlepšie úplne vyhnúť — ak si ho predsa dáš, drž sa mierneho množstva. Môže to pomôcť lepšiemu tráveniu počas menštruácie." },
     { label: "Jemná joga", category: "move", icon: PersonStanding },
     { label: "Choď sa prejsť", category: "move", icon: Footprints },
     { label: "Strečing", category: "move", icon: Feather },
