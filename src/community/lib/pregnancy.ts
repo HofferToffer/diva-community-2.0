@@ -33,6 +33,10 @@ import {
   Ban,
   Sun,
   Beef,
+  Salad,
+  Nut,
+  Egg,
+  ChefHat,
 } from "lucide-react";
 import { Avocado, Mango, Pineapple, Pumpkin, Strawberry, Tomato, WatermelonSlice } from "@/community/components/FruitIcons";
 import type { CycleTip } from "./cycle";
@@ -222,6 +226,11 @@ const PREGNANCY_THROUGHOUT_TIPS: CycleTip[] = [
   { label: "Alkohol", category: "eat", icon: Ban, detail: "Vyhýbaj sa alkoholu počas celého tehotenstva." },
   { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — podporuje zdravie kostí, tvojich aj bábätka." },
   { label: "Železo", category: "eat", icon: Beef, detail: "Potreba železa v tehotenstve stúpa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka ti pomôžu ju pokryť." },
+  { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Celozrnné pečivo, ryža, ovos a strukoviny — stabilná energia pre teba aj rastúce bábätko." },
+  { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Vajcia, hydina, ryby a strukoviny — dôležité pre rast bábätka aj tvojich tkanív." },
+  { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Avokádo, olivový olej, orechy a mastné ryby — dôležité najmä pre vývoj mozgu bábätka." },
+  { label: "Čerstvé ovocie a zelenina", category: "eat", icon: Salad, detail: "Vitamíny, minerály a vláknina — čím pestrejšie farby na tanieri, tým lepšie." },
+  { label: "Vyvážená strava", category: "eat", icon: ChefHat, detail: "Pestrá a čerstvá strava s dostatkom bielkovín, zdravých tukov, ovocia a zeleniny — dobrý základ pre teba aj bábätko." },
 ];
 
 export const PREGNANCY_TIPS: Record<1 | 2 | 3, CycleTip[]> = {
