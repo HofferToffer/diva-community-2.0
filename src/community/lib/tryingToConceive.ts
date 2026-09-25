@@ -25,6 +25,10 @@ export const TTC_ARCHETYPE = {
 export const TTC_TIMELINE_NOTE =
   "Asi 30 % žien otehotnie hneď v prvom cykle, 66–80 % do 6 mesiacov a približne 85 % do roka pravidelných pokusov. Ak skúšaš už 9 mesiacov, si stále úplne v bežnom rozmedzí — to, že to ešte neprišlo, neznamená, že niečo nie je v poriadku.";
 
+/** Reassurance against feeling pressured into a rigid schedule, while still naming that timing around ovulation matters. */
+export const TTC_TIMING_NOTE =
+  "Každý pár má svoj vlastný rytmus — a to je v poriadku. Nemusíte sa nútiť do presného plánu, aj keď je pravda, že najvyššia šanca na počatie je prirodzene okolo ovulácie.";
+
 export type TtcDoctorGuidance = {
   ageUnder35: string;
   age35Plus: string;

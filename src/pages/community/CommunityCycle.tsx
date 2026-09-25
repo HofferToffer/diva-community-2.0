@@ -40,6 +40,7 @@ import { MENOPAUSE_TIPS, MENOPAUSE_STAGES } from "@/community/lib/menopause";
 import {
   TTC_ARCHETYPE,
   TTC_TIMELINE_NOTE,
+  TTC_TIMING_NOTE,
   TTC_DOCTOR_GUIDANCE,
   TTC_TIPS,
   TTC_STRESS_NOTE,
@@ -1388,6 +1389,9 @@ export default function CommunityCycle() {
                   </div>
                   <p className="text-sm leading-relaxed text-foreground/85">
                     {isEnglish ? t("ttc.timelineNote") : TTC_TIMELINE_NOTE}
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {isEnglish ? t("ttc.timingNote") : TTC_TIMING_NOTE}
                   </p>
                   <p className="text-xs italic text-muted-foreground">
                     {isEnglish ? t("ttc.stressNote") : TTC_STRESS_NOTE}
