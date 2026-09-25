@@ -75,7 +75,7 @@ export const TTC_MYTHS: { myth: string; fact: string }[] = [
 ];
 
 export const TTC_STRESS_NOTE =
-  "Dôležité: neexistuje dôkaz, že by stres priamo spôsoboval neplodnosť. Ak je to náročné, je to náročné samo osebe — nie preto, že by si sa \"dostatočne neuvoľnila\". Starostlivosť o seba má zmysel pre teba, nie ako spôsob, ako si to \"vymodliť\".";
+  "Dôležité: neexistuje dôkaz, že by stres priamo spôsoboval neplodnosť. Ak je to náročné, je to náročné samo osebe — nie preto, že by si sa „dostatočne neuvoľnila“. Starostlivosť o seba má zmysel pre teba, nie ako spôsob, ako si to „vymodliť“.";
 
 export const TTC_EMOTIONAL_NOTE =
   "Smútok, úzkosť aj to dvojtýždňové čakanie na výsledok testu sú skutočné a uznané — nie prehnaná reakcia. Rozhovor s niekým, kto tomu rozumie (partner, kamošky, podporná skupina, poradňa), naozaj pomáha uniesť to.";
