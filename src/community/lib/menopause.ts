@@ -114,7 +114,7 @@ export const MENOPAUSE_TIPS: CycleTip[] = [
   { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
   { label: "Celozrnné obilniny, ovocie a zelenina", category: "eat", icon: Wheat, detail: "Stredomorský štýl stravovania — môže podporiť srdce a metabolizmus." },
   { label: "Železo", category: "eat", icon: Beef, detail: "Tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka — pomáhajú doplniť železo." },
-  { label: "Menej alkoholu a fajčenia", category: "eat", icon: Ban, detail: "Obe môžu urýchliť úbytok kostnej hmoty a zhoršiť návaly tepla." },
+  { label: "Menej alkoholu", category: "eat", icon: Ban, detail: "Môže urýchliť úbytok kostnej hmoty a zhoršiť návaly tepla — ideálne ho obmedziť čo najviac, najlepšie úplne vynechať." },
   { label: "Silový tréning", category: "move", icon: Dumbbell },
   { label: "Rezká chôdza", category: "move", icon: Footprints },
   { label: "Joga a strečing", category: "move", icon: PersonStanding },
