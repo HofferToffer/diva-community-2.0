@@ -83,7 +83,7 @@ function getDetailedSubPhase(
       key: "menstruacna_tazke_dni",
       name: "Zima — najhlbšia tma",
       description:
-        "Prvé dni bývajú najťažšie, presne ako najkratšie dni roka. Energia je na dne, tak si dovoľ zastaviť sa — teplo, pokoj a nič si nemusíš dokazovať.",
+        "Prvé dni môžu byť náročnejšie, ale zároveň veľmi intuitívne a hlboké — si teraz najviac vo svojom vnútri, presne ako príroda v najkratších dňoch roka. Energia je na dne, tak si dovoľ zastaviť sa — teplo, pokoj a nič si nemusíš dokazovať.",
     };
   }
   if (dayOfCycle <= period) {
