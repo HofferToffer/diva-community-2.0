@@ -567,29 +567,29 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-xl border border-amber-300/50 bg-amber-50/70 dark:border-amber-500/30 dark:bg-amber-500/10">
+              <div className="rounded-xl border border-destructive/40 bg-background/60">
                 <button
                   type="button"
                   className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left"
                   onClick={() => setShowPregnancyRedFlags((v) => !v)}
                 >
-                  <span className="flex items-center gap-2 text-sm font-medium text-amber-900 dark:text-amber-200">
-                    <TriangleAlert className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="flex items-center gap-2 text-sm font-medium text-foreground/85">
+                    <TriangleAlert className="h-4 w-4 shrink-0 text-destructive" aria-hidden="true" />
                     {t("pregnancyCard.redFlagsTitle")}
                   </span>
                   {showPregnancyRedFlags ? (
-                    <ChevronUp className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                    <ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />
                   ) : (
-                    <ChevronDown className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
                   )}
                 </button>
                 {showPregnancyRedFlags && (
-                  <div className="space-y-2 px-3 pb-3 text-sm text-amber-900/90 dark:text-amber-100/90">
+                  <div className="space-y-2 px-3 pb-3 text-sm text-foreground/85">
                     <p>{t("pregnancyCard.redFlagsIntro")}</p>
                     <ul className="space-y-1.5">
                       {(t("pregnancyCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
                         <li key={flag} className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-600 dark:bg-amber-400" aria-hidden="true" />
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground" aria-hidden="true" />
                           {flag}
                         </li>
                       ))}
@@ -744,29 +744,29 @@ export default function CommunityCycle() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-xl border border-amber-300/50 bg-amber-50/70 dark:border-amber-500/30 dark:bg-amber-500/10">
+              <div className="rounded-xl border border-destructive/40 bg-background/60">
                 <button
                   type="button"
                   className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left"
                   onClick={() => setShowPostpartumRedFlags((v) => !v)}
                 >
-                  <span className="flex items-center gap-2 text-sm font-medium text-amber-900 dark:text-amber-200">
-                    <TriangleAlert className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="flex items-center gap-2 text-sm font-medium text-foreground/85">
+                    <TriangleAlert className="h-4 w-4 shrink-0 text-destructive" aria-hidden="true" />
                     {t("postpartumCard.redFlagsTitle")}
                   </span>
                   {showPostpartumRedFlags ? (
-                    <ChevronUp className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                    <ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />
                   ) : (
-                    <ChevronDown className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
                   )}
                 </button>
                 {showPostpartumRedFlags && (
-                  <div className="space-y-2 px-3 pb-3 text-sm text-amber-900/90 dark:text-amber-100/90">
+                  <div className="space-y-2 px-3 pb-3 text-sm text-foreground/85">
                     <p>{t("postpartumCard.redFlagsIntro")}</p>
                     <ul className="space-y-1.5">
                       {(t("postpartumCard.redFlags", { returnObjects: true }) as string[]).map((flag) => (
                         <li key={flag} className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-600 dark:bg-amber-400" aria-hidden="true" />
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground" aria-hidden="true" />
                           {flag}
                         </li>
                       ))}
