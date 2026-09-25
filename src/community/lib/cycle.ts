@@ -279,6 +279,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Maľovanie", category: "do", icon: Palette },
     { label: "Prechádzka v prírode", category: "do", icon: Leaf },
     { label: "Vedená meditácia", category: "do", icon: Wind },
+    { label: "Stretnutie so svojimi ženami", category: "do", icon: Users },
   ],
   folikularna: [
     { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Vajcia, hydina, strukoviny — bielkoviny pre rast folikulov a svalov." },
