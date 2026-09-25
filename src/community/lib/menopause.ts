@@ -112,7 +112,7 @@ export const MENOPAUSE_TIPS: CycleTip[] = [
   { label: "Fytoestrogény", category: "eat", icon: Sprout, detail: "Môžu zmierniť príznaky a podporiť zdravie kostí — sója, ľanové semienka, cícer, šošovica." },
   { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
   { label: "Celozrnné obilniny, ovocie a zelenina", category: "eat", icon: Wheat, detail: "Stredomorský štýl stravovania — môže podporiť srdce a metabolizmus." },
-  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka — pomáhajú doplniť železo." },
   { label: "Menej alkoholu a fajčenia", category: "eat", icon: Ban, detail: "Obe môžu urýchliť úbytok kostnej hmoty a zhoršiť návaly tepla." },
   { label: "Silový tréning", category: "move", icon: Dumbbell },
   { label: "Rezká chôdza", category: "move", icon: Footprints },

@@ -155,10 +155,10 @@ export const POSTPARTUM_TIP_COLOR: { fill: string; dot: string } = {
  * never instead of, guidance from your own gynecologist/pediatrician.
  */
 export const POSTPARTUM_TIPS: CycleTip[] = [
-  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Po pôrode je dobré doplniť železo — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
   { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
   { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
-  { label: "Zostaň hydratovaná", category: "eat", icon: GlassWater, detail: "Môže podporiť hojenie a tvorbu mlieka, ak dojčíš." },
+  { label: "Zostaň hydratovaná", category: "eat", icon: GlassWater, detail: "Pomáha s hojením a tvorbou mlieka, ak dojčíš." },
   { label: "Dopraj si výživu, koľko vládzeš", category: "eat", icon: Heart, detail: "Nemusíš jesť dokonale — stačí sa o seba postarať, ako sa dnes dá." },
   { label: "Krátke, pomalé prechádzky", category: "move", icon: Footprints },
   { label: "Dychové cvičenia s bránicou", category: "move", icon: Wind },

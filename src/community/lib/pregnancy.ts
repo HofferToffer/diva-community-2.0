@@ -221,7 +221,7 @@ const PREGNANCY_THROUGHOUT_TIPS: CycleTip[] = [
   { label: "Kofeín", category: "eat", icon: Ban, detail: "Obmedz na menej než 200 mg denne (asi 2 kávy)." },
   { label: "Alkohol", category: "eat", icon: Ban, detail: "Vyhýbaj sa alkoholu počas celého tehotenstva." },
   { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
-  { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+  { label: "Železo", category: "eat", icon: Beef, detail: "Potreba železa v tehotenstve stúpa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka ti pomôžu ju pokryť." },
 ];
 
 export const PREGNANCY_TIPS: Record<1 | 2 | 3, CycleTip[]> = {

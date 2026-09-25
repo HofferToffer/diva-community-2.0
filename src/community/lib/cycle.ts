@@ -254,8 +254,8 @@ export const CYCLE_TIP_CATEGORIES: Record<CycleTipCategory, string> = {
 /** Detailed, icon-tagged tips per phase — food, movement and rituals to browse like a tip grid. */
 export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   menstruacna: [
-    { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
-    { label: "Vitamín C", category: "eat", icon: Citrus, detail: "Môže podporiť vstrebávanie železa z rastlinných zdrojov — citrusy, paprika, paradajky, listová zelenina." },
+    { label: "Železo", category: "eat", icon: Beef, detail: "Počas menštruácie sa oplatí doplniť železo — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+    { label: "Vitamín C", category: "eat", icon: Citrus, detail: "Citrusy, paprika, paradajky, listová zelenina — pomáhajú telu lepšie vstrebať železo z rastlinnej stravy." },
     { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
     { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť kŕče a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
     { label: "Čerstvé ovocie a zelenina", category: "eat", icon: Salad, detail: "Veľa vitamínov, minerálov a antioxidantov — bobuľové ovocie, listová zelenina a ďalšie farebné druhy." },
@@ -271,13 +271,13 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
   ],
   folikularna: [
-    { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Môžu podporiť rast folikulov a svalov — vajcia, hydina, strukoviny." },
+    { label: "Bielkoviny", category: "eat", icon: Egg, detail: "Vajcia, hydina, strukoviny — bielkoviny pre rast folikulov a svalov." },
     { label: "Zdravé tuky", category: "eat", icon: Nut, detail: "Orechy, semienka, olivový olej a avokádo — pre hormonálnu rovnováhu." },
     { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Vláknina a stabilná energia z celozrnných obilnín a strukovín." },
-    { label: "Železo", category: "eat", icon: Beef, detail: "Môže podporiť doplnenie železa — tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka." },
+    { label: "Železo", category: "eat", icon: Beef, detail: "Tmavá listová zelenina, sušené marhule a figy, chudé červené mäso, šošovica, tofu, tekvicové semienka — dobré zdroje na doplnenie železa." },
     { label: "Čerstvá zelenina", category: "eat", icon: Salad, detail: "Vitamíny a antioxidanty z farebnej, sezónnej zeleniny." },
     { label: "Sezónne čerstvé ovocie", category: "eat", icon: Apple, detail: "Vitamíny a antioxidanty zo sezónneho čerstvého ovocia." },
-    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Môžu podporiť črevný mikrobióm — kimchi, jogurt, kefir." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Kimchi, jogurt, kefir — dobré pre črevný mikrobióm." },
     { label: "Silový tréning", category: "move", icon: Dumbbell },
     { label: "Zabehni si naplno", category: "move", icon: Zap },
     { label: "Vyraz na bicykel", category: "move", icon: Bike },
@@ -289,9 +289,9 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   ],
   ovulacia: [
     { label: "Farebné ovocie a zelenina", category: "eat", icon: Salad, detail: "Vláknina, voda a antioxidanty z pestrého ovocia a zeleniny." },
-    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Môžu podporiť energiu a nervovú sústavu — mäso, vajcia, mliečne výrobky, obilniny." },
+    { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Mäso, vajcia, mliečne výrobky, obilniny — dobrý zdroj energie a podpory pre nervovú sústavu." },
     { label: "Orechy a semienka", category: "eat", icon: Nut, detail: "Zdravé tuky a horčík pre energiu a hormonálnu rovnováhu." },
-    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Môžu podporiť črevný mikrobióm — kimchi, jogurt, kefir." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Kimchi, jogurt, kefir — dobré pre črevný mikrobióm." },
     { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Môže znížiť nadúvanie a podporiť energiu aj jasnú pleť." },
     { label: "Skús osobný rekord", category: "move", icon: Zap },
     { label: "Cvič s kamoškami", category: "move", icon: Users },
