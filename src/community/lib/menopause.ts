@@ -107,8 +107,8 @@ export const MENOPAUSE_STAGES: MenopauseStage[] = [
 
 export const MENOPAUSE_TIPS: CycleTip[] = [
   { label: "Vápnik", category: "eat", icon: Milk, detail: "Dôležitý pre zdravie kostí — mliečne výrobky, obohatené rastlinné mlieka, listová zelenina, tofu." },
-  { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — môže podporiť zdravie kostí a celkovú pohodu." },
-  { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
+  { label: "Vitamín D", category: "eat", icon: Sun, detail: "Mastné ryby, vaječné žĺtky, obohatené rastlinné mlieka a cereálie, prípadne 10 mcg denne ako doplnok — dôležitý pre zdravie kostí práve v tomto období." },
+  { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Vajcia, hydina, ryby, strukoviny — môžu ťa vyživiť a udržať náladu stabilnú." },
   { label: "Fytoestrogény", category: "eat", icon: Sprout, detail: "Môžu zmierniť príznaky a podporiť zdravie kostí — sója, ľanové semienka, cícer, šošovica." },
   { label: "Mastné ryby", category: "eat", icon: Fish, detail: "Losos, makrela — asi 2 porcie týždenne. Zdroj omega-3, ktorý môže podporiť celkovú pohodu." },
   { label: "Celozrnné obilniny, ovocie a zelenina", category: "eat", icon: Wheat, detail: "Stredomorský štýl stravovania — môže podporiť srdce a metabolizmus." },

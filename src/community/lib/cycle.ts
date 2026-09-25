@@ -291,7 +291,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Farebné ovocie a zelenina", category: "eat", icon: Salad, detail: "Vláknina, voda a antioxidanty z pestrého ovocia a zeleniny." },
     { label: "Vitamíny skupiny B", category: "eat", icon: Drumstick, detail: "Mäso, vajcia, mliečne výrobky, obilniny — dobrý zdroj energie a podpory pre nervovú sústavu." },
     { label: "Orechy a semienka", category: "eat", icon: Nut, detail: "Zdravé tuky a horčík pre energiu a hormonálnu rovnováhu." },
-    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Kimchi, jogurt, kefir — dobré pre črevný mikrobióm." },
+    { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Kimchi, jogurt, kefir podporujú zdravú črevnú mikroflóru." },
     { label: "Pi dosť vody", category: "eat", icon: GlassWater, detail: "Môže znížiť nadúvanie a podporiť energiu aj jasnú pleť." },
     { label: "Skús osobný rekord", category: "move", icon: Zap },
     { label: "Cvič s kamoškami", category: "move", icon: Users },
@@ -305,7 +305,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
   lutealna: [
     { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
     { label: "Zdravé tuky a omega-3", category: "eat", icon: Fish, detail: "Môžu jemne vyvažovať hormóny — mastné ryby, vlašské orechy, ľanové a chia semienka, olivový olej." },
-    { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Vláknina a stabilná energia z celozrnných obilnín a strukovín." },
+    { label: "Komplexné sacharidy", category: "eat", icon: Wheat, detail: "Celozrnné obilniny a strukoviny dodajú vlákninu a stabilnú energiu." },
     { label: "Vitamín B6", category: "eat", icon: Banana, detail: "Môže upokojiť výkyvy nálady — banány, vajcia, hydina, losos, cícer." },
     { label: "Horčík", category: "eat", icon: Cookie, detail: "Môže zmierniť PMS a dopriať pokoj — horká čokoláda, tmavá listová zelenina, mandle, avokádo." },
     { label: "Zinok", category: "eat", icon: Shell, detail: "Môže ťa podporiť v tomto citlivom období — tekvicové semienka, cícer, hovädzie mäso, ustrice." },
