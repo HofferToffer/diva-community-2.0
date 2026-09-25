@@ -335,6 +335,8 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
     { label: "Sprítomniť sa", category: "do", icon: Anchor },
     { label: "Vedená meditácia", category: "do", icon: Wind },
+    { label: "Stretnutie so ženami", category: "do", icon: Users },
+    { label: "Dovoľ si len byť — to stačí", category: "do", icon: Heart },
   ],
 };
 
