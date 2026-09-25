@@ -11,7 +11,6 @@ import {
   Nut,
   Dumbbell,
   Zap,
-  Bike,
   Sparkles,
   Music,
   Users,
@@ -38,6 +37,10 @@ import {
   HandHeart,
   Citrus,
   Apple,
+  Gift,
+  PartyPopper,
+  Flame,
+  Heart,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -280,10 +283,13 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Fermentované potraviny", category: "eat", icon: Milk, detail: "Kimchi, jogurt, kefir — dobré pre črevný mikrobióm." },
     { label: "Silový tréning", category: "move", icon: Dumbbell },
     { label: "Zabehni si naplno", category: "move", icon: Zap },
-    { label: "Vyraz na bicykel", category: "move", icon: Bike },
+    { label: "Ženské tance", category: "move", icon: Music },
+    { label: "Tanec na opätkoch", category: "move", icon: Flame },
     { label: "Rezká chôdza", category: "move", icon: Footprints },
     { label: "Naplánuj si niečo nové", category: "do", icon: Sparkles },
-    { label: "Rozbehni nový nápad", category: "do", icon: Music },
+    { label: "Rozbehni nový nápad", category: "do", icon: Sparkle },
+    { label: "Odmeň sa", category: "do", icon: Gift },
+    { label: "Zatancuj si a poteš telo", category: "do", icon: PartyPopper },
     { label: "Stretni sa s divami", category: "do", icon: Users },
     { label: "Nauč sa niečo nové", category: "do", icon: NotebookPen },
   ],
@@ -301,6 +307,7 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Vyrieš dôležitý rozhovor", category: "do", icon: MessageCircle },
     { label: "Ver si", category: "do", icon: Sparkles },
     { label: "Vyskúšaj niečo nové", category: "do", icon: Sparkle },
+    { label: "Rituál vďačnosti", category: "do", icon: Heart },
   ],
   lutealna: [
     { label: "Bielkoviny pri každom jedle", category: "eat", icon: Egg, detail: "Môže ťa vyživiť a upokojiť náladu — vajcia, hydina, ryby, strukoviny." },
