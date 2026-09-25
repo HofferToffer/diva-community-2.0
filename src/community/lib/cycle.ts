@@ -41,6 +41,7 @@ import {
   PartyPopper,
   Flame,
   Heart,
+  Anchor,
 } from "lucide-react";
 
 export type CycleInfo = {
@@ -321,10 +322,12 @@ export const CYCLE_PHASE_TIPS: Record<CyclePhaseKey, CycleTip[]> = {
     { label: "Pokojné plávanie", category: "move", icon: Waves },
     { label: "Prechádzka v prírode", category: "move", icon: Footprints },
     { label: "Tai chi", category: "move", icon: Flower },
+    { label: "Tanec spojenia s lonom", category: "move", icon: Music },
     { label: "Spi o niečo dlhšie", category: "do", icon: Moon },
     { label: "Dopraj si rituál pokoja", category: "do", icon: Bath },
     { label: "Odľahči si program", category: "do", icon: Feather },
     { label: "Ceremoniálne kakao", category: "do", icon: HandHeart },
+    { label: "Sprítomniť sa", category: "do", icon: Anchor },
   ],
 };
 
