@@ -60,7 +60,7 @@ const CommunitySection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col gap-6"
           >
-            <h2 className="font-display text-4xl md:text-5xl font-light tracking-wide text-foreground">
+            <h2 className="font-display text-4xl md:text-5xl tracking-wide text-foreground">
               Diva Community
             </h2>
             <div className="w-16 h-[1px] bg-accent" />

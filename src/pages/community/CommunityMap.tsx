@@ -42,9 +42,9 @@ const COUNTRIES_GEOJSON = fixAntimeridian(
 );
 
 const COUNTRY_STYLE = {
-  fillColor: "#E9D8AE",
+  fillColor: "#F4ECE3", // krémová
   fillOpacity: 1,
-  color: "#6B5738",
+  color: "#A85D42", // terakotová
   weight: 0.7,
 };
 
@@ -120,7 +120,7 @@ export default function CommunityMap() {
             maxBounds={[[-60, -200], [85, 200]]}
             maxBoundsViscosity={1.0}
             scrollWheelZoom
-            style={{ height: "65vh", width: "100%", background: "#221C18" }}
+            style={{ height: "65vh", width: "100%", background: "#4A2F38" /* slivková more */ }}
           >
             {/* interactive=false — otherwise every filled country becomes a touch
                 target, which fights with pinch-zoom/pan on mobile since almost

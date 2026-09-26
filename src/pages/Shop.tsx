@@ -35,7 +35,7 @@ const Shop = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="font-display text-5xl md:text-7xl font-light tracking-wide text-primary-foreground"
+              className="font-display text-5xl md:text-7xl tracking-wide text-primary-foreground"
             >
               Shop
             </motion.h1>
@@ -82,10 +82,10 @@ const Shop = () => {
                 to={`/shop/${product.slug}`}
               />
               <div className="mt-4 space-y-1">
-                <h3 className="font-display text-xl font-light tracking-wide text-foreground">
+                <h3 className="font-display text-xl tracking-wide text-foreground">
                   <Link
                     to={`/shop/${product.slug}`}
-                    className="hover:text-accent transition-colors"
+                    className="hover:text-diva-terakotova transition-colors"
                   >
                     {pick(product.name)}
                   </Link>

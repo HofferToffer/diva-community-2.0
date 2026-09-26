@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Josefin+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,86 +6,104 @@
 
 @layer base {
   :root {
-    --background: 40 33% 96%;
-    --foreground: 30 15% 20%;
+    /* DIVA Community – farby značky (Brand manuál 1.0) */
+    --diva-slivkova: #4A2F38;
+    --diva-kremova: #F4ECE3;
+    --diva-salviova: #55624F;
+    --diva-terakotova: #A85D42;
+    --diva-pudrova: #E3B9A7;
+    --diva-cierna: #1E1A1A;
+    --diva-kremova-svetla: #FAF6F1;
+    --diva-biela: #FFFFFF;
 
-    --card: 40 30% 94%;
-    --card-foreground: 30 15% 20%;
+    /* Fázy cyklu = ročné obdobia */
+    --diva-zima: var(--diva-slivkova); /* Menštruácia */
+    --diva-jar: var(--diva-salviova); /* Folikulárna fáza */
+    --diva-leto: var(--diva-pudrova); /* Ovulácia */
+    --diva-jesen: var(--diva-terakotova); /* Luteálna fáza */
 
-    --popover: 40 33% 96%;
-    --popover-foreground: 30 15% 20%;
+    /* Theme tokens, built from the brand palette (HSL for Tailwind's opacity modifiers). */
+    --background: 33 47% 96%; /* krémová svetlá */
+    --foreground: 340 22% 24%; /* slivková */
 
-    --primary: 344 28% 62%;
-    --primary-foreground: 40 33% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 22% 24%;
 
-    --secondary: 30 25% 85%;
-    --secondary-foreground: 30 15% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 22% 24%;
 
-    --muted: 35 20% 90%;
-    --muted-foreground: 30 10% 45%;
+    --primary: 340 22% 24%; /* slivková */
+    --primary-foreground: 33 47% 96%;
 
-    --accent: 344 37% 65%;
-    --accent-foreground: 30 15% 20%;
+    --secondary: 32 44% 92%; /* krémová */
+    --secondary-foreground: 340 22% 24%;
 
-    --shop: 350 55% 70%;
-    --shop-foreground: 30 15% 20%;
+    --muted: 32 44% 92%;
+    --muted-foreground: 340 12% 40%; /* tlmená slivková, 5.8:1 na krémovej */
 
-    --destructive: 350 55% 40%;
+    --accent: 18 52% 77%; /* púdrová — plochy a linky, nikdy text */
+    --accent-foreground: 340 22% 24%;
 
-    --destructive-foreground: 40 33% 96%;
+    --shop: 18 52% 77%;
+    --shop-foreground: 340 22% 24%;
 
-    --border: 35 20% 85%;
-    --input: 35 20% 85%;
-    --ring: 344 28% 62%;
+    --destructive: 355 50% 40%;
+
+    --destructive-foreground: 33 47% 96%;
+
+    --border: 30 30% 88%;
+    --input: 30 30% 88%;
+    --ring: 340 22% 24%;
 
     --radius: 0.25rem;
 
-    --sidebar-background: 40 30% 94%;
-    --sidebar-foreground: 30 15% 20%;
-    --sidebar-primary: 344 28% 62%;
-    --sidebar-primary-foreground: 40 33% 96%;
-    --sidebar-accent: 35 20% 90%;
-    --sidebar-accent-foreground: 30 15% 20%;
-    --sidebar-border: 35 20% 85%;
-    --sidebar-ring: 344 28% 62%;
+    --sidebar-background: 32 44% 92%;
+    --sidebar-foreground: 340 22% 24%;
+    --sidebar-primary: 340 22% 24%;
+    --sidebar-primary-foreground: 33 47% 96%;
+    --sidebar-accent: 18 52% 90%;
+    --sidebar-accent-foreground: 340 22% 24%;
+    --sidebar-border: 30 30% 88%;
+    --sidebar-ring: 340 22% 24%;
 
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body: 'Josefin Sans', sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
   }
 
   .dark {
-    --background: 30 15% 10%;
-    --foreground: 40 30% 90%;
-    --card: 30 15% 14%;
-    --card-foreground: 40 30% 90%;
-    --popover: 30 15% 10%;
-    --popover-foreground: 40 30% 90%;
-    --primary: 344 37% 60%;
-    --primary-foreground: 30 15% 10%;
-    --secondary: 30 15% 20%;
-    --secondary-foreground: 40 30% 90%;
-    --muted: 30 10% 20%;
-    --muted-foreground: 35 15% 60%;
-    --accent: 344 37% 65%;
-    --accent-foreground: 30 15% 10%;
+    /* Na tmavom pozadí krémová a púdrová, podľa manuálu. */
+    --background: 0 7% 11%; /* čierna */
+    --foreground: 32 44% 92%; /* krémová */
+    --card: 340 12% 15%;
+    --card-foreground: 32 44% 92%;
+    --popover: 340 12% 15%;
+    --popover-foreground: 32 44% 92%;
+    --primary: 18 52% 77%; /* púdrová */
+    --primary-foreground: 340 22% 24%;
+    --secondary: 340 12% 20%;
+    --secondary-foreground: 32 44% 92%;
+    --muted: 340 10% 18%;
+    --muted-foreground: 32 20% 70%;
+    --accent: 340 15% 26%;
+    --accent-foreground: 32 44% 92%;
 
-    --shop: 350 60% 75%;
-    --shop-foreground: 30 15% 10%;
+    --shop: 18 52% 77%;
+    --shop-foreground: 340 22% 24%;
 
-    --destructive: 350 55% 45%;
+    --destructive: 355 55% 50%;
 
-    --destructive-foreground: 40 30% 90%;
-    --border: 30 10% 22%;
-    --input: 30 10% 22%;
-    --ring: 344 37% 60%;
-    --sidebar-background: 30 15% 10%;
-    --sidebar-foreground: 40 30% 90%;
-    --sidebar-primary: 344 37% 60%;
-    --sidebar-primary-foreground: 30 15% 10%;
-    --sidebar-accent: 30 10% 20%;
-    --sidebar-accent-foreground: 40 30% 90%;
-    --sidebar-border: 30 10% 22%;
-    --sidebar-ring: 344 37% 60%;
+    --destructive-foreground: 32 44% 92%;
+    --border: 340 10% 22%;
+    --input: 340 10% 22%;
+    --ring: 18 52% 77%;
+    --sidebar-background: 0 7% 11%;
+    --sidebar-foreground: 32 44% 92%;
+    --sidebar-primary: 18 52% 77%;
+    --sidebar-primary-foreground: 340 22% 24%;
+    --sidebar-accent: 340 10% 18%;
+    --sidebar-accent-foreground: 32 44% 92%;
+    --sidebar-border: 340 10% 22%;
+    --sidebar-ring: 18 52% 77%;
   }
 
   /*
@@ -96,59 +114,59 @@
    * base layout never changes, only the "brand" color does.
    */
   :root[data-phase="menstruacna"] {
-    /* Starena — tmavá vínová / slivková */
-    --primary: 335 35% 40%;
-    --primary-foreground: 40 33% 96%;
-    --accent: 335 30% 55%;
-    --accent-foreground: 40 33% 96%;
-    --ring: 335 35% 40%;
-    --sidebar-primary: 335 35% 40%;
-    --sidebar-primary-foreground: 40 33% 96%;
-    --sidebar-accent: 335 20% 90%;
-    --sidebar-accent-foreground: 30 15% 20%;
-    --sidebar-ring: 335 35% 40%;
+    /* Zima — slivková */
+    --primary: 340 22% 24%;
+    --primary-foreground: 33 47% 96%;
+    --accent: 18 52% 77%;
+    --accent-foreground: 340 22% 24%;
+    --ring: 340 22% 24%;
+    --sidebar-primary: 340 22% 24%;
+    --sidebar-primary-foreground: 33 47% 96%;
+    --sidebar-accent: 18 52% 90%;
+    --sidebar-accent-foreground: 340 22% 24%;
+    --sidebar-ring: 340 22% 24%;
   }
 
   :root[data-phase="folikularna"] {
-    /* Dievča — svetlá zelená / šalviová */
-    --primary: 140 18% 42%;
-    --primary-foreground: 40 33% 96%;
-    --accent: 140 22% 60%;
-    --accent-foreground: 30 15% 20%;
-    --ring: 140 18% 42%;
-    --sidebar-primary: 140 18% 42%;
-    --sidebar-primary-foreground: 40 33% 96%;
-    --sidebar-accent: 140 20% 90%;
-    --sidebar-accent-foreground: 30 15% 20%;
-    --sidebar-ring: 140 18% 42%;
+    /* Jar — šalviová */
+    --primary: 101 11% 35%;
+    --primary-foreground: 33 47% 96%;
+    --accent: 101 14% 80%;
+    --accent-foreground: 340 22% 24%;
+    --ring: 101 11% 35%;
+    --sidebar-primary: 101 11% 35%;
+    --sidebar-primary-foreground: 33 47% 96%;
+    --sidebar-accent: 101 14% 90%;
+    --sidebar-accent-foreground: 340 22% 24%;
+    --sidebar-ring: 101 11% 35%;
   }
 
   :root[data-phase="ovulacia"] {
-    /* Milenka — teplá zlatá / broskyňová */
-    --primary: 32 45% 46%;
-    --primary-foreground: 40 33% 96%;
-    --accent: 32 50% 68%;
-    --accent-foreground: 30 15% 20%;
-    --ring: 32 45% 46%;
-    --sidebar-primary: 32 45% 46%;
-    --sidebar-primary-foreground: 40 33% 96%;
-    --sidebar-accent: 32 30% 90%;
-    --sidebar-accent-foreground: 30 15% 20%;
-    --sidebar-ring: 32 45% 46%;
+    /* Leto — púdrová (pre text a tlačidlá tmavšia ružová, aby bola čitateľná) */
+    --primary: 356 30% 42%;
+    --primary-foreground: 33 47% 96%;
+    --accent: 18 52% 77%;
+    --accent-foreground: 340 22% 24%;
+    --ring: 356 30% 42%;
+    --sidebar-primary: 356 30% 42%;
+    --sidebar-primary-foreground: 33 47% 96%;
+    --sidebar-accent: 18 52% 90%;
+    --sidebar-accent-foreground: 340 22% 24%;
+    --sidebar-ring: 356 30% 42%;
   }
 
   :root[data-phase="lutealna"] {
-    /* Kráľovná — hlboká hnedá (nie čisto čierna, aby to na svetlej karte nepôsobilo ako škvrna) */
-    --primary: 20 25% 30%;
-    --primary-foreground: 40 33% 96%;
-    --accent: 20 22% 45%;
-    --accent-foreground: 40 33% 96%;
-    --ring: 20 25% 30%;
-    --sidebar-primary: 20 25% 30%;
-    --sidebar-primary-foreground: 40 33% 96%;
-    --sidebar-accent: 20 18% 88%;
-    --sidebar-accent-foreground: 30 15% 20%;
-    --sidebar-ring: 20 25% 30%;
+    /* Jeseň — terakotová */
+    --primary: 16 44% 46%;
+    --primary-foreground: 33 47% 96%;
+    --accent: 18 45% 82%;
+    --accent-foreground: 340 22% 24%;
+    --ring: 16 44% 46%;
+    --sidebar-primary: 16 44% 46%;
+    --sidebar-primary-foreground: 33 47% 96%;
+    --sidebar-accent: 18 45% 91%;
+    --sidebar-accent-foreground: 340 22% 24%;
+    --sidebar-ring: 16 44% 46%;
   }
 }
 

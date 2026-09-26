@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const COLORS = ["hsl(344, 55%, 72%)", "hsl(344, 37%, 60%)", "hsl(354, 45%, 58%)", "hsl(40, 33%, 80%)", "hsl(30, 25%, 85%)"];
+const COLORS = ["#E3B9A7", "#4A2F38", "#A85D42", "#55624F", "#F4ECE3"]; // brand palette
 
 /** A one-shot burst of falling confetti pieces, meant to unmount itself after a few seconds. */
 export function ConfettiBurst({ className }: { className?: string }) {

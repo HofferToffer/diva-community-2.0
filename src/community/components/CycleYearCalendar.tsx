@@ -14,7 +14,7 @@ function toDateKey(date: Date) {
 }
 
 function phaseFill(phase: CyclePhaseKey) {
-  return CYCLE_PHASE_COLORS[phase].fill.replace(/0\.\d+\)/, "0.6)");
+  return CYCLE_PHASE_COLORS[phase].solid;
 }
 
 /** One month as a tiny grid of phase-coloured days — Monday-first, like the main calendar. */
@@ -76,7 +76,7 @@ function MiniMonth({
                 key === todayKey && "font-semibold text-foreground ring-1 ring-primary",
                 key === lastPeriodDate && "ring-1 ring-foreground",
               )}
-              style={{ background: cell.phase ? phaseFill(cell.phase) : undefined }}
+              style={cell.phase ? { background: phaseFill(cell.phase), color: CYCLE_PHASE_COLORS[cell.phase].onSolid } : undefined}
             >
               {cell.date.getDate()}
             </span>

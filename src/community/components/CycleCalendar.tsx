@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
 import { CycleYearCalendar } from "@/community/components/CycleYearCalendar";
 
+/** Logged-intimacy heart: the deep summer rose, readable on every phase color. */
+const HEART_COLOR = CYCLE_PHASE_COLORS.ovulacia.dot;
+
 function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
@@ -153,27 +156,29 @@ export function CycleCalendar({
                   }
                   onClick={() => (canLogIntimacy ? onToggleIntimacy!(dateKey) : setPendingDateKey(dateKey))}
                   className={cn(
-                    "relative flex aspect-square w-full items-center justify-center rounded-full text-sm text-foreground/85 transition-all",
+                    "relative flex aspect-square w-full items-center justify-center rounded-full text-sm text-foreground/85 transition-all duration-300",
                     isSameDay(cell.date, today) && "font-semibold ring-2 ring-primary ring-offset-1 ring-offset-card",
                     isPeriodStart && "ring-2 ring-foreground ring-offset-1 ring-offset-card",
                     canOpen && "cursor-pointer hover:scale-110 hover:shadow-elevated-sm active:scale-95",
                   )}
-                  style={{
-                    background: cell.phase ? CYCLE_PHASE_COLORS[cell.phase].fill.replace(/0\.\d+\)/, "0.6)") : undefined,
-                  }}
+                  style={
+                    cell.phase
+                      ? { background: CYCLE_PHASE_COLORS[cell.phase].solid, color: CYCLE_PHASE_COLORS[cell.phase].onSolid }
+                      : undefined
+                  }
                 >
                   {cell.date.getDate()}
                   {isLogged && (
                     <Heart
-                      className="absolute -bottom-0.5 -right-0.5 h-3 w-3"
-                      style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }}
+                      className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-card p-[2px] shadow-sm"
+                      style={{ color: HEART_COLOR, fill: HEART_COLOR }}
                       aria-hidden="true"
                     />
                   )}
                   {isPeakFertility && !isLogged && (
                     <Egg
-                      className="absolute -bottom-0.5 -right-0.5 h-3 w-3"
-                      style={{ color: "hsl(32, 45%, 46%)" }}
+                      className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-card p-[2px] shadow-sm"
+                      style={{ color: CYCLE_PHASE_COLORS.ovulacia.dot }}
                       aria-hidden="true"
                     />
                   )}
@@ -252,7 +257,7 @@ export function CycleCalendar({
       {onToggleIntimacy && (
         <p className="mt-3 text-xs text-muted-foreground">
           {t("calendar.intimacyHintBefore")}{" "}
-          <Heart className="inline h-3 w-3 align-[-1px]" style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }} aria-hidden="true" />{" "}
+          <Heart className="inline h-3 w-3 align-[-1px]" style={{ color: HEART_COLOR, fill: HEART_COLOR }} aria-hidden="true" />{" "}
           {t("calendar.intimacyHintAfter")}
         </p>
       )}
@@ -269,7 +274,7 @@ export function CycleCalendar({
             <span
               aria-hidden="true"
               className="inline-block h-3 w-3 rounded-full"
-              style={{ background: CYCLE_PHASE_COLORS[phase].fill.replace(/0\.\d+\)/, "0.6)") }}
+              style={{ background: CYCLE_PHASE_COLORS[phase].solid }}
             />
             {phaseName(phase)}
           </li>
@@ -278,14 +283,14 @@ export function CycleCalendar({
           <li className="flex items-center gap-1.5">
             <Heart
               className="h-3 w-3"
-              style={{ color: "hsl(354, 45%, 50%)", fill: "hsl(354, 45%, 50%)" }}
+              style={{ color: HEART_COLOR, fill: HEART_COLOR }}
               aria-hidden="true"
             />
             {t("calendar.sex")}
           </li>
         )}
         <li className="flex items-center gap-1.5">
-          <Egg className="h-3 w-3" style={{ color: "hsl(32, 45%, 46%)" }} aria-hidden="true" />
+          <Egg className="h-3 w-3" style={{ color: CYCLE_PHASE_COLORS.ovulacia.dot }} aria-hidden="true" />
           {t("calendar.highestFertilityLegend")}
         </li>
       </ul>

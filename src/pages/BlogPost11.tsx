@@ -53,7 +53,7 @@ const BlogPost11 = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
+            className="mt-4 font-display text-4xl md:text-6xl tracking-wide text-primary-foreground max-w-3xl"
           >
             {l("Moja cesta hlbšie k sebe", "My journey deeper into myself")}
           </motion.h1>

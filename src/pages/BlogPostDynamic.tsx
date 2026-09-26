@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBlogPost } from "@/community/hooks/queries";
+import { ADMIN_COVER_POSITION } from "@/data/blogPosts";
 import { useSeo } from "@/lib/seo";
 import { useLang } from "@/lib/lang";
 
@@ -86,8 +87,11 @@ const BlogPostDynamic = () => {
       <section className="relative h-[70vh] w-full overflow-hidden">
         {post.cover_image_url ? (
           <div
-            className="absolute inset-0 bg-cover bg-top bg-no-repeat"
-            style={{ backgroundImage: `url(${post.cover_image_url})` }}
+            className="absolute inset-0 bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: `url(${post.cover_image_url})`,
+              backgroundPosition: ADMIN_COVER_POSITION[post.slug] ?? "top",
+            }}
           />
         ) : (
           <div className="absolute inset-0 bg-secondary" />
@@ -106,7 +110,7 @@ const BlogPostDynamic = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-4 max-w-3xl font-display text-4xl font-light tracking-wide text-primary-foreground md:text-6xl"
+            className="mt-4 max-w-3xl font-display text-4xl tracking-wide text-primary-foreground md:text-6xl"
           >
             {post.title}
           </motion.h1>

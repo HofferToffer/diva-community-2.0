@@ -142,8 +142,8 @@ const FALLBACK: WeekBand = {
 
 /** Soft background fill + dot color for the postpartum tip grid — warm and healing, distinct from the cycle-phase palette. */
 export const POSTPARTUM_TIP_COLOR: { fill: string; dot: string } = {
-  fill: "hsl(12, 38%, 48%, 0.14)",
-  dot: "hsl(12, 38%, 48%)",
+  fill: "hsl(16, 44%, 46%, 0.14)",
+  dot: "#A85D42",
 };
 
 /**

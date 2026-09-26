@@ -204,8 +204,8 @@ export const PREGNANCY_TRIMESTER_ARCHETYPE: Record<1 | 2 | 3, { archetype: strin
 
 /** Soft background fill + dot color for the pregnancy tip grid. */
 export const PREGNANCY_TIP_COLOR: { fill: string; dot: string } = {
-  fill: "hsl(140, 18%, 42%, 0.12)",
-  dot: "hsl(140, 18%, 42%)",
+  fill: "hsl(101, 11%, 35%, 0.14)",
+  dot: "#55624F",
 };
 
 /**

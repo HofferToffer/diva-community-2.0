@@ -9,7 +9,7 @@ export const DEFAULT_DESCRIPTION = {
   sk: "DIVA Community – komunita silných žien. Blog o ženskosti, cykle a materstve, DIVA Run, ReCreate retreaty, workshopy a DIVA shop.",
   en: "DIVA Community – a community of strong women. A blog about femininity, cycles and motherhood, DIVA Run, ReCreate retreats, workshops and the DIVA shop.",
 };
-export const DEFAULT_IMAGE = `${SITE_URL}/icon-512.png`;
+export const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
 export type SeoOptions = {
   /** Page title without the site name — " | DIVA Community" is appended. */

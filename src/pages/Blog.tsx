@@ -28,7 +28,7 @@ const Blog = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="font-display text-5xl md:text-7xl font-light tracking-wide text-primary-foreground"
+              className="font-display text-5xl md:text-7xl tracking-wide text-primary-foreground"
             >
               Blog
             </motion.h1>
@@ -79,10 +79,10 @@ const Blog = () => {
                     loading="lazy"
                   />
                 </div>
-                <span className="font-body text-xs tracking-[0.2em] text-accent uppercase">
+                <span className="font-body text-xs tracking-[0.2em] text-diva-terakotova uppercase">
                   {post.category}
                 </span>
-                <h2 className="mt-2 font-display text-2xl md:text-3xl font-light text-foreground group-hover:text-accent transition-colors">
+                <h2 className="mt-2 font-display text-2xl md:text-3xl text-foreground group-hover:text-diva-terakotova transition-colors">
                   {post.title}
                 </h2>
                 <p className="mt-3 font-body text-sm leading-relaxed text-muted-foreground">

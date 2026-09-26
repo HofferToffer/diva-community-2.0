@@ -86,7 +86,7 @@ const Checkout = () => {
 
       <section className="pt-28 pb-10 px-6 md:px-12 lg:px-24 bg-foreground">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-display text-4xl md:text-5xl font-light tracking-wide text-primary-foreground">
+          <h1 className="font-display text-4xl md:text-5xl tracking-wide text-primary-foreground">
             {l("Pokladňa", "Checkout")}
           </h1>
           <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
@@ -107,7 +107,7 @@ const Checkout = () => {
         {orderPlaced ? (
           <div className="py-16 text-center">
             <CheckCircle2 className="h-12 w-12 mx-auto mb-6 text-foreground" strokeWidth={1.5} />
-            <h2 className="font-display text-3xl font-light tracking-wide text-foreground">
+            <h2 className="font-display text-3xl tracking-wide text-foreground">
               {l("Ďakujeme za objednávku", "Thank you for your order")}
             </h2>
             <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
@@ -140,7 +140,7 @@ const Checkout = () => {
         ) : (
           <div>
             {/* Payment method selection */}
-            <h2 className="font-display text-2xl font-light tracking-wide text-foreground mb-6">
+            <h2 className="font-display text-2xl tracking-wide text-foreground mb-6">
               {l("Spôsob platby", "Payment method")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">

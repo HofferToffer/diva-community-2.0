@@ -1,6 +1,7 @@
 import { Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/lib/lang";
+import { DivaWordmark } from "@/components/DivaWordmark";
 
 const links: { label: string; to: string }[] = [
   { label: "DIVA COMMUNITY", to: "/#community" },
@@ -16,7 +17,7 @@ const Footer = () => {
     <footer className="bg-foreground px-6 py-16 md:px-12 lg:px-24">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-8">
-          <span className="font-heading text-2xl uppercase tracking-[0.2em] text-background/90">Diva Community</span>
+          <DivaWordmark motto={false} className="w-32 text-background/90" />
 
           <div className="flex gap-6">
             <a href="https://www.instagram.com/diva_community_/" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-background transition-colors">

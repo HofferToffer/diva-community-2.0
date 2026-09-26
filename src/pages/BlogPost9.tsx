@@ -37,7 +37,7 @@ const BlogPost9 = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
+            className="mt-4 font-display text-4xl md:text-6xl tracking-wide text-primary-foreground max-w-3xl"
           >
             {l("15 ročný sen", "A 15-year dream")}
           </motion.h1>
@@ -188,7 +188,7 @@ const BlogPost9 = () => {
             <p className="font-display text-2xl md:text-3xl italic text-foreground">
               {l("A NAJVÄČŠIA ODMENA ZA TEN ROK BOLA ODVAHA VĎAKA KTOREJ SME NA KRÉTE.", "AND THE BIGGEST REWARD OF THAT YEAR WAS THE COURAGE THAT GOT US TO CRETE.")}
             </p>
-            <p className="font-display text-2xl md:text-3xl italic text-accent pt-2">
+            <p className="font-display text-2xl md:text-3xl italic text-diva-terakotova pt-2">
               {l("Ďakujem. ❤️", "Thank you. ❤️")}
             </p>
           </div>

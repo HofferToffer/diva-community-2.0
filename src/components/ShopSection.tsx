@@ -15,7 +15,7 @@ const ShopSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="font-display text-4xl md:text-5xl font-light tracking-wide text-foreground">
+          <h2 className="font-display text-4xl md:text-5xl tracking-wide text-foreground">
             Shop
           </h2>
           <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
@@ -43,7 +43,7 @@ const ShopSection = () => {
                   />
                 </div>
                 <div className="mt-4 space-y-1">
-                  <h3 className="font-display text-lg font-light tracking-wide text-foreground">
+                  <h3 className="font-display text-lg tracking-wide text-foreground">
                     {pick(product.name)}
                   </h3>
                   <p className="font-body text-sm text-muted-foreground">

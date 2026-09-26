@@ -4,8 +4,8 @@
   "description": "Komunita silných žien. Blog, Shop, Retreaty a Workshopy.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8f5f1",
-  "theme_color": "#99405F",
+  "background_color": "#FAF6F1",
+  "theme_color": "#4A2F38",
   "orientation": "portrait",
   "icons": [
     {

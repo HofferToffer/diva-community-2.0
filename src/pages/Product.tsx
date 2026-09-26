@@ -25,7 +25,7 @@ const Product = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="pt-40 pb-24 text-center px-6">
-          <h1 className="font-display text-3xl font-light text-foreground">
+          <h1 className="font-display text-3xl text-foreground">
             {l("Produkt sa nenašiel", "Product not found")}
           </h1>
           <Link
@@ -67,7 +67,7 @@ const Product = () => {
           <ProductGallery images={product.images} name={pick(product.name)} />
 
           <div className="md:pt-4">
-            <h1 className="font-display text-3xl md:text-4xl font-light tracking-wide text-foreground">
+            <h1 className="font-display text-3xl md:text-4xl tracking-wide text-foreground">
               {pick(product.name)}
             </h1>
             <div className="mt-4 w-16 h-[1px] bg-accent" />
@@ -91,7 +91,7 @@ const Product = () => {
 
       {others.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24 pb-20">
-          <h2 className="font-display text-2xl font-light tracking-wide text-foreground mb-8">
+          <h2 className="font-display text-2xl tracking-wide text-foreground mb-8">
             {l("Ďalšie produkty", "You might also like")}
           </h2>
           <div className="grid gap-8 sm:grid-cols-3">
@@ -105,7 +105,7 @@ const Product = () => {
                     loading="lazy"
                   />
                 </div>
-                <h3 className="mt-4 font-display text-lg font-light tracking-wide text-foreground">
+                <h3 className="mt-4 font-display text-lg tracking-wide text-foreground">
                   {pick(p.name)}
                 </h3>
                 <p className="font-body text-sm text-muted-foreground">
