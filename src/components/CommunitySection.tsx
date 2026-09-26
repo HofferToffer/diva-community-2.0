@@ -36,8 +36,10 @@ const CommunitySection = () => {
   return (
     <section id="community" className="section-padding bg-background overflow-x-clip">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+        <div className="grid gap-12 xl:grid-cols-2 xl:gap-16 items-center">
+          {/* On phones and tablets the illustration comes after the text, so the top of the page isn't crowded under the hero photo. */}
           <motion.div
+            className="order-last xl:order-first"
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
