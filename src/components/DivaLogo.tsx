@@ -14,17 +14,19 @@ const PETALS = [
 ];
 
 /**
- * The DIVA mark. `animated` draws the ring in, lets the petals open one by one
- * and then keeps the flower gently breathing.
+ * The DIVA mark. `animated` draws the ring in and lets the petals open one by
+ * one; `breathing` then keeps the flower gently turning.
  */
 export function DivaLogo({
   className,
   animated = false,
+  breathing = false,
   strokeWidth = 12,
   title,
 }: {
   className?: string;
   animated?: boolean;
+  breathing?: boolean;
   /** Ring thickness on the 1024 grid — bump it up for tiny sizes. */
   strokeWidth?: number;
   title?: string;
@@ -57,8 +59,8 @@ export function DivaLogo({
 
       {/* The flower is symmetric, so framer's default pivot (its own centre) is the dot. */}
       <motion.g
-        animate={animated ? { rotate: [0, 8, 0, -8, 0], scale: [1, 1.04, 1, 1.04, 1] } : undefined}
-        transition={animated ? { duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.8 } : undefined}
+        animate={animated && breathing ? { rotate: [0, 8, 0, -8, 0], scale: [1, 1.04, 1, 1.04, 1] } : undefined}
+        transition={animated && breathing ? { duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.8 } : undefined}
       >
         {PETALS.map((d, i) =>
           animated ? (

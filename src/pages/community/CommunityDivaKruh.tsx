@@ -25,7 +25,7 @@ export default function CommunityDivaKruh() {
         </div>
 
         <div className="relative z-10 mx-auto">
-          <DivaLogo animated className="mx-auto mb-6 w-28 text-[#4A2F38] dark:text-[#F4ECE3]" title="DIVA KRUH" />
+          <DivaLogo animated breathing className="mx-auto mb-6 w-28 text-[#4A2F38] dark:text-[#F4ECE3]" title="DIVA KRUH" />
           <h1 className="font-display text-3xl md:text-4xl tracking-wide">{t("divaKruh.title")}</h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("divaKruh.heroText")}</p>
         </div>
