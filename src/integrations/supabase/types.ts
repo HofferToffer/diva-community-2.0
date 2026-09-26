@@ -837,6 +837,7 @@ export type Database = {
           notify_comments: boolean
           notify_likes: boolean
           onboarding_completed: boolean
+          period_length_days: number | null
           postpartum_since: string | null
           pregnancy_due_date: string | null
           share_chapter: boolean
@@ -877,6 +878,7 @@ export type Database = {
           notify_comments?: boolean
           notify_likes?: boolean
           onboarding_completed?: boolean
+          period_length_days?: number | null
           postpartum_since?: string | null
           pregnancy_due_date?: string | null
           share_chapter?: boolean
@@ -917,6 +919,7 @@ export type Database = {
           notify_comments?: boolean
           notify_likes?: boolean
           onboarding_completed?: boolean
+          period_length_days?: number | null
           postpartum_since?: string | null
           pregnancy_due_date?: string | null
           share_chapter?: boolean
