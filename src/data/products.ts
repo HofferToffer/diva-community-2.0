@@ -1,3 +1,4 @@
+import type { Bilingual } from "@/lib/lang";
 import shopCapPink from "@/assets/shop-cap-pink.jpg";
 import shopCapPink3 from "@/assets/shop-cap-pink-3.jpg";
 import shopCapPink4 from "@/assets/shop-cap-pink-4.jpg";
@@ -42,8 +43,8 @@ export interface Product {
   slug: string;
   /** Stripe price lookup key / internal product identifier */
   priceId: string;
-  name: string;
-  description: string;
+  name: Bilingual;
+  description: Bilingual;
   price: string;
   priceCents: number;
   images: string[];
@@ -57,8 +58,8 @@ export const products: Product[] = [
   {
     slug: "siltovka-ruzova",
     priceId: "siltovka_ruzova",
-    name: "DIVA Šiltovka – Ružová",
-    description: "Ružová vintage šiltovka s vyšívaným logom DIVA",
+    name: { sk: "DIVA Šiltovka – Ružová", en: "DIVA Cap – Pink" },
+    description: { sk: "Ružová vintage šiltovka s vyšívaným logom DIVA", en: "Pink vintage cap with the embroidered DIVA logo" },
     price: "14,90 €",
     priceCents: 1490,
     images: [shopCapPink10, shopCapPink7, shopCapPink9, shopCapPink3, shopCapPink11, shopCapPink8, shopCapPink6, shopCapPink4, shopCapPink],
@@ -66,8 +67,8 @@ export const products: Product[] = [
   {
     slug: "siltovka-seda",
     priceId: "siltovka_seda",
-    name: "DIVA Šiltovka – Šedá",
-    description: "Šedá vintage šiltovka s vyšívaným logom DIVA",
+    name: { sk: "DIVA Šiltovka – Šedá", en: "DIVA Cap – Grey" },
+    description: { sk: "Šedá vintage šiltovka s vyšívaným logom DIVA", en: "Grey vintage cap with the embroidered DIVA logo" },
     price: "14,90 €",
     priceCents: 1490,
     images: [shopCapGrey8, shopCapGrey9, shopCapGrey10, shopCapGrey11, shopCapGrey12, shopCapGrey14, shopCapGrey15, shopCapGrey16],
@@ -75,8 +76,8 @@ export const products: Product[] = [
   {
     slug: "klobuk-cierny",
     priceId: "klobuk_cierny",
-    name: "DIVA Klobúk – Čierny",
-    description: "Elegantný čierny klobúk s logom DIVA",
+    name: { sk: "DIVA Klobúk – Čierny", en: "DIVA Hat – Black" },
+    description: { sk: "Elegantný čierny klobúk s logom DIVA", en: "An elegant black hat with the DIVA logo" },
     price: "24,90 €",
     priceCents: 2490,
     images: [shopHatBlack6, shopHatBlack, shopHatBlack4, shopHatBlack7, shopHatBlack2, shopHatBlack5, shopHatBlack3],
@@ -84,8 +85,8 @@ export const products: Product[] = [
   {
     slug: "klobuk-bezovy",
     priceId: "klobuk_bezovy",
-    name: "DIVA Klobúk – Béžový",
-    description: "Klobúk v béžovej farbe s logom DIVA",
+    name: { sk: "DIVA Klobúk – Béžový", en: "DIVA Hat – Beige" },
+    description: { sk: "Klobúk v béžovej farbe s logom DIVA", en: "A beige hat with the DIVA logo" },
     price: "24,90 €",
     priceCents: 2490,
     images: [shopHatBeige8, shopHatBeige5, shopHatBeige9, shopHatBeige10, shopHatBeige4, shopHatBeige, shopHatBeige7],
@@ -93,8 +94,8 @@ export const products: Product[] = [
   {
     slug: "taska",
     priceId: "taska",
-    name: "DIVA Taška",
-    description: "Bavlnená taška s logom DIVA Community",
+    name: { sk: "DIVA Taška", en: "DIVA Tote Bag" },
+    description: { sk: "Bavlnená taška s logom DIVA Community", en: "Cotton tote bag with the DIVA Community logo" },
     price: "29,90 €",
     priceCents: 2990,
     images: [shopBag7, shopBag5, shopBag1, shopBag8, shopBag3, shopBag6, shopBag2, shopBag4],

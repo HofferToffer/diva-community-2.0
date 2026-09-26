@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useCartStore } from "@/stores/cartStore";
 import type { Product } from "@/data/products";
+import { useLang } from "@/lib/lang";
 
 interface AddToCartButtonProps {
   product: Product;
@@ -11,14 +12,15 @@ interface AddToCartButtonProps {
 }
 
 const AddToCartButton = ({ product, className, label }: AddToCartButtonProps) => {
+  const { l, pick } = useLang();
   const addItem = useCartStore((s) => s.addItem);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAdd = () => {
     setIsLoading(true);
     addItem(product, 1);
-    toast.success("Pridané do košíka", {
-      description: product.name,
+    toast.success(l("Pridané do košíka", "Added to your bag"), {
+      description: pick(product.name),
       position: "top-center",
     });
     setTimeout(() => setIsLoading(false), 300);
@@ -38,7 +40,7 @@ const AddToCartButton = ({ product, className, label }: AddToCartButtonProps) =>
       ) : (
         <>
           <ShoppingBag size={14} />
-          {label ?? "Pridať do košíka"}
+          {label ?? l("Pridať do košíka", "Add to bag")}
         </>
       )}
     </button>

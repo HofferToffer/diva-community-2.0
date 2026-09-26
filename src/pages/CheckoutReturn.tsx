@@ -7,8 +7,10 @@ import Footer from "@/components/Footer";
 import { useCartStore } from "@/stores/cartStore";
 import { supabase } from "@/integrations/supabase/client";
 import { getStripeEnvironment } from "@/lib/stripe";
+import { useLang } from "@/lib/lang";
 
 const CheckoutReturn = () => {
+  const { l } = useLang();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const clearCart = useCartStore((s) => s.clearCart);
@@ -43,17 +45,17 @@ const CheckoutReturn = () => {
           >
             <CheckCircle2 className="h-12 w-12 mx-auto mb-6 text-foreground" strokeWidth={1.5} />
             <h1 className="font-display text-4xl font-light tracking-wide text-foreground">
-              Ďakujeme za objednávku
+              {l("Ďakujeme za objednávku", "Thank you for your order")}
             </h1>
             <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
             <p className="mt-6 font-body text-sm leading-relaxed text-muted-foreground tracking-wide">
-              Vaša platba prebehla úspešne. Potvrdenie objednávky vám príde e-mailom.
+              {l("Vaša platba prebehla úspešne. Potvrdenie objednávky vám príde e-mailom.", "Your payment went through. We'll email you the order confirmation.")}
             </p>
             <Link
               to="/shop"
               className="mt-10 inline-block border border-foreground px-8 py-3 font-body text-xs tracking-[0.2em] uppercase text-foreground hover:bg-foreground hover:text-background transition-all"
             >
-              Späť do shopu
+              {l("Späť do shopu", "Back to the shop")}
             </Link>
           </motion.div>
         ) : (

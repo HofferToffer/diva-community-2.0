@@ -21,7 +21,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
         >
-          <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl uppercase tracking-[0.12em] text-background drop-shadow-lg">
+          <h1 className="font-heading text-[2.25rem] min-[360px]:text-[2.6rem] min-[400px]:text-5xl md:text-7xl lg:text-8xl uppercase tracking-[0.12em] text-background drop-shadow-lg">
             Diva
             <br />
             Community

@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBlogPost } from "@/community/hooks/queries";
+import { useSeo } from "@/lib/seo";
+import { useLang } from "@/lib/lang";
 
 type ContentBlock = { type: "p"; text: string; key: string } | { type: "img"; url: string; key: string };
 
@@ -27,6 +29,24 @@ function interleaveImages(paragraphs: string[], images: string[]): ContentBlock[
 const BlogPostDynamic = () => {
   const { slug } = useParams();
   const { data: post, isLoading } = useBlogPost(slug);
+  const { l, lang } = useLang();
+  useSeo(
+    isLoading
+      ? null
+      : post?.published
+        ? {
+            title: post.title,
+            description: post.excerpt ?? post.content.slice(0, 160).replace(/\s+/g, " ").trim(),
+            image: post.cover_image_url ?? undefined,
+            path: `/blog/${post.slug}`,
+            type: "article",
+            slovakOnly: true,
+          }
+        : { title: l("Článok sa nenašiel", "Post not found"), noindex: true },
+  );
+
+  // Admin posts are Slovak-only — not part of the English website.
+  if (lang === "en") return <Navigate to="/blog" replace />;
 
   if (isLoading) {
     return (
@@ -45,10 +65,10 @@ const BlogPostDynamic = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="mx-auto max-w-3xl space-y-4 px-6 py-24 text-center md:px-12">
-          <h1 className="font-display text-3xl">Článok sa nenašiel</h1>
+          <h1 className="font-display text-3xl">{l("Článok sa nenašiel", "Post not found")}</h1>
           <Link to="/blog" className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.15em] underline">
             <ArrowLeft size={14} />
-            Späť na blog
+            {l("Späť na blog", "Back to the blog")}
           </Link>
         </div>
         <Footer />
@@ -99,7 +119,7 @@ const BlogPostDynamic = () => {
           className="inline-flex items-center gap-2 font-body text-xs uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 

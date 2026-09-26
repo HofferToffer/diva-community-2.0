@@ -1,8 +1,8 @@
 import { Instagram, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import CartDrawer from "@/components/CartDrawer";
-
-
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLang } from "@/lib/lang";
 
 const navLinks = [
   { label: "DIVA COMMUNITY", href: "/#community" },
@@ -14,10 +14,12 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const { l } = useLang();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-foreground/95 backdrop-blur-md shadow-sm">
       <div className="flex items-center justify-between px-4 md:px-12 lg:px-16 py-5 gap-4">
-        {/* Instagram */}
+        {/* Instagram + language */}
+        <div className="shrink-0 flex items-center gap-3 md:gap-4">
         <a
           href="https://www.instagram.com/diva_community_/"
           target="_blank"
@@ -27,6 +29,8 @@ const Navbar = () => {
         >
           <Instagram size={18} />
         </a>
+        <LanguageSwitcher />
+        </div>
 
         {/* Fixed menu */}
         <div className="flex-1 flex items-center justify-center">
@@ -34,7 +38,7 @@ const Navbar = () => {
             <Link
               to="/"
               className="shrink-0 text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-              aria-label="Domov"
+              aria-label={l("Domov", "Home")}
             >
               <Home size={18} />
             </Link>

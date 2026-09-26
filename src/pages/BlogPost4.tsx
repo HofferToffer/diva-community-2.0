@@ -7,8 +7,10 @@ import blogCover from "@/assets/blog-4-cover.jpg";
 import blog2 from "@/assets/blog-4-2.jpg";
 import blog3 from "@/assets/blog-4-3.jpg";
 import blog4 from "@/assets/blog-4-4.jpg";
+import { useLang } from "@/lib/lang";
 
 const BlogPost4 = () => {
+  const { l } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -34,7 +36,7 @@ const BlogPost4 = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
           >
-            Kréta 🌊
+            {l("Kréta 🌊", "Crete 🌊")}
           </motion.h1>
         </div>
       </section>
@@ -45,22 +47,21 @@ const BlogPost4 = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 
       <article className="mx-auto max-w-3xl px-6 md:px-12 py-12">
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p className="font-display text-2xl md:text-3xl italic text-foreground">
-            Na chvíľu meníme miesto. 🌊
+            {l("Na chvíľu meníme miesto. 🌊", "We're changing places for a while. 🌊")}
           </p>
           <p>
-            Sťahujeme sa rodina na Krétu – na čas, ktorý ešte ani nemáme presne
-            definovaný.
+            {l("Sťahujeme sa rodina na Krétu – na čas, ktorý ešte ani nemáme presne definovaný.", "We're moving to Crete as a family, for a stretch of time we haven't even pinned down yet.")}
           </p>
-          <p>Ale jednu vec viem isto: Diva Community nekončí.</p>
-          <p>Toto nikdy nebolo len o spoločných behoch na jednom mieste.</p>
-          <p>Je to o ženách, o energii, o návrate k sebe.</p>
+          <p>{l("Ale jednu vec viem isto: Diva Community nekončí.", "But one thing I know for sure: Diva Community isn't ending.")}</p>
+          <p>{l("Toto nikdy nebolo len o spoločných behoch na jednom mieste.", "This was never just about running together in one place.")}</p>
+          <p>{l("Je to o ženách, o energii, o návrate k sebe.", "It's about women, about energy, about coming back to yourself.")}</p>
         </div>
 
         <motion.figure
@@ -74,10 +75,10 @@ const BlogPost4 = () => {
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          <p>Nebudem tu fyzicky na behoch, ale Diva ide ďalej.</p>
-          <p>Možno tichšie.</p>
-          <p>Možno inak.</p>
-          <p>Ale o to hlbšie.</p>
+          <p>{l("Nebudem tu fyzicky na behoch, ale Diva ide ďalej.", "I won't be there in person for the runs, but Diva keeps going.")}</p>
+          <p>{l("Možno tichšie.", "Maybe quieter.")}</p>
+          <p>{l("Možno inak.", "Maybe differently.")}</p>
+          <p>{l("Ale o to hlbšie.", "But all the deeper for it.")}</p>
         </div>
 
         <motion.figure
@@ -87,15 +88,15 @@ const BlogPost4 = () => {
           transition={{ duration: 0.8 }}
           className="my-12"
         >
-          <img src={blog3} alt="Pri mori" className="w-full h-auto object-cover" loading="lazy" />
+          <img src={blog3} alt={l("Pri mori", "By the sea")} className="w-full h-auto object-cover" loading="lazy" />
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          <p>Idem si dať priestor.</p>
-          <p>Spomaliť.</p>
-          <p>A ešte viac sa napojiť sama na seba.</p>
-          <p>Pretože viem, že keď rastiem ja,</p>
-          <p>rastie aj všetko, čo tvorím.</p>
+          <p>{l("Idem si dať priestor.", "I'm giving myself some space.")}</p>
+          <p>{l("Spomaliť.", "To slow down.")}</p>
+          <p>{l("A ešte viac sa napojiť sama na seba.", "And to connect with myself even more.")}</p>
+          <p>{l("Pretože viem, že keď rastiem ja,", "Because I know that when I grow,")}</p>
+          <p>{l("rastie aj všetko, čo tvorím.", "everything I create grows too.")}</p>
         </div>
 
         <motion.figure
@@ -105,11 +106,11 @@ const BlogPost4 = () => {
           transition={{ duration: 0.8 }}
           className="my-12"
         >
-          <img src={blog4} alt="Diva tetovanie" className="w-full h-auto object-cover" loading="lazy" />
+          <img src={blog4} alt={l("Diva tetovanie", "A Diva tattoo")} className="w-full h-auto object-cover" loading="lazy" />
         </motion.figure>
 
         <p className="font-display text-2xl md:text-3xl italic text-foreground text-center">
-          Diva nekončí. 🤍
+          {l("Diva nekončí. 🤍", "Diva isn't ending. 🤍")}
         </p>
       </article>
 

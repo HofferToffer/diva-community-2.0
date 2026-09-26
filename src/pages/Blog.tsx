@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAllBlogPosts } from "@/community/hooks/blogFeed";
+import { useLang } from "@/lib/lang";
 import blogHeroBeach from "@/assets/blog-hero-beach.jpg.asset.json";
 
 const Blog = () => {
+  const { l } = useLang();
   const allPosts = useAllBlogPosts();
 
   return (
@@ -37,7 +39,7 @@ const Blog = () => {
             >
               <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
               <p className="mt-6 font-body text-sm tracking-wide text-primary-foreground/70 max-w-md mx-auto">
-                Príbehy, myšlienky a inšpirácie pre ženy, ktoré sa vracajú k sebe.
+                {l("Príbehy, myšlienky a inšpirácie pre ženy, ktoré sa vracajú k sebe.", "Stories, thoughts and inspiration for women finding their way back to themselves.")}
               </p>
             </motion.div>
           </div>
@@ -51,7 +53,7 @@ const Blog = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na hlavnú
+          {l("Späť na hlavnú", "Back to home")}
         </Link>
       </div>
 

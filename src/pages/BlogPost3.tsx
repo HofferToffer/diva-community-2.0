@@ -6,8 +6,10 @@ import Footer from "@/components/Footer";
 import blogCover from "@/assets/blog-3-cover.jpg";
 import blog2 from "@/assets/blog-3-2.jpg";
 import blog3 from "@/assets/blog-3-3.jpg";
+import { useLang } from "@/lib/lang";
 
 const BlogPost3 = () => {
+  const { l } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -46,7 +48,7 @@ const BlogPost3 = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 
@@ -54,25 +56,21 @@ const BlogPost3 = () => {
       <article className="mx-auto max-w-3xl px-6 md:px-12 py-12">
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p>
-            Stalo sa to, keď som si prechádzala starými boliestkami. Pocitmi
-            hanby z minulosti, nie pekné skúsenosti s mužmi. Vyšlo to zo mňa pod
-            dosť veľkým tlakom, ale muselo už. Zrútená som plakala mužovi na
-            pleci.
+            {l("Stalo sa to, keď som si prechádzala starými boliestkami. Pocitmi hanby z minulosti, nie pekné skúsenosti s mužmi. Vyšlo to zo mňa pod dosť veľkým tlakom, ale muselo už. Zrútená som plakala mužovi na pleci.", "It happened while I was working through some old hurts. Feelings of shame from the past, not-so-nice experiences with men. It came out of me under a lot of pressure, but it had to, it was time. I fell apart and cried on my man's shoulder.")}
           </p>
 
           <p className="font-display text-xl md:text-2xl italic text-foreground pt-2">
-            Otázky:
+            {l("Otázky:", "Questions:")}
           </p>
 
           <p className="font-display text-2xl md:text-3xl italic text-foreground">
-            „Nebudeš sa teraz na mňa pozerať inak?“
+            {l("„Nebudeš sa teraz na mňa pozerať inak?“", "“Are you going to look at me differently now?”")}
           </p>
-          <p>Mala som to vôbec povedať?</p>
-          <p>Budem bez tej masky taká silná?</p>
+          <p>{l("Mala som to vôbec povedať?", "Should I have even said it?")}</p>
+          <p>{l("Budem bez tej masky taká silná?", "Will I still be this strong without the mask?")}</p>
 
           <p>
-            Roky som mlčala. Bola s tými pocitmi sama. Bolelo to, ale zároveň to
-            konečne zo mňa vyšlo. Môj príbeh.
+            {l("Roky som mlčala. Bola s tými pocitmi sama. Bolelo to, ale zároveň to konečne zo mňa vyšlo. Môj príbeh.", "For years I kept quiet. Alone with those feelings. It hurt, but at the same time it had finally come out of me. My story.")}
           </p>
         </div>
 
@@ -85,7 +83,7 @@ const BlogPost3 = () => {
         >
           <img
             src={blog2}
-            alt="Žena pri jazere"
+            alt={l("Žena pri jazere", "A woman by the lake")}
             className="w-full h-auto object-cover"
             loading="lazy"
           />
@@ -93,16 +91,11 @@ const BlogPost3 = () => {
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p>
-            A v tom ako to po pár dňoch prešlo ma napadlo, že v tom určite nie
-            som sama. Že určite také niečo prežila aj iná žena. Že keď to budem
-            zdieľať s druhými ženami tak je to vlastne pre mňa dosť liečivé.
+            {l("A v tom ako to po pár dňoch prešlo ma napadlo, že v tom určite nie som sama. Že určite také niečo prežila aj iná žena. Že keď to budem zdieľať s druhými ženami tak je to vlastne pre mňa dosť liečivé.", "And once it eased off after a few days, it hit me that I'm definitely not the only one. That some other woman has surely lived through something like this too. And that sharing it with other women is actually really healing for me.")}
           </p>
 
           <p>
-            Ženy, ktoré sú vo videu som vyberala intuitívne, zo srdca a sú pre
-            mňa veľkou inšpiráciou. Sú tak nádherné, čisté, autentické, že keď
-            som to strihala tak som sa do každej jednej zaľúbila. Tak krásne
-            poznačené tými svojimi príbehmi. Veľmi silný zážitok pre mňa.
+            {l("Ženy, ktoré sú vo videu som vyberala intuitívne, zo srdca a sú pre mňa veľkou inšpiráciou. Sú tak nádherné, čisté, autentické, že keď som to strihala tak som sa do každej jednej zaľúbila. Tak krásne poznačené tými svojimi príbehmi. Veľmi silný zážitok pre mňa.", "I chose the women in the video intuitively, straight from the heart, and they're a huge inspiration to me. They're so beautiful, so pure, so real, that while I was editing it I fell in love with every single one of them. So beautifully shaped by their own stories. Such a powerful experience for me.")}
           </p>
         </div>
 
@@ -115,20 +108,20 @@ const BlogPost3 = () => {
         >
           <img
             src={blog3}
-            alt="Žena v poli"
+            alt={l("Žena v poli", "A woman in a field")}
             className="w-full h-auto object-cover"
             loading="lazy"
           />
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          <p>Ďakujem za každú jednu.</p>
+          <p>{l("Ďakujem za každú jednu.", "Thank you, every single one of you.")}</p>
 
           <p className="font-display text-2xl md:text-3xl italic text-foreground pt-4">
-            Ste najväčšie Divy. 🌸
+            {l("Ste najväčšie Divy. 🌸", "You're the biggest Divas. 🌸")}
           </p>
           <p className="font-display text-2xl md:text-3xl italic text-foreground">
-            Všetky sme. 💗
+            {l("Všetky sme. 💗", "We all are. 💗")}
           </p>
         </div>
 
@@ -146,7 +139,7 @@ const BlogPost3 = () => {
             className="inline-flex items-center gap-3 border border-foreground px-8 py-3 font-body text-xs tracking-[0.2em] text-foreground hover:bg-foreground hover:text-background transition-all duration-300 uppercase"
           >
             <Instagram size={16} />
-            Pozrieť video „GIRL“
+            {l("Pozrieť video „GIRL“", "Watch the “GIRL” video")}
           </a>
         </motion.div>
       </article>

@@ -38,51 +38,52 @@ import divyNosia38 from "@/assets/divy-nosia-divu-38.jpg.asset.json";
 import divyNosia39 from "@/assets/divy-nosia-divu-39.jpg.asset.json";
 import divyNosia40 from "@/assets/divy-nosia-divu-40.jpg.asset.json";
 import divyNosia41 from "@/assets/divy-nosia-divu-41.jpg";
+import { useLang, type Bilingual } from "@/lib/lang";
 
 
 interface CommunityImage {
   src: string;
-  alt: string;
+  alt: Bilingual;
 }
 
 const sourceImages: CommunityImage[] = [
-  { src: divyNosia1.url, alt: "Diva v šedej šiltovke a taške" },
-  { src: divyNosia2.url, alt: "Diva v čiernom klobúku" },
-  { src: divyNosia3.url, alt: "Diva s taškou pred Bojnickým zámkom" },
-  { src: divyNosia4.url, alt: "Divy v šiltovke na Tajovskom behu" },
-  { src: divyNosia5.url, alt: "Diva v klobúku na rafte" },
-  { src: divyNosia6.url, alt: "Diva v šiltovke pri vodopáde v Tatrách" },
-  { src: divyNosia7.url, alt: "Diva v klobúku so psíkom" },
-  { src: divyNosia8.url, alt: "Divy v šiltovke pred behom" },
-  { src: divyNosia9.url, alt: "Malá diva v klobúku na psích hrách" },
-  { src: divyNosia10.url, alt: "Diva v šiltovke pri mori" },
-  { src: divyNosia11.url, alt: "Diva v klobúku pri bazéne" },
-  { src: divyNosia12.url, alt: "Diva s taškou vo výťahu" },
-  { src: divyNosia15.url, alt: "Diva v čiernom klobúku na slnku" },
-  { src: divyNosia16.url, alt: "Diva v čiernom klobúku v meste" },
-  { src: divyNosia17.url, alt: "Diva s taškou Diva Community na ulici" },
-  { src: divyNosia18.url, alt: "Diva v ružovej šiltovke s taškou vo výťahu" },
-  { src: divyNosia20.url, alt: "Diva s taškou kráča po pláži" },
-  { src: divyNosia21.url, alt: "Diva v čiernom klobúku pri mori" },
-  { src: divyNosia22.url, alt: "Tehotná diva v klobúku v tropickej záhrade" },
-  { src: divyNosia23.url, alt: "Diva s taškou Diva Community na pláži" },
-  { src: divyNosia24.url, alt: "Diva v klobúku oddychuje v hojdacej sieti" },
-  { src: divyNosia25.url, alt: "Diva v klobúku s taškou pri mori" },
-  { src: divyNosia26.url, alt: "Diva v klobúku a červenej sukni s taškou" },
-  { src: divyNosia27.url, alt: "Divy s balíčkami Diva Community pri bazéne" },
-  { src: divyNosia28.url, alt: "Diva s dieťaťom v klobúku na pláži pri západe slnka" },
-  { src: divyNosia29.url, alt: "Diva vo fialovej šiltovke pri cvičení" },
-  { src: divyNosia30.url, alt: "Diva s deťmi v klobúkoch na lodi" },
-  { src: divyNosia31.url, alt: "Diva v bielych šatách s veľkou taškou Diva Community" },
-  { src: divyNosia33.url, alt: "Diva v klobúku s taškou na motorke" },
-  { src: divyNosia34.url, alt: "Diva s taškou Diva Community v slnečnom svetle" },
-  { src: divyNosia35.url, alt: "Diva v leopardích šatách s taškou Diva Community" },
-  { src: divyNosia36.url, alt: "Diva so zrkadlovým selfie a taškou Diva Community" },
-  { src: divyNosia37.url, alt: "Diva v klobúku s taškou Diva Community v záhrade s hortenziami" },
-  { src: divyNosia38.url, alt: "Diva v ružovej šiltovke Diva Community v kúpeľni" },
-  { src: divyNosia39.url, alt: "Diva v ružovej šiltovke Diva Community" },
-  { src: divyNosia40.url, alt: "Diva v čiernom klobúku Diva Community v zrkadle" },
-  { src: divyNosia41, alt: "Diva v klobúku a slnečných okuliaroch na lesnej ceste pri jazere" },
+  { src: divyNosia1.url, alt: { sk: "Diva v šedej šiltovke a taške", en: "A Diva in the grey cap with the tote bag" } },
+  { src: divyNosia2.url, alt: { sk: "Diva v čiernom klobúku", en: "A Diva in the black hat" } },
+  { src: divyNosia3.url, alt: { sk: "Diva s taškou pred Bojnickým zámkom", en: "A Diva with the tote bag in front of Bojnice Castle" } },
+  { src: divyNosia4.url, alt: { sk: "Divy v šiltovke na Tajovskom behu", en: "Divas in DIVA caps at the Tajov run" } },
+  { src: divyNosia5.url, alt: { sk: "Diva v klobúku na rafte", en: "A Diva in the hat, rafting" } },
+  { src: divyNosia6.url, alt: { sk: "Diva v šiltovke pri vodopáde v Tatrách", en: "A Diva in the cap by a waterfall in the Tatras" } },
+  { src: divyNosia7.url, alt: { sk: "Diva v klobúku so psíkom", en: "A Diva in the hat with her dog" } },
+  { src: divyNosia8.url, alt: { sk: "Divy v šiltovke pred behom", en: "Divas in DIVA caps before a run" } },
+  { src: divyNosia9.url, alt: { sk: "Malá diva v klobúku na psích hrách", en: "A little Diva in the hat at a dog show" } },
+  { src: divyNosia10.url, alt: { sk: "Diva v šiltovke pri mori", en: "A Diva in the cap by the sea" } },
+  { src: divyNosia11.url, alt: { sk: "Diva v klobúku pri bazéne", en: "A Diva in the hat by the pool" } },
+  { src: divyNosia12.url, alt: { sk: "Diva s taškou vo výťahu", en: "A Diva with the tote bag in a lift" } },
+  { src: divyNosia15.url, alt: { sk: "Diva v čiernom klobúku na slnku", en: "A Diva in the black hat, soaking up the sun" } },
+  { src: divyNosia16.url, alt: { sk: "Diva v čiernom klobúku v meste", en: "A Diva in the black hat in the city" } },
+  { src: divyNosia17.url, alt: { sk: "Diva s taškou Diva Community na ulici", en: "A Diva with the Diva Community tote on the street" } },
+  { src: divyNosia18.url, alt: { sk: "Diva v ružovej šiltovke s taškou vo výťahu", en: "A Diva in the pink cap with the tote bag in a lift" } },
+  { src: divyNosia20.url, alt: { sk: "Diva s taškou kráča po pláži", en: "A Diva walking along the beach with the tote bag" } },
+  { src: divyNosia21.url, alt: { sk: "Diva v čiernom klobúku pri mori", en: "A Diva in the black hat by the sea" } },
+  { src: divyNosia22.url, alt: { sk: "Tehotná diva v klobúku v tropickej záhrade", en: "A pregnant Diva in the hat in a tropical garden" } },
+  { src: divyNosia23.url, alt: { sk: "Diva s taškou Diva Community na pláži", en: "A Diva with the Diva Community tote on the beach" } },
+  { src: divyNosia24.url, alt: { sk: "Diva v klobúku oddychuje v hojdacej sieti", en: "A Diva in the hat relaxing in a hammock" } },
+  { src: divyNosia25.url, alt: { sk: "Diva v klobúku s taškou pri mori", en: "A Diva in the hat with the tote bag by the sea" } },
+  { src: divyNosia26.url, alt: { sk: "Diva v klobúku a červenej sukni s taškou", en: "A Diva in the hat and a red skirt with the tote bag" } },
+  { src: divyNosia27.url, alt: { sk: "Divy s balíčkami Diva Community pri bazéne", en: "Divas with Diva Community parcels by the pool" } },
+  { src: divyNosia28.url, alt: { sk: "Diva s dieťaťom v klobúku na pláži pri západe slnka", en: "A Diva with her little one in the hat on the beach at sunset" } },
+  { src: divyNosia29.url, alt: { sk: "Diva vo fialovej šiltovke pri cvičení", en: "A Diva in a purple cap, working out" } },
+  { src: divyNosia30.url, alt: { sk: "Diva s deťmi v klobúkoch na lodi", en: "A Diva with her kids in hats on a boat" } },
+  { src: divyNosia31.url, alt: { sk: "Diva v bielych šatách s veľkou taškou Diva Community", en: "A Diva in a white dress with the big Diva Community tote" } },
+  { src: divyNosia33.url, alt: { sk: "Diva v klobúku s taškou na motorke", en: "A Diva in the hat with the tote bag on a motorbike" } },
+  { src: divyNosia34.url, alt: { sk: "Diva s taškou Diva Community v slnečnom svetle", en: "A Diva with the Diva Community tote in the sunshine" } },
+  { src: divyNosia35.url, alt: { sk: "Diva v leopardích šatách s taškou Diva Community", en: "A Diva in a leopard-print dress with the Diva Community tote" } },
+  { src: divyNosia36.url, alt: { sk: "Diva so zrkadlovým selfie a taškou Diva Community", en: "A Diva's mirror selfie with the Diva Community tote" } },
+  { src: divyNosia37.url, alt: { sk: "Diva v klobúku s taškou Diva Community v záhrade s hortenziami", en: "A Diva in the hat with the Diva Community tote among the hydrangeas" } },
+  { src: divyNosia38.url, alt: { sk: "Diva v ružovej šiltovke Diva Community v kúpeľni", en: "A Diva in the pink Diva Community cap in the bathroom" } },
+  { src: divyNosia39.url, alt: { sk: "Diva v ružovej šiltovke Diva Community", en: "A Diva in the pink Diva Community cap" } },
+  { src: divyNosia40.url, alt: { sk: "Diva v čiernom klobúku Diva Community v zrkadle", en: "A Diva in the black Diva Community hat in the mirror" } },
+  { src: divyNosia41, alt: { sk: "Diva v klobúku a slnečných okuliaroch na lesnej ceste pri jazere", en: "A Diva in the hat and sunglasses on a forest path by the lake" } },
 ];
 
 
@@ -96,6 +97,7 @@ const shuffle = <T,>(array: T[]) => {
 };
 
 const DivyNosiaDivuSection = () => {
+  const { l, pick } = useLang();
   const baseImages = useMemo(() => shuffle(sourceImages), []);
   const extendedImages = useMemo(
     () => [...baseImages, ...baseImages, ...baseImages],
@@ -186,11 +188,11 @@ const DivyNosiaDivuSection = () => {
           className="text-center mb-12"
         >
           <h2 className="font-display text-4xl md:text-5xl font-light tracking-wide text-foreground">
-            Divy nosia Divu
+            {l("Divy nosia Divu", "Divas wear DIVA")}
           </h2>
           <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
           <p className="mt-6 font-body text-sm leading-relaxed text-muted-foreground tracking-wide max-w-md mx-auto">
-            Fotky žien, ktoré nosia DIVA. Inšpirácia priamo od našej komunity.
+            {l("Fotky žien, ktoré nosia DIVA. Inšpirácia priamo od našej komunity.", "Photos of women wearing DIVA. Inspiration straight from our community.")}
           </p>
         </motion.div>
 
@@ -203,7 +205,7 @@ const DivyNosiaDivuSection = () => {
         >
           <button
             type="button"
-            aria-label="Predchádzajúca fotka"
+            aria-label={l("Predchádzajúca fotka", "Previous photo")}
             onClick={() => scroll("left")}
             className="absolute left-2 md:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full p-2.5 bg-background/80 backdrop-blur-sm text-foreground shadow-md transition hover:bg-background hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
@@ -222,7 +224,7 @@ const DivyNosiaDivuSection = () => {
               >
                 <img
                   src={image.src}
-                  alt={image.alt}
+                  alt={pick(image.alt)}
                   className="h-full w-full object-cover"
                   loading={i < 6 ? "eager" : "lazy"}
                 />
@@ -232,7 +234,7 @@ const DivyNosiaDivuSection = () => {
 
           <button
             type="button"
-            aria-label="Nasledujúca fotka"
+            aria-label={l("Nasledujúca fotka", "Next photo")}
             onClick={() => scroll("right")}
             className="absolute right-2 md:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full p-2.5 bg-background/80 backdrop-blur-sm text-foreground shadow-md transition hover:bg-background hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >

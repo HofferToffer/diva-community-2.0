@@ -9,8 +9,10 @@ import AddToCartButton from "@/components/AddToCartButton";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 import { products } from "@/data/products";
 import shopHero from "@/assets/shop-hero.jpg.asset.json";
+import { useLang } from "@/lib/lang";
 
 const Shop = () => {
+  const { l, pick } = useLang();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -44,7 +46,7 @@ const Shop = () => {
             >
               <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
               <p className="mt-6 font-body text-sm tracking-wide text-primary-foreground/80 max-w-md mx-auto">
-                Oblečenie a merch pre DIVA Community. Objednávka a platba online.
+                {l("Oblečenie a merch pre DIVA Community. Objednávka a platba online.", "Clothing and merch for the DIVA Community. Order and pay online.")}
               </p>
             </motion.div>
           </div>
@@ -58,7 +60,7 @@ const Shop = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na hlavnú
+          {l("Späť na hlavnú", "Back to home")}
         </Link>
       </div>
 
@@ -76,7 +78,7 @@ const Shop = () => {
             >
               <ProductGallery
                 images={product.images}
-                name={product.name}
+                name={pick(product.name)}
                 to={`/shop/${product.slug}`}
               />
               <div className="mt-4 space-y-1">
@@ -85,11 +87,11 @@ const Shop = () => {
                     to={`/shop/${product.slug}`}
                     className="hover:text-accent transition-colors"
                   >
-                    {product.name}
+                    {pick(product.name)}
                   </Link>
                 </h3>
                 <p className="font-body text-sm text-muted-foreground line-clamp-2">
-                  {product.description}
+                  {pick(product.description)}
                 </p>
                 <div className="pt-2 flex items-center justify-between gap-4">
                   <span className="font-display text-lg text-foreground">
@@ -99,7 +101,7 @@ const Shop = () => {
                     to={`/shop/${product.slug}`}
                     className="font-body text-[11px] tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors border-b border-transparent hover:border-foreground"
                   >
-                    Detail produktu
+                    {l("Detail produktu", "View product")}
                   </Link>
                 </div>
                 <div className="pt-3">

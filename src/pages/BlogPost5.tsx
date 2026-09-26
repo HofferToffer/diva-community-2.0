@@ -7,8 +7,10 @@ import blogCover from "@/assets/blog-5-cover.jpg";
 import blog2 from "@/assets/blog-5-2.jpg";
 import blog3 from "@/assets/blog-5-3.jpg";
 import blog4 from "@/assets/blog-5-4.jpg";
+import { useLang } from "@/lib/lang";
 
 const BlogPost5 = () => {
+  const { l } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -34,7 +36,7 @@ const BlogPost5 = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
           >
-            Múdrosť ženského tela 🌸
+            {l("Múdrosť ženského tela 🌸", "The wisdom of a woman's body 🌸")}
           </motion.h1>
         </div>
       </section>
@@ -45,20 +47,19 @@ const BlogPost5 = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 
       <article className="mx-auto max-w-3xl px-6 md:px-12 py-12">
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p className="font-display text-2xl md:text-3xl italic text-foreground">
-            Ženské telo je múdre.
+            {l("Ženské telo je múdre.", "A woman's body is wise.")}
           </p>
           <p>
-            Niekedy nás zastaví práve vtedy, keď sa snažíme ísť proti svojej
-            energii, čo som teda asi robila. Neviem.
+            {l("Niekedy nás zastaví práve vtedy, keď sa snažíme ísť proti svojej energii, čo som teda asi robila. Neviem.", "Sometimes it stops us right when we're trying to go against our own energy, which, well, I guess I was doing. I don't know.")}
           </p>
-          <p>Keď tlačím tam, kde by som mala viac plynúť.</p>
+          <p>{l("Keď tlačím tam, kde by som mala viac plynúť.", "When I push where I should be letting things flow.")}</p>
         </div>
 
         <motion.figure
@@ -72,8 +73,8 @@ const BlogPost5 = () => {
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          <p>Môj vyvrtnutý členok bol signálom.</p>
-          <p>Druhý rok po sebe som vypadla z prípravy na Košický polmaratón.</p>
+          <p>{l("Môj vyvrtnutý členok bol signálom.", "My sprained ankle was a sign.")}</p>
+          <p>{l("Druhý rok po sebe som vypadla z prípravy na Košický polmaratón.", "For the second year in a row, I had to drop out of training for the Košice half marathon.")}</p>
         </div>
 
         <motion.figure
@@ -83,16 +84,16 @@ const BlogPost5 = () => {
           transition={{ duration: 0.8 }}
           className="my-12"
         >
-          <img src={blog3} alt="Vyvrtnutý členok" className="w-full h-auto object-cover" loading="lazy" />
+          <img src={blog3} alt={l("Vyvrtnutý členok", "A sprained ankle")} className="w-full h-auto object-cover" loading="lazy" />
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p>
-            Keď sa tak zamyslím, tak mi to telo ukazuje „nehroť to“,
+            {l("Keď sa tak zamyslím, tak mi to telo ukazuje „nehroť to“,", "When I really think about it, my body's telling me “don't force it”,")}
           </p>
-          <p>„výkon nie je pre teba“, „nedávaj beh na prvé miesto“,</p>
-          <p>„si jemné žieňa“.</p>
-          <p>Stále sa učím a prijímam, aj keď to naše ego si ide.</p>
+          <p>{l("„výkon nie je pre teba“, „nedávaj beh na prvé miesto“,", "“chasing performance isn't for you”, “don't put running first”,")}</p>
+          <p>{l("„si jemné žieňa“.", "“you're a gentle little woman”.")}</p>
+          <p>{l("Stále sa učím a prijímam, aj keď to naše ego si ide.", "I'm still learning to accept it, even when my ego keeps doing its own thing.")}</p>
         </div>
 
         <motion.figure
@@ -102,20 +103,19 @@ const BlogPost5 = () => {
           transition={{ duration: 0.8 }}
           className="my-12"
         >
-          <img src={blog4} alt="V cieli" className="w-full h-auto object-cover" loading="lazy" />
+          <img src={blog4} alt={l("V cieli", "At the finish line")} className="w-full h-auto object-cover" loading="lazy" />
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p>
-            Ale u mňa sa práve v týchto chvíľach rodí moja sila – iná než tá,
-            ktorú poznám z výkonu.
+            {l("Ale u mňa sa práve v týchto chvíľach rodí moja sila – iná než tá, ktorú poznám z výkonu.", "But for me, these are exactly the moments my strength is born. A different kind than the one I know from pushing for results.")}
           </p>
           <p className="font-display text-2xl md:text-3xl italic text-foreground">
-            Sila v tichu, v pokoji, v prijatí.
+            {l("Sila v tichu, v pokoji, v prijatí.", "Strength in silence, in stillness, in acceptance.")}
           </p>
-          <p>A už to presne poznám čo sa ide stať.</p>
+          <p>{l("A už to presne poznám čo sa ide stať.", "And by now I know exactly what's about to happen.")}</p>
           <p className="font-display text-xl md:text-2xl italic text-foreground pt-2">
-            Životné skúsenosti, životné pády, životné múdra.
+            {l("Životné skúsenosti, životné pády, životné múdra.", "Life lessons, life's falls, life's wisdom.")}
           </p>
         </div>
       </article>

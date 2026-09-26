@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLang } from "@/lib/lang";
 
 
 const ProductGallery = ({
@@ -14,6 +15,7 @@ const ProductGallery = ({
   comingSoon?: boolean;
   to?: string;
 }) => {
+  const { l } = useLang();
 
   const [current, setCurrent] = useState(0);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
@@ -95,7 +97,7 @@ const ProductGallery = ({
               goTo(current - 1);
             }}
             className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/60 backdrop-blur-sm rounded-full p-1.5 text-foreground hover:bg-background/80 transition-colors"
-            aria-label="Predchádzajúca fotka"
+            aria-label={l("Predchádzajúca fotka", "Previous photo")}
           >
             <ChevronLeft size={18} />
           </button>
@@ -105,7 +107,7 @@ const ProductGallery = ({
               goTo(current + 1);
             }}
             className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/60 backdrop-blur-sm rounded-full p-1.5 text-foreground hover:bg-background/80 transition-colors"
-            aria-label="Ďalšia fotka"
+            aria-label={l("Ďalšia fotka", "Next photo")}
           >
             <ChevronRight size={18} />
           </button>

@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import recreteImage from "@/assets/recrete-image.jpg";
+import { useLang } from "@/lib/lang";
 
 const Recrete = () => {
+  const { l } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -34,7 +36,7 @@ const Recrete = () => {
             >
               <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
               <p className="mt-6 font-body text-sm tracking-wide text-primary-foreground/80 max-w-md mx-auto">
-                Priestor, kde sa môžeš nadýchnuť, spomaliť a vrátiť k sebe.
+                {l("Priestor, kde sa môžeš nadýchnuť, spomaliť a vrátiť k sebe.", "A space to breathe, slow down and come back to yourself.")}
               </p>
             </motion.div>
           </div>
@@ -48,7 +50,7 @@ const Recrete = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na hlavnú
+          {l("Späť na hlavnú", "Back to home")}
         </Link>
       </div>
 
@@ -61,15 +63,15 @@ const Recrete = () => {
           transition={{ duration: 0.8 }}
           className="text-center font-body text-base md:text-lg leading-loose text-foreground/80 tracking-wide space-y-5"
         >
-          <p>ReCreate je priestor, kde sa môžeš nadýchnuť.</p>
-          <p>Spomalíš.</p>
-          <p>Napojíš sa na svoje telo.</p>
-          <p>A v kruhu žien nájdeš energiu, ktorú si možno dlho necítila.</p>
+          <p>{l("ReCreate je priestor, kde sa môžeš nadýchnuť.", "ReCreate is a space where you can finally breathe.")}</p>
+          <p>{l("Spomalíš.", "Slow down.")}</p>
+          <p>{l("Napojíš sa na svoje telo.", "Reconnect with your body.")}</p>
+          <p>{l("A v kruhu žien nájdeš energiu, ktorú si možno dlho necítila.", "And in a circle of women, find an energy you maybe haven't felt in a long time.")}</p>
           <p className="font-display text-2xl md:text-3xl italic text-foreground pt-6">
-            Kréta nás podrží.
+            {l("Kréta nás podrží.", "Crete will hold us.")}
           </p>
           <p className="font-display text-2xl md:text-3xl italic text-foreground">
-            Ty sa vrátiš k sebe.
+            {l("Ty sa vrátiš k sebe.", "You'll come back to yourself.")}
           </p>
         </motion.div>
 

@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import blog1Asset from "@/assets/blog-10-1.jpeg.asset.json";
 import blog2Asset from "@/assets/blog-10-2.jpeg.asset.json";
 import blog3Asset from "@/assets/blog-10-3.jpeg.asset.json";
+import { useLang } from "@/lib/lang";
 
 const blog1 = blog1Asset.url;
 const blog2 = blog2Asset.url;
@@ -66,6 +67,10 @@ const Stanzas = ({ from, to }: { from: number; to: number }) => (
 );
 
 const BlogPost10 = () => {
+  const { lang } = useLang();
+  // Slovak-only poem — not part of the English website.
+  if (lang === "en") return <Navigate to="/blog" replace />;
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

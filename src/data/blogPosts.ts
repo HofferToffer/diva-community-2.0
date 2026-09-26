@@ -22,6 +22,8 @@ export type BlogPost = {
   image: string;
   href: string;
   imagePosition?: string;
+  /** English title and teaser. Posts without it are Slovak-only and hidden from the English website. */
+  en?: { title: string; excerpt: string };
 };
 
 const SK_MONTHS: Record<string, number> = {
@@ -48,6 +50,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog11Cover,
     href: "/blog/moja-cesta-hlbsie-k-sebe",
+    en: {
+      title: "My journey deeper into myself",
+      excerpt:
+        "About being invited into a program for women, about my cycle, nutrition and Human Design. And about what it's like to learn how to receive.",
+    },
   },
   {
     title: "Múdrosť lona",
@@ -61,11 +68,16 @@ const rawPosts: BlogPost[] = [
   {
     title: "15 ročný sen",
     excerpt:
-      "O preteku Od Tatier k Dunaju, o úraze, ktorý znamenal koniec — a o roku práce, vďaka ktorej som sa vrátil a splnila sen.",
+      "O preteku Od Tatier k Dunaju, o úraze, ktorý znamenal koniec — a o roku práce, vďaka ktorej som sa vrátila a splnila sen.",
     date: "16. August 2026",
     category: "",
     image: blog9Run,
     href: "/blog/15-rocny-sen",
+    en: {
+      title: "A 15-year dream",
+      excerpt:
+        "About the Tatras to the Danube race, the injury that meant the end, and the year of work that brought me back and made the dream come true.",
+    },
   },
   {
     title: "Cyklus",
@@ -75,6 +87,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog8Cover,
     href: "/blog/cyklus",
+    en: {
+      title: "Cycle",
+      excerpt:
+        "About gratitude for Crete, listening to my cycle, and finding the courage to let myself rest.",
+    },
   },
   {
     title: "Dovoliť si",
@@ -84,6 +101,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog7Cover,
     href: "/blog/dovolit-si",
+    en: {
+      title: "Allow yourself",
+      excerpt:
+        "About the pressure of motherhood and all the must-dos, and the courage to walk away. About letting go of the things that just don't work anymore.",
+    },
   },
   {
     title: "Prijatie",
@@ -93,6 +115,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog6Cover,
     href: "/blog/prijatie",
+    en: {
+      title: "Acceptance",
+      excerpt:
+        "When we protect ourselves so hard that we stop feeling. About coming back to yourself, about softness, and trusting your feminine intuition.",
+    },
   },
   {
     title: "Kréta",
@@ -102,6 +129,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog4Cover,
     href: "/blog/kreta",
+    en: {
+      title: "Crete",
+      excerpt:
+        "We're moving to Crete as a family. Diva Community isn't ending. Maybe quieter, maybe different, but all the deeper for it.",
+    },
   },
   {
     title: "Odvaha",
@@ -111,6 +143,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog2Cover,
     href: "/blog/odvaha",
+    en: {
+      title: "Courage",
+      excerpt:
+        "When you step outside the system, break generational trauma, put yourself first… and let yourself be weak.",
+    },
     imagePosition: "center 20%",
   },
   {
@@ -121,6 +158,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog3Cover,
     href: "/blog/girl",
+    en: {
+      title: "GIRL",
+      excerpt:
+        "About shame, silence, and how a shared story turns into healing. For all women.",
+    },
   },
   {
     title: "Múdrosť ženského tela",
@@ -130,6 +172,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog5Cover,
     href: "/blog/mudrost-zenskeho-tela",
+    en: {
+      title: "The wisdom of a woman's body",
+      excerpt:
+        "The body is wise. Sometimes it stops us right when we're going against our own energy. Strength in silence, in stillness, in acceptance.",
+    },
   },
   {
     title: "V jemnosti je naša sila",
@@ -139,6 +186,11 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog1Cover,
     href: "/blog/v-jemnosti-je-nasa-sila",
+    en: {
+      title: "Our strength is in our softness",
+      excerpt:
+        "For a long time I didn't believe it. I thought being strong meant handling everything. Until she came along: my daughter.",
+    },
   },
 ];
 

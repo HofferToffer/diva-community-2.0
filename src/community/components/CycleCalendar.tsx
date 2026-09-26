@@ -1,10 +1,11 @@
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CalendarHeart, ChevronLeft, ChevronRight, Egg, Heart } from "lucide-react";
+import { CalendarDays, CalendarHeart, ChevronDown, ChevronLeft, ChevronRight, Egg, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CYCLE_PHASES, CYCLE_PHASE_COLORS, getCyclePhaseForDate, type CyclePhaseKey } from "@/community/lib/cycle";
+import { CycleYearCalendar } from "@/community/components/CycleYearCalendar";
 
 function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
@@ -46,6 +47,7 @@ export function CycleCalendar({
   const dateLocale = i18n.language === "en" ? "en-US" : "sk-SK";
   const [monthCursor, setMonthCursor] = useState(() => startOfMonth(new Date()));
   const [pendingDateKey, setPendingDateKey] = useState<string | null>(null);
+  const [yearOpen, setYearOpen] = useState(false);
   const today = new Date();
 
   const confirmPendingDate = (date: Date) => {
@@ -102,7 +104,15 @@ export function CycleCalendar({
         <Button type="button" variant="ghost" size="icon" aria-label={t("calendar.prevMonth")} onClick={goToPrevMonth}>
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <p className="font-display text-lg capitalize">{monthLabel}</p>
+        <button
+          type="button"
+          onClick={() => setYearOpen(true)}
+          aria-label={t("calendar.openYear")}
+          className="flex items-center gap-1 rounded-full px-3 py-1 font-display text-lg capitalize transition-colors duration-500 hover:bg-secondary/40"
+        >
+          {monthLabel}
+          <ChevronDown className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        </button>
         <Button type="button" variant="ghost" size="icon" aria-label={t("calendar.nextMonth")} onClick={goToNextMonth}>
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -214,6 +224,30 @@ export function CycleCalendar({
         ))}
         </div>
       </div>
+
+      <div className="mt-3 flex justify-center">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setYearOpen(true)}
+          className="rounded-full bg-secondary/30 text-foreground/80 hover:bg-secondary/50"
+        >
+          <CalendarDays className="h-4 w-4" aria-hidden="true" />
+          {t("calendar.showYear")}
+        </Button>
+      </div>
+
+      <CycleYearCalendar
+        open={yearOpen}
+        onOpenChange={setYearOpen}
+        initialYear={monthCursor.getFullYear()}
+        selectedMonth={monthCursor}
+        lastPeriodDate={lastPeriodDate}
+        cycleLengthDays={cycleLengthDays}
+        periodLengthDays={periodLengthDays}
+        onPickMonth={setMonthCursor}
+      />
 
       {onToggleIntimacy && (
         <p className="mt-3 text-xs text-muted-foreground">

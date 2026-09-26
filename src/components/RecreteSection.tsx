@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import recreteImage from "@/assets/recrete-image.jpg";
+import { useLang } from "@/lib/lang";
 
 const RecreteSection = () => {
+  const { l } = useLang();
   return (
     <section id="recrete" className="relative overflow-hidden">
       <div
@@ -24,15 +26,15 @@ const RecreteSection = () => {
             </h2>
             <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
             <div className="mt-8 font-body text-sm md:text-base leading-loose text-primary-foreground/85 tracking-wide max-w-xl mx-auto space-y-3">
-              <p>ReCreate je priestor, kde sa môžeš nadýchnuť.</p>
-              <p>Spomalíš.</p>
-              <p>Napojíš sa na svoje telo.</p>
-              <p>A v kruhu žien nájdeš energiu, ktorú si možno dlho necítila.</p>
+              <p>{l("ReCreate je priestor, kde sa môžeš nadýchnuť.", "ReCreate is a space where you can finally breathe.")}</p>
+              <p>{l("Spomalíš.", "Slow down.")}</p>
+              <p>{l("Napojíš sa na svoje telo.", "Reconnect with your body.")}</p>
+              <p>{l("A v kruhu žien nájdeš energiu, ktorú si možno dlho necítila.", "And in a circle of women, find an energy you maybe haven't felt in a long time.")}</p>
               <p className="font-display text-lg md:text-xl italic text-primary-foreground pt-2">
-                Kréta nás podrží.
+                {l("Kréta nás podrží.", "Crete will hold us.")}
               </p>
               <p className="font-display text-lg md:text-xl italic text-primary-foreground">
-                Ty sa vrátiš k sebe.
+                {l("Ty sa vrátiš k sebe.", "You'll come back to yourself.")}
               </p>
             </div>
 

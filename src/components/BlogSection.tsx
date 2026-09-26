@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useAllBlogPosts } from "@/community/hooks/blogFeed";
+import { useLang } from "@/lib/lang";
 
 const BlogSection = () => {
+  const { l } = useLang();
   const allPosts = useAllBlogPosts();
   const previewPosts = allPosts.slice(0, 2);
 
@@ -64,7 +66,7 @@ const BlogSection = () => {
             to="/blog"
             className="inline-block border border-foreground px-8 py-3 font-body text-xs tracking-[0.2em] text-foreground hover:bg-foreground hover:text-background transition-all duration-300 uppercase"
           >
-            Všetky články
+            {l("Všetky články", "All posts")}
           </Link>
         </div>
       </div>
