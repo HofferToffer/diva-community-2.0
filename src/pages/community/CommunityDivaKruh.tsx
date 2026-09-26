@@ -25,7 +25,7 @@ export default function CommunityDivaKruh() {
         </div>
 
         <div className="relative z-10 mx-auto">
-          <DivaLogo animated breathing className="mx-auto mb-6 w-28 text-[#4A2F38] dark:text-[#F4ECE3]" title="DIVA KRUH" />
+          <DivaLogo animated breathing className="mx-auto mb-6 w-28 text-diva-slivkova dark:text-diva-kremova" title="DIVA KRUH" />
           <h1 className="font-display text-3xl md:text-4xl tracking-wide">{t("divaKruh.title")}</h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("divaKruh.heroText")}</p>
         </div>
@@ -35,7 +35,7 @@ export default function CommunityDivaKruh() {
         <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <motion.div {...floatIcon(0)}>
-              <Users className="h-6 w-6 text-accent" />
+              <Users className="h-6 w-6 text-diva-terakotova" />
             </motion.div>
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">{t("divaKruh.forWhomTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("divaKruh.forWhomText")}</p>
@@ -44,7 +44,7 @@ export default function CommunityDivaKruh() {
         <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <motion.div {...floatIcon(1)}>
-              <MessageCircle className="h-6 w-6 text-accent" />
+              <MessageCircle className="h-6 w-6 text-diva-terakotova" />
             </motion.div>
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">{t("divaKruh.howTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("divaKruh.howText")}</p>
@@ -53,7 +53,7 @@ export default function CommunityDivaKruh() {
         <Card className="rounded-2xl border-border/50">
           <CardContent className="flex flex-col items-center gap-3 p-5 text-center">
             <motion.div {...floatIcon(2)}>
-              <Heart className="h-6 w-6 text-accent" />
+              <Heart className="h-6 w-6 text-diva-terakotova" />
             </motion.div>
             <h2 className="font-heading text-xs uppercase tracking-[0.2em]">{t("divaKruh.whatTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("divaKruh.whatText")}</p>
@@ -77,7 +77,7 @@ export default function CommunityDivaKruh() {
           {t("divaKruh.orEmailUs")}{" "}
           <a
             href={`mailto:didka0105@gmail.com?subject=${encodeURIComponent(t("divaKruh.emailSubject"))}`}
-            className="underline underline-offset-2 hover:text-accent"
+            className="underline underline-offset-2 hover:text-diva-terakotova"
           >
             didka0105@gmail.com
           </a>

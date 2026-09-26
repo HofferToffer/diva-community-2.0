@@ -271,7 +271,7 @@ function Metric({ label, value, large }: { label: string; value: string; large?:
   return (
     <div>
       <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
-      <p className={`mt-1 font-display font-semibold leading-none text-foreground ${large ? "text-3xl" : "text-xl"}`}>
+      <p className={`mt-1 font-display leading-none text-foreground ${large ? "text-3xl" : "text-xl"}`}>
         {value}
       </p>
     </div>

@@ -54,22 +54,21 @@ export const ACTIVITY_TYPES = [
 
 /**
  * Jemné, tlmené farby pre jednotlivé typy aktivít — rovnaký {fill, dot} tvar ako CYCLE_PHASE_COLORS.
- * Všetky odtiene zámerne v úzkom, teplom rozsahu okolo --primary (dusty rose, hue 344) — cez malinovú,
- * terakotu, slivkovú a zlatopieskovú — nie rozhádzané po celom farebnom kolese. Rôzne aktivity majú svoj
- * vlastný odtieň, ale pôsobia ako jedna ladená rodina, nie ako pestrofarebná "konfeta".
+ * Všetky odtiene vychádzajú z palety značky (slivková, šalviová, terakotová, púdrová) — rôzne aktivity
+ * majú svoj vlastný odtieň, ale pôsobia ako jedna ladená rodina, nie ako pestrofarebná "konfeta".
  */
 export const ACTIVITY_TYPE_COLORS: Record<string, { fill: string; dot: string }> = {
-  run: { fill: "hsl(344, 30%, 52%, 0.1)", dot: "hsl(344, 30%, 46%)" },
-  nordic_walking: { fill: "hsl(15, 32%, 48%, 0.1)", dot: "hsl(15, 32%, 42%)" },
-  walking: { fill: "hsl(32, 30%, 46%, 0.12)", dot: "hsl(32, 30%, 40%)" },
-  cycling: { fill: "hsl(356, 28%, 44%, 0.1)", dot: "hsl(356, 28%, 38%)" },
-  swimming: { fill: "hsl(320, 22%, 48%, 0.1)", dot: "hsl(320, 22%, 42%)" },
-  yoga: { fill: "hsl(8, 26%, 50%, 0.1)", dot: "hsl(8, 26%, 44%)" },
-  pilates: { fill: "hsl(335, 24%, 50%, 0.1)", dot: "hsl(335, 24%, 44%)" },
-  dance: { fill: "hsl(0, 28%, 48%, 0.12)", dot: "hsl(0, 28%, 42%)" },
-  strength: { fill: "hsl(25, 20%, 34%, 0.08)", dot: "hsl(25, 20%, 30%)" },
-  stretching: { fill: "hsl(40, 26%, 46%, 0.1)", dot: "hsl(40, 26%, 40%)" },
-  other: { fill: "hsl(30, 8%, 42%, 0.08)", dot: "hsl(30, 8%, 38%)" },
+  run: { fill: "hsl(340, 22%, 34%, 0.1)", dot: "hsl(340, 22%, 30%)" },
+  nordic_walking: { fill: "hsl(101, 11%, 38%, 0.1)", dot: "hsl(101, 11%, 33%)" },
+  walking: { fill: "hsl(16, 36%, 52%, 0.12)", dot: "hsl(16, 38%, 44%)" },
+  cycling: { fill: "hsl(356, 30%, 44%, 0.1)", dot: "hsl(356, 30%, 40%)" },
+  swimming: { fill: "hsl(160, 12%, 40%, 0.1)", dot: "hsl(160, 12%, 34%)" },
+  yoga: { fill: "hsl(18, 45%, 62%, 0.1)", dot: "hsl(18, 40%, 46%)" },
+  pilates: { fill: "hsl(340, 16%, 46%, 0.1)", dot: "hsl(340, 18%, 40%)" },
+  dance: { fill: "hsl(16, 44%, 46%, 0.12)", dot: "hsl(16, 44%, 42%)" },
+  strength: { fill: "hsl(0, 7%, 24%, 0.08)", dot: "hsl(0, 7%, 20%)" },
+  stretching: { fill: "hsl(101, 14%, 50%, 0.1)", dot: "hsl(101, 14%, 38%)" },
+  other: { fill: "hsl(340, 8%, 45%, 0.08)", dot: "hsl(340, 8%, 40%)" },
 };
 
 export function activityTypeLabel(kind: string, type: string): string {

@@ -1,17 +1,8 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { MARK_PETALS, MARK_RING } from "@/components/divaMark";
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
-
-// Traced from the brand mark on a 1024 grid: an open circle with a four-petal
-// flower sitting in its gap on the left.
-const RING = "M268.2 320.25 A382.5 382.5 0 1 1 268.2 702.75";
-const PETALS = [
-  "M216 333 Q258 408 216 483 Q174 408 216 333Z", // top
-  "M245 511.5 Q319.5 553.5 394 511.5 Q319.5 469.5 245 511.5Z", // right
-  "M216 540 Q258 615 216 690 Q174 615 216 540Z", // bottom
-  "M38 511.5 Q112.5 553.5 187 511.5 Q112.5 469.5 38 511.5Z", // left
-];
 
 /**
  * The DIVA mark. `animated` draws the ring in and lets the petals open one by
@@ -32,7 +23,7 @@ export function DivaLogo({
   title?: string;
 }) {
   const ringProps = {
-    d: RING,
+    d: MARK_RING,
     fill: "none",
     stroke: "currentColor",
     strokeWidth,
@@ -62,7 +53,7 @@ export function DivaLogo({
         animate={animated && breathing ? { rotate: [0, 8, 0, -8, 0], scale: [1, 1.04, 1, 1.04, 1] } : undefined}
         transition={animated && breathing ? { duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.8 } : undefined}
       >
-        {PETALS.map((d, i) =>
+        {MARK_PETALS.map((d, i) =>
           animated ? (
             <motion.path
               key={i}

@@ -30,7 +30,9 @@ export function TipGrid({ tips, color }: { tips: CycleTip[]; color: { fill: stri
   const [expanded, setExpanded] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const visible = filter === "all" ? tips : tips.filter((tip) => tip.category === filter);
-  const softFill = color.fill.replace(/0\.\d+\)/, "0.6)");
+  // A light wash behind each icon: at least 0.2 alpha, but never so strong that the icon (in `dot`) sinks into it.
+  const fillAlpha = Number(color.fill.match(/(0\.\d+)\)$/)?.[1] ?? 0.2);
+  const softFill = color.fill.replace(/0\.\d+\)$/, `${Math.max(fillAlpha, 0.2)})`);
   // Looked up as a plain object (not a dotted t() key) because several Slovak
   // labels contain periods, which i18next's default key separator would
   // otherwise try to parse as nested paths.

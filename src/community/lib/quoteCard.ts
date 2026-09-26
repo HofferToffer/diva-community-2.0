@@ -77,22 +77,27 @@ export async function drawQuoteCard(canvas: HTMLCanvasElement, quote: string, bg
   if (!ctx) return;
 
   const img = await loadBackgroundImage(bgSrc);
+  // Canvas text doesn't wait for web fonts on its own — make sure the brand fonts are ready.
+  await Promise.all([
+    document.fonts.load("italic 400 72px 'Cormorant Garamond'"),
+    document.fonts.load("400 32px 'Jost'"),
+  ]).catch(() => undefined);
   const scale = Math.max(CARD_W / img.width, CARD_H / img.height);
   const drawW = img.width * scale;
   const drawH = img.height * scale;
   ctx.drawImage(img, (CARD_W - drawW) / 2, (CARD_H - drawH) / 2, drawW, drawH);
 
   const overlay = ctx.createLinearGradient(0, 0, 0, CARD_H);
-  overlay.addColorStop(0, "rgba(30, 20, 20, 0.35)");
-  overlay.addColorStop(0.55, "rgba(20, 12, 12, 0.55)");
-  overlay.addColorStop(1, "rgba(15, 8, 8, 0.75)");
+  overlay.addColorStop(0, "rgba(74, 47, 56, 0.35)");
+  overlay.addColorStop(0.55, "rgba(58, 36, 44, 0.6)");
+  overlay.addColorStop(1, "rgba(40, 24, 30, 0.8)");
   ctx.fillStyle = overlay;
   ctx.fillRect(0, 0, CARD_W, CARD_H);
 
-  ctx.fillStyle = "hsl(40, 30%, 96%)";
+  ctx.fillStyle = "#F4ECE3";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.font = "italic 600 72px 'Cormorant Garamond', serif";
+  ctx.font = "italic 400 72px 'Cormorant Garamond', serif"; // brand: Cormorant never bold
 
   const maxWidth = CARD_W - 200;
   const lines = wrapLines(ctx, `"${quote}"`, maxWidth);
@@ -102,14 +107,14 @@ export async function drawQuoteCard(canvas: HTMLCanvasElement, quote: string, bg
   lines.forEach((line, i) => ctx.fillText(line, CARD_W / 2, startY + i * lineHeight));
 
   const ruleY = startY + lines.length * lineHeight + 8;
-  ctx.strokeStyle = "hsl(344, 55%, 72%)";
+  ctx.strokeStyle = "#E3B9A7";
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.moveTo(CARD_W / 2 - 60, ruleY);
   ctx.lineTo(CARD_W / 2 + 60, ruleY);
   ctx.stroke();
 
-  ctx.font = "500 32px 'Josefin Sans', sans-serif";
-  ctx.fillStyle = "hsl(40, 30%, 96%)";
+  ctx.font = "400 32px 'Jost', sans-serif";
+  ctx.fillStyle = "#F4ECE3";
   ctx.fillText("D I V A   C O M M U N I T Y", CARD_W / 2, CARD_H - 130);
 }

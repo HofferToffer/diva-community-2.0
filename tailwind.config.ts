@@ -13,11 +13,20 @@ export default {
       },
     },
     fontFamily: {
-      display: ["Cormorant Garamond", "serif"],
-      body: ["Josefin Sans", "sans-serif"],
+      display: ["Cormorant Garamond", "Georgia", "serif"],
+      body: ["Jost", "Helvetica Neue", "Arial", "sans-serif"],
     },
     extend: {
       colors: {
+        diva: {
+          slivkova: "var(--diva-slivkova)",
+          kremova: "var(--diva-kremova)",
+          salviova: "var(--diva-salviova)",
+          terakotova: "var(--diva-terakotova)",
+          pudrova: "var(--diva-pudrova)",
+          cierna: "var(--diva-cierna)",
+          "kremova-svetla": "var(--diva-kremova-svetla)",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

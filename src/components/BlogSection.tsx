@@ -18,7 +18,7 @@ const BlogSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="font-display text-4xl md:text-5xl font-light tracking-wide text-foreground">
+          <h2 className="font-display text-4xl md:text-5xl tracking-wide text-foreground">
             Blog
           </h2>
           <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
@@ -44,10 +44,10 @@ const BlogSection = () => {
                     loading="lazy"
                   />
                 </div>
-                <span className="font-body text-xs tracking-[0.2em] text-accent uppercase">
+                <span className="font-body text-xs tracking-[0.2em] text-diva-terakotova uppercase">
                   {post.category}
                 </span>
-                <h3 className="mt-2 font-display text-2xl font-light text-foreground group-hover:text-accent transition-colors">
+                <h3 className="mt-2 font-display text-2xl text-foreground group-hover:text-diva-terakotova transition-colors">
                   {post.title}
                 </h3>
                 <p className="mt-3 font-body text-sm leading-relaxed text-muted-foreground">

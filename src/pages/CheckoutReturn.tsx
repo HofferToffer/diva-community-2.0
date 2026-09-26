@@ -44,7 +44,7 @@ const CheckoutReturn = () => {
             className="mx-auto max-w-md"
           >
             <CheckCircle2 className="h-12 w-12 mx-auto mb-6 text-foreground" strokeWidth={1.5} />
-            <h1 className="font-display text-4xl font-light tracking-wide text-foreground">
+            <h1 className="font-display text-4xl tracking-wide text-foreground">
               {l("Ďakujeme za objednávku", "Thank you for your order")}
             </h1>
             <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />

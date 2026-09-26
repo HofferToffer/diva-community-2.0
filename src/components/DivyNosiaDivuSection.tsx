@@ -187,7 +187,7 @@ const DivyNosiaDivuSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="font-display text-4xl md:text-5xl font-light tracking-wide text-foreground">
+          <h2 className="font-display text-4xl md:text-5xl tracking-wide text-foreground">
             {l("Divy nosia Divu", "Divas wear DIVA")}
           </h2>
           <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />

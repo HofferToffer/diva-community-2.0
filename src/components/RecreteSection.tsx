@@ -21,7 +21,7 @@ const RecreteSection = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h2 className="font-display text-4xl md:text-5xl font-light tracking-wide text-primary-foreground">
+            <h2 className="font-display text-4xl md:text-5xl tracking-wide text-primary-foreground">
               ReCrete
             </h2>
             <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />

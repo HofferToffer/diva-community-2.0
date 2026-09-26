@@ -1180,7 +1180,7 @@ export default function CommunityCycle() {
               {t("menopauseCard.tipsForYouTitle")}
             </p>
             <div className="mt-4">
-              <TipGrid tips={MENOPAUSE_TIPS} color={{ fill: "hsl(265, 25%, 62%, 0.12)", dot: "hsl(265, 25%, 45%)" }} />
+              <TipGrid tips={MENOPAUSE_TIPS} color={{ fill: "hsl(340, 22%, 24%, 0.12)", dot: "#4A2F38" }} />
             </div>
           </div>
 
@@ -1442,7 +1442,7 @@ export default function CommunityCycle() {
                           {t("ttc.tipsTitle")}
                         </p>
                         <div className="mt-4">
-                          <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(354, 45%, 58%, 0.12)", dot: "hsl(354, 45%, 50%)" }} />
+                          <TipGrid tips={TTC_TIPS} color={{ fill: "hsl(356, 30%, 42%, 0.12)", dot: "#8B4B4F" }} />
                         </div>
                       </div>
 

@@ -52,7 +52,7 @@ const CartDrawer = () => {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-lg flex flex-col h-full">
         <SheetHeader className="flex-shrink-0 text-left">
-          <SheetTitle className="font-display text-2xl font-light tracking-wide">
+          <SheetTitle className="font-display text-2xl tracking-wide">
             {l("Košík", "Your bag")}
           </SheetTitle>
           <SheetDescription className="font-body text-xs tracking-wide">
@@ -87,7 +87,7 @@ const CartDrawer = () => {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-display text-base font-light tracking-wide truncate">
+                        <h4 className="font-display text-base tracking-wide truncate">
                           {itemName(item)}
                         </h4>
                         <p className="mt-1 font-body text-sm text-foreground">

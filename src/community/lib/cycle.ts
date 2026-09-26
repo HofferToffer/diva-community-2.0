@@ -208,20 +208,36 @@ export const CYCLE_PHASES: Record<CyclePhaseKey, { name: string }> = {
   lutealna: { name: "Luteálna fáza" },
 };
 
-/** Soft background fill + a stronger dot/marker color per phase, shared by the chart and calendar — same hues as the app-wide phase theme in index.css. */
-export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, { fill: string; dot: string }> = {
-  menstruacna: { fill: "hsl(335, 35%, 40%, 0.14)", dot: "hsl(335, 35%, 40%)" },
-  folikularna: { fill: "hsl(140, 18%, 42%, 0.12)", dot: "hsl(140, 18%, 42%)" },
-  ovulacia: { fill: "hsl(32, 45%, 46%, 0.18)", dot: "hsl(32, 45%, 46%)" },
-  lutealna: { fill: "hsl(20, 25%, 30%, 0.12)", dot: "hsl(20, 25%, 30%)" },
+export type PhaseColor = {
+  /** Soft tint (keep the `hsl(h, s%, l%, a)` form — callers swap the alpha). */
+  fill: string;
+  /** Readable marker / line / text color. */
+  dot: string;
+  /** The phase's brand color at full strength (calendar days, legend, cards). */
+  solid: string;
+  /** Text on top of `solid`. */
+  onSolid: string;
+};
+
+/**
+ * Brand manual: four phases = four seasons. Zima (menštruácia) slivková,
+ * Jar (folikulárna) šalviová, Leto (ovulácia) púdrová, Jeseň (luteálna)
+ * terakotová. Púdrová is too light for text or thin lines, so ovulation's
+ * `dot` is a deeper rose that stays readable.
+ */
+export const CYCLE_PHASE_COLORS: Record<CyclePhaseKey, PhaseColor> = {
+  menstruacna: { fill: "hsl(340, 22%, 24%, 0.12)", dot: "#4A2F38", solid: "#4A2F38", onSolid: "#F4ECE3" },
+  folikularna: { fill: "hsl(101, 11%, 35%, 0.14)", dot: "#55624F", solid: "#55624F", onSolid: "#F4ECE3" },
+  ovulacia: { fill: "hsl(18, 52%, 77%, 0.4)", dot: "#8B4B4F", solid: "#E3B9A7", onSolid: "#4A2F38" },
+  lutealna: { fill: "hsl(16, 44%, 46%, 0.14)", dot: "#A85D42", solid: "#A85D42", onSolid: "#FAF6F1" },
 };
 
 /** A near-invisible wash over the whole "Prehľad cyklu" card — the card itself stays the same, this just very gently hints which phase you're in. */
 export const CYCLE_PHASE_CARD_TINT: Record<CyclePhaseKey, string> = {
-  menstruacna: "hsl(335, 35%, 40%, 0.06)",
-  folikularna: "hsl(140, 18%, 42%, 0.06)",
-  ovulacia: "hsl(32, 45%, 46%, 0.07)",
-  lutealna: "hsl(20, 25%, 30%, 0.05)",
+  menstruacna: "hsl(340, 22%, 24%, 0.05)",
+  folikularna: "hsl(101, 11%, 35%, 0.07)",
+  ovulacia: "hsl(18, 52%, 77%, 0.2)",
+  lutealna: "hsl(16, 44%, 46%, 0.07)",
 };
 
 /**
