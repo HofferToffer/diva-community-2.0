@@ -562,7 +562,14 @@
     "futureDayHint": "Ťukni aj na budúci deň — ukážeme ti, akú fázu vtedy podľa odhadu budeš mať.",
     "legendAriaLabel": "Legenda fáz cyklu",
     "sex": "Sex",
-    "highestFertilityLegend": "Najvyššia šanca na otehotnenie"
+    "highestFertilityLegend": "Najvyššia šanca na otehotnenie",
+    "openYear": "Zobraziť celý rok",
+    "showYear": "Celý rok",
+    "prevYear": "Predchádzajúci rok",
+    "nextYear": "Nasledujúci rok",
+    "closeYear": "Zavrieť celoročný kalendár",
+    "yearSubtitle": "Odhad fáz tvojho cyklu na celý rok",
+    "yearHint": "Ťukni na mesiac a otvoríme ti ho v kalendári. Potiahnutím do strany prepneš rok."
   },
   "nav": {
     "home": "Domov",

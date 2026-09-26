@@ -1037,7 +1037,14 @@
     "futureDayHint": "You can tap a future day too — we'll show you which phase you're estimated to be in then.",
     "legendAriaLabel": "Cycle phase legend",
     "sex": "Sex",
-    "highestFertilityLegend": "Highest chance of conception"
+    "highestFertilityLegend": "Highest chance of conception",
+    "openYear": "Show the whole year",
+    "showYear": "Whole year",
+    "prevYear": "Previous year",
+    "nextYear": "Next year",
+    "closeYear": "Close year calendar",
+    "yearSubtitle": "Estimated cycle phases for the whole year",
+    "yearHint": "Tap a month to open it in the calendar. Swipe sideways to switch years."
   },
   "cycle": {
     "phaseNames": {
