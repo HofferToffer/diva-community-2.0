@@ -1116,7 +1116,8 @@
       "folikularna": { "season": "Spring", "tagline": "The cycle's inner spring — time to sprout and begin." },
       "ovulacia": { "season": "Summer", "tagline": "The cycle's inner summer — time to shine and connect." },
       "lutealna": { "season": "Autumn", "tagline": "The cycle's inner autumn — time to harvest and slow down." }
-    }
+    },
+    "seasonStripAriaLabel": "Seasons of the cycle"
   },
   "tipCategories": {
     "all": "All",
