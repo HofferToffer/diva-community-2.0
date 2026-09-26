@@ -69,7 +69,7 @@ const CommunitySection = () => {
                 <p key={sk}>{l(sk, en)}</p>
               ))}
               <p className="font-display text-xl md:text-2xl italic text-foreground pt-2">
-                {l("Buď Diva", "Be a Diva")} 🌸
+                {l("Buď Diva.", "Be a Diva.")}
               </p>
             </div>
           </motion.div>
