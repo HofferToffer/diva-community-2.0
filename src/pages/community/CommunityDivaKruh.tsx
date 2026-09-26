@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Circle, Heart, MessageCircle, Users } from "lucide-react";
 import { fadeUp, floatIcon } from "@/community/lib/motion";
+import { DivaLogo } from "@/components/DivaLogo";
 
 export default function CommunityDivaKruh() {
   const { t } = useTranslation();
@@ -24,12 +25,7 @@ export default function CommunityDivaKruh() {
         </div>
 
         <div className="relative z-10 mx-auto">
-          <motion.div
-            {...floatIcon(0)}
-            className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border-2 border-accent/40"
-          >
-            <Circle className="h-8 w-8 text-accent" />
-          </motion.div>
+          <DivaLogo animated breathing className="mx-auto mb-6 w-28 text-[#4A2F38] dark:text-[#F4ECE3]" title="DIVA KRUH" />
           <h1 className="font-display text-3xl md:text-4xl tracking-wide">{t("divaKruh.title")}</h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("divaKruh.heroText")}</p>
         </div>
