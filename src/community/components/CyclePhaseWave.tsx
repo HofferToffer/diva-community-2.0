@@ -22,13 +22,18 @@ export function CyclePhaseWave({
   dayOfCycle,
   cycleLengthDays,
   phaseKey,
+  color: colorOverride,
+  trackColor,
 }: {
   dayOfCycle: number;
   cycleLengthDays: number;
   phaseKey: CyclePhaseKey;
+  /** Line/dot colour — e.g. cream when drawn on a season-coloured card. */
+  color?: string;
+  trackColor?: string;
 }) {
   const progress = Math.min(1, Math.max(0, (dayOfCycle - 1) / Math.max(cycleLengthDays - 1, 1)));
-  const color = CYCLE_PHASE_COLORS[phaseKey].dot;
+  const color = colorOverride ?? CYCLE_PHASE_COLORS[phaseKey].dot;
 
   const points = useMemo(
     () => Array.from({ length: STEPS + 1 }, (_, i) => {
@@ -46,12 +51,20 @@ export function CyclePhaseWave({
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" aria-hidden="true">
-      <polyline points={fullPath} fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="stroke-border" />
+      <polyline
+        points={fullPath}
+        fill="none"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={trackColor ? undefined : "stroke-border"}
+        stroke={trackColor}
+      />
       {travelled.length > 1 && (
         <polyline points={travelledPath} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       )}
       <circle cx={dotX} cy={dotY} r="7" fill={color} opacity="0.18" />
-      <circle cx={dotX} cy={dotY} r="4" fill={color} stroke="hsl(var(--card))" strokeWidth="1.5" />
+      <circle cx={dotX} cy={dotY} r="4" fill={color} stroke={trackColor ? "transparent" : "hsl(var(--card))"} strokeWidth="1.5" />
     </svg>
   );
 }

@@ -50,11 +50,7 @@ const Navbar = () => {
                 <Link
                   key={link.label}
                   to={link.href}
-                  className={`shrink-0 font-body text-[10px] md:text-xs tracking-[0.2em] transition-colors uppercase ${
-                    link.label === "SHOP"
-                      ? "text-[hsl(var(--shop))] hover:text-[hsl(var(--shop))]"
-                      : "text-primary-foreground/80 hover:text-primary-foreground"
-                  }`}
+                  className="shrink-0 font-body text-[10px] md:text-xs tracking-[0.2em] transition-colors uppercase text-primary-foreground/80 hover:text-primary-foreground"
                 >
                   {link.label}
                 </Link>
@@ -62,11 +58,7 @@ const Navbar = () => {
                 <a
                   key={link.label}
                   href={link.href}
-                  className={`shrink-0 font-body text-[10px] md:text-xs tracking-[0.2em] transition-colors uppercase ${
-                    link.label === "SHOP"
-                      ? "text-[hsl(var(--shop))] hover:text-[hsl(var(--shop))]"
-                      : "text-primary-foreground/80 hover:text-primary-foreground"
-                  }`}
+                  className="shrink-0 font-body text-[10px] md:text-xs tracking-[0.2em] transition-colors uppercase text-primary-foreground/80 hover:text-primary-foreground"
                 >
                   {link.label}
                 </a>

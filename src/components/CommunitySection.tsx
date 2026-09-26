@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import divaWomenSunLine from "@/assets/diva-women-sun-line.png.asset.json";
+import divaWomenSun from "@/assets/diva-women-sun-plum.png";
 import { useLang } from "@/lib/lang";
 
 const paragraphs: [sk: string, en: string][] = [
@@ -45,7 +45,7 @@ const CommunitySection = () => {
           >
             <div className="overflow-hidden rounded-2xl">
               <img
-                src={divaWomenSunLine.url}
+                src={divaWomenSun}
                 alt={l("Ženy so slnkom - line art ilustrácia", "Women with the sun, line art illustration")}
                 className="w-full h-auto object-contain"
                 loading="lazy"
@@ -69,7 +69,7 @@ const CommunitySection = () => {
                 <p key={sk}>{l(sk, en)}</p>
               ))}
               <p className="font-display text-xl md:text-2xl italic text-foreground pt-2">
-                {l("Buď Diva", "Be a Diva")} 🌸
+                {l("Buď Diva.", "Be a Diva.")}
               </p>
             </div>
           </motion.div>

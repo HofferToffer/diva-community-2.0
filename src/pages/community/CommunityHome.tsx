@@ -13,7 +13,7 @@ import { QuoteCard } from "@/community/components/QuoteCard";
 import { goalUnit } from "@/community/components/ChallengeCard";
 import { useActiveChallenge, useChallengeProgress, useDailyFeelings, useFeed, useProfileStats } from "@/community/hooks/queries";
 import { formatKm, greeting, pluralActivities, pluralDivy } from "@/community/lib/format";
-import { getCycleInfo, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
+import { getCycleInfo, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_COLORS, CYCLE_PHASE_SEASON } from "@/community/lib/cycle";
 import {
   getPregnancyInfo,
   pregnancyWeekIcon,
@@ -248,29 +248,25 @@ export default function CommunityHome() {
         <motion.div {...fadeUp(1)}>
           <Link
             to="/community/cyklus"
-            className="relative block overflow-hidden rounded-2xl border border-border/50 bg-card p-5 shadow-elevated-sm transition-colors hover:border-primary/40"
+            className="relative block overflow-hidden rounded-2xl p-5 shadow-elevated-sm transition-transform duration-500 hover:-translate-y-0.5"
+            style={{ background: CYCLE_PHASE_COLORS[cycle.phaseKey].solid, color: CYCLE_PHASE_COLORS[cycle.phaseKey].onSolid }}
           >
-            {profile?.dynamic_theme !== false && (
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{ background: CYCLE_PHASE_CARD_TINT[cycle.phaseKey] }}
-                aria-hidden="true"
-              />
-            )}
             <div className="relative">
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+              <p className="text-[0.65rem] uppercase tracking-[0.2em]">
                 {isEnglish
                   ? t("profilePage.dayOfCycle", { day: cycle.dayOfCycle })
                   : `${cycle.dayOfCycle}. deň cyklu`}{" "}
                 · {isEnglish ? t(`cycle.phases.${cycle.phaseKey}.name`) : cycle.phase.name}
+                {" · "}
+                {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.season`) : CYCLE_PHASE_SEASON[cycle.phaseKey].season}
               </p>
-              <h2 className="mt-1 font-display text-2xl text-primary">
+              <h2 className="mt-1 font-display text-2xl">
                 {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.name`) : cycle.subPhase.name}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-2 text-sm leading-relaxed">
                 {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.description`) : cycle.subPhase.description}
               </p>
-              <p className="mt-2 text-sm italic leading-relaxed text-foreground/85">
+              <p className="mt-2 font-display text-lg italic leading-snug">
                 „{isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.mantra`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}"
               </p>
               <div className="mt-4">
@@ -278,6 +274,8 @@ export default function CommunityHome() {
                   dayOfCycle={cycle.dayOfCycle}
                   cycleLengthDays={profile?.cycle_length_days ?? 28}
                   phaseKey={cycle.phaseKey}
+                  color={CYCLE_PHASE_COLORS[cycle.phaseKey].onSolid}
+                  trackColor={`${CYCLE_PHASE_COLORS[cycle.phaseKey].onSolid}55`}
                 />
               </div>
             </div>

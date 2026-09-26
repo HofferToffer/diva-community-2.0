@@ -11,7 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { useIntimacyLogs, useToggleIntimacyLog, useIsAdmin } from "@/community/hooks/queries";
 import { useAdminPreview, applyPreview } from "@/community/lib/adminPreview";
-import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT } from "@/community/lib/cycle";
+import { getCycleInfo, formatCycleDate, CYCLE_PHASE_ARCHETYPE, CYCLE_PHASE_SEASON, CYCLE_PHASE_CARD_TINT, CYCLE_PHASE_COLORS } from "@/community/lib/cycle";
+import { CycleSeasonStrip } from "@/community/components/CycleSeasons";
 import {
   getPregnancyInfo,
   pregnancyWeekIcon,
@@ -1334,29 +1335,34 @@ export default function CommunityCycle() {
             </div>
           ) : (
             <>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {isEnglish ? t(`cycle.phases.${cycle.phaseKey}.name`) : cycle.phase.name} ·{" "}
-                {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.season`) : CYCLE_PHASE_SEASON[cycle.phaseKey].season}
-              </p>
-              <p className="font-display text-xl text-primary">
-                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.name`) : cycle.subPhase.name}
-              </p>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.description`) : cycle.subPhase.description}
-              </p>
-
-              <div>
-                <p className="text-sm italic leading-relaxed text-foreground/85">
+              {/* The phase as its season card from the brand manual: full season colour, cream (or plum) text. */}
+              <div
+                className="rounded-2xl p-5 shadow-sm"
+                style={{ background: CYCLE_PHASE_COLORS[cycle.phaseKey].solid, color: CYCLE_PHASE_COLORS[cycle.phaseKey].onSolid }}
+              >
+                <p className="text-[0.65rem] uppercase tracking-[0.25em]">
+                  {isEnglish ? t(`cycle.phases.${cycle.phaseKey}.name`) : cycle.phase.name} ·{" "}
+                  {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.season`) : CYCLE_PHASE_SEASON[cycle.phaseKey].season}
+                </p>
+                <p className="mt-2 font-display text-3xl leading-tight">
+                  {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.name`) : cycle.subPhase.name}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed">
+                  {isEnglish ? t(`cycle.subPhases.${cycle.subPhase.key}.description`) : cycle.subPhase.description}
+                </p>
+                <p className="mt-4 font-display text-lg italic leading-snug">
                   „{isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.mantra`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].mantra}" —{" "}
                   {isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.archetype`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].archetype}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-xs">
                   {isEnglish ? t(`cycle.archetypes.${cycle.phaseKey}.keywords`) : CYCLE_PHASE_ARCHETYPE[cycle.phaseKey].keywords}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-xs">
                   {isEnglish ? t(`cycle.seasons.${cycle.phaseKey}.tagline`) : CYCLE_PHASE_SEASON[cycle.phaseKey].tagline}
                 </p>
               </div>
+
+              <CycleSeasonStrip current={cycle.phaseKey} />
 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="rounded-xl border border-border/50 p-3">
