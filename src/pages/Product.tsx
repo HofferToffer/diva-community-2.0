@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { useSeo } from "@/lib/seo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductGallery from "@/components/ProductGallery";
@@ -11,6 +12,11 @@ import { products } from "@/data/products";
 const Product = () => {
   const { slug } = useParams();
   const product = products.find((p) => p.slug === slug);
+  useSeo(
+    product
+      ? { title: product.name, description: product.description, image: product.images[0], path: `/shop/${product.slug}`, type: "product" }
+      : { title: "Produkt sa nenašiel", noindex: true },
+  );
 
   if (!product) {
     return (

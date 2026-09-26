@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBlogPost } from "@/community/hooks/queries";
+import { useSeo } from "@/lib/seo";
 
 type ContentBlock = { type: "p"; text: string; key: string } | { type: "img"; url: string; key: string };
 
@@ -27,6 +28,19 @@ function interleaveImages(paragraphs: string[], images: string[]): ContentBlock[
 const BlogPostDynamic = () => {
   const { slug } = useParams();
   const { data: post, isLoading } = useBlogPost(slug);
+  useSeo(
+    isLoading
+      ? null
+      : post?.published
+        ? {
+            title: post.title,
+            description: post.excerpt ?? post.content.slice(0, 160).replace(/\s+/g, " ").trim(),
+            image: post.cover_image_url ?? undefined,
+            path: `/blog/${post.slug}`,
+            type: "article",
+          }
+        : { title: "Článok sa nenašiel", noindex: true },
+  );
 
   if (isLoading) {
     return (
