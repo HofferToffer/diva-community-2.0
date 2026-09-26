@@ -22,7 +22,7 @@ export type BlogPost = {
   image: string;
   href: string;
   imagePosition?: string;
-  /** English title and teaser; posts without it (from the admin) show in Slovak with a note. */
+  /** English title and teaser. Posts without it are Slovak-only and hidden from the English website. */
   en?: { title: string; excerpt: string };
 };
 
@@ -64,11 +64,6 @@ const rawPosts: BlogPost[] = [
     category: "",
     image: blog10Cover,
     href: "/blog/predstavte-si-zenu",
-    en: {
-      title: "Wisdom of the womb",
-      excerpt:
-        "A poem that stayed in my heart. About a woman who honours herself, her body, her years and the women around her.",
-    },
   },
   {
     title: "15 ročný sen",

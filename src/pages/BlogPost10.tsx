@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import blog1Asset from "@/assets/blog-10-1.jpeg.asset.json";
@@ -67,7 +67,10 @@ const Stanzas = ({ from, to }: { from: number; to: number }) => (
 );
 
 const BlogPost10 = () => {
-  const { l, lang } = useLang();
+  const { lang } = useLang();
+  // Slovak-only poem — not part of the English website.
+  if (lang === "en") return <Navigate to="/blog" replace />;
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -89,7 +92,7 @@ const BlogPost10 = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
           >
-            {l("Múdrosť lona", "Wisdom of the womb")}
+            Múdrosť lona
           </motion.h1>
         </div>
       </section>
@@ -101,56 +104,47 @@ const BlogPost10 = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          {l("Späť na blog", "Back to the blog")}
+          Späť na blog
         </Link>
       </div>
 
       {/* Article */}
       <article className="mx-auto max-w-3xl px-6 md:px-12 py-12">
-        {lang === "en" && (
-          <p className="mb-10 rounded-2xl bg-secondary/30 px-5 py-4 font-body text-sm leading-relaxed text-muted-foreground">
-            This poem stayed in my heart. It was written in English by Patricia Lynn Reilly (“Imagine a Woman”), but I
-            found it in Slovak, so I'm leaving it here just the way it touched me. Go look up the original, it's
-            beautiful 🌸
-          </p>
-        )}
-        <div lang="sk">
-          <Stanzas from={0} to={3} />
+        <Stanzas from={0} to={3} />
 
-          <motion.figure
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="my-12"
-          >
-            <img
-              src={blog2}
-              alt={l("Žena oddychuje na ležadle v tráve s knihou", "A woman relaxing on a lounger in the grass with a book")}
-              className="w-full h-auto object-cover"
-              loading="lazy"
-            />
-          </motion.figure>
+        <motion.figure
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="my-12"
+        >
+          <img
+            src={blog2}
+            alt="Žena oddychuje na ležadle v tráve s knihou"
+            className="w-full h-auto object-cover"
+            loading="lazy"
+          />
+        </motion.figure>
 
-          <Stanzas from={3} to={5} />
+        <Stanzas from={3} to={5} />
 
-          <motion.figure
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="my-12"
-          >
-            <img
-              src={blog3}
-              alt={l("Žena číta knihu na ležadle v letnom slnku", "A woman reading on a lounger in the summer sun")}
-              className="w-full h-auto object-cover"
-              loading="lazy"
-            />
-          </motion.figure>
+        <motion.figure
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="my-12"
+        >
+          <img
+            src={blog3}
+            alt="Žena číta knihu na ležadle v letnom slnku"
+            className="w-full h-auto object-cover"
+            loading="lazy"
+          />
+        </motion.figure>
 
-          <Stanzas from={5} to={7} />
-        </div>
+        <Stanzas from={5} to={7} />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -159,14 +153,14 @@ const BlogPost10 = () => {
           transition={{ duration: 0.8 }}
           className="mt-10 pt-6 border-t border-foreground/10"
         >
-          <p className="font-display text-2xl md:text-3xl italic text-foreground" lang="sk">
+          <p className="font-display text-2xl md:text-3xl italic text-foreground">
             Predstavte si, že tou ženou ste vy…
           </p>
           <p className="mt-6 font-body text-sm tracking-[0.2em] uppercase text-muted-foreground">
             Patricia Lynn Reilly
           </p>
           <p className="mt-2 font-body text-sm text-muted-foreground italic">
-            {l("z knihy Múdrosť lona", "from the Slovak edition, Múdrosť lona")}
+            z knihy Múdrosť lona
           </p>
         </motion.div>
       </article>

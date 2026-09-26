@@ -45,7 +45,7 @@ const BlogSection = () => {
                   />
                 </div>
                 <span className="font-body text-xs tracking-[0.2em] text-accent uppercase">
-                  {post.slovakOnly ? l("", "In Slovak") : post.category}
+                  {post.category}
                 </span>
                 <h3 className="mt-2 font-display text-2xl font-light text-foreground group-hover:text-accent transition-colors">
                   {post.title}

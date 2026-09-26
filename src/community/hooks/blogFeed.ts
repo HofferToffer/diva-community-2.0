@@ -4,15 +4,12 @@ import { useBlogPosts } from "./queries";
 import { useLang } from "@/lib/lang";
 import blogHeroBeach from "@/assets/blog-hero-beach.jpg.asset.json";
 
-export type FeedBlogPost = BlogPost & {
-  sortTs: number;
-  /** Shown in English mode for posts that only exist in Slovak (written in the admin). */
-  slovakOnly: boolean;
-};
+export type FeedBlogPost = BlogPost & { sortTs: number };
 
 /**
  * Single source of truth for "all blog posts, newest first" — merges DB posts
- * with the static ones. Title, teaser and date come back in the current language.
+ * with the static ones. Title, teaser and date come back in the current language;
+ * in English, posts that only exist in Slovak (admin posts, the poem) are left out.
  */
 export function useAllBlogPosts(): FeedBlogPost[] {
   const { data: dbPosts } = useBlogPosts(false);
@@ -22,7 +19,7 @@ export function useAllBlogPosts(): FeedBlogPost[] {
     const formatDate = (ts: number) =>
       new Intl.DateTimeFormat(dateLocale, { day: "numeric", month: "long", year: "numeric" }).format(ts);
 
-    const fromDb: FeedBlogPost[] = (dbPosts ?? []).map((post) => {
+    const fromDb: FeedBlogPost[] = (lang === "en" ? [] : dbPosts ?? []).map((post) => {
       const ts = new Date(post.published_at ?? post.created_at).getTime();
       return {
         title: post.title,
@@ -33,21 +30,21 @@ export function useAllBlogPosts(): FeedBlogPost[] {
         imagePosition: "top",
         href: `/blog/${post.slug}`,
         sortTs: ts,
-        slovakOnly: lang === "en",
       };
     });
-    const fromStatic: FeedBlogPost[] = blogPosts.map((post) => {
-      const ts = parseSkDate(post.date);
-      const translated = lang === "en" ? post.en : undefined;
-      return {
-        ...post,
-        title: translated?.title ?? post.title,
-        excerpt: translated?.excerpt ?? post.excerpt,
-        date: lang === "en" ? formatDate(ts) : post.date,
-        sortTs: ts,
-        slovakOnly: lang === "en" && !translated,
-      };
-    });
+    const fromStatic: FeedBlogPost[] = blogPosts
+      .filter((post) => lang === "sk" || post.en)
+      .map((post) => {
+        const ts = parseSkDate(post.date);
+        const translated = lang === "en" ? post.en : undefined;
+        return {
+          ...post,
+          title: translated?.title ?? post.title,
+          excerpt: translated?.excerpt ?? post.excerpt,
+          date: lang === "en" ? formatDate(ts) : post.date,
+          sortTs: ts,
+        };
+      });
     return [...fromDb, ...fromStatic].sort((a, b) => b.sortTs - a.sortTs);
   }, [dbPosts, lang, dateLocale]);
 }

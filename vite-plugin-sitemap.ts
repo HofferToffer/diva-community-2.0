@@ -7,6 +7,16 @@ const SITE_URL = "https://divacommunity.sk";
 /** Public pages of the website. The /community app, checkout and password reset stay out of the sitemap on purpose. */
 const STATIC_PATHS = ["/", "/blog", "/diva-run", "/recrete", "/shop", "/zasady-ochrany-udajov", "/podmienky-pouzivania", "/cookies"];
 
+/** Static blog posts, and whether each has an English version (`en: {` in its entry). */
+function readBlogPosts(file: string) {
+  const source = fs.readFileSync(file, "utf8");
+  const hrefs = [...source.matchAll(/href:\s*"([^"]+)"/g)];
+  return hrefs.map((m, i) => {
+    const entry = source.slice(m.index, hrefs[i + 1]?.index ?? source.length);
+    return { path: m[1], bilingual: /\ben:\s*\{/.test(entry.split(/\n {2}\},?\n/)[0]) };
+  });
+}
+
 function matchAll(file: string, pattern: RegExp) {
   const source = fs.readFileSync(file, "utf8");
   return [...source.matchAll(pattern)].map((m) => m[1]);
@@ -41,13 +51,14 @@ export function sitemapPlugin(env: Record<string, string>): Plugin {
       outDir = path.resolve(config.root, config.build.outDir);
     },
     async closeBundle() {
-      const blogPaths = matchAll(path.join(root, "src/data/blogPosts.ts"), /href:\s*"([^"]+)"/g);
+      const blogPosts = readBlogPosts(path.join(root, "src/data/blogPosts.ts"));
       const productPaths = matchAll(path.join(root, "src/data/products.ts"), /slug:\s*"([^"]+)"/g).map((slug) => `/shop/${slug}`);
       const dbPosts = await fetchDatabaseBlogSlugs(env);
 
-      // Pages translated into English also live at `?lang=en`; posts written in the admin are Slovak only.
+      // Pages translated into English also live at `?lang=en`; Slovak-only posts (the poem, admin posts) don't.
       const entries = new Map<string, { lastmod: string | null; bilingual: boolean }>();
-      for (const p of [...STATIC_PATHS, ...blogPaths, ...productPaths]) entries.set(p, { lastmod: null, bilingual: true });
+      for (const p of [...STATIC_PATHS, ...productPaths]) entries.set(p, { lastmod: null, bilingual: true });
+      for (const post of blogPosts) entries.set(post.path, { lastmod: null, bilingual: post.bilingual });
       for (const post of dbPosts) {
         const p = `/blog/${post.slug}`;
         if (!entries.has(p)) entries.set(p, { lastmod: post.updated_at?.slice(0, 10) ?? null, bilingual: false });

@@ -78,7 +78,7 @@ export default function RouteSeo() {
     const post = blogPosts.find((p) => p.href === path);
     if (post) {
       const text = lang === "en" && post.en ? post.en : post;
-      applySeo({ title: text.title, description: text.excerpt, image: post.image, path, type: "article" });
+      applySeo({ title: text.title, description: text.excerpt, image: post.image, path, type: "article", slovakOnly: !post.en });
     }
     // /shop/:slug, /blog/:slug (from the database) and 404 handle their own tags.
   }, [pathname, lang, l]);

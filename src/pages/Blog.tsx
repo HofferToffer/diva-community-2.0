@@ -80,7 +80,7 @@ const Blog = () => {
                   />
                 </div>
                 <span className="font-body text-xs tracking-[0.2em] text-accent uppercase">
-                  {post.slovakOnly ? l("", "In Slovak") : post.category}
+                  {post.category}
                 </span>
                 <h2 className="mt-2 font-display text-2xl md:text-3xl font-light text-foreground group-hover:text-accent transition-colors">
                   {post.title}

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -44,6 +44,9 @@ const BlogPostDynamic = () => {
           }
         : { title: l("Článok sa nenašiel", "Post not found"), noindex: true },
   );
+
+  // Admin posts are Slovak-only — not part of the English website.
+  if (lang === "en") return <Navigate to="/blog" replace />;
 
   if (isLoading) {
     return (
@@ -120,12 +123,7 @@ const BlogPostDynamic = () => {
         </Link>
       </div>
 
-      <article className="mx-auto max-w-3xl px-6 py-12 md:px-12" lang="sk">
-        {lang === "en" && (
-          <p className="mb-8 rounded-2xl bg-secondary/30 px-5 py-4 font-body text-sm leading-relaxed text-muted-foreground" lang="en">
-            This one's only in Slovak for now. I write some posts straight from the heart in my own language 🌸
-          </p>
-        )}
+      <article className="mx-auto max-w-3xl px-6 py-12 md:px-12">
         <div className="space-y-5 font-body text-base leading-loose tracking-wide text-foreground/85 md:text-lg">
           {contentBlocks.map((block) =>
             block.type === "p" ? (
