@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { CommunityAuthProvider, useCommunityAuth } from "@/community/context/CommunityAuthProvider";
 import { CommunityShell } from "@/community/components/CommunityShell";
 import { CommunityGate } from "@/community/components/CommunityGate";
-import { DivaLogo } from "@/components/DivaLogo";
 
 import CommunityAuth from "./community/CommunityAuth";
 import CommunityOnboarding from "./community/CommunityOnboarding";
@@ -35,8 +34,7 @@ const DIVA_LETTERS = ["D", "I", "V", "A"];
 
 function Loading() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background">
-      <DivaLogo animated className="w-24 text-[#4A2F38] dark:text-[#F4ECE3]" />
+    <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="flex font-display text-2xl tracking-[0.2em] text-muted-foreground">
         {DIVA_LETTERS.map((letter, i) => (
           <motion.span
