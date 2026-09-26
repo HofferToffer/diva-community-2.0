@@ -32,6 +32,16 @@ const SK_MONTHS: Record<string, number> = {
   "september": 8, "oktober": 9, "október": 9, "november": 10, "december": 11,
 };
 
+/**
+ * Where to focus the cover of posts written in the app's admin (by slug) — the
+ * default is the top of the photo, which suits portraits. A CSS
+ * object-position / background-position value.
+ */
+export const ADMIN_COVER_POSITION: Record<string, string> = {
+  // The "Vzdoruj" card sits in the lower middle of the photo, under the tree.
+  "navrat-k-sebe": "center 57%",
+};
+
 export const parseSkDate = (date: string): number => {
   const m = date.trim().toLowerCase().match(/^(\d{1,2})\.\s*([^\s]+)\s+(\d{4})$/);
   if (!m) return 0;

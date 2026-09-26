@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { blogPosts, parseSkDate, type BlogPost } from "@/data/blogPosts";
+import { ADMIN_COVER_POSITION, blogPosts, parseSkDate, type BlogPost } from "@/data/blogPosts";
 import { useBlogPosts } from "./queries";
 import { useLang } from "@/lib/lang";
 import blogHeroBeach from "@/assets/blog-hero-beach.jpg.asset.json";
@@ -27,7 +27,7 @@ export function useAllBlogPosts(): FeedBlogPost[] {
         date: formatDate(ts),
         category: "",
         image: post.cover_image_url ?? blogHeroBeach.url,
-        imagePosition: "top",
+        imagePosition: ADMIN_COVER_POSITION[post.slug] ?? "top",
         href: `/blog/${post.slug}`,
         sortTs: ts,
       };
