@@ -34,7 +34,7 @@ const paragraphs: [sk: string, en: string][] = [
 const CommunitySection = () => {
   const { l } = useLang();
   return (
-    <section id="community" className="section-padding bg-background">
+    <section id="community" className="section-padding bg-background overflow-x-clip">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
           <motion.div
