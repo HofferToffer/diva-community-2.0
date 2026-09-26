@@ -27,7 +27,7 @@ export function DivaWordmark({
 
   return (
     <svg
-      viewBox={motto ? "480 70 1040 1300" : "580 70 840 1150"}
+      viewBox={motto ? "480 70 1040 1300" : "510 70 960 1150"}
       className={cn("h-auto w-full", className)}
       role="img"
       aria-label={title}
