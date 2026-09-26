@@ -10,9 +10,16 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingBag, Minus, Plus, Trash2, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
-import { formatPriceCents } from "@/data/products";
+import { formatPriceCents, products } from "@/data/products";
+import { useLang } from "@/lib/lang";
 
 const CartDrawer = () => {
+  const { l, pick } = useLang();
+  // The cart stores the Slovak name; show the product's name in her language when we still sell it.
+  const itemName = (item: { priceId: string; name: string }) => {
+    const product = products.find((p) => p.priceId === item.priceId);
+    return product ? pick(product.name) : item.name;
+  };
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { items, updateQuantity, removeItem } = useCartStore();
@@ -33,7 +40,7 @@ const CartDrawer = () => {
       <SheetTrigger asChild>
         <button
           className="relative text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-          aria-label="Košík"
+          aria-label={l("Košík", "Bag")}
         >
           <ShoppingBag size={19} />
           {totalItems > 0 && (
@@ -46,12 +53,15 @@ const CartDrawer = () => {
       <SheetContent className="w-full sm:max-w-lg flex flex-col h-full">
         <SheetHeader className="flex-shrink-0 text-left">
           <SheetTitle className="font-display text-2xl font-light tracking-wide">
-            Košík
+            {l("Košík", "Your bag")}
           </SheetTitle>
           <SheetDescription className="font-body text-xs tracking-wide">
             {totalItems === 0
-              ? "Váš košík je prázdny"
-              : `${totalItems} ${totalItems === 1 ? "produkt" : totalItems < 5 ? "produkty" : "produktov"} v košíku`}
+              ? l("Váš košík je prázdny", "Your bag is empty")
+              : l(
+                  `${totalItems} ${totalItems === 1 ? "produkt" : totalItems < 5 ? "produkty" : "produktov"} v košíku`,
+                  `${totalItems} ${totalItems === 1 ? "item" : "items"} in your bag`,
+                )}
           </SheetDescription>
         </SheetHeader>
 
@@ -60,7 +70,7 @@ const CartDrawer = () => {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <ShoppingBag className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
-                <p className="font-body text-sm text-muted-foreground">Váš košík je prázdny</p>
+                <p className="font-body text-sm text-muted-foreground">{l("Váš košík je prázdny", "Your bag is empty")}</p>
               </div>
             </div>
           ) : (
@@ -72,13 +82,13 @@ const CartDrawer = () => {
                       <div className="w-16 h-20 bg-muted overflow-hidden flex-shrink-0">
                         <img
                           src={item.image}
-                          alt={item.name}
+                          alt={itemName(item)}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-display text-base font-light tracking-wide truncate">
-                          {item.name}
+                          {itemName(item)}
                         </h4>
                         <p className="mt-1 font-body text-sm text-foreground">
                           {formatPriceCents(item.priceCents)}
@@ -88,7 +98,7 @@ const CartDrawer = () => {
                         <button
                           onClick={() => removeItem(item.priceId)}
                           className="text-muted-foreground hover:text-foreground transition-colors"
-                          aria-label="Odstrániť"
+                          aria-label={l("Odstrániť", "Remove")}
                         >
                           <Trash2 size={14} />
                         </button>
@@ -96,7 +106,7 @@ const CartDrawer = () => {
                           <button
                             onClick={() => updateQuantity(item.priceId, item.quantity - 1)}
                             className="h-6 w-6 border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                            aria-label="Menej"
+                            aria-label={l("Menej", "Fewer")}
                           >
                             <Minus size={12} />
                           </button>
@@ -106,7 +116,7 @@ const CartDrawer = () => {
                           <button
                             onClick={() => updateQuantity(item.priceId, item.quantity + 1)}
                             className="h-6 w-6 border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                            aria-label="Viac"
+                            aria-label={l("Viac", "More")}
                           >
                             <Plus size={12} />
                           </button>
@@ -120,14 +130,14 @@ const CartDrawer = () => {
               <div className="flex-shrink-0 space-y-4 pt-6 mt-4 border-t border-border bg-background">
                 <div className="flex justify-between items-center">
                   <span className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground">
-                    Celkom
+                    {l("Celkom", "Total")}
                   </span>
                   <span className="font-display text-xl text-foreground">
                     {formatPriceCents(totalCents)}
                   </span>
                 </div>
                 <p className="font-body text-[11px] text-muted-foreground">
-                  Doprava sa vypočíta pri platbe.
+                  {l("Doprava sa vypočíta pri platbe.", "Shipping is calculated at checkout.")}
                 </p>
                 <button
                   onClick={handleCheckout}
@@ -135,7 +145,7 @@ const CartDrawer = () => {
                   className="w-full inline-flex items-center justify-center gap-2 bg-foreground px-8 py-3 font-body text-xs tracking-[0.2em] uppercase text-background hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   <ArrowRight size={14} />
-                  Prejsť k platbe
+                  {l("Prejsť k platbe", "Go to checkout")}
                 </button>
               </div>
             </>

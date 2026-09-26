@@ -20,34 +20,36 @@ import divaRun17 from "@/assets/diva-run-17.jpg";
 import divaRun18 from "@/assets/diva-run-18.jpg";
 import divaRun19 from "@/assets/diva-run-19.jpg";
 import divaRun20 from "@/assets/diva-run-20.jpg";
+import { useLang, type Bilingual } from "@/lib/lang";
 
-type MediaItem = { type: "image"; src: string; alt: string; width: number; height: number };
+type MediaItem = { type: "image"; src: string; alt: Bilingual; width: number; height: number };
 
 const photos: MediaItem[] = [
   // 1. Rozcvička & príprava
-  { type: "image", src: divaRun7, alt: "DIVA Run – rozcvička", width: 800, height: 1365 },
-  { type: "image", src: divaRun20, alt: "DIVA Run – pred behom v parku", width: 900, height: 1600 },
-  { type: "image", src: divaRun8, alt: "DIVA Run – po tréningu", width: 800, height: 1365 },
+  { type: "image", src: divaRun7, alt: { sk: "DIVA Run – rozcvička", en: "DIVA Run – warm-up" }, width: 800, height: 1365 },
+  { type: "image", src: divaRun20, alt: { sk: "DIVA Run – pred behom v parku", en: "DIVA Run – before the run in the park" }, width: 900, height: 1600 },
+  { type: "image", src: divaRun8, alt: { sk: "DIVA Run – po tréningu", en: "DIVA Run – after training" }, width: 800, height: 1365 },
 
   // 2. Beh – akcia
-  { type: "image", src: divaRun9, alt: "DIVA Run – beh na dráhe", width: 1024, height: 1365 },
-  { type: "image", src: divaRun10, alt: "DIVA Run – tím na štadióne", width: 1024, height: 1365 },
-  { type: "image", src: divaRun18, alt: "DIVA Run – beh v parku", width: 1080, height: 1565 },
-  { type: "image", src: divaRun14, alt: "DIVA Run – radosť počas behu", width: 900, height: 1600 },
+  { type: "image", src: divaRun9, alt: { sk: "DIVA Run – beh na dráhe", en: "DIVA Run – running on the track" }, width: 1024, height: 1365 },
+  { type: "image", src: divaRun10, alt: { sk: "DIVA Run – tím na štadióne", en: "DIVA Run – the team at the stadium" }, width: 1024, height: 1365 },
+  { type: "image", src: divaRun18, alt: { sk: "DIVA Run – beh v parku", en: "DIVA Run – running in the park" }, width: 1080, height: 1565 },
+  { type: "image", src: divaRun14, alt: { sk: "DIVA Run – radosť počas behu", en: "DIVA Run – pure joy mid-run" }, width: 900, height: 1600 },
 
   // 3. Po behu – občerstvenie & spoločné momenty
-  { type: "image", src: divaRun17, alt: "DIVA Run – občerstvenie po behu", width: 900, height: 1600 },
-  { type: "image", src: divaRun19, alt: "DIVA Run – tím pred Mojou srdcovkou", width: 900, height: 1600 },
-  { type: "image", src: divaRun15, alt: "DIVA Run – baby pred Mojou srdcovkou", width: 900, height: 1600 },
+  { type: "image", src: divaRun17, alt: { sk: "DIVA Run – občerstvenie po behu", en: "DIVA Run – snacks after the run" }, width: 900, height: 1600 },
+  { type: "image", src: divaRun19, alt: { sk: "DIVA Run – tím pred Mojou srdcovkou", en: "DIVA Run – the team outside Moja srdcovka" }, width: 900, height: 1600 },
+  { type: "image", src: divaRun15, alt: { sk: "DIVA Run – baby pred Mojou srdcovkou", en: "DIVA Run – the girls outside Moja srdcovka" }, width: 900, height: 1600 },
 
   // 4. Portréty & relax na terase
-  { type: "image", src: divaRun16, alt: "DIVA Run – portrét so šiltovkou", width: 900, height: 1600 },
-  { type: "image", src: divaRun11, alt: "DIVA Run – na terase", width: 900, height: 1600 },
-  { type: "image", src: divaRun13, alt: "DIVA Run – úsmev na terase", width: 900, height: 1600 },
-  { type: "image", src: divaRun12, alt: "DIVA Run – kávička po behu", width: 900, height: 1600 },
+  { type: "image", src: divaRun16, alt: { sk: "DIVA Run – portrét so šiltovkou", en: "DIVA Run – portrait in a DIVA cap" }, width: 900, height: 1600 },
+  { type: "image", src: divaRun11, alt: { sk: "DIVA Run – na terase", en: "DIVA Run – on the terrace" }, width: 900, height: 1600 },
+  { type: "image", src: divaRun13, alt: { sk: "DIVA Run – úsmev na terase", en: "DIVA Run – smiles on the terrace" }, width: 900, height: 1600 },
+  { type: "image", src: divaRun12, alt: { sk: "DIVA Run – kávička po behu", en: "DIVA Run – coffee after the run" }, width: 900, height: 1600 },
 ];
 
 const DivaRun = () => {
+  const { l, pick } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -74,7 +76,7 @@ const DivaRun = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mt-4 font-body text-sm md:text-base tracking-wide text-primary-foreground/80 max-w-lg"
           >
-            Bežíme spolu. Fotky z našich spoločných behov a eventov.
+            {l("Bežíme spolu. Fotky z našich spoločných behov a eventov.", "We run together. Photos from our group runs and events.")}
           </motion.p>
         </div>
       </section>
@@ -86,7 +88,7 @@ const DivaRun = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na hlavnú
+          {l("Späť na hlavnú", "Back to home")}
         </Link>
       </div>
 
@@ -104,7 +106,7 @@ const DivaRun = () => {
             >
               <img
                 src={photo.src}
-                alt={photo.alt}
+                alt={pick(photo.alt)}
                 width={photo.width}
                 height={photo.height}
                 loading="lazy"

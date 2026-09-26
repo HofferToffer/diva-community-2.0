@@ -6,37 +6,39 @@ import Footer from "@/components/Footer";
 import blogCover from "@/assets/blog-2-cover.jpg";
 import blog2 from "@/assets/blog-2-2.jpg";
 import blog3 from "@/assets/blog-2-3.jpg";
+import { useLang } from "@/lib/lang";
 
-const lines1 = [
-  "keď ideš mimo systém",
-  "keď sa rozhodneš mať 2 deti po sebe",
-  "keď si rodičom, ktorý neklame deti",
-  "keď búraš generačné traumy",
-  "keď ideš do hĺbky",
-  "keď dáš seba na prvé miesto",
-  "keď si vo vzťahu kde to nie je perfektné",
-  "keď si priznáš chybu",
+const lines1: [sk: string, en: string][] = [
+  ["keď ideš mimo systém", "when you step outside the system"],
+  ["keď sa rozhodneš mať 2 deti po sebe", "when you decide to have 2 kids back to back"],
+  ["keď si rodičom, ktorý neklame deti", "when you're a parent who doesn't lie to their kids"],
+  ["keď búraš generačné traumy", "when you break generational trauma"],
+  ["keď ideš do hĺbky", "when you go deep"],
+  ["keď dáš seba na prvé miesto", "when you put yourself first"],
+  ["keď si vo vzťahu kde to nie je perfektné", "when you're in a relationship that isn't perfect"],
+  ["keď si priznáš chybu", "when you admit you were wrong"],
 ];
 
-const lines2 = [
-  "keď začneš byť autentická",
-  "keď si v tichu",
-  "keď sa postavíš vlastným tieňom",
-  "keď povieš mužovi svoje najväčšie tajomstvo",
-  "keď sa spoľahneš na život",
-  "keď sa nebojíš ísť do diskomfortu",
-  "keď oddychuješ",
+const lines2: [sk: string, en: string][] = [
+  ["keď začneš byť autentická", "when you start being authentic"],
+  ["keď si v tichu", "when you sit in silence"],
+  ["keď sa postavíš vlastným tieňom", "when you face your own shadows"],
+  ["keď povieš mužovi svoje najväčšie tajomstvo", "when you tell your man your biggest secret"],
+  ["keď sa spoľahneš na život", "when you trust life"],
+  ["keď sa nebojíš ísť do diskomfortu", "when you're not afraid to get uncomfortable"],
+  ["keď oddychuješ", "when you rest"],
 ];
 
-const lines3 = [
-  "keď deťom ukazuješ všetky svoje emócie",
-  "keď nepracuješ 8 hodín denne",
-  "keď veríš že na tomto svete nie sme sami",
-  "keď veríš na anjelov",
-  "keď sa otvoríš človeku",
+const lines3: [sk: string, en: string][] = [
+  ["keď deťom ukazuješ všetky svoje emócie", "when you show your kids all your emotions"],
+  ["keď nepracuješ 8 hodín denne", "when you don't work 8 hours a day"],
+  ["keď veríš že na tomto svete nie sme sami", "when you believe we're not alone in this world"],
+  ["keď veríš na anjelov", "when you believe in angels"],
+  ["keď sa otvoríš človeku", "when you open up to someone"],
 ];
 
 const BlogPost2 = () => {
+  const { l } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -63,7 +65,7 @@ const BlogPost2 = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
           >
-            Odvaha 🌸
+            {l("Odvaha 🌸", "Courage 🌸")}
           </motion.h1>
         </div>
       </section>
@@ -75,19 +77,19 @@ const BlogPost2 = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 
       {/* Article */}
       <article className="mx-auto max-w-3xl px-6 md:px-12 py-12">
         <p className="font-display text-2xl md:text-3xl italic text-foreground mb-10">
-          Čo je pre mňa ODVAHA
+          {l("Čo je pre mňa ODVAHA", "What COURAGE means to me")}
         </p>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          {lines1.map((line) => (
-            <p key={line}>{line}</p>
+          {lines1.map(([sk, en]) => (
+            <p key={sk}>{l(sk, en)}</p>
           ))}
         </div>
 
@@ -100,15 +102,15 @@ const BlogPost2 = () => {
         >
           <img
             src={blog2}
-            alt="Odvaha"
+            alt={l("Odvaha", "Courage")}
             className="w-full h-auto object-cover"
             loading="lazy"
           />
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          {lines2.map((line) => (
-            <p key={line}>{line}</p>
+          {lines2.map(([sk, en]) => (
+            <p key={sk}>{l(sk, en)}</p>
           ))}
         </div>
 
@@ -121,18 +123,18 @@ const BlogPost2 = () => {
         >
           <img
             src={blog3}
-            alt="Odvaha"
+            alt={l("Odvaha", "Courage")}
             className="w-full h-auto object-cover"
             loading="lazy"
           />
         </motion.figure>
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
-          {lines3.map((line) => (
-            <p key={line}>{line}</p>
+          {lines3.map(([sk, en]) => (
+            <p key={sk}>{l(sk, en)}</p>
           ))}
           <p className="font-display text-2xl md:text-3xl italic text-foreground pt-4">
-            keď vieš byť slabá.
+            {l("keď vieš byť slabá.", "when you let yourself be weak.")}
           </p>
         </div>
       </article>

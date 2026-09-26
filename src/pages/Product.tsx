@@ -8,14 +8,16 @@ import ProductGallery from "@/components/ProductGallery";
 import AddToCartButton from "@/components/AddToCartButton";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 import { products } from "@/data/products";
+import { useLang } from "@/lib/lang";
 
 const Product = () => {
+  const { l, pick } = useLang();
   const { slug } = useParams();
   const product = products.find((p) => p.slug === slug);
   useSeo(
     product
-      ? { title: product.name, description: product.description, image: product.images[0], path: `/shop/${product.slug}`, type: "product" }
-      : { title: "Produkt sa nenašiel", noindex: true },
+      ? { title: pick(product.name), description: pick(product.description), image: product.images[0], path: `/shop/${product.slug}`, type: "product" }
+      : { title: l("Produkt sa nenašiel", "Product not found"), noindex: true },
   );
 
   if (!product) {
@@ -24,13 +26,13 @@ const Product = () => {
         <Navbar />
         <div className="pt-40 pb-24 text-center px-6">
           <h1 className="font-display text-3xl font-light text-foreground">
-            Produkt sa nenašiel
+            {l("Produkt sa nenašiel", "Product not found")}
           </h1>
           <Link
             to="/shop"
             className="mt-8 inline-block border border-foreground px-8 py-3 font-body text-xs tracking-[0.2em] uppercase text-foreground hover:bg-foreground hover:text-background transition-all"
           >
-            Späť do shopu
+            {l("Späť do shopu", "Back to the shop")}
           </Link>
         </div>
         <Footer />
@@ -51,7 +53,7 @@ const Product = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť do shopu
+          {l("Späť do shopu", "Back to the shop")}
         </Link>
       </div>
 
@@ -62,15 +64,15 @@ const Product = () => {
           transition={{ duration: 0.6 }}
           className="grid gap-10 md:grid-cols-2 md:items-start"
         >
-          <ProductGallery images={product.images} name={product.name} />
+          <ProductGallery images={product.images} name={pick(product.name)} />
 
           <div className="md:pt-4">
             <h1 className="font-display text-3xl md:text-4xl font-light tracking-wide text-foreground">
-              {product.name}
+              {pick(product.name)}
             </h1>
             <div className="mt-4 w-16 h-[1px] bg-accent" />
             <p className="mt-6 font-body text-sm leading-relaxed text-muted-foreground tracking-wide whitespace-pre-line">
-              {product.description}
+              {pick(product.description)}
             </p>
             <p className="mt-6 font-display text-2xl text-foreground">
               {product.price}
@@ -81,7 +83,7 @@ const Product = () => {
             </div>
 
             <p className="mt-6 font-body text-[11px] text-muted-foreground">
-              Bezpečná platba kartou. Osobný odber zadarmo alebo Packeta za 5,00 €.
+              {l("Bezpečná platba kartou. Osobný odber zadarmo alebo Packeta za 5,00 €.", "Secure card payment. Free pickup in person, or Packeta delivery for €5.00.")}
             </p>
           </div>
         </motion.div>
@@ -90,7 +92,7 @@ const Product = () => {
       {others.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24 pb-20">
           <h2 className="font-display text-2xl font-light tracking-wide text-foreground mb-8">
-            Ďalšie produkty
+            {l("Ďalšie produkty", "You might also like")}
           </h2>
           <div className="grid gap-8 sm:grid-cols-3">
             {others.map((p) => (
@@ -98,13 +100,13 @@ const Product = () => {
                 <div className="overflow-hidden bg-muted">
                   <img
                     src={p.images[0]}
-                    alt={p.name}
+                    alt={pick(p.name)}
                     className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
                 <h3 className="mt-4 font-display text-lg font-light tracking-wide text-foreground">
-                  {p.name}
+                  {pick(p.name)}
                 </h3>
                 <p className="font-body text-sm text-muted-foreground">
                   {p.price}

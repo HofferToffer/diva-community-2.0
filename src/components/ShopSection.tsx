@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { products } from "@/data/products";
+import { useLang } from "@/lib/lang";
 
 const ShopSection = () => {
+  const { l, pick } = useLang();
   return (
     <section id="shop" className="section-padding bg-background">
       <div className="mx-auto max-w-7xl">
@@ -18,7 +20,7 @@ const ShopSection = () => {
           </h2>
           <div className="mx-auto mt-4 w-16 h-[1px] bg-accent" />
           <p className="mt-6 font-body text-sm leading-relaxed text-muted-foreground tracking-wide max-w-md mx-auto">
-            Oblečenie a merch pre DIVA Community.
+            {l("Oblečenie a merch pre DIVA Community.", "Clothing and merch for the DIVA Community.")}
           </p>
         </motion.div>
 
@@ -35,14 +37,14 @@ const ShopSection = () => {
                 <div className="overflow-hidden bg-muted">
                   <img
                     src={product.images[0]}
-                    alt={product.name}
+                    alt={pick(product.name)}
                     className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
                 <div className="mt-4 space-y-1">
                   <h3 className="font-display text-lg font-light tracking-wide text-foreground">
-                    {product.name}
+                    {pick(product.name)}
                   </h3>
                   <p className="font-body text-sm text-muted-foreground">
                     {product.price}
@@ -58,7 +60,7 @@ const ShopSection = () => {
             to="/shop"
             className="inline-block border border-foreground px-8 py-3 font-body text-xs tracking-[0.2em] text-foreground hover:bg-foreground hover:text-background transition-all duration-300 uppercase"
           >
-            Pozrieť všetky produkty
+            {l("Pozrieť všetky produkty", "See all products")}
           </Link>
         </div>
       </div>

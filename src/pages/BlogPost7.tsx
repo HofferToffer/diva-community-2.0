@@ -6,8 +6,10 @@ import Footer from "@/components/Footer";
 import blogCover from "@/assets/blog-7-cover.jpg";
 import blog2 from "@/assets/blog-7-2.jpg";
 import blog3 from "@/assets/blog-7-3.jpg";
+import { useLang } from "@/lib/lang";
 
 const BlogPost7 = () => {
+  const { l } = useLang();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -34,7 +36,7 @@ const BlogPost7 = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-4 font-display text-4xl md:text-6xl font-light tracking-wide text-primary-foreground max-w-3xl"
           >
-            Dovoliť si
+            {l("Dovoliť si", "Allow yourself")}
           </motion.h1>
         </div>
       </section>
@@ -46,7 +48,7 @@ const BlogPost7 = () => {
           className="inline-flex items-center gap-2 font-body text-xs tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 
@@ -54,13 +56,11 @@ const BlogPost7 = () => {
       <article className="mx-auto max-w-3xl px-6 md:px-12 py-12">
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p>
-            Cítiť sa ako žena pri dvoch deťoch, povinnostiach, práci, strese,
-            tlaku a ešte k tomu riešeniu vnútra je mega ťažké.
+            {l("Cítiť sa ako žena pri dvoch deťoch, povinnostiach, práci, strese, tlaku a ešte k tomu riešeniu vnútra je mega ťažké.", "Feeling like a woman with two kids, all the responsibilities, work, stress, pressure, and on top of that doing the inner work, is seriously hard.")}
           </p>
 
           <p>
-            Aj preto sme odišli na Krétu. Zminimalizovať veci, ktoré som cítila,
-            že už ďalej nie sú funkčné.
+            {l("Aj preto sme odišli na Krétu. Zminimalizovať veci, ktoré som cítila, že už ďalej nie sú funkčné.", "That's part of why we left for Crete. To cut back on the things I felt just weren't working anymore.")}
           </p>
         </div>
 
@@ -73,7 +73,7 @@ const BlogPost7 = () => {
         >
           <img
             src={blog2}
-            alt="Žena v záhrade na Kréte"
+            alt={l("Žena v záhrade na Kréte", "A woman in a garden on Crete")}
             className="w-full h-auto object-cover"
             loading="lazy"
           />
@@ -81,13 +81,13 @@ const BlogPost7 = () => {
 
         <div className="font-body text-base md:text-lg leading-loose text-foreground/85 tracking-wide space-y-5">
           <p className="font-display text-xl md:text-2xl italic text-foreground">
-            Poznáte to ženy?
+            {l("Poznáte to ženy?", "Do you know that feeling, girls?")}
           </p>
-          <p>Aj vy máte chuť odísť?</p>
-          <p>Zmeniť svoje životy?</p>
-          <p>Dopriať si?</p>
+          <p>{l("Aj vy máte chuť odísť?", "Do you ever feel like just leaving too?")}</p>
+          <p>{l("Zmeniť svoje životy?", "Changing your life?")}</p>
+          <p>{l("Dopriať si?", "Treating yourself?")}</p>
           <p className="font-display text-2xl md:text-3xl italic text-foreground pt-2">
-            Dovoliť si? 🌸
+            {l("Dovoliť si? 🌸", "Allowing yourself? 🌸")}
           </p>
         </div>
 
@@ -100,7 +100,7 @@ const BlogPost7 = () => {
         >
           <img
             src={blog3}
-            alt="Žena na Kréte"
+            alt={l("Žena na Kréte", "A woman on Crete")}
             className="w-full h-auto object-cover"
             loading="lazy"
           />

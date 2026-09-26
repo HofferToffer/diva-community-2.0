@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useLang } from "@/lib/lang";
 
 const STORAGE_KEY = "diva-cookie-consent";
 
 export default function CookieConsent() {
+  const { l } = useLang();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -30,15 +32,17 @@ export default function CookieConsent() {
     <div className="fixed inset-x-0 bottom-0 z-[100] px-4 pb-4">
       <div className="mx-auto flex max-w-2xl flex-col items-start gap-3 rounded-2xl border border-border bg-card p-4 shadow-lg sm:flex-row sm:items-center sm:justify-between">
         <p className="font-body text-xs leading-relaxed text-muted-foreground">
-          Táto stránka nepoužíva reklamné ani sledovacie cookies. Používame len technológie nevyhnutné na
-          prihlásenie a bezpečnú platbu.{" "}
+          {l(
+            "Táto stránka nepoužíva reklamné ani sledovacie cookies. Používame len technológie nevyhnutné na prihlásenie a bezpečnú platbu.",
+            "No ad or tracking cookies here. We only use what's needed to log you in and keep payments safe.",
+          )}{" "}
           <Link to="/cookies" className="underline hover:text-foreground">
-            Viac o cookies
+            {l("Viac o cookies", "More about cookies")}
           </Link>
           .
         </p>
         <Button size="sm" className="w-full shrink-0 sm:w-auto" onClick={dismiss}>
-          Rozumiem
+          {l("Rozumiem", "Got it")}
         </Button>
       </div>
     </div>

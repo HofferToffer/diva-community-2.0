@@ -45,18 +45,32 @@ export function sitemapPlugin(env: Record<string, string>): Plugin {
       const productPaths = matchAll(path.join(root, "src/data/products.ts"), /slug:\s*"([^"]+)"/g).map((slug) => `/shop/${slug}`);
       const dbPosts = await fetchDatabaseBlogSlugs(env);
 
-      const entries = new Map<string, string | null>();
-      for (const p of [...STATIC_PATHS, ...blogPaths, ...productPaths]) entries.set(p, null);
-      for (const post of dbPosts) entries.set(`/blog/${post.slug}`, post.updated_at?.slice(0, 10) ?? null);
+      // Pages translated into English also live at `?lang=en`; posts written in the admin are Slovak only.
+      const entries = new Map<string, { lastmod: string | null; bilingual: boolean }>();
+      for (const p of [...STATIC_PATHS, ...blogPaths, ...productPaths]) entries.set(p, { lastmod: null, bilingual: true });
+      for (const post of dbPosts) {
+        const p = `/blog/${post.slug}`;
+        if (!entries.has(p)) entries.set(p, { lastmod: post.updated_at?.slice(0, 10) ?? null, bilingual: false });
+      }
+
+      const urlEntry = (loc: string, lastmod: string | null, alternates: string) =>
+        `  <url>\n    <loc>${loc}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ""}${alternates}\n  </url>`;
 
       const urls = [...entries]
-        .map(([p, lastmod]) => {
-          const loc = `${SITE_URL}${p === "/" ? "/" : p}`;
-          return `  <url>\n    <loc>${loc}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ""}\n  </url>`;
+        .flatMap(([p, { lastmod, bilingual }]) => {
+          const skLoc = `${SITE_URL}${p}`;
+          if (!bilingual) return [urlEntry(skLoc, lastmod, "")];
+          const enLoc = `${skLoc}?lang=en`;
+          const alternates = [
+            `\n    <xhtml:link rel="alternate" hreflang="sk" href="${skLoc}" />`,
+            `\n    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}" />`,
+            `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${skLoc}" />`,
+          ].join("");
+          return [urlEntry(skLoc, lastmod, alternates), urlEntry(enLoc, lastmod, alternates)];
         })
         .join("\n");
 
-      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`;
       fs.mkdirSync(outDir, { recursive: true });
       fs.writeFileSync(path.join(outDir, "sitemap.xml"), xml);
     },

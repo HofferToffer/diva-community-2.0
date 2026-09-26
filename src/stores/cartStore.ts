@@ -40,7 +40,7 @@ export const useCartStore = create<CartStore>()(
               ...state.items,
               {
                 priceId: product.priceId,
-                name: product.name,
+                name: product.name.sk,
                 priceCents: product.priceCents,
                 image: product.images[0],
                 quantity,

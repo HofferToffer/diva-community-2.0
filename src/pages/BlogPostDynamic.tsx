@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBlogPost } from "@/community/hooks/queries";
 import { useSeo } from "@/lib/seo";
+import { useLang } from "@/lib/lang";
 
 type ContentBlock = { type: "p"; text: string; key: string } | { type: "img"; url: string; key: string };
 
@@ -28,6 +29,7 @@ function interleaveImages(paragraphs: string[], images: string[]): ContentBlock[
 const BlogPostDynamic = () => {
   const { slug } = useParams();
   const { data: post, isLoading } = useBlogPost(slug);
+  const { l, lang } = useLang();
   useSeo(
     isLoading
       ? null
@@ -38,8 +40,9 @@ const BlogPostDynamic = () => {
             image: post.cover_image_url ?? undefined,
             path: `/blog/${post.slug}`,
             type: "article",
+            slovakOnly: true,
           }
-        : { title: "Článok sa nenašiel", noindex: true },
+        : { title: l("Článok sa nenašiel", "Post not found"), noindex: true },
   );
 
   if (isLoading) {
@@ -59,10 +62,10 @@ const BlogPostDynamic = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="mx-auto max-w-3xl space-y-4 px-6 py-24 text-center md:px-12">
-          <h1 className="font-display text-3xl">Článok sa nenašiel</h1>
+          <h1 className="font-display text-3xl">{l("Článok sa nenašiel", "Post not found")}</h1>
           <Link to="/blog" className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.15em] underline">
             <ArrowLeft size={14} />
-            Späť na blog
+            {l("Späť na blog", "Back to the blog")}
           </Link>
         </div>
         <Footer />
@@ -113,11 +116,16 @@ const BlogPostDynamic = () => {
           className="inline-flex items-center gap-2 font-body text-xs uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft size={14} />
-          Späť na blog
+          {l("Späť na blog", "Back to the blog")}
         </Link>
       </div>
 
-      <article className="mx-auto max-w-3xl px-6 py-12 md:px-12">
+      <article className="mx-auto max-w-3xl px-6 py-12 md:px-12" lang="sk">
+        {lang === "en" && (
+          <p className="mb-8 rounded-2xl bg-secondary/30 px-5 py-4 font-body text-sm leading-relaxed text-muted-foreground" lang="en">
+            This one's only in Slovak for now. I write some posts straight from the heart in my own language 🌸
+          </p>
+        )}
         <div className="space-y-5 font-body text-base leading-loose tracking-wide text-foreground/85 md:text-lg">
           {contentBlocks.map((block) =>
             block.type === "p" ? (

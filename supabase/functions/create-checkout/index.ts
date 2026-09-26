@@ -10,7 +10,10 @@ async function createCartCheckout(options: {
   items: CartItemInput[];
   returnUrl: string;
   environment: StripeEnv;
+  /** Website language — Stripe's form and the shipping names follow it. */
+  language?: "sk" | "en";
 }) {
+  const en = options.language === "en";
   const stripe = createStripeClient(options.environment);
 
   const lookupKeys = options.items.map((i) => i.priceId);
@@ -40,6 +43,7 @@ async function createCartCheckout(options: {
     line_items: lineItems,
     mode: "payment",
     ui_mode: "embedded_page",
+    ...(options.language ? { locale: options.language } : {}),
     return_url: options.returnUrl,
     automatic_tax: { enabled: true },
     shipping_address_collection: {
@@ -50,7 +54,7 @@ async function createCartCheckout(options: {
         shipping_rate_data: {
           type: "fixed_amount",
           fixed_amount: { amount: 0, currency: "eur" },
-          display_name: "Osobný odber",
+          display_name: en ? "Pickup in person" : "Osobný odber",
           delivery_estimate: {
             minimum: { unit: "business_day", value: 1 },
             maximum: { unit: "business_day", value: 3 },
@@ -61,7 +65,7 @@ async function createCartCheckout(options: {
         shipping_rate_data: {
           type: "fixed_amount",
           fixed_amount: { amount: 500, currency: "eur" },
-          display_name: "Packeta (výdajné miesto)",
+          display_name: en ? "Packeta (pickup point)" : "Packeta (výdajné miesto)",
           delivery_estimate: {
             minimum: { unit: "business_day", value: 2 },
             maximum: { unit: "business_day", value: 5 },
@@ -89,10 +93,11 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { items, returnUrl, environment } = body as {
+    const { items, returnUrl, environment, language } = body as {
       items?: CartItemInput[];
       returnUrl?: string;
       environment?: StripeEnv;
+      language?: string;
     };
 
     if (environment !== "sandbox" && environment !== "live") {
@@ -113,7 +118,12 @@ Deno.serve(async (req) => {
       throw new Error("Missing returnUrl");
     }
 
-    const clientSecret = await createCartCheckout({ items, returnUrl, environment });
+    const clientSecret = await createCartCheckout({
+      items,
+      returnUrl,
+      environment,
+      language: language === "en" || language === "sk" ? language : undefined,
+    });
 
     return new Response(JSON.stringify({ clientSecret }), {
       status: 200,

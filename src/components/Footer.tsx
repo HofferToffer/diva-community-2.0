@@ -1,5 +1,6 @@
 import { Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLang } from "@/lib/lang";
 
 const links: { label: string; to: string }[] = [
   { label: "DIVA COMMUNITY", to: "/#community" },
@@ -10,6 +11,7 @@ const links: { label: string; to: string }[] = [
 ];
 
 const Footer = () => {
+  const { l } = useLang();
   return (
     <footer className="bg-foreground px-6 py-16 md:px-12 lg:px-24">
       <div className="mx-auto max-w-7xl">
@@ -34,10 +36,10 @@ const Footer = () => {
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             <Link to="/zasady-ochrany-udajov" className="font-body text-[10px] tracking-[0.15em] text-background/40 hover:text-background/70 transition-colors uppercase">
-              Ochrana osobných údajov
+              {l("Ochrana osobných údajov", "Privacy")}
             </Link>
             <Link to="/podmienky-pouzivania" className="font-body text-[10px] tracking-[0.15em] text-background/40 hover:text-background/70 transition-colors uppercase">
-              Podmienky používania
+              {l("Podmienky používania", "Terms")}
             </Link>
             <Link to="/cookies" className="font-body text-[10px] tracking-[0.15em] text-background/40 hover:text-background/70 transition-colors uppercase">
               Cookies
@@ -45,10 +47,10 @@ const Footer = () => {
           </div>
           <div className="h-[1px] w-full max-w-xs bg-background/20" />
           <p className="font-body text-xs text-background/40 tracking-wide text-center">
-            © 2026 DIVA Community. Všetky práva vyhradené.
+            © 2026 DIVA Community. {l("Všetky práva vyhradené.", "All rights reserved.")}
           </p>
           <p className="font-body text-[10px] text-background/30 tracking-wide text-center">
-            Prevádza: Tomáš Hofbauer, IČO 50976869, A.Nográdyho 716/31, 96001 Zvolen
+            {l("Prevádza", "Run by")}: Tomáš Hofbauer, {l("IČO", "Company ID")} 50976869, A.Nográdyho 716/31, 96001 Zvolen{l("", ", Slovakia")}
           </p>
         </div>
       </div>
